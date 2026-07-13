@@ -57,14 +57,14 @@
                     <xs:documentation>A specific character (by RefName) must be defeated in battle.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
-            <xs:enumeration value="CharactersDefeatedByTag">
+            <xs:enumeration value="CharactersDefeatedByTrait">
                 <xs:annotation>
-                    <xs:documentation>A number of characters sharing a tag must be defeated (e.g., "Bandit").</xs:documentation>
+                    <xs:documentation>A number of characters carrying a given trait must be defeated (e.g., "BossFight", "Hostile"). The Trait attribute is validated against the CharacterTraitType enum — no free-form strings.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
-            <xs:enumeration value="CharactersDefeatedByType">
+            <xs:enumeration value="CharactersDefeatedAtTrigger">
                 <xs:annotation>
-                    <xs:documentation>A number of characters of a given type must be defeated (e.g., "Undead").</xs:documentation>
+                    <xs:documentation>A number of characters spawned by a specific saga trigger (TriggerRef) must be defeated — "defeat the guardian at this site". Site-scoped, unlike tag/type matching which counts qualifying defeats anywhere.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
 
@@ -184,14 +184,9 @@
                 <xs:documentation>Filters to a specific character by RefName (for CharacterDefeated objectives).</xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="CharacterTag" type="xs:string" use="optional">
+        <xs:attribute name="Trait" type="CharacterTraitType" use="optional">
             <xs:annotation>
-                <xs:documentation>Filters to characters sharing a tag (for CharactersDefeatedByTag objectives).</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="CharacterType" type="xs:string" use="optional">
-            <xs:annotation>
-                <xs:documentation>Filters to characters of a given type (for CharactersDefeatedByType objectives).</xs:documentation>
+                <xs:documentation>The trait defeated characters must carry (for CharactersDefeatedByTrait objectives). Schema-validated against the fixed trait list.</xs:documentation>
             </xs:annotation>
         </xs:attribute>
         <xs:attribute name="DialogueRef" type="xs:string" use="optional">
@@ -226,7 +221,7 @@
         </xs:attribute>
         <xs:attribute name="TriggerRef" type="xs:string" use="optional">
             <xs:annotation>
-                <xs:documentation>References the world trigger that must be activated.</xs:documentation>
+                <xs:documentation>References the world trigger that must be activated (TriggerActivated), or whose spawned characters must be defeated (CharactersDefeatedAtTrigger).</xs:documentation>
             </xs:annotation>
         </xs:attribute>
         <xs:attribute name="QuestTokenRef" type="xs:string" use="optional">

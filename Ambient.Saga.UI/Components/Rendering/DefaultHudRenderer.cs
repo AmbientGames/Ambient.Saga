@@ -61,7 +61,7 @@ public class DefaultHudRenderer : IHudRenderer
         var stats = viewModel.Avatar?.Stats;
         if (stats == null)
         {
-            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No avatar");
+            ImGui.TextColored(UIColors.TextDisabled, "No avatar");
             return;
         }
 
@@ -74,20 +74,17 @@ public class DefaultHudRenderer : IHudRenderer
 
         // Health bar (red)
         RenderResourceBar("HP", stats.Health, 1.0f,
-            new Vector4(0.8f, 0.2f, 0.2f, 1f),   // Bar color
-            new Vector4(0.3f, 0.1f, 0.1f, 1f));  // Background
+            UIColors.BarHealth, UIColors.BarHealthBg);
         ImGui.SameLine(0, BarSpacing);
 
         // Stamina bar (green)
         RenderResourceBar("ST", stats.Stamina, 1.0f,
-            new Vector4(0.2f, 0.7f, 0.3f, 1f),   // Bar color
-            new Vector4(0.1f, 0.25f, 0.1f, 1f)); // Background
+            UIColors.BarStamina, UIColors.BarStaminaBg);
         ImGui.SameLine(0, BarSpacing);
 
         // Mana bar (blue)
         RenderResourceBar("MP", stats.Mana, 1.0f,
-            new Vector4(0.3f, 0.4f, 0.9f, 1f),   // Bar color
-            new Vector4(0.1f, 0.15f, 0.35f, 1f)); // Background
+            UIColors.BarMana, UIColors.BarManaBg);
 
         // Temperature warning (only if abnormal)
         var tempStatus = GetTemperatureStatus(stats.Temperature);
@@ -120,7 +117,7 @@ public class DefaultHudRenderer : IHudRenderer
 
         // Border
         drawList.AddRect(pos, new Vector2(pos.X + barWidth, pos.Y + BarHeight),
-            ImGui.ColorConvertFloat4ToU32(new Vector4(0.4f, 0.4f, 0.4f, 0.8f)), 3f);
+            ImGui.ColorConvertFloat4ToU32(UIColors.BarBorder), 3f);
 
         // Label centered in bar (only if bar is wide enough)
         var labelText = $"{label} {(int)(fraction * 100)}%";
@@ -130,7 +127,7 @@ public class DefaultHudRenderer : IHudRenderer
             var textPos = new Vector2(
                 pos.X + (barWidth - textSize.X) / 2,
                 pos.Y + (BarHeight - textSize.Y) / 2);
-            drawList.AddText(textPos, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 1f, 1f, 0.9f)), labelText);
+            drawList.AddText(textPos, ImGui.ColorConvertFloat4ToU32(UIColors.BarText), labelText);
         }
 
         // Advance cursor
@@ -202,20 +199,20 @@ public class DefaultHudRenderer : IHudRenderer
         if (isDev)
         {
             bgColor = isActive
-                ? new Vector4(0.6f, 0.4f, 0.2f, 0.9f)
-                : new Vector4(0.3f, 0.2f, 0.1f, 0.7f);
+                ? UIColors.HotkeyDevActiveBg
+                : UIColors.HotkeyDevInactiveBg;
             textColor = isActive
-                ? new Vector4(1f, 0.9f, 0.7f, 1f)
-                : new Vector4(0.7f, 0.5f, 0.3f, 1f);
+                ? UIColors.HotkeyDevActiveText
+                : UIColors.HotkeyDevInactiveText;
         }
         else
         {
             bgColor = isActive
-                ? new Vector4(0.2f, 0.5f, 0.2f, 0.9f)
-                : new Vector4(0.2f, 0.2f, 0.2f, 0.7f);
+                ? UIColors.HotkeyActiveBg
+                : UIColors.HotkeyInactiveBg;
             textColor = isActive
-                ? new Vector4(1f, 1f, 1f, 1f)
-                : new Vector4(0.6f, 0.6f, 0.6f, 1f);
+                ? UIColors.HotkeyActiveText
+                : UIColors.TextDisabled;
         }
 
         ImGui.PushStyleColor(ImGuiCol.Button, bgColor);

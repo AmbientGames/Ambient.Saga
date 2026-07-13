@@ -24,8 +24,6 @@ public static class TransactionDataKeys
     public const string CharacterDied = "CharacterDied";
     public const string CharacterInstanceId = "CharacterInstanceId";
     public const string CharacterRef = "CharacterRef";
-    public const string CharacterTag = "CharacterTag";
-    public const string CharacterType = "CharacterType";
     public const string ChoiceRef = "ChoiceRef";
     public const string ChosenBranch = "ChosenBranch";
     public const string BattleOutcome = "BattleOutcome";

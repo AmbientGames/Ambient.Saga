@@ -38,7 +38,7 @@ public class DevToolsPanel
             return;
 
         ImGui.TextColored(new Vector4(1, 0.5f, 0, 1), "DEV TOOLS");
-        ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "(Debugger Attached)");
+        ImGui.TextColored(UIColors.TextDisabled, "(Debugger Attached)");
         ImGui.Separator();
 
         // Steam Testing Section
@@ -70,7 +70,7 @@ public class DevToolsPanel
         {
             ImGui.Indent(10 * UIConstants.DpiScale);
 
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "Spawn & interact with test characters:");
+            ImGui.TextColored(UIColors.TextMuted, "Spawn & interact with test characters:");
             ImGui.Spacing();
 
             // NPC Dialogue Test
@@ -114,7 +114,7 @@ public class DevToolsPanel
             }
 
             ImGui.Spacing();
-            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "Direct modal tests:");
+            ImGui.TextColored(UIColors.TextDisabled, "Direct modal tests:");
 
             // Direct Trade Modal
             if (ImGui.Button("Direct Trade Modal", new Vector2(-10, devButtonHeight)))
@@ -206,12 +206,12 @@ public class DevToolsPanel
 
                 if (viewModel.Sagas.Count > 5)
                 {
-                    ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), $"... and {viewModel.Sagas.Count - 5} more");
+                    ImGui.TextColored(UIColors.TextDisabled, $"... and {viewModel.Sagas.Count - 5} more");
                 }
             }
             else
             {
-                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No active sagas");
+                ImGui.TextColored(UIColors.TextDisabled, "No active sagas");
             }
 
             ImGui.Unindent(10 * UIConstants.DpiScale);

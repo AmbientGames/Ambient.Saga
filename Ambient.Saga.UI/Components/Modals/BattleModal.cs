@@ -230,7 +230,7 @@ public class BattleModal
         var loadingText = "Preparing for battle...";
         var textSize = ImGui.CalcTextSize(loadingText);
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
-        ImGui.TextColored(new Vector4(1.0f, 0.8f, 0.3f, 1.0f), loadingText);
+        ImGui.TextColored(UIColors.TextWarning, loadingText);
     }
 
     private void RenderActiveBattle(SagaMainViewModel viewModel, CharacterViewModel character)
@@ -301,7 +301,7 @@ public class BattleModal
             var textSize = ImGui.CalcTextSize(turnText);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
             ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 25 * UIConstants.DpiScale);
-            ImGui.TextColored(new Vector4(1.0f, 0.4f, 0.4f, 1.0f), turnText);
+            ImGui.TextColored(UIColors.TextDanger, turnText);
         }
         else
         {
@@ -310,14 +310,14 @@ public class BattleModal
             var turnText = "YOUR TURN - Choose an Action";
             var textSize = ImGui.CalcTextSize(turnText);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
-            ImGui.TextColored(new Vector4(1.0f, 0.9f, 0.4f, 1.0f), turnText);
+            ImGui.TextColored(UIColors.GoldenYellow, turnText);
             ImGui.PopFont();
             ImGui.Spacing();
 
-            // Center the action buttons
-            var buttonWidth = 110f;
-            var buttonSpacing = 8f;
-            var totalWidth = buttonWidth * 7 + buttonSpacing * 6 + 20; // 7 buttons + extra for loadout
+            // Center the action buttons (SameLine spacing comes from ItemSpacing, so use it in the math)
+            var buttonWidth = 110f * UIConstants.DpiScale;
+            var buttonSpacing = ImGui.GetStyle().ItemSpacing.X;
+            var totalWidth = buttonWidth * 7 + buttonSpacing * 6 + 20 * UIConstants.DpiScale; // 7 buttons + extra for loadout
             var startX = (ImGui.GetWindowWidth() - totalWidth) * 0.5f;
             ImGui.SetCursorPosX(startX);
 
@@ -330,9 +330,9 @@ public class BattleModal
             ImGui.BeginDisabled(_isProcessingTurn);
 
             // Core combat actions with styled buttons
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.3f, 0.15f, 0.15f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.7f, 0.3f, 0.3f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonDanger);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonDangerHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonDangerActive);
             if (ImGui.Button("Attack", new Vector2(buttonWidth, actionButtonHeight)))
             {
                 _ = ExecuteTurnAsync(viewModel, character, new CombatAction { ActionType = ActionType.Attack });
@@ -380,9 +380,9 @@ public class BattleModal
             ImGui.PopStyleColor(3);
 
             ImGui.SameLine();
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.3f, 0.15f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.55f, 0.4f, 0.2f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.7f, 0.5f, 0.25f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonWarning);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonWarningHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonWarningActive);
             if (ImGui.Button("Flee", new Vector2(buttonWidth, actionButtonHeight)))
             {
                 _ = ExecuteTurnAsync(viewModel, character, new CombatAction { ActionType = ActionType.Flee });
@@ -393,9 +393,9 @@ public class BattleModal
             ImGui.SetCursorPosX(startX + buttonWidth * 2 + buttonSpacing * 2);  // Indent to align with middle
 
             // Loadout button (full equipment change)
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.3f, 0.3f, 0.3f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.4f, 0.4f, 0.4f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.5f, 0.5f, 0.5f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonNeutral);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonNeutralHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonNeutralActive);
             if (ImGui.Button("Loadout", new Vector2(buttonWidth, actionButtonHeight)))
             {
                 OpenEquipmentChangeModal(viewModel);
@@ -405,9 +405,9 @@ public class BattleModal
             ImGui.SameLine();
 
             // Affinity button (quick change with health bonus)
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.15f, 0.35f, 0.35f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.2f, 0.5f, 0.5f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.25f, 0.65f, 0.65f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAffinity);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAffinityHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAffinityActive);
             if (ImGui.Button("Affinity", new Vector2(buttonWidth, actionButtonHeight)))
             {
                 OpenAffinityChangeModal(viewModel);
@@ -469,8 +469,8 @@ public class BattleModal
         ImGui.Spacing();
 
         // Reaction buttons - Dodge, Block, Parry, Brace
-        var buttonWidth = 120f;
-        var buttonSpacing = 15f;
+        var buttonWidth = 120f * UIConstants.DpiScale;
+        var buttonSpacing = 15f * UIConstants.DpiScale;
         var reactionButtonHeight = ImGui.GetFrameHeight() * 1.4f;
         var totalWidth = buttonWidth * 4 + buttonSpacing * 3;
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalWidth) * 0.5f);
@@ -732,7 +732,7 @@ public class BattleModal
     private void RenderCombatantPanel(Combatant combatant, string title)
     {
         var isAvatar = title == "Avatar";
-        var titleColor = isAvatar ? new Vector4(0.4f, 0.9f, 0.4f, 1.0f) : new Vector4(1.0f, 0.4f, 0.4f, 1.0f);
+        var titleColor = isAvatar ? UIColors.TextTitleGreen : UIColors.TextDanger;
 
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.08f, 0.08f, 0.1f, 0.9f));
         ImGui.BeginChild($"{title}Panel", new Vector2(0, 0), ImGuiChildFlags.Borders);
@@ -786,6 +786,41 @@ public class BattleModal
         ImGui.PopStyleColor();
     }
 
+    // Battle-log colors, computed once per line instead of string-scanning every visible
+    // line every frame. The log list arrives with each rebuilt state; a reference change
+    // (or shrink) resets the cache, appended lines are classified incrementally.
+    private readonly List<Vector4> _battleLogColors = new();
+    private List<string>? _battleLogColorSource;
+
+    private List<Vector4> GetBattleLogColors(List<string> log)
+    {
+        if (!ReferenceEquals(_battleLogColorSource, log) || _battleLogColors.Count > log.Count)
+        {
+            _battleLogColors.Clear();
+            _battleLogColorSource = log;
+        }
+
+        for (var i = _battleLogColors.Count; i < log.Count; i++)
+            _battleLogColors.Add(ClassifyLogLine(log[i]));
+
+        return _battleLogColors;
+    }
+
+    private static Vector4 ClassifyLogLine(string line)
+    {
+        if (line.Contains("damage") || line.Contains("hit"))
+            return new Vector4(1.0f, 0.6f, 0.4f, 1.0f);
+        if (line.Contains("healed") || line.Contains("restored"))
+            return new Vector4(0.4f, 1.0f, 0.6f, 1.0f);
+        if (line.Contains("defended") || line.Contains("blocked"))
+            return new Vector4(0.4f, 0.7f, 1.0f, 1.0f);
+        if (line.Contains("fled") || line.Contains("escaped"))
+            return UIColors.GoldenYellow;
+        if (line.Contains("defeated") || line.Contains("victory") || line.Contains("Victory"))
+            return UIColors.TextSuccessBright;
+        return new Vector4(0.85f, 0.85f, 0.85f, 1.0f);
+    }
+
     private void RenderBattleLog()
     {
         if (_currentState == null) return;
@@ -798,13 +833,13 @@ public class BattleModal
         var headerText = "Battle Log";
         var headerSize = ImGui.CalcTextSize(headerText);
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - headerSize.X) * 0.5f);
-        ImGui.TextColored(new Vector4(1.0f, 0.9f, 0.5f, 1.0f), headerText);
+        ImGui.TextColored(UIColors.GoldenYellow, headerText);
 
         // Turn counter
         var turnText = $"Turn {_currentState.TurnNumber}";
         var turnSize = ImGui.CalcTextSize(turnText);
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - turnSize.X) * 0.5f);
-        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1.0f), turnText);
+        ImGui.TextColored(UIColors.TextMuted, turnText);
 
         ImGui.Separator();
         ImGui.Spacing();
@@ -812,33 +847,12 @@ public class BattleModal
         // Log entries
         ImGui.BeginChild("BattleLogScroll", new Vector2(0, 0), ImGuiChildFlags.None);
 
-        foreach (var line in _currentState.BattleLog)
+        var log = _currentState.BattleLog;
+        var colors = GetBattleLogColors(log);
+        for (var i = 0; i < log.Count; i++)
         {
-            // Color-code log entries based on content
-            var color = new Vector4(0.85f, 0.85f, 0.85f, 1.0f);
-            if (line.Contains("damage") || line.Contains("hit"))
-            {
-                color = new Vector4(1.0f, 0.6f, 0.4f, 1.0f);
-            }
-            else if (line.Contains("healed") || line.Contains("restored"))
-            {
-                color = new Vector4(0.4f, 1.0f, 0.6f, 1.0f);
-            }
-            else if (line.Contains("defended") || line.Contains("blocked"))
-            {
-                color = new Vector4(0.4f, 0.7f, 1.0f, 1.0f);
-            }
-            else if (line.Contains("fled") || line.Contains("escaped"))
-            {
-                color = new Vector4(1.0f, 0.9f, 0.4f, 1.0f);
-            }
-            else if (line.Contains("defeated") || line.Contains("victory") || line.Contains("Victory"))
-            {
-                color = new Vector4(0.3f, 1.0f, 0.3f, 1.0f);
-            }
-
-            ImGui.PushStyleColor(ImGuiCol.Text, color);
-            ImGui.TextWrapped(line);
+            ImGui.PushStyleColor(ImGuiCol.Text, colors[i]);
+            ImGui.TextWrapped(log[i]);
             ImGui.PopStyleColor();
             ImGui.Spacing();
         }
@@ -871,7 +885,7 @@ public class BattleModal
             var text = "VICTORY!";
             var textSize = ImGui.CalcTextSize(text);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
-            ImGui.TextColored(new Vector4(0.3f, 1.0f, 0.3f, 1.0f), text);
+            ImGui.TextColored(UIColors.TextSuccessBright, text);
             ImGui.PopFont();
 
             ImGui.Spacing();
@@ -886,7 +900,7 @@ public class BattleModal
             var text = "DEFEAT";
             var textSize = ImGui.CalcTextSize(text);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
-            ImGui.TextColored(new Vector4(1.0f, 0.3f, 0.3f, 1.0f), text);
+            ImGui.TextColored(UIColors.TextError, text);
             ImGui.PopFont();
 
             ImGui.Spacing();
@@ -903,7 +917,7 @@ public class BattleModal
             var text = "ESCAPED";
             var textSize = ImGui.CalcTextSize(text);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
-            ImGui.TextColored(new Vector4(1.0f, 0.9f, 0.4f, 1.0f), text);
+            ImGui.TextColored(UIColors.GoldenYellow, text);
             ImGui.PopFont();
 
             ImGui.Spacing();
@@ -922,7 +936,7 @@ public class BattleModal
         var logHeader = "Battle Summary";
         var logHeaderSize = ImGui.CalcTextSize(logHeader);
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - logHeaderSize.X) * 0.5f);
-        ImGui.TextColored(new Vector4(1.0f, 0.9f, 0.5f, 1.0f), logHeader);
+        ImGui.TextColored(UIColors.GoldenYellow, logHeader);
         ImGui.Spacing();
 
         // Show battle log with styled background
@@ -931,25 +945,12 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.ChildBg, UIColors.PanelBgDark);
         ImGui.BeginChild("FinalBattleLog", new Vector2(ImGuiSizes.Fill, -footerHeight), ImGuiChildFlags.Borders);
 
-        foreach (var line in _currentState.BattleLog)
+        var finalLog = _currentState.BattleLog;
+        var finalColors = GetBattleLogColors(finalLog);
+        for (var i = 0; i < finalLog.Count; i++)
         {
-            // Color-code log entries
-            var color = new Vector4(0.85f, 0.85f, 0.85f, 1.0f);
-            if (line.Contains("damage") || line.Contains("hit"))
-            {
-                color = new Vector4(1.0f, 0.6f, 0.4f, 1.0f);
-            }
-            else if (line.Contains("healed") || line.Contains("restored"))
-            {
-                color = new Vector4(0.4f, 1.0f, 0.6f, 1.0f);
-            }
-            else if (line.Contains("defeated") || line.Contains("victory") || line.Contains("Victory"))
-            {
-                color = new Vector4(0.3f, 1.0f, 0.3f, 1.0f);
-            }
-
-            ImGui.PushStyleColor(ImGuiCol.Text, color);
-            ImGui.TextWrapped(line);
+            ImGui.PushStyleColor(ImGuiCol.Text, finalColors[i]);
+            ImGui.TextWrapped(finalLog[i]);
             ImGui.PopStyleColor();
             ImGui.Spacing();
         }
@@ -962,7 +963,7 @@ public class BattleModal
         // Center the close button
         // (The legacy "Collect Loot" button is gone — defeated characters are looted
         // through the character interaction flow / MerchantTrade family instead.)
-        var buttonWidth = 150f;
+        var buttonWidth = 150f * UIConstants.DpiScale;
         var endButtonHeight = ImGui.GetFrameHeight() * 1.4f;
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
 

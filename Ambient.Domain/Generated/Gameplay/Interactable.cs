@@ -25,7 +25,7 @@ namespace Ambient.Domain {
         private string contentField;
         
         private ItemCollection lootField;
-
+        
         private string[] requiresQuestTokenRefField;
         
         private string[] givesQuestTokenRefField;

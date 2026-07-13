@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Quest RefName="BanditChief_Quest" DisplayName="The Rival School" Description="Stand up to bullies from a rival school causing trouble on the trip.">
     <Stages StartStage="clear_scouts">
       <Stage RefName="clear_scouts" DisplayName="Clear the Roads" NextStage="assault">
         <Objectives>
-          <Objective RefName="defeat_scouts" Type="CharactersDefeatedByTag" Threshold="3" DisplayName="Defeat bandit scouts on the roads" CharacterTag="BanditScout" />
+          <Objective RefName="defeat_scouts" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the bandit scout on the roads" CharacterRef="BanditChief_Scout" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -14,7 +14,7 @@
       </Stage>
       <Stage RefName="assault" DisplayName="Assault the Hideout" NextStage="boss">
         <Objectives>
-          <Objective RefName="defeat_enforcers" Type="CharactersDefeatedByTag" Threshold="2" DisplayName="Defeat the bandit enforcers" CharacterTag="BanditEnforcer" />
+          <Objective RefName="defeat_enforcers" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the bandit enforcer" CharacterRef="BanditChief_Enforcer" />
           <Objective RefName="rescue_prisoner" Type="DialogueCompleted" Threshold="1" DisplayName="Rescue the captured merchant" DialogueRef="BanditChief_PrisonerRescue" Optional="true" />
         </Objectives>
         <Rewards>
@@ -97,9 +97,6 @@
       <Reward Condition="OnSuccess">
         <Currency Amount="100" />
         <Experience Amount="100" />
-      </Reward>
-      <Reward Condition="OnBranch">
-        <Experience Amount="50" />
       </Reward>
     </Rewards>
   </Quest>
@@ -227,9 +224,6 @@
         <Currency Amount="100" />
         <Experience Amount="50" />
       </Reward>
-      <Reward Condition="OnBranch">
-        <Experience Amount="25" />
-      </Reward>
     </Rewards>
   </Quest>
   <Quest RefName="RefugeeEscort_Quest" DisplayName="The Lost Students" Description="Help find and guide separated students back to the group safely.">
@@ -248,7 +242,7 @@
       <Stage RefName="crisis" DisplayName="Handle the Crisis" NextStage="pursue" />
       <Stage RefName="pursue" DisplayName="Fight Off Pursuers" NextStage="border">
         <Objectives>
-          <Objective RefName="defeat_pursuers" Type="CharactersDefeatedByTag" Threshold="3" DisplayName="Defeat the pursuing scouts" CharacterTag="Pursuer" />
+          <Objective RefName="defeat_pursuers" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the pursuing scout" CharacterRef="RefugeeEscort_Pursuer" />
           <Objective RefName="defeat_captain" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the Pursuer Captain" CharacterRef="RefugeeEscort_Captain" Optional="true" />
         </Objectives>
         <Rewards>
@@ -306,10 +300,6 @@
         <Currency Amount="200" />
         <Experience Amount="100" />
       </Reward>
-      <Reward Condition="OnBranch">
-        <Currency Amount="100" />
-      </Reward>
-      <Reward Condition="OnBranch" />
     </Rewards>
   </Quest>
   <Quest RefName="WanderingMerchant_Quest" DisplayName="The Lost Tour Guide" Description="Help a separated tour guide find their way back to their group.">
@@ -502,7 +492,7 @@
     <Stages StartStage="CLEAR_PATH">
       <Stage RefName="CLEAR_PATH" DisplayName="Clear the Path" NextStage="COMPLETE">
         <Objectives>
-          <Objective RefName="DEFEAT_ENEMIES" Type="CharactersDefeatedByTag" Threshold="11" DisplayName="Defeat hostile creatures" CharacterTag="hostile" />
+          <Objective RefName="DEFEAT_ENEMIES" Type="CharactersDefeatedByTrait" Threshold="11" DisplayName="Defeat hostile creatures" Trait="Hostile" />
         </Objectives>
       </Stage>
       <Stage RefName="COMPLETE" DisplayName="Quest Complete">
@@ -631,7 +621,7 @@
       <Stage RefName="GATHER_COMPONENT_1" DisplayName="Retrieve Component 1" NextStage="GATHER_COMPONENT_2">
         <Objectives>
           <Objective RefName="REACH_LOCATION_1" Type="LocationReached" Threshold="1" DisplayName="Travel to Kotai Jingu (Inner Shrine)" SagaArcRef="KotaiJinguInnerShrine" />
-          <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Kotai Jingu (Inner Shrine)" CharacterTag="boss" />
+          <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTrait" Threshold="1" DisplayName="Defeat the guardian at Kotai Jingu (Inner Shrine)" Trait="BossFight" />
           <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="HoodedCowl" />
         </Objectives>
         <Rewards>
@@ -649,7 +639,7 @@
       <Stage RefName="GATHER_COMPONENT_2" DisplayName="Retrieve Component 2" NextStage="GATHER_COMPONENT_3">
         <Objectives>
           <Objective RefName="REACH_LOCATION_2" Type="LocationReached" Threshold="1" DisplayName="Travel to Aramatsuri-no-Miya" SagaArcRef="Aramatsurinomiya" />
-          <Objective RefName="DEFEAT_GUARDIAN_2" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Aramatsuri-no-Miya" CharacterTag="boss" />
+          <Objective RefName="DEFEAT_GUARDIAN_2" Type="CharactersDefeatedByTrait" Threshold="1" DisplayName="Defeat the guardian at Aramatsuri-no-Miya" Trait="BossFight" />
           <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="ChainBoots" />
         </Objectives>
         <Rewards>
@@ -667,7 +657,7 @@
       <Stage RefName="GATHER_COMPONENT_3" DisplayName="Retrieve Component 3">
         <Objectives>
           <Objective RefName="REACH_LOCATION_3" Type="LocationReached" Threshold="1" DisplayName="Travel to Toyoke Daijingu (Outer Shrine)" SagaArcRef="ToyokeDaijinguOuterShrine" />
-          <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Toyoke Daijingu (Outer Shrine)" CharacterTag="boss" />
+          <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTrait" Threshold="1" DisplayName="Defeat the guardian at Toyoke Daijingu (Outer Shrine)" Trait="BossFight" />
           <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="OakStaff" />
         </Objectives>
         <Rewards>
@@ -696,7 +686,7 @@
       </Stage>
       <Stage RefName="FINAL_BATTLE" DisplayName="The Ultimate Confrontation">
         <Objectives>
-          <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the legendary guardian" CharacterTag="boss" />
+          <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTrait" Threshold="1" DisplayName="Defeat the legendary guardian" Trait="BossFight" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -780,9 +770,9 @@
       </Stage>
       <Stage RefName="COMPLETE_TRIAL" DisplayName="Complete All Challenges">
         <Objectives>
-          <Objective RefName="DEFEAT_WAVE_1" Type="CharactersDefeatedByTag" Threshold="10" DisplayName="Defeat 10 enemies (Wave 1)" CharacterTag="hostile" />
+          <Objective RefName="DEFEAT_WAVE_1" Type="CharactersDefeatedByTrait" Threshold="10" DisplayName="Defeat 10 enemies (Wave 1)" Trait="Hostile" />
           <Objective RefName="COLLECT_SPEED_TOKENS" Type="QuestTokenCollected" Threshold="5" DisplayName="Collect 5 speed tokens" ItemRef="TOKEN_SPEED_CHALLENGE" />
-          <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the time keeper" CharacterTag="boss" />
+          <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTrait" Threshold="1" DisplayName="Defeat the time keeper" Trait="BossFight" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">

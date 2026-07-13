@@ -28,13 +28,13 @@ namespace Ambient.Domain {
         
         private string characterTypeField;
         
-        private string characterTagField;
-        
         private string characterRefField;
         
         private string sagaArcRefField;
         
-        private string traitTypeField;
+        private CharacterTraitType traitField;
+        
+        private bool traitFieldSpecified;
         
         private string questTokenRefField;
         
@@ -81,17 +81,6 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string CharacterTag {
-            get {
-                return this.characterTagField;
-            }
-            set {
-                this.characterTagField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
         public string CharacterRef {
             get {
                 return this.characterRefField;
@@ -114,12 +103,23 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string TraitType {
+        public CharacterTraitType Trait {
             get {
-                return this.traitTypeField;
+                return this.traitField;
             }
             set {
-                this.traitTypeField = value;
+                this.traitField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool TraitSpecified {
+            get {
+                return this.traitFieldSpecified;
+            }
+            set {
+                this.traitFieldSpecified = value;
             }
         }
         

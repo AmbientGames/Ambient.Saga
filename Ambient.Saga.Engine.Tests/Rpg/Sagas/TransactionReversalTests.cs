@@ -62,6 +62,21 @@ public class TransactionReversalTests
             DisplayName = "Health Potion",
             WholesalePrice = 20
         };
+        // ApplyQuestAccepted resolves the template from the world catalog
+        world.QuestsLookup["REVERSAL_QUEST"] = new Quest
+        {
+            RefName = "REVERSAL_QUEST",
+            DisplayName = "Reversal Quest",
+            Stages = new QuestStages
+            {
+                StartStage = "STAGE_1",
+                Stage = new[]
+                {
+                    new QuestStage { RefName = "STAGE_1" },
+                    new QuestStage { RefName = "STAGE_2" }
+                }
+            }
+        };
 
         return world;
     }
@@ -170,6 +185,116 @@ public class TransactionReversalTests
         });
 
         Assert.DoesNotContain("token-reversal-test", state.AwardedQuestTokens);
+    }
+
+    [Fact]
+    public void Replay_ReversedQuestAccepted_RemovesFromActiveQuests()
+    {
+        var world = CreateWorldWithMerchant();
+        var stateMachine = CreateStateMachine(world);
+
+        var accept = CreateTransaction(SagaTransactionType.QuestAccepted, 1, new Dictionary<string, string>
+        {
+            [TransactionDataKeys.QuestRef] = "REVERSAL_QUEST"
+        });
+
+        // Sanity: without the reversal the quest is active
+        var stateWithoutReversal = stateMachine.Replay(new List<SagaTransaction> { accept });
+        Assert.True(stateWithoutReversal.ActiveQuests.ContainsKey("REVERSAL_QUEST"));
+
+        var state = stateMachine.Replay(new List<SagaTransaction>
+        {
+            accept, CreateReversalTransaction(2, accept)
+        });
+
+        Assert.False(state.ActiveQuests.ContainsKey("REVERSAL_QUEST"));
+    }
+
+    [Fact]
+    public void Replay_ReversedQuestCompleted_RemovesFromCompleted_WithoutReactivating()
+    {
+        var world = CreateWorldWithMerchant();
+        var stateMachine = CreateStateMachine(world);
+
+        var questData = new Dictionary<string, string> { [TransactionDataKeys.QuestRef] = "REVERSAL_QUEST" };
+        var accept = CreateTransaction(SagaTransactionType.QuestAccepted, 1, new(questData));
+        var complete = CreateTransaction(SagaTransactionType.QuestCompleted, 2, new(questData));
+
+        var state = stateMachine.Replay(new List<SagaTransaction>
+        {
+            accept, complete, CreateReversalTransaction(3, complete)
+        });
+
+        // Cross-arc gates must stop counting the completion...
+        Assert.DoesNotContain("REVERSAL_QUEST", state.CompletedQuests);
+        // ...and stage progress at completion time is unrecoverable, so the quest
+        // does NOT return to ActiveQuests — the avatar re-accepts instead
+        Assert.False(state.ActiveQuests.ContainsKey("REVERSAL_QUEST"));
+
+        // The reversal makes the quest re-acceptable (ApplyQuestAccepted refuses
+        // quests still present in CompletedQuests)
+        var reaccepted = stateMachine.Replay(new List<SagaTransaction>
+        {
+            accept, complete, CreateReversalTransaction(3, complete),
+            CreateTransaction(SagaTransactionType.QuestAccepted, 4, new(questData))
+        });
+        Assert.True(reaccepted.ActiveQuests.ContainsKey("REVERSAL_QUEST"));
+    }
+
+    [Fact]
+    public void Replay_ReversedTraitAssigned_RemovesTraitFromTemplateAndLiveInstance()
+    {
+        var world = CreateWorldWithMerchant();
+        var stateMachine = CreateStateMachine(world);
+
+        var assign = CreateTransaction(SagaTransactionType.TraitAssigned, 2, new Dictionary<string, string>
+        {
+            [TransactionDataKeys.CharacterRef] = "Merchant",
+            [TransactionDataKeys.TraitType] = "Friendly"
+        });
+
+        // Sanity: without the reversal the trait is on the template list AND the live instance
+        var stateWithoutReversal = stateMachine.Replay(new List<SagaTransaction>
+        {
+            CreateSpawnTransaction(1), assign
+        });
+        Assert.Contains("Friendly", stateWithoutReversal.CharacterTraits["Merchant"]);
+        Assert.True(stateWithoutReversal.Characters[MerchantInstanceId.ToString()].Traits.ContainsKey("Friendly"));
+
+        var state = stateMachine.Replay(new List<SagaTransaction>
+        {
+            CreateSpawnTransaction(1), assign, CreateReversalTransaction(3, assign)
+        });
+
+        Assert.DoesNotContain("Friendly", state.CharacterTraits["Merchant"]);
+        Assert.False(state.Characters[MerchantInstanceId.ToString()].Traits.ContainsKey("Friendly"));
+    }
+
+    [Fact]
+    public void Replay_ReversedQuestStageAdvanced_HasNoInverseFold_AndSkipsQuietly()
+    {
+        // Stage progress is unrecoverable from the single transaction, so
+        // QuestStageAdvanced is a documented log-and-skip reversal: the fold
+        // stands, the reversal stays as an audit record, and nothing quarantines
+        var world = CreateWorldWithMerchant();
+        var metrics = new RecordingSagaMetrics();
+        var stateMachine = CreateStateMachine(world, metrics);
+
+        var questData = new Dictionary<string, string> { [TransactionDataKeys.QuestRef] = "REVERSAL_QUEST" };
+        var accept = CreateTransaction(SagaTransactionType.QuestAccepted, 1, new(questData));
+        var advance = CreateTransaction(SagaTransactionType.QuestStageAdvanced, 2, new Dictionary<string, string>
+        {
+            [TransactionDataKeys.QuestRef] = "REVERSAL_QUEST",
+            [TransactionDataKeys.NextStage] = "STAGE_2"
+        });
+
+        var state = stateMachine.Replay(new List<SagaTransaction>
+        {
+            accept, advance, CreateReversalTransaction(3, advance)
+        });
+
+        Assert.Equal("STAGE_2", state.ActiveQuests["REVERSAL_QUEST"].CurrentStage);
+        Assert.Equal(0, metrics.UnknownTransactionTypeCount);
     }
 
     [Fact]

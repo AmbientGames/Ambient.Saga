@@ -16,6 +16,9 @@ namespace Ambient.Saga.UI.Components.Modals;
 /// </summary>
 public class QuestDetailModal
 {
+    // Pure yellow: loading/abandoning status text and the current stage name.
+    private static readonly Vector4 HighlightYellow = new(1f, 1f, 0f, 1f);
+
     private readonly IMediator _mediator;
     private string? _currentQuestRef;
     private string? _currentSagaRef;
@@ -94,7 +97,7 @@ public class QuestDetailModal
         {
             if (_isLoading)
             {
-                ImGui.TextColored(new Vector4(1, 1, 0, 1), "Loading quest details...");
+                ImGui.TextColored(HighlightYellow, "Loading quest details...");
             }
             else if (_errorMessage != null)
             {
@@ -175,7 +178,7 @@ public class QuestDetailModal
             ImGui.SameLine();
             if (_questProgress.IsComplete)
             {
-                ImGui.TextColored(new Vector4(0, 1, 0, 1), "[COMPLETED]");
+                ImGui.TextColored(UIColors.TextSuccessBright, "[COMPLETED]");
             }
             else
             {
@@ -183,7 +186,7 @@ public class QuestDetailModal
 
                 // Overall progress
                 ImGui.SameLine();
-                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"({_questProgress.OverallProgress:P0})");
+                ImGui.TextColored(UIColors.TextMuted, $"({_questProgress.OverallProgress:P0})");
             }
         }
 
@@ -196,26 +199,26 @@ public class QuestDetailModal
 
         // Quest metadata
         ImGui.Spacing();
-        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"Quest ID: {_questTemplate.RefName}");
+        ImGui.TextColored(UIColors.TextDim, $"Quest ID: {_questTemplate.RefName}");
         if (_questState != null)
         {
-            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"Accepted: {_questState.AcceptedAt:g}");
+            ImGui.TextColored(UIColors.TextDim, $"Accepted: {_questState.AcceptedAt:g}");
             if (_questState.CompletedAt.HasValue)
             {
-                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"Completed: {_questState.CompletedAt:g}");
+                ImGui.TextColored(UIColors.TextDim, $"Completed: {_questState.CompletedAt:g}");
             }
         }
     }
 
     private void RenderCurrentStage()
     {
-        ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Current Stage:");
+        ImGui.TextColored(UIColors.TextSuccess, "Current Stage:");
         ImGui.Spacing();
 
         ImGui.Indent(10 * UIConstants.DpiScale);
 
         // Stage name
-        ImGui.TextColored(new Vector4(1, 1, 0, 1), _questProgress!.CurrentStageDisplayName);
+        ImGui.TextColored(HighlightYellow, _questProgress!.CurrentStageDisplayName);
         ImGui.Spacing();
 
         // Get current stage from template
@@ -229,7 +232,7 @@ public class QuestDetailModal
         // Otherwise show objectives
         else if (_questProgress.Objectives != null && _questProgress.Objectives.Count > 0)
         {
-            ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Objectives:");
+            ImGui.TextColored(UIColors.TextHighlight, "Objectives:");
             ImGui.Spacing();
 
             foreach (var objective in _questProgress.Objectives)
@@ -244,7 +247,7 @@ public class QuestDetailModal
     private void RenderObjective(ObjectiveProgress objective)
     {
         var isComplete = objective.IsComplete;
-        var color = isComplete ? new Vector4(0, 1, 0, 1) : new Vector4(1, 1, 1, 1);
+        var color = isComplete ? UIColors.TextSuccessBright : new Vector4(1, 1, 1, 1);
 
         // Checkbox or bullet
         if (isComplete)
@@ -253,7 +256,7 @@ public class QuestDetailModal
         }
         else
         {
-            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "[ ]");
+            ImGui.TextColored(UIColors.TextDisabled, "[ ]");
         }
 
         ImGui.SameLine();
@@ -287,7 +290,7 @@ public class QuestDetailModal
 
         if (stage.Branches!.Exclusive)
         {
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "You must choose one of the following:");
+            ImGui.TextColored(UIColors.TextMuted, "You must choose one of the following:");
         }
         ImGui.Spacing();
 
@@ -298,7 +301,7 @@ public class QuestDetailModal
 
             if (wasChosen)
             {
-                ImGui.TextColored(new Vector4(0, 1, 0, 1), $"→ {branchName} [CHOSEN]");
+                ImGui.TextColored(UIColors.TextSuccessBright, $"→ {branchName} [CHOSEN]");
             }
             else if (stage.Branches.Exclusive && !string.IsNullOrEmpty(_questState?.ChosenBranch))
             {
@@ -314,7 +317,7 @@ public class QuestDetailModal
             if (branch.Objective != null)
             {
                 ImGui.Indent(20 * UIConstants.DpiScale);
-                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"Requires: {branch.Objective.DisplayName}");
+                ImGui.TextColored(UIColors.TextMuted, $"Requires: {branch.Objective.DisplayName}");
                 ImGui.Unindent(20 * UIConstants.DpiScale);
             }
 
@@ -339,13 +342,13 @@ public class QuestDetailModal
                 var stage = _questTemplate!.Stages?.Stage?.FirstOrDefault(s => s.RefName == stageRef);
                 var stageName = stage?.DisplayName ?? stageRef;
 
-                if (ImGui.TreeNode($"[x] {stageName}"))
+                if (ImGui.TreeNode($"[x] {stageName}###hist_{stageRef}"))
                 {
                     foreach (var objRef in completedObjs)
                     {
                         var objective = stage?.Objectives?.Objective?.FirstOrDefault(o => o.RefName == objRef);
                         var objName = objective?.DisplayName ?? objRef;
-                        ImGui.TextColored(new Vector4(0, 1, 0, 1), $"  [x] {objName}");
+                        ImGui.TextColored(UIColors.TextSuccessBright, $"  [x] {objName}");
                     }
                     ImGui.TreePop();
                 }
@@ -357,7 +360,7 @@ public class QuestDetailModal
 
     private void RenderRewards(SagaMainViewModel viewModel)
     {
-        ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "Rewards:");
+        ImGui.TextColored(UIColors.Gold, "Rewards:");
         ImGui.Spacing();
 
         ImGui.Indent(10 * UIConstants.DpiScale);
@@ -366,7 +369,7 @@ public class QuestDetailModal
         {
             var condition = reward.Condition == QuestRewardCondition.OnSuccess ? "On Success" : "Always";
 
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"[{condition}]");
+            ImGui.TextColored(UIColors.TextMuted, $"[{condition}]");
 
             if (reward.Currency != null)
             {
@@ -400,7 +403,7 @@ public class QuestDetailModal
 
     private void RenderPrerequisites(SagaMainViewModel viewModel)
     {
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Prerequisites:");
+        ImGui.TextColored(UIColors.TextHighlight, "Prerequisites:");
         ImGui.Spacing();
 
         ImGui.Indent(10 * UIConstants.DpiScale);
@@ -478,7 +481,7 @@ public class QuestDetailModal
             {
                 ImGui.EndDisabled();
                 ImGui.SameLine();
-                ImGui.TextColored(new Vector4(1, 1, 0, 1), "Abandoning...");
+                ImGui.TextColored(HighlightYellow, "Abandoning...");
             }
 
             ImGui.SameLine();

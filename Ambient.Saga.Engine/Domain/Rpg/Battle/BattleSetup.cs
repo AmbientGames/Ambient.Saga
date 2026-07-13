@@ -42,7 +42,8 @@ public class BattleSetup
     /// <summary>
     /// Create the BattleEngine with configured combatants.
     /// </summary>
-    public BattleEngine CreateBattleEngine()
+    /// <param name="randomSeed">Optional seed applied to both the engine and the opponent AI for deterministic battles (tests)</param>
+    public BattleEngine CreateBattleEngine(int? randomSeed = null)
     {
         if (LoadedWorld == null)
             throw new InvalidOperationException("World not loaded");
@@ -142,8 +143,9 @@ public class BattleSetup
         }
 
         // Create BattleEngine with CombatAI for opponent and companions
-        var enemyMind = new CombatAI(LoadedWorld);
+        var enemyMind = new CombatAI(LoadedWorld, randomSeed);
         var battleEngine = new BattleEngine(avatarCombatant, enemyCombatant, enemyMind, LoadedWorld,
+            randomSeed: randomSeed,
             companions: companions.Count > 0 ? companions : null);
 
         // Set avatar's available affinities

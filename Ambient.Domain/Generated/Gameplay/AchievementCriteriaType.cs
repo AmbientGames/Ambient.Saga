@@ -25,15 +25,12 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         BlocksDestroyed,
-
+        
         /// <remarks/>
         CharactersDefeated,
         
         /// <remarks/>
-        CharactersDefeatedByType,
-        
-        /// <remarks/>
-        CharactersDefeatedByTag,
+        CharactersDefeatedByTrait,
         
         /// <remarks/>
         CharactersDefeatedByRef,
@@ -43,7 +40,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         SagaArcsCompleted,
-
+        
         /// <remarks/>
         SagaTriggersActivated,
         

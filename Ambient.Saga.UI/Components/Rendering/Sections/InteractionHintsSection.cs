@@ -147,20 +147,20 @@ public class InteractionHintsSection : IHudSection
         if (isDev)
         {
             bgColor = isActive
-                ? new Vector4(0.5f, 0.35f, 0.15f, 0.9f)   // Orange-brown active
-                : new Vector4(0.25f, 0.2f, 0.1f, 0.7f);   // Dark brown inactive
+                ? UIColors.HotkeyDevActiveBg      // Orange-brown active
+                : UIColors.HotkeyDevInactiveBg;   // Dark brown inactive
             textColor = isActive
-                ? new Vector4(1f, 0.9f, 0.7f, 1f)
-                : new Vector4(0.6f, 0.5f, 0.3f, 1f);
+                ? UIColors.HotkeyDevActiveText
+                : UIColors.HotkeyDevInactiveText;
         }
         else
         {
             bgColor = isActive
-                ? new Vector4(0.2f, 0.5f, 0.25f, 0.9f)    // Green active
-                : new Vector4(0.2f, 0.2f, 0.22f, 0.7f);   // Dark gray inactive
+                ? UIColors.HotkeyActiveBg         // Green active
+                : UIColors.HotkeyInactiveBg;      // Dark gray inactive
             textColor = isActive
-                ? new Vector4(1f, 1f, 1f, 1f)
-                : new Vector4(0.55f, 0.55f, 0.55f, 1f);
+                ? UIColors.HotkeyActiveText
+                : UIColors.TextDisabled;
         }
 
         // Draw rounded rectangle background

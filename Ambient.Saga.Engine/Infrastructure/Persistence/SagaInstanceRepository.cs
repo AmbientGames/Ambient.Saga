@@ -394,9 +394,31 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                 // Project only the newly-inserted transactions — matches the
                 // AddAndCommitTransactionsAsync invariant so sync clients don't
                 // have to remember to call ProjectTransactions themselves.
-                if (newlyInserted.Count > 0 && _avatarProgressRepository != null && avatarId != Guid.Empty)
+                // Attribution mirrors the write side: owner instances project to
+                // the owner; shared multiplayer instances project per transaction
+                // AUTHOR — never to the pulling avatar (peer rows pulled on shared
+                // arcs used to be credited to the puller's cross-arc tables).
+                if (newlyInserted.Count > 0 && _avatarProgressRepository != null)
                 {
-                    _avatarProgressRepository.ProjectTransactions(avatarId, instance.SagaRef, newlyInserted);
+                    if (instance.OwnerAvatarId.HasValue)
+                    {
+                        _avatarProgressRepository.ProjectTransactions(
+                            instance.OwnerAvatarId.Value,
+                            instance.SagaRef,
+                            newlyInserted);
+                    }
+                    else
+                    {
+                        foreach (var authorGroup in newlyInserted
+                                     .Where(t => Guid.TryParse(t.AvatarId, out var authorId) && authorId != Guid.Empty)
+                                     .GroupBy(t => Guid.Parse(t.AvatarId!)))
+                        {
+                            _avatarProgressRepository.ProjectTransactions(
+                                authorGroup.Key,
+                                instance.SagaRef,
+                                authorGroup.ToList());
+                        }
+                    }
                 }
 
                 _database.Commit();
@@ -404,9 +426,25 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                 if (newlyInserted.Count > 0)
                 {
                     InvalidateInstanceCache(instanceId);
-                    if (avatarId != Guid.Empty)
+                    if (instance.OwnerAvatarId.HasValue)
                     {
-                        InvalidateReadModelCache(avatarId, instance.SagaRef);
+                        InvalidateReadModelCache(instance.OwnerAvatarId.Value, instance.SagaRef);
+                    }
+                    else
+                    {
+                        foreach (var authorId in newlyInserted
+                                     .Select(t => Guid.TryParse(t.AvatarId, out var id) ? id : Guid.Empty)
+                                     .Where(id => id != Guid.Empty)
+                                     .Distinct())
+                        {
+                            InvalidateReadModelCache(authorId, instance.SagaRef);
+                        }
+                        // The pulling avatar's replay of this shared arc changed too,
+                        // even though nothing was projected to it.
+                        if (avatarId != Guid.Empty)
+                        {
+                            InvalidateReadModelCache(avatarId, instance.SagaRef);
+                        }
                     }
                 }
 
@@ -440,6 +478,11 @@ public class SagaInstanceRepository : ISagaInstanceRepository
         return Task.FromResult(transactionRecords.Select(r => r.ToTransaction()).ToList());
     }
 
+    // NOTE: unlike AddAndCommitTransactionsAsync, the two-phase Add/Commit path
+    // does NOT project cross-arc state. Its callers only write audit-trail claim
+    // types that ProjectTransactions ignores; any type the projection handles
+    // (quests, tokens, defeats, reputation, traits) must go through
+    // AddAndCommitTransactionsAsync or its cross-arc effects are silently lost.
     public Task<bool> CommitTransactionsAsync(Guid instanceId, List<Guid> transactionIds, CancellationToken ct = default)
     {
         try

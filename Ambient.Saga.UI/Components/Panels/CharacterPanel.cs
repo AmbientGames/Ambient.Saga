@@ -19,9 +19,13 @@ namespace Ambient.Saga.UI.Components.Panels;
 /// </summary>
 public class CharacterPanel
 {
+    // Panel-local colors used 3+ times (not part of the shared UIColors palette)
+    private static readonly Vector4 AffinityPurple = new(0.8f, 0.5f, 1f, 1f);  // archetype/affinity accents, Exalted reputation
+    private static readonly Vector4 OrangeAccent = new(1f, 0.5f, 0.2f, 1f);    // strength bar, weak matchups, hot temperature
+
     public void Render(SagaMainViewModel viewModel, ModalManager modalManager)
     {
-        ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "CHARACTER");
+        ImGui.TextColored(UIColors.TextSuccess, "CHARACTER");
         ImGui.Separator();
 
         // Calculate column widths for 3-column layout
@@ -61,7 +65,7 @@ public class CharacterPanel
         }
         else
         {
-            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No position set");
+            ImGui.TextColored(UIColors.TextDisabled, "No position set");
             ImGui.TextWrapped("Click on map to move");
         }
 
@@ -88,7 +92,7 @@ public class CharacterPanel
             var pluralCurrency = vitals.Credits == 1 ? currencyName : currencyName + "s";
 
             // Progression (Level & Experience)
-            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Progression:");
+            ImGui.TextColored(UIColors.TextSuccess, "Progression:");
             RenderStatLine("Level:", $"{vitals.Level}");
             RenderStatLine("Experience:", $"{vitals.Experience:N0}");
             RenderStatLine($"{pluralCurrency}:", $"{vitals.Credits:N0}");
@@ -97,8 +101,8 @@ public class CharacterPanel
             ImGui.Separator();
 
             // Vitals with progress bars
-            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Vitals:");
-            RenderStatBar("Health", vitals.Health, new Vector4(1, 0.3f, 0.3f, 1));
+            ImGui.TextColored(UIColors.TextSuccess, "Vitals:");
+            RenderStatBar("Health", vitals.Health, UIColors.TextError);
             RenderStatBar("Stamina", vitals.Stamina, new Vector4(0.3f, 1, 0.3f, 1));
             RenderStatBar("Mana", vitals.Mana, new Vector4(0.3f, 0.5f, 1, 1));
 
@@ -107,9 +111,9 @@ public class CharacterPanel
 
             // Combat Stats (0-1 normalized like the vitals — dividing by 100
             // rendered every bar effectively empty)
-            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Combat:");
-            RenderStatBar("Strength", vitals.Strength, new Vector4(1, 0.5f, 0.2f, 1));
-            RenderStatBar("Defense", vitals.Defense, new Vector4(0.6f, 0.6f, 0.6f, 1));
+            ImGui.TextColored(UIColors.TextSuccess, "Combat:");
+            RenderStatBar("Strength", vitals.Strength, OrangeAccent);
+            RenderStatBar("Defense", vitals.Defense, UIColors.TextDim);
             RenderStatBar("Speed", vitals.Speed, new Vector4(1, 1, 0.3f, 1));
             RenderStatBar("Magic", vitals.Magic, new Vector4(0.7f, 0.3f, 1, 1));
 
@@ -117,7 +121,7 @@ public class CharacterPanel
             ImGui.Separator();
 
             // State
-            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "State:");
+            ImGui.TextColored(UIColors.TextSuccess, "State:");
             RenderTemperatureStat(vitals.Temperature);
             RenderStatBar("Endurance", vitals.Endurance, new Vector4(0.5f, 0.8f, 0.8f, 1));
 
@@ -125,7 +129,7 @@ public class CharacterPanel
             if (viewModel.Avatar.IsInvulnerable)
             {
                 ImGui.Spacing();
-                ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "[INVULNERABLE]");
+                ImGui.TextColored(UIColors.Gold, "[INVULNERABLE]");
             }
 
             // Archetype info with bias
@@ -141,7 +145,7 @@ public class CharacterPanel
                     ImGui.Spacing();
 
                     // Archetype name and affinity
-                    ImGui.TextColored(new Vector4(0.8f, 0.5f, 1, 1), "Archetype:");
+                    ImGui.TextColored(AffinityPurple, "Archetype:");
                     ImGui.SameLine();
                     ImGui.Text(archetype.DisplayName ?? archetype.RefName);
 
@@ -150,7 +154,7 @@ public class CharacterPanel
                         var affinity = viewModel.CurrentWorld?.Gameplay?.CharacterAffinities?
                             .FirstOrDefault(a => a.RefName == archetype.AffinityRef);
                         var affinityName = affinity?.DisplayName ?? archetype.AffinityRef;
-                        ImGui.TextColored(new Vector4(0.6f, 0.8f, 1, 1), "Affinity:");
+                        ImGui.TextColored(UIColors.TextInfo, "Affinity:");
                         ImGui.SameLine();
                         ImGui.Text(affinityName);
                     }
@@ -169,10 +173,10 @@ public class CharacterPanel
                         RenderStatLine("Weight:", $"{archetype.Weight:N0} {weightUnit}");
 
                         var carryColor = fraction > 0.9f
-                            ? new Vector4(1, 0.3f, 0.3f, 1)
+                            ? UIColors.TextError
                             : fraction > 0.7f
-                                ? new Vector4(1, 0.8f, 0.3f, 1)
-                                : new Vector4(0.5f, 0.8f, 1, 1);
+                                ? UIColors.TextWarning
+                                : UIColors.TextInfo;
                         ImGui.PushStyleColor(ImGuiCol.PlotHistogram, carryColor);
                         ImGui.Text("Carry:");
                         ImGui.SameLine(100 * UIConstants.DpiScale);
@@ -191,7 +195,7 @@ public class CharacterPanel
                         if (hasBias)
                         {
                             ImGui.Spacing();
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.9f, 1), "Archetype Bonuses:");
+                            ImGui.TextColored(UIColors.TextHighlight, "Archetype Bonuses:");
 
                             if (bias.Strength != 0) RenderBiasLine("Strength", bias.Strength);
                             if (bias.Defense != 0) RenderBiasLine("Defense", bias.Defense);
@@ -230,7 +234,7 @@ public class CharacterPanel
         // Collected Affinities (captured from characters)
         if (viewModel.Avatar?.Affinities != null && viewModel.Avatar.Affinities.Length > 0)
         {
-            ImGui.TextColored(new Vector4(0.8f, 0.5f, 1, 1), "Collected Affinities:");
+            ImGui.TextColored(AffinityPurple, "Collected Affinities:");
             ImGui.Spacing();
 
             // Active affinity indicator
@@ -239,7 +243,7 @@ public class CharacterPanel
             {
                 var activeAffinityDef = viewModel.CurrentWorld?.Gameplay?.CharacterAffinities?.FirstOrDefault(a => a.RefName == activeAffinity);
                 var activeName = activeAffinityDef?.DisplayName ?? activeAffinity;
-                ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Active: {activeName}");
+                ImGui.TextColored(UIColors.TextSuccess, $"Active: {activeName}");
                 ImGui.Spacing();
             }
 
@@ -249,7 +253,7 @@ public class CharacterPanel
                 var name = affinityDef?.DisplayName ?? affinity.AffinityRef;
                 var isActive = affinity.AffinityRef == activeAffinity;
 
-                var treeNodeOpen = ImGui.TreeNode($"{(isActive ? "* " : "")}{name}##aff_{affinity.AffinityRef}");
+                var treeNodeOpen = ImGui.TreeNode($"{(isActive ? "* " : "")}{name}###aff_{affinity.AffinityRef}");
 
                 if (treeNodeOpen)
                 {
@@ -260,13 +264,13 @@ public class CharacterPanel
                     {
                         var sourceChar = viewModel.CurrentWorld?.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == affinity.CapturedFromCharacterRef);
                         var sourceName = sourceChar?.DisplayName ?? affinity.CapturedFromCharacterRef;
-                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"From: {sourceName}");
+                        ImGui.TextColored(UIColors.TextMuted, $"From: {sourceName}");
                     }
 
                     // Acquired date
                     if (!string.IsNullOrEmpty(affinity.AcquiredDate))
                     {
-                        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"Acquired: {affinity.AcquiredDate}");
+                        ImGui.TextColored(UIColors.TextDim, $"Acquired: {affinity.AcquiredDate}");
                     }
 
                     // Affinity description and matchups
@@ -280,14 +284,14 @@ public class CharacterPanel
                         if (affinityDef.Matchup != null && affinityDef.Matchup.Length > 0)
                         {
                             ImGui.Spacing();
-                            ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Matchups:");
+                            ImGui.TextColored(UIColors.TextHighlight, "Matchups:");
                             foreach (var matchup in affinityDef.Matchup)
                             {
                                 var targetAffinityDef = viewModel.CurrentWorld?.Gameplay?.CharacterAffinities?.FirstOrDefault(a => a.RefName == matchup.TargetAffinityRef);
                                 var targetName = targetAffinityDef?.DisplayName ?? matchup.TargetAffinityRef;
                                 var color = matchup.Multiplier > 1.0
-                                    ? new Vector4(0.2f, 1, 0.2f, 1)  // Green for strong
-                                    : new Vector4(1, 0.5f, 0.2f, 1); // Orange for weak
+                                    ? UIColors.TextSuccessBright  // Green for strong
+                                    : OrangeAccent; // Orange for weak
                                 ImGui.TextColored(color, $"  vs {targetName}: {matchup.Multiplier}x");
                             }
                         }
@@ -305,7 +309,7 @@ public class CharacterPanel
         // Party/Companions
         if (viewModel.Avatar?.Party?.Member != null && viewModel.Avatar.Party.Member.Length > 0)
         {
-            ImGui.TextColored(new Vector4(1, 0.8f, 0.5f, 1), "Party Members:");
+            ImGui.TextColored(UIColors.TextWarning, "Party Members:");
             ImGui.Spacing();
 
             foreach (var member in viewModel.Avatar.Party.Member)
@@ -321,7 +325,7 @@ public class CharacterPanel
 
                     if (memberChar != null && !string.IsNullOrEmpty(memberChar.Description))
                     {
-                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), memberChar.Description);
+                        ImGui.TextColored(UIColors.TextMuted, memberChar.Description);
                     }
 
                     // Show member's affinity if available
@@ -329,7 +333,7 @@ public class CharacterPanel
                     {
                         var memberAffinity = viewModel.CurrentWorld?.Gameplay?.CharacterAffinities?.FirstOrDefault(a => a.RefName == memberChar.AffinityRef);
                         var affinityName = memberAffinity?.DisplayName ?? memberChar.AffinityRef;
-                        ImGui.TextColored(new Vector4(0.8f, 0.5f, 1, 1), $"Affinity: {affinityName}");
+                        ImGui.TextColored(AffinityPurple, $"Affinity: {affinityName}");
                     }
 
                     // Show member stats if available
@@ -347,14 +351,14 @@ public class CharacterPanel
             if (!string.IsNullOrEmpty(viewModel.Avatar.Party.SlotFactionRef))
             {
                 ImGui.Spacing();
-                ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), $"Party Faction: {viewModel.Avatar.Party.SlotFactionRef}");
+                ImGui.TextColored(UIColors.TextInfo, $"Party Faction: {viewModel.Avatar.Party.SlotFactionRef}");
             }
         }
         else
         {
-            ImGui.TextColored(new Vector4(1, 0.8f, 0.5f, 1), "Party Members:");
+            ImGui.TextColored(UIColors.TextWarning, "Party Members:");
             ImGui.Spacing();
-            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No party members");
+            ImGui.TextColored(UIColors.TextDisabled, "No party members");
             ImGui.TextWrapped("Party members can join through dialogue interactions.");
         }
     }
@@ -434,8 +438,8 @@ public class CharacterPanel
     private void RenderBiasLine(string statName, float modifier)
     {
         var color = modifier > 0
-            ? new Vector4(0.2f, 1, 0.2f, 1)   // Green for positive
-            : new Vector4(1, 0.4f, 0.4f, 1);  // Red for negative
+            ? UIColors.TextSuccessBright   // Green for positive
+            : UIColors.TextDanger;         // Red for negative
         var sign = modifier > 0 ? "+" : "";
         ImGui.TextColored(color, $"  {statName}: {sign}{modifier:P0}");
     }
@@ -473,7 +477,7 @@ public class CharacterPanel
         {
             statusText = "Cold";
             barColor = new Vector4(0.4f, 0.7f, 1f, 1f);      // Light blue
-            textColor = new Vector4(0.5f, 0.8f, 1f, 1f);
+            textColor = UIColors.TextInfo;
         }
         else if (temperature > ThermalConstants.HotCritical)
         {
@@ -484,7 +488,7 @@ public class CharacterPanel
         else if (temperature > ThermalConstants.HotWarning)
         {
             statusText = "Hot";
-            barColor = new Vector4(1f, 0.5f, 0.2f, 1f);      // Orange
+            barColor = OrangeAccent;                          // Orange
             textColor = new Vector4(1f, 0.6f, 0.3f, 1f);
         }
         else
@@ -546,13 +550,13 @@ public class CharacterPanel
 
                 ImGui.Text($"{displayName}:");
                 ImGui.SameLine(120 * scale);
-                ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), itemName);
+                ImGui.TextColored(UIColors.TextSuccess, itemName);
             }
         }
 
         if (!hasEquippedItems)
         {
-            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No items equipped");
+            ImGui.TextColored(UIColors.TextDim, "No items equipped");
             ImGui.TextWrapped("Use Inventory (I) to equip items");
         }
     }
@@ -590,7 +594,7 @@ public class CharacterPanel
         {
             ImGui.TextColored(new Vector4(0.8f, 0.9f, 0.5f, 1), "Current Selection:");
             ImGui.Spacing();
-            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No tool or material selected");
+            ImGui.TextColored(UIColors.TextDisabled, "No tool or material selected");
         }
     }
 
@@ -600,7 +604,7 @@ public class CharacterPanel
         if (factions == null || factions.Length == 0)
             return;
 
-        ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "Faction Reputation:");
+        ImGui.TextColored(UIColors.Gold, "Faction Reputation:");
         ImGui.Spacing();
 
         // Render each faction as a collapsible entry
@@ -624,7 +628,7 @@ public class CharacterPanel
         var headerText = $"{faction.DisplayName} - {levelName}";
 
         ImGui.PushStyleColor(ImGuiCol.Text, levelColor);
-        var isOpen = ImGui.TreeNode($"{headerText}##{faction.RefName}");
+        var isOpen = ImGui.TreeNode($"{headerText}###fac_{faction.RefName}");
         ImGui.PopStyleColor();
 
         if (isOpen)
@@ -632,7 +636,7 @@ public class CharacterPanel
             ImGui.Indent();
 
             // Category
-            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), $"[{faction.Category}]");
+            ImGui.TextColored(UIColors.TextDisabled, $"[{faction.Category}]");
 
             // Description
             if (!string.IsNullOrEmpty(faction.Description))
@@ -650,12 +654,12 @@ public class CharacterPanel
             // Relationships
             if (faction.Relationships?.Length > 0)
             {
-                ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Relationships:");
+                ImGui.TextColored(UIColors.TextInfo, "Relationships:");
                 foreach (var rel in faction.Relationships.Take(3))
                 {
                     var relColor = rel.RelationshipType == Ambient.Domain.FactionRelationshipRelationshipType.Allied
-                        ? new Vector4(0.5f, 1, 0.5f, 1)
-                        : new Vector4(1, 0.5f, 0.5f, 1);
+                        ? UIColors.TextSuccess
+                        : UIColors.TextDanger;
                     var relFaction = viewModel.CurrentWorld?.Gameplay?.Factions?.FirstOrDefault(f => f.RefName == rel.FactionRef);
                     var relFactionName = relFaction?.DisplayName ?? rel.FactionRef;
                     ImGui.TextColored(relColor, $"  {relFactionName} ({rel.RelationshipType})");
@@ -670,12 +674,12 @@ public class CharacterPanel
 
                 if (availableRewards > 0)
                 {
-                    ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Unlocked: {availableRewards}");
+                    ImGui.TextColored(UIColors.TextSuccess, $"Unlocked: {availableRewards}");
                     ImGui.SameLine();
                 }
                 if (lockedRewards > 0)
                 {
-                    ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), $"Locked: {lockedRewards}");
+                    ImGui.TextColored(UIColors.TextDisabled, $"Locked: {lockedRewards}");
                 }
             }
 
@@ -720,14 +724,14 @@ public class CharacterPanel
         return level switch
         {
             Ambient.Domain.ReputationLevel.Hated => (new Vector4(0.8f, 0, 0, 1), "Hated"),
-            Ambient.Domain.ReputationLevel.Hostile => (new Vector4(1, 0.3f, 0.3f, 1), "Hostile"),
+            Ambient.Domain.ReputationLevel.Hostile => (UIColors.TextError, "Hostile"),
             Ambient.Domain.ReputationLevel.Unfriendly => (new Vector4(1, 0.5f, 0.3f, 1), "Unfriendly"),
             Ambient.Domain.ReputationLevel.Neutral => (new Vector4(1, 1, 0.5f, 1), "Neutral"),
-            Ambient.Domain.ReputationLevel.Friendly => (new Vector4(0.5f, 1, 0.5f, 1), "Friendly"),
+            Ambient.Domain.ReputationLevel.Friendly => (UIColors.TextSuccess, "Friendly"),
             Ambient.Domain.ReputationLevel.Honored => (new Vector4(0.3f, 0.8f, 0.3f, 1), "Honored"),
             Ambient.Domain.ReputationLevel.Revered => (new Vector4(0.3f, 0.6f, 1, 1), "Revered"),
-            Ambient.Domain.ReputationLevel.Exalted => (new Vector4(0.8f, 0.5f, 1, 1), "Exalted"),
-            _ => (new Vector4(0.5f, 0.5f, 0.5f, 1), "Unknown")
+            Ambient.Domain.ReputationLevel.Exalted => (AffinityPurple, "Exalted"),
+            _ => (UIColors.TextDisabled, "Unknown")
         };
     }
 

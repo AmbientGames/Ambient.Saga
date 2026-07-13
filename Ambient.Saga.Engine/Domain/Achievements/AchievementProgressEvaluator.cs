@@ -59,8 +59,7 @@ public static class AchievementProgressEvaluator
         {
             // Combat achievements
             AchievementCriteriaType.CharactersDefeated => CountCharacterDefeats(allTransactions),
-            AchievementCriteriaType.CharactersDefeatedByType => CountCharacterDefeatsByType(allTransactions, criteria.CharacterType, world),
-            AchievementCriteriaType.CharactersDefeatedByTag => CountCharacterDefeatsByTag(allTransactions, criteria.CharacterTag, world),
+            AchievementCriteriaType.CharactersDefeatedByTrait => CountCharacterDefeatsByTrait(allTransactions, criteria, world),
             AchievementCriteriaType.CharactersDefeatedByRef => CountCharacterDefeatsByRef(allTransactions, criteria.CharacterRef),
 
             // Discovery achievements
@@ -75,7 +74,7 @@ public static class AchievementProgressEvaluator
 
             // Relationship achievements
             AchievementCriteriaType.TraitsAssigned => CountTraitsAssigned(allTransactions),
-            AchievementCriteriaType.TraitsAssignedByType => CountTraitsAssignedByType(allTransactions, criteria.TraitType),
+            AchievementCriteriaType.TraitsAssignedByType => CountTraitsAssignedByType(allTransactions, criteria.TraitSpecified ? criteria.Trait.ToString() : null),
             AchievementCriteriaType.TraitsAssignedToCharacterType => CountTraitsAssignedToCharacterType(allTransactions, criteria.CharacterType, world),
 
             // Economy achievements
@@ -111,56 +110,23 @@ public static class AchievementProgressEvaluator
         return transactions.Count(t => t.Type == SagaTransactionType.CharacterDefeated);
     }
 
-    private static float CountCharacterDefeatsByType(List<SagaTransaction> transactions, string? characterType, IWorld world)
+    private static float CountCharacterDefeatsByTrait(List<SagaTransaction> transactions, AchievementCriteria criteria, IWorld world)
     {
-        if (string.IsNullOrEmpty(characterType))
-            return CountCharacterDefeats(transactions);
+        // Fail closed like the quest evaluator: a ByTrait criteria without a Trait
+        // counts nothing (content validation requires the attribute), instead of
+        // silently degrading to "count every defeat"
+        if (!criteria.TraitSpecified)
+            return 0;
 
-        // Filter by character type (matching against RefName patterns like "Boss", "Merchant", "Encounter", "Quest")
+        // Resolve the defeated character's template and check the trait
         return transactions
             .Where(t => t.Type == SagaTransactionType.CharacterDefeated)
             .Count(t =>
             {
                 var characterRef = t.GetData<string>(TransactionDataKeys.CharacterRef);
-                if (string.IsNullOrEmpty(characterRef))
-                    return false;
-
-                // Check if character exists in world catalog
-                if (!world.CharactersLookup.TryGetValue(characterRef, out var character))
-                    return false;
-
-                // Match against RefName (e.g. "BOSS_School" contains "Boss") or trait
-                // names (e.g. trait "BossFight" contains "Boss") — RefName alone
-                // misses trait-flagged bosses like RivalGuild_Enforcer
-                if (character.RefName?.Contains(characterType, StringComparison.OrdinalIgnoreCase) == true)
-                    return true;
-
-                return character.Traits?.Any(tr =>
-                    tr.Name.ToString().Contains(characterType, StringComparison.OrdinalIgnoreCase)) == true;
-            });
-    }
-
-    private static float CountCharacterDefeatsByTag(List<SagaTransaction> transactions, string? tag, IWorld world)
-    {
-        if (string.IsNullOrEmpty(tag))
-            return CountCharacterDefeats(transactions);
-
-        // Filter by tag (matching against RefName or Description keywords like "dragon", "bandit", "undead")
-        return transactions
-            .Where(t => t.Type == SagaTransactionType.CharacterDefeated)
-            .Count(t =>
-            {
-                var characterRef = t.GetData<string>(TransactionDataKeys.CharacterRef);
-                if (string.IsNullOrEmpty(characterRef))
-                    return false;
-
-                // Check if character exists in world catalog
-                if (!world.CharactersLookup.TryGetValue(characterRef, out var character))
-                    return false;
-
-                // Match against RefName or Description (case-insensitive)
-                return character.RefName?.Contains(tag, StringComparison.OrdinalIgnoreCase) == true ||
-                       character.Description?.Contains(tag, StringComparison.OrdinalIgnoreCase) == true;
+                return !string.IsNullOrEmpty(characterRef) &&
+                       world.CharactersLookup.TryGetValue(characterRef, out var character) &&
+                       character.CarriesTrait(criteria.Trait);
             });
     }
 

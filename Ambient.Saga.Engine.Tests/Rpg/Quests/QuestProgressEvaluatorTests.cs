@@ -24,6 +24,21 @@ public class QuestProgressEvaluatorTests
         };
     }
 
+    /// <summary>
+    /// Adds a character template to the world so trait-based objective
+    /// evaluation (which resolves the defeated character's template) can see it.
+    /// </summary>
+    private static void AddCharacter(World world, string refName, params CharacterTraitType[] traits)
+    {
+        var character = new Character
+        {
+            RefName = refName,
+            DisplayName = refName,
+            Traits = traits.Select(t => new CharacterTrait { Name = t, Value = 1 }).ToArray()
+        };
+        world.CharactersLookup[refName] = character;
+    }
+
     private SagaTransaction CreateTransaction(SagaTransactionType type, Dictionary<string, string>? data = null, long sequenceNumber = 0)
     {
         var transaction = new SagaTransaction
@@ -77,6 +92,57 @@ public class QuestProgressEvaluatorTests
         Assert.Equal(1, QuestProgressEvaluator.EvaluateObjectiveProgress(quest, stage, objective, transactions, new World()));
     }
 
+    [Fact]
+    public void CharactersDefeatedAtTrigger_SpawnBeforeAcceptance_DefeatAfter_StillCounts()
+    {
+        // Spawning is quest-independent: a guardian spawned before the quest was
+        // accepted must still count when defeated after acceptance, or the
+        // objective soft-locks for non-respawning characters.
+        var quest = new Quest { RefName = "GUARDIAN_QUEST", DisplayName = "Guardian Quest" };
+        var stage = new QuestStage { RefName = "FIGHT" };
+        var objective = new QuestObjective
+        {
+            RefName = "DEFEAT_SITE_GUARDIAN",
+            Type = QuestObjectiveType.CharactersDefeatedAtTrigger,
+            TriggerRef = "TRIGGER_SITE",
+            Threshold = 1
+        };
+
+        var instanceId = Guid.NewGuid().ToString();
+        var transactions = new List<SagaTransaction>
+        {
+            // Player walks past the site BEFORE accepting the quest
+            CreateTransaction(SagaTransactionType.CharacterSpawned, new Dictionary<string, string>
+            {
+                ["CharacterInstanceId"] = instanceId,
+                ["CharacterRef"] = "SITE_GUARDIAN",
+                ["SagaTriggerRef"] = "TRIGGER_SITE"
+            }, sequenceNumber: 1),
+            CreateTransaction(SagaTransactionType.QuestAccepted, new Dictionary<string, string>
+            {
+                ["QuestRef"] = "GUARDIAN_QUEST"
+            }, sequenceNumber: 2),
+            // ...then kills the already-spawned guardian
+            CreateTransaction(SagaTransactionType.CharacterDefeated, new Dictionary<string, string>
+            {
+                ["CharacterInstanceId"] = instanceId,
+                ["CharacterRef"] = "SITE_GUARDIAN"
+            }, sequenceNumber: 3)
+        };
+
+        Assert.Equal(1, QuestProgressEvaluator.EvaluateObjectiveProgress(quest, stage, objective, transactions, CreateTestWorld()));
+
+        // ...and a defeat at a DIFFERENT site never counts
+        var otherSiteObjective = new QuestObjective
+        {
+            RefName = "DEFEAT_OTHER_GUARDIAN",
+            Type = QuestObjectiveType.CharactersDefeatedAtTrigger,
+            TriggerRef = "TRIGGER_ELSEWHERE",
+            Threshold = 1
+        };
+        Assert.Equal(0, QuestProgressEvaluator.EvaluateObjectiveProgress(quest, stage, otherSiteObjective, transactions, CreateTestWorld()));
+    }
+
     private Quest CreateTestQuest()
     {
         // Note: This will use generated classes once XSD is regenerated
@@ -97,12 +163,19 @@ public class QuestProgressEvaluatorTests
         var world = CreateTestWorld();
         var quest = CreateTestQuest();
 
-        // Create objective: Defeat 5 dragons
+        // Create objective: Defeat 5 hostiles (trait-based; the evaluator resolves
+        // each defeated character's template and checks the trait)
+        AddCharacter(world, "FROST_DRAGON", CharacterTraitType.Hostile);
+        AddCharacter(world, "FIRE_DRAGON", CharacterTraitType.Hostile);
+        AddCharacter(world, "SHADOW_DRAGON", CharacterTraitType.Hostile);
+        AddCharacter(world, "VILLAGE_ELDER", CharacterTraitType.Friendly);
+
         var objective = new QuestObjective
         {
             RefName = "DEFEAT_DRAGONS",
-            Type = QuestObjectiveType.CharactersDefeatedByTag,
-            CharacterTag = "dragon",
+            Type = QuestObjectiveType.CharactersDefeatedByTrait,
+            Trait = CharacterTraitType.Hostile,
+            TraitSpecified = true,
             Threshold = 5
         };
 
@@ -116,18 +189,20 @@ public class QuestProgressEvaluatorTests
         {
             CreateTransaction(SagaTransactionType.CharacterDefeated, new Dictionary<string, string>
             {
-                ["CharacterRef"] = "FROST_DRAGON",
-                ["CharacterTag"] = "dragon"
+                ["CharacterRef"] = "FROST_DRAGON"
             }),
             CreateTransaction(SagaTransactionType.CharacterDefeated, new Dictionary<string, string>
             {
-                ["CharacterRef"] = "FIRE_DRAGON",
-                ["CharacterTag"] = "dragon"
+                ["CharacterRef"] = "FIRE_DRAGON"
             }),
             CreateTransaction(SagaTransactionType.CharacterDefeated, new Dictionary<string, string>
             {
-                ["CharacterRef"] = "SHADOW_DRAGON",
-                ["CharacterTag"] = "dragon"
+                ["CharacterRef"] = "SHADOW_DRAGON"
+            }),
+            // A friendly kill must NOT count toward the hostile objective
+            CreateTransaction(SagaTransactionType.CharacterDefeated, new Dictionary<string, string>
+            {
+                ["CharacterRef"] = "VILLAGE_ELDER"
             })
         };
 
@@ -181,11 +256,14 @@ public class QuestProgressEvaluatorTests
         var world = CreateTestWorld();
         var quest = CreateTestQuest();
 
+        AddCharacter(world, "FROST_DRAGON", CharacterTraitType.Hostile);
+
         var objective = new QuestObjective
         {
             RefName = "DEFEAT_DRAGONS",
-            Type = QuestObjectiveType.CharactersDefeatedByTag,
-            CharacterTag = "dragon",
+            Type = QuestObjectiveType.CharactersDefeatedByTrait,
+            Trait = CharacterTraitType.Hostile,
+            TraitSpecified = true,
             Threshold = 5
         };
 
@@ -199,8 +277,7 @@ public class QuestProgressEvaluatorTests
         {
             CreateTransaction(SagaTransactionType.CharacterDefeated, new Dictionary<string, string>
             {
-                ["CharacterRef"] = "FROST_DRAGON",
-                ["CharacterTag"] = "dragon"
+                ["CharacterRef"] = "FROST_DRAGON"
             })
         };
 
@@ -226,7 +303,6 @@ public class QuestProgressEvaluatorTests
         {
             RefName = "TALK_WITNESSES",
             Type = QuestObjectiveType.DialogueCompleted,
-            CharacterTag = "witness",
             Threshold = 3
         };
 
@@ -240,13 +316,11 @@ public class QuestProgressEvaluatorTests
         {
             CreateTransaction(SagaTransactionType.DialogueCompleted, new Dictionary<string, string>
             {
-                ["CharacterRef"] = "WITNESS_1",
-                ["CharacterTag"] = "witness"
+                ["CharacterRef"] = "WITNESS_1"
             }),
             CreateTransaction(SagaTransactionType.DialogueCompleted, new Dictionary<string, string>
             {
-                ["CharacterRef"] = "WITNESS_2",
-                ["CharacterTag"] = "witness"
+                ["CharacterRef"] = "WITNESS_2"
             })
         };
 
@@ -325,7 +399,6 @@ public class QuestProgressEvaluatorTests
                     {
                         RefName = "TALK_WITNESSES",
                         Type = QuestObjectiveType.DialogueCompleted,
-                        CharacterTag = "witness",
                         Threshold = 2,
                         Optional = false
                     },
@@ -345,13 +418,11 @@ public class QuestProgressEvaluatorTests
         {
             CreateTransaction(SagaTransactionType.DialogueCompleted, new Dictionary<string, string>
             {
-                ["CharacterRef"] = "WITNESS_1",
-                ["CharacterTag"] = "witness"
+                ["CharacterRef"] = "WITNESS_1"
             }),
             CreateTransaction(SagaTransactionType.DialogueCompleted, new Dictionary<string, string>
             {
-                ["CharacterRef"] = "WITNESS_2",
-                ["CharacterTag"] = "witness"
+                ["CharacterRef"] = "WITNESS_2"
             }),
             CreateTransaction(SagaTransactionType.LootAwarded, new Dictionary<string, string>
             {
@@ -392,8 +463,9 @@ public class QuestProgressEvaluatorTests
                     new QuestObjective
                     {
                         RefName = "DEFEAT_BANDITS",
-                        Type = QuestObjectiveType.CharactersDefeatedByTag,
-                        CharacterTag = "bandit",
+                        Type = QuestObjectiveType.CharactersDefeatedByTrait,
+                        Trait = CharacterTraitType.Hostile,
+                        TraitSpecified = true,
                         Threshold = 5,
                         Optional = true
                     }
@@ -436,7 +508,6 @@ public class QuestProgressEvaluatorTests
                     {
                         RefName = "TALK_WITNESSES",
                         Type = QuestObjectiveType.DialogueCompleted,
-                        CharacterTag = "witness",
                         Threshold = 3,
                         Optional = false
                     },
@@ -456,8 +527,7 @@ public class QuestProgressEvaluatorTests
         {
             CreateTransaction(SagaTransactionType.DialogueCompleted, new Dictionary<string, string>
             {
-                ["CharacterRef"] = "WITNESS_1",
-                ["CharacterTag"] = "witness"
+                ["CharacterRef"] = "WITNESS_1"
             })
             // Only 1 witness talked to (need 3), weapon not found
         };

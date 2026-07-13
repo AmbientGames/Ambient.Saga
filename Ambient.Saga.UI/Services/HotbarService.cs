@@ -94,7 +94,7 @@ public class HotbarService
 
             case HotbarItemType.Block:
                 avatar.CurrentBlockRef = slot.RefName;
-                var blockName = world?.BlockProvider?.GetDisplayName(slot.RefName) ?? slot.RefName;
+                var blockName = world?.GetItemDisplayName(slot.RefName) ?? slot.RefName;
                 _viewModel.AddToastMessage($"{blockName} selected");
                 break;
 

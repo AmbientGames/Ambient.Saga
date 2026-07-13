@@ -38,7 +38,7 @@ public class DefaultSettingsPanel : ISettingsPanel
             var message = "No settings currently available.";
             var messageSize = ImGui.CalcTextSize(message);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - messageSize.X) * 0.5f);
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), message);
+            ImGui.TextColored(UIColors.TextMuted, message);
 
             ImGui.Spacing();
             ImGui.Spacing();

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Characters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Character RefName="BanditChief_QuestGiver" DisplayName="Village Headman" Description="The desperate leader of a village plagued by bandits">
     <Stats Health="0.80" Stamina="0.7" Mana="0.2" Strength="0.12" Defense="0.15" Speed="0.10" Magic="0.05" Credits="80" />
@@ -31,9 +31,6 @@
       <Trait Name="Hostile" Value="1" />
       <Trait Name="FleeThreshold" Value="25" />
     </Traits>
-    <Tags>
-      <Tag>BanditScout</Tag>
-    </Tags>
   </Character>
   <Character RefName="BanditChief_Enforcer" DisplayName="Bandit Toryo" Description="A scarred enforcer who maintains order among the sanzoku through fear and blade">
     <Stats Health="0.90" Stamina="0.8" Mana="0.1" Strength="0.15" Defense="0.12" Speed="0.10" Magic="0.03" Credits="50" />
@@ -52,9 +49,6 @@
       <Trait Name="FleeThreshold" Value="15" />
       <Trait Name="Aggression" Value="70" />
     </Traits>
-    <Tags>
-      <Tag>BanditEnforcer</Tag>
-    </Tags>
   </Character>
   <Character RefName="BanditChief_Boss" DisplayName="Bandit Oyabun" Description="A ruthless gang leader who rules through fear and strength">
     <Stats Health="1.00" Stamina="1.0" Mana="0.4" Strength="0.22" Defense="0.18" Speed="0.12" Magic="0.08" Credits="300" />
@@ -84,9 +78,6 @@
       <Trait Name="TacticalRetreat" Value="25" />
       <Trait Name="LastStand" Value="10" />
     </Traits>
-    <Tags>
-      <Tag>boss</Tag>
-    </Tags>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="BanditChief_BossBattle" StartNodeId="battle_opening" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="BanditChief_BossBattle" StartNodeId="battle_impressed" OnceOnly="true" />
@@ -128,10 +119,6 @@
       <Trait Name="Friendly" Value="1" />
       <Trait Name="GrantsAffinity" Value="1" />
     </Traits>
-    <Tags>
-      <Tag>ElementalSage</Tag>
-      <Tag>FireAffinity</Tag>
-    </Tags>
   </Character>
   <Character RefName="ElementalSage_Guardian" DisplayName="Kaji no Shogun" Description="A warrior spirit of living flame that guards the inner sanctum">
     <Stats Health="0.80" Stamina="0.8" Mana="0.6" Strength="0.15" Defense="0.10" Speed="0.12" Magic="0.20" Credits="0" />
@@ -151,9 +138,6 @@
       <Trait Name="Hostile" Value="1" />
       <Trait Name="FleeThreshold" Value="0" />
     </Traits>
-    <Tags>
-      <Tag>FlameGuardian</Tag>
-    </Tags>
     <GivesQuestTokenOnDefeat>ElementalSage_TrialComplete</GivesQuestTokenOnDefeat>
   </Character>
   <Character RefName="FalseProphet_Concerned" DisplayName="Worried Temple Elder" Description="A village elder who fears the wandering monk's growing influence over the people">
@@ -238,9 +222,6 @@
     <Traits>
       <Trait Name="Hostile" Value="0" />
     </Traits>
-    <Tags>
-      <Tag>guard</Tag>
-    </Tags>
   </Character>
   <Character RefName="FalseProphet_Investigator" DisplayName="Suspicious Kannushi" Description="A Shinto priest investigating rumors of false miracles and stolen offerings">
     <Stats Health="0.60" Stamina="0.5" Mana="0.6" Strength="0.05" Defense="0.06" Speed="0.08" Magic="0.14" Credits="60" />
@@ -594,9 +575,6 @@
       <Trait Name="Hostile" Value="1" />
       <Trait Name="FleeThreshold" Value="20" />
     </Traits>
-    <Tags>
-      <Tag>Pursuer</Tag>
-    </Tags>
   </Character>
   <Character RefName="RefugeeEscort_Captain" DisplayName="Samurai Captain" Description="A ruthless commander ordered to capture or eliminate the fleeing villagers">
     <Stats Health="1.00" Stamina="0.9" Mana="0.3" Strength="0.18" Defense="0.16" Speed="0.12" Magic="0.08" Credits="120" />
@@ -615,9 +593,6 @@
       <Trait Name="Aggression" Value="75" />
       <Trait Name="TacticalRetreat" Value="20" />
     </Traits>
-    <Tags>
-      <Tag>Pursuer</Tag>
-    </Tags>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="RefugeeEscort_CaptainBattle" StartNodeId="battle_opening" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.3" DialogueTreeRef="RefugeeEscort_CaptainBattle" StartNodeId="battle_retreat" OnceOnly="true" />
@@ -637,9 +612,6 @@
     <Traits>
       <Trait Name="Friendly" Value="0" />
     </Traits>
-    <Tags>
-      <Tag>guard</Tag>
-    </Tags>
   </Character>
   <Character RefName="RivalGuild_GuildMaster" DisplayName="Trade Master" Description="The calculating leader of your merchant association">
     <Stats Health="0.80" Stamina="0.6" Mana="0.5" Strength="0.10" Defense="0.12" Speed="0.10" Magic="0.15" Credits="300" />
@@ -699,9 +671,6 @@
       <Trait Name="BossFight" Value="1" />
       <Trait Name="TacticalRetreat" Value="25" />
     </Traits>
-    <Tags>
-      <Tag>boss</Tag>
-    </Tags>
     <GivesQuestTokenOnDefeat>RivalGuild_LeaderDefeated</GivesQuestTokenOnDefeat>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="RivalGuild_RivalBattle" StartNodeId="battle_opening" OnceOnly="true" />
@@ -798,9 +767,6 @@
     <Traits>
       <Trait Name="WillingToBargain" Value="30" />
     </Traits>
-    <Tags>
-      <Tag>guard</Tag>
-    </Tags>
   </Character>
   <Character RefName="WanderingMerchant_Bandit" DisplayName="Roadside Nusubito" Description="A desperate thief who ambushes travelers on the mountain paths">
     <Stats Health="0.70" Stamina="0.8" Mana="0.1" Strength="0.10" Defense="0.08" Speed="0.14" Magic="0.02" Credits="30" />
@@ -908,9 +874,6 @@
       <Trait Name="TacticalRetreat" Value="30" />
       <Trait Name="LastStand" Value="15" />
     </Traits>
-    <Tags>
-      <Tag>boss</Tag>
-    </Tags>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujo" StartNodeId="battle_opening" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujo" StartNodeId="battle_first_blood" OnceOnly="true" />
@@ -2314,9 +2277,6 @@
       <Trait Name="TacticalRetreat" Value="30" />
       <Trait Name="LastStand" Value="15" />
     </Traits>
-    <Tags>
-      <Tag>boss</Tag>
-    </Tags>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyojinsha" StartNodeId="battle_opening" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyojinsha" StartNodeId="battle_first_blood" OnceOnly="true" />

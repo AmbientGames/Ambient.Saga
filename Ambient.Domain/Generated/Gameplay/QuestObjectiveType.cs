@@ -24,10 +24,10 @@ namespace Ambient.Domain {
         CharacterDefeated,
         
         /// <remarks/>
-        CharactersDefeatedByTag,
+        CharactersDefeatedByTrait,
         
         /// <remarks/>
-        CharactersDefeatedByType,
+        CharactersDefeatedAtTrigger,
         
         /// <remarks/>
         SagaDiscovered,
@@ -52,7 +52,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         ItemDelivered,
-
+        
         /// <remarks/>
         ItemTraded,
         

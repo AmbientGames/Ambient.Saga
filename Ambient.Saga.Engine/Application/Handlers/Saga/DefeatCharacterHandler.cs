@@ -92,16 +92,6 @@ internal sealed class DefeatCharacterHandler : IRequestHandler<DefeatCharacterCo
             if (!string.IsNullOrEmpty(characterRef))
                 transactionData[TransactionDataKeys.CharacterRef] = characterRef;
 
-            // Tags plus boolean trait names — both vocabularies are used by
-            // CharactersDefeatedByTag quest objectives (e.g. "BanditScout", "hostile")
-            var tagVocabulary = (characterTemplate?.Tags ?? Array.Empty<string>())
-                .Concat((characterTemplate?.Traits ?? Array.Empty<CharacterTrait>()).Select(tr => tr.Name.ToString()))
-                .Where(x => !string.IsNullOrEmpty(x))
-                .Distinct()
-                .ToList();
-            if (tagVocabulary.Count > 0)
-                transactionData[TransactionDataKeys.CharacterTag] = string.Join(",", tagVocabulary);
-
             var transaction = new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),

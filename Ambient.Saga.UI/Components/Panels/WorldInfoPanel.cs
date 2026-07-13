@@ -1,3 +1,5 @@
+using Ambient.Domain;
+using Ambient.Domain.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Numerics;
@@ -14,6 +16,29 @@ public class WorldInfoPanel
 {
     private string _searchFilter = "";
 
+    // Filtered catalog cache — the world content catalog is immutable per loaded world,
+    // so the filtered sections only change when the world or the search filter changes.
+    private object? _cachedCatalogWorld;
+    private string _cachedCatalogFilter = "";
+    private Equipment[] _cachedEquipment = Array.Empty<Equipment>();
+    private Consumable[] _cachedConsumables = Array.Empty<Consumable>();
+    private Spell[] _cachedSpells = Array.Empty<Spell>();
+    private Tool[] _cachedTools = Array.Empty<Tool>();
+    private BuildingMaterial[] _cachedMaterials = Array.Empty<BuildingMaterial>();
+    private List<(string Key, List<IBlock> Blocks)> _cachedBlockGroups = new();
+    private int _cachedBlockCount;
+    private Character[] _cachedCharacters = Array.Empty<Character>();
+    private AvatarArchetype[] _cachedArchetypes = Array.Empty<AvatarArchetype>();
+    private CharacterAffinity[] _cachedAffinities = Array.Empty<CharacterAffinity>();
+    private CombatStance[] _cachedStances = Array.Empty<CombatStance>();
+    private StatusEffect[] _cachedStatusEffects = Array.Empty<StatusEffect>();
+    private LoadoutSlot[] _cachedLoadoutSlots = Array.Empty<LoadoutSlot>();
+    private Quest[] _cachedQuests = Array.Empty<Quest>();
+    private Faction[] _cachedFactions = Array.Empty<Faction>();
+    private DialogueTree[] _cachedDialogueTrees = Array.Empty<DialogueTree>();
+    private QuestToken[] _cachedQuestTokens = Array.Empty<QuestToken>();
+    private Achievement[] _cachedAchievements = Array.Empty<Achievement>();
+
     public void Render(SagaMainViewModel viewModel)
     {
         // Header with world name
@@ -22,7 +47,7 @@ public class WorldInfoPanel
         ImGui.Separator();
 
         // Search filter
-        ImGui.SetNextItemWidth(300);
+        ImGui.SetNextItemWidth(300 * UIConstants.DpiScale);
         ImGui.InputTextWithHint("##WorldSearch", "Search catalog...", ref _searchFilter, 100);
         ImGui.SameLine();
         if (ImGui.SmallButton("Clear"))
@@ -43,6 +68,8 @@ public class WorldInfoPanel
         // World Catalog in columns
         if (viewModel.CurrentWorld != null)
         {
+            EnsureCatalogCache(viewModel);
+
             // Calculate column widths for 3-column layout
             var availableWidth = ImGui.GetContentRegionAvail().X;
             var availableHeight = ImGui.GetContentRegionAvail().Y;
@@ -81,6 +108,54 @@ public class WorldInfoPanel
         return text?.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase) ?? false;
     }
 
+    /// <summary>
+    /// Rebuilds the filtered section arrays when the world or search filter changes.
+    /// The catalog is immutable per loaded world, so this is the complete invalidation key.
+    /// </summary>
+    private void EnsureCatalogCache(SagaMainViewModel viewModel)
+    {
+        var world = viewModel.CurrentWorld!;
+        if (ReferenceEquals(_cachedCatalogWorld, world) && _cachedCatalogFilter == _searchFilter)
+            return;
+
+        _cachedCatalogWorld = world;
+        _cachedCatalogFilter = _searchFilter;
+
+        var gameplay = world.Gameplay;
+
+        // Column 1: Items & Equipment
+        _cachedEquipment = gameplay?.Equipment?.Where(e => MatchesFilter(e.DisplayName) || MatchesFilter(e.RefName)).ToArray() ?? Array.Empty<Equipment>();
+        _cachedConsumables = gameplay?.Consumables?.Where(c => MatchesFilter(c.DisplayName) || MatchesFilter(c.RefName)).ToArray() ?? Array.Empty<Consumable>();
+        _cachedSpells = gameplay?.Spells?.Where(s => MatchesFilter(s.DisplayName) || MatchesFilter(s.RefName)).ToArray() ?? Array.Empty<Spell>();
+        _cachedTools = gameplay?.Tools?.Where(t => MatchesFilter(t.DisplayName) || MatchesFilter(t.RefName)).ToArray() ?? Array.Empty<Tool>();
+        _cachedMaterials = gameplay?.BuildingMaterials?.Where(m => MatchesFilter(m.DisplayName) || MatchesFilter(m.RefName)).ToArray() ?? Array.Empty<BuildingMaterial>();
+
+        // Blocks (filtered, then grouped by substance)
+        var blocks = world.BlockProvider?.GetAllBlocks().ToList();
+        var filteredBlocks = blocks?.Where(b => MatchesFilter(b.DisplayName) || MatchesFilter(b.RefName)).ToList();
+        _cachedBlockCount = filteredBlocks?.Count ?? 0;
+        _cachedBlockGroups = filteredBlocks?
+            .GroupBy(b => b.SubstanceRef ?? "Miscellaneous")
+            .OrderBy(g => g.Key)
+            .Select(g => (g.Key, g.ToList()))
+            .ToList() ?? new List<(string, List<IBlock>)>();
+
+        // Column 2: Characters & Combat
+        _cachedCharacters = gameplay?.Characters?.Where(c => MatchesFilter(c.DisplayName) || MatchesFilter(c.RefName)).ToArray() ?? Array.Empty<Character>();
+        _cachedArchetypes = gameplay?.AvatarArchetypes?.Where(a => MatchesFilter(a.DisplayName) || MatchesFilter(a.RefName)).ToArray() ?? Array.Empty<AvatarArchetype>();
+        _cachedAffinities = gameplay?.CharacterAffinities?.Where(a => MatchesFilter(a.DisplayName) || MatchesFilter(a.RefName)).ToArray() ?? Array.Empty<CharacterAffinity>();
+        _cachedStances = gameplay?.CombatStances?.Where(s => MatchesFilter(s.DisplayName) || MatchesFilter(s.RefName)).ToArray() ?? Array.Empty<CombatStance>();
+        _cachedStatusEffects = gameplay?.StatusEffects?.Where(e => MatchesFilter(e.DisplayName) || MatchesFilter(e.RefName)).ToArray() ?? Array.Empty<StatusEffect>();
+        _cachedLoadoutSlots = gameplay?.LoadoutSlots?.Where(s => MatchesFilter(s.DisplayName) || MatchesFilter(s.RefName)).ToArray() ?? Array.Empty<LoadoutSlot>();
+
+        // Column 3: World Systems
+        _cachedQuests = gameplay?.Quests?.Where(q => MatchesFilter(q.DisplayName) || MatchesFilter(q.RefName)).ToArray() ?? Array.Empty<Quest>();
+        _cachedFactions = gameplay?.Factions?.Where(f => MatchesFilter(f.DisplayName) || MatchesFilter(f.RefName)).ToArray() ?? Array.Empty<Faction>();
+        _cachedDialogueTrees = gameplay?.DialogueTrees?.Where(d => MatchesFilter(d.DisplayName) || MatchesFilter(d.RefName)).ToArray() ?? Array.Empty<DialogueTree>();
+        _cachedQuestTokens = gameplay?.QuestTokens?.Where(t => MatchesFilter(t.DisplayName) || MatchesFilter(t.RefName)).ToArray() ?? Array.Empty<QuestToken>();
+        _cachedAchievements = gameplay?.Achievements?.Where(a => MatchesFilter(a.DisplayName) || MatchesFilter(a.RefName)).ToArray() ?? Array.Empty<Achievement>();
+    }
+
     #region Column 1: Items & Equipment
 
     private void RenderItemsColumn(SagaMainViewModel viewModel)
@@ -89,14 +164,10 @@ public class WorldInfoPanel
         ImGui.Separator();
         ImGui.Spacing();
 
-        var gameplay = viewModel.CurrentWorld!.Gameplay;
-
         // Equipment
-        var equipment = gameplay?.Equipment;
-        if (equipment != null)
         {
-            var filtered = equipment.Where(e => MatchesFilter(e.DisplayName) || MatchesFilter(e.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Equipment ({filtered.Length})"))
+            var filtered = _cachedEquipment;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Equipment ({filtered.Length})###Equipment"))
             {
                 foreach (var item in filtered)
                 {
@@ -117,11 +188,9 @@ public class WorldInfoPanel
         }
 
         // Consumables
-        var consumables = gameplay?.Consumables;
-        if (consumables != null)
         {
-            var filtered = consumables.Where(c => MatchesFilter(c.DisplayName) || MatchesFilter(c.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Consumables ({filtered.Length})"))
+            var filtered = _cachedConsumables;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Consumables ({filtered.Length})###Consumables"))
             {
                 foreach (var item in filtered)
                 {
@@ -141,11 +210,9 @@ public class WorldInfoPanel
         }
 
         // Spells
-        var spells = gameplay?.Spells;
-        if (spells != null)
         {
-            var filtered = spells.Where(s => MatchesFilter(s.DisplayName) || MatchesFilter(s.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Spells ({filtered.Length})"))
+            var filtered = _cachedSpells;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Spells ({filtered.Length})###Spells"))
             {
                 foreach (var item in filtered)
                 {
@@ -165,11 +232,9 @@ public class WorldInfoPanel
         }
 
         // Tools
-        var tools = gameplay?.Tools;
-        if (tools != null)
         {
-            var filtered = tools.Where(t => MatchesFilter(t.DisplayName) || MatchesFilter(t.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Tools ({filtered.Length})"))
+            var filtered = _cachedTools;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Tools ({filtered.Length})###Tools"))
             {
                 foreach (var item in filtered)
                 {
@@ -192,11 +257,9 @@ public class WorldInfoPanel
         }
 
         // Building Materials
-        var materials = gameplay?.BuildingMaterials;
-        if (materials != null)
         {
-            var filtered = materials.Where(m => MatchesFilter(m.DisplayName) || MatchesFilter(m.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Materials ({filtered.Length})"))
+            var filtered = _cachedMaterials;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Materials ({filtered.Length})###Materials"))
             {
                 foreach (var item in filtered)
                 {
@@ -212,18 +275,14 @@ public class WorldInfoPanel
         }
 
         // Blocks
-        var blocks = viewModel.CurrentWorld!.BlockProvider?.GetAllBlocks().ToList();
-        if (blocks != null && blocks.Count > 0)
         {
-            var filtered = blocks.Where(b => MatchesFilter(b.DisplayName) || MatchesFilter(b.RefName)).ToList();
-            if (filtered.Count > 0 && ImGui.CollapsingHeader($"Blocks ({filtered.Count})"))
+            if (_cachedBlockCount > 0 && ImGui.CollapsingHeader($"Blocks ({_cachedBlockCount})###Blocks"))
             {
-                var grouped = filtered.GroupBy(b => b.SubstanceRef ?? "Miscellaneous").OrderBy(g => g.Key);
-                foreach (var group in grouped)
+                foreach (var group in _cachedBlockGroups)
                 {
-                    if (ImGui.TreeNode($"{group.Key} ({group.Count()})"))
+                    if (ImGui.TreeNode($"{group.Key} ({group.Blocks.Count})###blkgrp_{group.Key}"))
                     {
-                        foreach (var block in group)
+                        foreach (var block in group.Blocks)
                         {
                             if (ImGui.TreeNode($"{block.DisplayName}##{block.RefName}"))
                             {
@@ -250,14 +309,10 @@ public class WorldInfoPanel
         ImGui.Separator();
         ImGui.Spacing();
 
-        var gameplay = viewModel.CurrentWorld!.Gameplay;
-
         // Characters
-        var characters = gameplay?.Characters;
-        if (characters != null)
         {
-            var filtered = characters.Where(c => MatchesFilter(c.DisplayName) || MatchesFilter(c.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Characters ({filtered.Length})"))
+            var filtered = _cachedCharacters;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Characters ({filtered.Length})###Characters"))
             {
                 foreach (var character in filtered)
                 {
@@ -285,11 +340,9 @@ public class WorldInfoPanel
         }
 
         // Archetypes
-        var archetypes = gameplay?.AvatarArchetypes;
-        if (archetypes != null)
         {
-            var filtered = archetypes.Where(a => MatchesFilter(a.DisplayName) || MatchesFilter(a.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Archetypes ({filtered.Length})"))
+            var filtered = _cachedArchetypes;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Archetypes ({filtered.Length})###Archetypes"))
             {
                 foreach (var archetype in filtered)
                 {
@@ -306,11 +359,9 @@ public class WorldInfoPanel
         }
 
         // Affinities
-        var affinities = gameplay?.CharacterAffinities;
-        if (affinities != null)
         {
-            var filtered = affinities.Where(a => MatchesFilter(a.DisplayName) || MatchesFilter(a.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Affinities ({filtered.Length})"))
+            var filtered = _cachedAffinities;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Affinities ({filtered.Length})###Affinities"))
             {
                 foreach (var affinity in filtered)
                 {
@@ -335,11 +386,9 @@ public class WorldInfoPanel
         }
 
         // Combat Stances
-        var stances = gameplay?.CombatStances;
-        if (stances != null)
         {
-            var filtered = stances.Where(s => MatchesFilter(s.DisplayName) || MatchesFilter(s.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Combat Stances ({filtered.Length})"))
+            var filtered = _cachedStances;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Combat Stances ({filtered.Length})###CombatStances"))
             {
                 foreach (var stance in filtered)
                 {
@@ -356,11 +405,9 @@ public class WorldInfoPanel
         }
 
         // Status Effects
-        var effects = gameplay?.StatusEffects;
-        if (effects != null)
         {
-            var filtered = effects.Where(e => MatchesFilter(e.DisplayName) || MatchesFilter(e.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Status Effects ({filtered.Length})"))
+            var filtered = _cachedStatusEffects;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Status Effects ({filtered.Length})###StatusEffects"))
             {
                 foreach (var effect in filtered)
                 {
@@ -389,11 +436,9 @@ public class WorldInfoPanel
         }
 
         // Loadout Slots
-        var slots = gameplay?.LoadoutSlots;
-        if (slots != null)
         {
-            var filtered = slots.Where(s => MatchesFilter(s.DisplayName) || MatchesFilter(s.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Loadout Slots ({filtered.Length})"))
+            var filtered = _cachedLoadoutSlots;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Loadout Slots ({filtered.Length})###LoadoutSlots"))
             {
                 foreach (var slot in filtered)
                 {
@@ -421,11 +466,9 @@ public class WorldInfoPanel
         var gameplay = viewModel.CurrentWorld!.Gameplay;
 
         // Quests
-        var quests = gameplay?.Quests;
-        if (quests != null)
         {
-            var filtered = quests.Where(q => MatchesFilter(q.DisplayName) || MatchesFilter(q.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Quests ({filtered.Length})"))
+            var filtered = _cachedQuests;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Quests ({filtered.Length})###Quests"))
             {
                 foreach (var quest in filtered)
                 {
@@ -461,8 +504,8 @@ public class WorldInfoPanel
         var factions = gameplay?.Factions;
         if (factions != null)
         {
-            var filtered = factions.Where(f => MatchesFilter(f.DisplayName) || MatchesFilter(f.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Factions ({filtered.Length})"))
+            var filtered = _cachedFactions;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Factions ({filtered.Length})###Factions"))
             {
                 foreach (var faction in filtered)
                 {
@@ -491,11 +534,9 @@ public class WorldInfoPanel
         }
 
         // Dialogue Trees
-        var dialogues = gameplay?.DialogueTrees;
-        if (dialogues != null)
         {
-            var filtered = dialogues.Where(d => MatchesFilter(d.DisplayName) || MatchesFilter(d.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Dialogue Trees ({filtered.Length})"))
+            var filtered = _cachedDialogueTrees;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Dialogue Trees ({filtered.Length})###DialogueTrees"))
             {
                 foreach (var tree in filtered)
                 {
@@ -512,11 +553,9 @@ public class WorldInfoPanel
         }
 
         // Quest Tokens
-        var tokens = gameplay?.QuestTokens;
-        if (tokens != null)
         {
-            var filtered = tokens.Where(t => MatchesFilter(t.DisplayName) || MatchesFilter(t.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Quest Tokens ({filtered.Length})"))
+            var filtered = _cachedQuestTokens;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Quest Tokens ({filtered.Length})###QuestTokens"))
             {
                 foreach (var token in filtered)
                 {
@@ -531,11 +570,9 @@ public class WorldInfoPanel
         }
 
         // Achievements
-        var achievements = gameplay?.Achievements;
-        if (achievements != null)
         {
-            var filtered = achievements.Where(a => MatchesFilter(a.DisplayName) || MatchesFilter(a.RefName)).ToArray();
-            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Achievements ({filtered.Length})"))
+            var filtered = _cachedAchievements;
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Achievements ({filtered.Length})###Achievements"))
             {
                 foreach (var ach in filtered)
                 {

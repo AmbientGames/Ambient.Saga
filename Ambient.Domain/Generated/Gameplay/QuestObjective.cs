@@ -30,9 +30,9 @@ namespace Ambient.Domain {
         
         private string characterRefField;
         
-        private string characterTagField;
+        private CharacterTraitType traitField;
         
-        private string characterTypeField;
+        private bool traitFieldSpecified;
         
         private string dialogueRefField;
         
@@ -108,23 +108,23 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string CharacterTag {
+        public CharacterTraitType Trait {
             get {
-                return this.characterTagField;
+                return this.traitField;
             }
             set {
-                this.characterTagField = value;
+                this.traitField = value;
             }
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string CharacterType {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool TraitSpecified {
             get {
-                return this.characterTypeField;
+                return this.traitFieldSpecified;
             }
             set {
-                this.characterTypeField = value;
+                this.traitFieldSpecified = value;
             }
         }
         

@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../../EntityBase.xsd" />
+    <!-- CharacterTraitType (used by the Trait attribute) lives here -->
+    <xs:include schemaLocation="../Actors/Characters/Dialogue.xsd" />
     <xs:simpleType name="AchievementRef">
         <xs:restriction base="xs:string">
             <xs:pattern value="[A-Z0-9_]+" />
@@ -22,8 +24,7 @@
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="CharactersDefeated" />
-            <xs:enumeration value="CharactersDefeatedByType" />
-            <xs:enumeration value="CharactersDefeatedByTag" />
+            <xs:enumeration value="CharactersDefeatedByTrait" />
             <xs:enumeration value="CharactersDefeatedByRef" />
             <xs:enumeration value="SagaArcsDiscovered" />
             <xs:enumeration value="SagaArcsCompleted" />
@@ -50,10 +51,9 @@
         <xs:attribute name="Type" type="AchievementCriteriaType" use="required"></xs:attribute>
         <xs:attribute name="Threshold" type="xs:float" use="required"></xs:attribute>
         <xs:attribute name="CharacterType" type="xs:string" use="optional"></xs:attribute>
-        <xs:attribute name="CharacterTag" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="CharacterRef" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="SagaArcRef" type="xs:string" use="optional"></xs:attribute>
-        <xs:attribute name="TraitType" type="xs:string" use="optional"></xs:attribute>
+        <xs:attribute name="Trait" type="CharacterTraitType" use="optional"></xs:attribute>
         <xs:attribute name="QuestTokenRef" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="QuestRef" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="FactionRef" type="xs:string" use="optional"></xs:attribute>

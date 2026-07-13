@@ -30,8 +30,6 @@ namespace Ambient.Domain {
         
         private float enterRadiusField;
         
-        private string tagsField;
-        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Spawn")]
         public CharacterSpawn[] Spawn {
@@ -73,17 +71,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.enterRadiusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string Tags {
-            get {
-                return this.tagsField;
-            }
-            set {
-                this.tagsField = value;
             }
         }
     }

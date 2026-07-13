@@ -15,7 +15,7 @@ public static class ImGuiSizes
 
 /// <summary>
 /// Helper methods for rendering common UI components in ImGui.
-/// See docs/UI-IMGUI-GUIDELINES.md (repo root) for comprehensive layout documentation.
+/// See .claude/skills/imgui/SKILL.md (repo root) for the ImGui house rules.
 /// </summary>
 public static class ImGuiHelpers
 {
@@ -91,7 +91,7 @@ public static class ImGuiHelpers
     {
         if (effects == null) return;
 
-        ImGui.TextColored(new Vector4(0.7f, 0.7f, 1, 1), title);
+        ImGui.TextColored(UIColors.TextHighlight, title);
         ImGui.Indent(10 * UIConstants.DpiScale);
 
         // Use a table for proper auto-sizing column alignment
@@ -136,8 +136,8 @@ public static class ImGuiHelpers
 
         ImGui.TableNextColumn();
         var color = value > 0
-            ? new Vector4(0.5f, 1, 0.5f, 1)  // Green for positive
-            : new Vector4(1, 0.5f, 0.5f, 1); // Red for negative
+            ? UIColors.TextSuccess  // Green for positive
+            : UIColors.TextDanger;  // Red for negative
 
         ImGui.TextColored(color, $"{value:+0.0;-0.0;0}");
     }
@@ -150,7 +150,7 @@ public static class ImGuiHelpers
     {
         ImGui.AlignTextToFramePadding();
         ImGui.Text(label);
-        ImGui.SameLine(labelWidth);
+        ImGui.SameLine(labelWidth * UIConstants.DpiScale);
         ImGui.Text(value);
     }
 

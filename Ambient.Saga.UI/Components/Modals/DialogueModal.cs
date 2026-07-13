@@ -17,6 +17,9 @@ namespace Ambient.Saga.UI.Components.Modals;
 /// </summary>
 public class DialogueModal
 {
+    // Header/HeaderHovered/HeaderActive for unavailable (blocked) dialogue choices.
+    private static readonly Vector4 DisabledChoiceHeaderColor = new(0.15f, 0.15f, 0.15f, 1f);
+
     private DialogueStateResult? _currentState;
     private bool _isInitialized = false;
     private Guid _lastCharacterInstanceId;
@@ -129,7 +132,7 @@ public class DialogueModal
     {
         // Character name with colored styling
         ImGui.PushFont(UIConstants.FontTitle);
-        ImGui.TextColored(new Vector4(0.4f, 0.9f, 0.4f, 1.0f), character.DisplayName);
+        ImGui.TextColored(UIColors.TextTitleGreen, character.DisplayName);
         ImGui.PopFont();
 
         // Character type/description if available
@@ -154,7 +157,7 @@ public class DialogueModal
             if (!string.IsNullOrEmpty(characterTemplate.Description))
             {
                 ImGui.PushTextWrapPos(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X);
-                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1.0f), characterTemplate.Description);
+                ImGui.TextColored(UIColors.TextDim, characterTemplate.Description);
                 ImGui.PopTextWrapPos();
             }
         }
@@ -163,7 +166,7 @@ public class DialogueModal
     private void RenderError(ref bool isOpen)
     {
         ImGui.Spacing();
-        ImGui.TextColored(new Vector4(1, 0.3f, 0.3f, 1), "Something went wrong:");
+        ImGui.TextColored(UIColors.TextError, "Something went wrong:");
         ImGui.Spacing();
         ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 0.6f, 0.6f, 1));
         ImGui.TextWrapped(_errorMessage);
@@ -185,7 +188,7 @@ public class DialogueModal
         var loadingText = "Loading dialogue...";
         var textSize = ImGui.CalcTextSize(loadingText);
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
-        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), loadingText);
+        ImGui.TextColored(UIColors.TextMuted, loadingText);
     }
 
     private void RenderNoDialogue(ref bool isOpen)
@@ -269,8 +272,6 @@ public class DialogueModal
         var dialogueHeight = Math.Max(ImGui.GetFrameHeightWithSpacing() * 5, availableHeight * 0.55f);
         var choicesHeight = Math.Max(ImGui.GetFrameHeightWithSpacing() * 3, availableHeight * 0.45f);
 
-        System.Diagnostics.Debug.WriteLine($"[DialogueModal] Layout - Available: {ImGui.GetContentRegionAvail().Y}, Footer: {footerHeight}, ChoicesHeader: {choicesHeaderHeight}, DialogueH: {dialogueHeight}, ChoicesH: {choicesHeight}");
-
         // Dialogue text area with styled background
         // For BeginChild, 0 means "use remaining width", not -1
         ImGui.PushStyleColor(ImGuiCol.ChildBg, UIColors.PanelBgDark);
@@ -324,12 +325,9 @@ public class DialogueModal
     {
         if (_currentState == null) return;
 
-        System.Diagnostics.Debug.WriteLine($"[DialogueModal] RenderChoices called with height={height}, ChoiceCount={_currentState.Choices.Count}");
-
-        ImGui.TextColored(new Vector4(1, 0.9f, 0.5f, 1), "Choose your response:");
+        ImGui.TextColored(UIColors.GoldenYellow, "Choose your response:");
         ImGui.Spacing();
 
-        System.Diagnostics.Debug.WriteLine($"[DialogueModal] ChoicesArea position before: {ImGui.GetCursorPosY()}, remaining: {ImGui.GetContentRegionAvail().Y}");
         // For BeginChild, 0 means "use remaining width", not -1
         ImGui.BeginChild("ChoicesArea", new Vector2(0, height), ImGuiChildFlags.None);
 
@@ -337,7 +335,6 @@ public class DialogueModal
         foreach (var choice in _currentState.Choices)
         {
             choiceIndex++;
-            System.Diagnostics.Debug.WriteLine($"[DialogueModal] Rendering choice {choiceIndex}: {choice.Text} (Available={choice.IsAvailable})");
             RenderChoice(viewModel, character, modalManager, choice, choiceIndex);
         }
 
@@ -358,17 +355,17 @@ public class DialogueModal
         // Style based on availability
         if (!canSelect)
         {
-            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.5f, 0.5f, 0.5f, 1));
-            ImGui.PushStyleColor(ImGuiCol.Header, new Vector4(0.15f, 0.15f, 0.15f, 1));
-            ImGui.PushStyleColor(ImGuiCol.HeaderHovered, new Vector4(0.15f, 0.15f, 0.15f, 1));
-            ImGui.PushStyleColor(ImGuiCol.HeaderActive, new Vector4(0.15f, 0.15f, 0.15f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Text, UIColors.TextDisabled);
+            ImGui.PushStyleColor(ImGuiCol.Header, DisabledChoiceHeaderColor);
+            ImGui.PushStyleColor(ImGuiCol.HeaderHovered, DisabledChoiceHeaderColor);
+            ImGui.PushStyleColor(ImGuiCol.HeaderActive, DisabledChoiceHeaderColor);
         }
         else
         {
             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 1, 0.8f, 1));
-            ImGui.PushStyleColor(ImGuiCol.Header, new Vector4(0.2f, 0.35f, 0.2f, 1));
-            ImGui.PushStyleColor(ImGuiCol.HeaderHovered, new Vector4(0.3f, 0.5f, 0.3f, 1));
-            ImGui.PushStyleColor(ImGuiCol.HeaderActive, new Vector4(0.25f, 0.45f, 0.25f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Header, UIColors.ButtonAccept);
+            ImGui.PushStyleColor(ImGuiCol.HeaderHovered, UIColors.ButtonAcceptHovered);
+            ImGui.PushStyleColor(ImGuiCol.HeaderActive, UIColors.ButtonAcceptActive);
         }
 
         // Use Selectable for click handling with custom styling - use frame height for consistent sizing
@@ -430,9 +427,9 @@ public class DialogueModal
         // Full-width farewell button using frame height
         var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
-        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.3f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.25f, 0.5f, 0.4f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.3f, 0.6f, 0.5f, 1));
+        ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
 
         if (ImGui.Button("Farewell", new Vector2(ImGuiSizes.Fill, buttonHeight)))
         {

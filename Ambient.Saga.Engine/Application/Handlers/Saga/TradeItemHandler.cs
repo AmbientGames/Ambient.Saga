@@ -422,17 +422,7 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
 
     /// <summary>Resolves an item ref to its catalog entry across the tradeable families.</summary>
     private ITradeable? ResolveTradeable(string itemRef)
-    {
-        if (string.IsNullOrEmpty(itemRef))
-            return null;
-
-        if (_world.EquipmentLookup.TryGetValue(itemRef, out var equipment)) return equipment;
-        if (_world.ConsumablesLookup.TryGetValue(itemRef, out var consumable)) return consumable;
-        if (_world.ToolsLookup.TryGetValue(itemRef, out var tool)) return tool;
-        if (_world.SpellsLookup.TryGetValue(itemRef, out var spell)) return spell;
-        if (_world.BuildingMaterialsLookup.TryGetValue(itemRef, out var material)) return material;
-        return _world.BlockProvider?.GetBlockByRefName(itemRef);
-    }
+        => string.IsNullOrEmpty(itemRef) ? null : _world.TryGetTradeableByRefName(itemRef);
 
     private float DetermineItemCategoryWeight(string itemRef, ItemCollection? capabilities)
     {
