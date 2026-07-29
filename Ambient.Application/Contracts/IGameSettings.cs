@@ -14,9 +14,9 @@ public interface IGameSettings
     string PublisherFolder { get; }
 
     /// <summary>
-    /// The game name used for save directories and identification (e.g., "Saga").
+    /// The product ref name used for save directories and identification (e.g., "Arc").
     /// </summary>
-    string GameName { get; }
+    string ProductRef { get; }
 
     /// <summary>
     /// The base install path where content is located (e.g., the application directory).
@@ -27,43 +27,43 @@ public interface IGameSettings
 
     /// <summary>
     /// Gets the base AppData path for this game.
-    /// Returns: %APPDATA%/{PublisherFolder}/{GameName}
+    /// Returns: %APPDATA%/{PublisherFolder}/{ProductRef}
     /// </summary>
     string GetAppDataBasePath();
 
     /// <summary>
     /// Gets the content path within AppData for this game.
-    /// Returns: %APPDATA%/{PublisherFolder}/{GameName}/content
+    /// Returns: %APPDATA%/{PublisherFolder}/{ProductRef}/content
     /// </summary>
     string GetAppDataContentPath();
 
     /// <summary>
     /// Gets the base Documents path for user-facing content.
-    /// Returns: Documents/{PublisherFolder}/{GameName}
+    /// Returns: Documents/{PublisherFolder}/{ProductRef}
     /// </summary>
     string GetDocumentsBasePath();
 
     /// <summary>
     /// Gets the worlds path within Documents.
-    /// Returns: Documents/{PublisherFolder}/{GameName}/worlds
+    /// Returns: Documents/{PublisherFolder}/{ProductRef}/worlds
     /// </summary>
     string GetWorldsPath();
 
     /// <summary>
     /// Gets the LocalAppData path for app-internal data (logs, saves, cache).
-    /// Returns: %LOCALAPPDATA%/{PublisherFolder}/{GameName}
+    /// Returns: %LOCALAPPDATA%/{PublisherFolder}/{ProductRef}
     /// </summary>
     string GetLocalAppDataPath();
 
     /// <summary>
     /// Gets the logs path.
-    /// Returns: %LOCALAPPDATA%/{PublisherFolder}/{GameName}/logs
+    /// Returns: %LOCALAPPDATA%/{PublisherFolder}/{ProductRef}/logs
     /// </summary>
     string GetLogsPath();
 
     /// <summary>
     /// Gets the saves path.
-    /// Returns: %LOCALAPPDATA%/{PublisherFolder}/{GameName}/saves
+    /// Returns: %LOCALAPPDATA%/{PublisherFolder}/{ProductRef}/saves
     /// </summary>
     string GetSavesPath();
 }
@@ -73,15 +73,15 @@ public interface IGameSettings
 /// </summary>
 public class GameSettings : IGameSettings
 {
-    public GameSettings(string publisherFolder, string gameName, string? installPath = null)
+    public GameSettings(string publisherFolder, string productRef, string? installPath = null)
     {
         PublisherFolder = publisherFolder ?? throw new ArgumentNullException(nameof(publisherFolder));
-        GameName = gameName ?? throw new ArgumentNullException(nameof(gameName));
+        ProductRef = productRef ?? throw new ArgumentNullException(nameof(productRef));
         InstallPath = installPath ?? FileManager.GetExecutingDirectoryName();
     }
 
     public string PublisherFolder { get; }
-    public string GameName { get; }
+    public string ProductRef { get; }
     public string InstallPath { get; }
 
     public string GetAppDataBasePath()
@@ -89,7 +89,7 @@ public class GameSettings : IGameSettings
         return Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             PublisherFolder,
-            GameName);
+            ProductRef);
     }
 
     public string GetAppDataContentPath()
@@ -102,7 +102,7 @@ public class GameSettings : IGameSettings
         return Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             PublisherFolder,
-            GameName);
+            ProductRef);
     }
 
     public string GetWorldsPath()
@@ -115,7 +115,7 @@ public class GameSettings : IGameSettings
         return Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             PublisherFolder,
-            GameName);
+            ProductRef);
     }
 
     public string GetLogsPath()

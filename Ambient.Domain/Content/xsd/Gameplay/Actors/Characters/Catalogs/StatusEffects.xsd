@@ -23,7 +23,6 @@
             <xs:enumeration value="Silence" />         <!-- Cannot cast spells -->
             <xs:enumeration value="Root" />            <!-- Cannot flee -->
             <xs:enumeration value="StatBoost" />       <!-- Temporary stat increase -->
-            <xs:enumeration value="StatPenalty" />     <!-- Temporary stat decrease -->
         </xs:restriction>
     </xs:simpleType>
 

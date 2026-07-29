@@ -1,0 +1,1118 @@
+using Ambient.Domain;
+using Ambient.Domain.Contracts;
+using Ambient.Domain.Partials;
+using Ambient.Domain.Entities;
+using Ambient.Rpg.Engine.Application.Behaviors;
+using Ambient.Rpg.Engine.Application.Commands.Arcs;
+using Ambient.Rpg.Engine.Application.ReadModels;
+using Ambient.Rpg.Engine.Contracts;
+using Ambient.Rpg.Engine.Contracts.Cqrs;
+using Ambient.Rpg.Engine.Contracts.Persistence;
+using Ambient.Rpg.Engine.Contracts.Services;
+using Ambient.Rpg.Engine.Tests.Helpers;
+using Ambient.Rpg.Engine.Domain;
+using Ambient.Rpg.Engine.Domain.Achievements;
+using Ambient.Rpg.Engine.Domain.Arcs.TransactionLog;
+using Ambient.Rpg.Engine.Infrastructure.Persistence;
+using LiteDB;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Ambient.Rpg.Engine.Tests.IntegrationTests.Cqrs;
+
+/// <summary>
+/// Stub implementation of IAvatarUpdateService for testing.
+/// Simply returns the avatar without any modifications.
+/// </summary>
+public class StubAvatarUpdateService : IAvatarUpdateService
+{
+    public event Action<Ambient.Rpg.Engine.Contracts.Services.CreditChangeNotification>? CreditsChanged;
+
+    public Task<AvatarEntity> UpdateAvatarForTradeAsync(AvatarEntity avatar, ArcInstance arcInstance, Guid tradeTransactionId, CancellationToken ct = default)
+    {
+        return Task.FromResult(avatar);
+    }
+
+    public Task<AvatarEntity> UpdateAvatarForBattleAsync(AvatarEntity avatar, ArcInstance arcInstance, Guid battleStartedTransactionId, CancellationToken ct = default)
+    {
+        return Task.FromResult(avatar);
+    }
+
+    public Task<AvatarEntity> AddQuestTokenAsync(AvatarEntity avatar, string questTokenRef, CancellationToken ct = default)
+    {
+        return Task.FromResult(avatar);
+    }
+
+    public Task<AvatarEntity> UpdateAvatarForEffectsAsync(AvatarEntity avatar, ArcInstance arcInstance, Guid effectTransactionId, CancellationToken ct = default)
+    {
+        return Task.FromResult(avatar);
+    }
+
+    public Task<AvatarEntity> UpdateAvatarForMiningAsync(AvatarEntity avatar, Dictionary<string, int> blocksMined, AvatarArchetype archetype, IWorldConfiguration worldConfig, CancellationToken ct = default)
+    {
+        return Task.FromResult(avatar);
+    }
+
+    public Task<AvatarEntity> UpdateAvatarForBuildingAsync(AvatarEntity avatar, Dictionary<string, int> materialsConsumed, CancellationToken ct = default)
+    {
+        return Task.FromResult(avatar);
+    }
+
+    public Task<AvatarEntity> UpdateAvatarForToolWearAsync(AvatarEntity avatar, string toolRef, float newCondition, CancellationToken ct = default)
+    {
+        return Task.FromResult(avatar);
+    }
+
+    public Task PersistAvatarAsync(AvatarEntity avatar, CancellationToken ct = default)
+    {
+        return Task.CompletedTask;
+    }
+
+    public Task<List<AchievementInstance>> GetAchievementInstancesAsync(Guid avatarId, CancellationToken ct = default)
+    {
+        return Task.FromResult(new List<AchievementInstance>());
+    }
+
+    public Task UpdateAchievementInstancesAsync(Guid avatarId, List<AchievementInstance> instances, CancellationToken ct = default)
+    {
+        return Task.CompletedTask;
+    }
+}
+
+/// <summary>
+/// Integration tests for TradeItemCommand via CQRS pipeline.
+/// Tests economy transactions, inventory updates, and transaction logging.
+/// </summary>
+[Collection("Sequential CQRS Tests")]
+public class TradeItemCommandTests : IDisposable
+{
+    private readonly ServiceProvider _serviceProvider;
+    private readonly IMediator _mediator;
+    private readonly IWorld _world;
+    private readonly LiteDatabase _database;
+    private readonly IArcInstanceRepository _repository;
+
+    public TradeItemCommandTests()
+    {
+        _database = new LiteDatabase(new MemoryStream());
+        _world = CreateWorldWithMerchant();
+
+        var services = new ServiceCollection();
+
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblyContaining<TradeItemCommand>();
+            cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            cfg.AddOpenBehavior(typeof(AchievementEvaluationBehavior<,>));
+        });
+
+        services.AddSingleton(_world);
+        services.AddSingleton<IArcInstanceRepository>(new ArcInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
+        services.AddSingleton<IArcReadModelRepository, InMemoryArcReadModelRepository>();
+        services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
+        services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
+
+        _serviceProvider = services.BuildServiceProvider();
+        _mediator = _serviceProvider.GetRequiredService<IMediator>();
+        _repository = _serviceProvider.GetRequiredService<IArcInstanceRepository>();
+    }
+
+    private World CreateWorldWithMerchant()
+    {
+        var merchant = new Character
+        {
+            RefName = "Merchant",
+            DisplayName = "Village Merchant",
+            // Merchants only sell what they stock (see TradeItemHandler). Stock is the
+            // template's Interactable.Loot — "the stuff they give you" — which
+            // ApplyCharacterSpawned clones into the live CurrentInventory per spawn.
+            Interactable = new Interactable
+            {
+                Loot = new ItemCollection
+                {
+                    Consumables = new[]
+                    {
+                        new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 100 }
+                    },
+                    Equipment = new[]
+                    {
+                        new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
+                    }
+                }
+            }
+        };
+
+        var arc = new Arc
+        {
+            RefName = "VillageMerchant",
+            DisplayName = "Village Merchant",
+            Latitude = 35.0,
+            Longitude = 139.0
+        };
+
+        var world = new World
+        {
+            WorldTemplate = new WorldTemplate
+            {
+                Gameplay = new GameplayComponents
+                {
+                    Saga = new[] { arc },
+                    Characters = new[] { merchant }
+                }
+            }
+        };
+
+        world.ArcLookup[arc.RefName] = arc;
+        world.CharactersLookup[merchant.RefName] = merchant;
+        world.ArcTriggersLookup[arc.RefName] = new List<ArcTrigger>();
+        // BaseValue must be set: the schema default is int.MaxValue = untradeable
+        world.EquipmentLookup["IronSword"] = new Equipment { RefName = "IronSword", DisplayName = "Iron Sword", BaseValue = 100 };
+        world.ToolsLookup["Pickaxe"] = new Tool { RefName = "Pickaxe", DisplayName = "Pickaxe", BaseValue = 75 };
+
+        // Register archetype so carry weight checks can find it
+        var warriorArchetype = new AvatarArchetype
+        {
+            RefName = "Warrior",
+            DisplayName = "Warrior",
+            SpawnStats = new CharacterStats { Health = 1.0f, Stamina = 1.0f, Strength = 0.10f },
+            SpawnCapabilities = new ItemCollection
+            {
+                Equipment = Array.Empty<EquipmentEntry>(),
+                Consumables = Array.Empty<ConsumableEntry>(),
+                Spells = Array.Empty<SpellEntry>(),
+                Blocks = Array.Empty<BlockEntry>(),
+                Tools = Array.Empty<ToolEntry>(),
+                BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
+            }
+        };
+        world.AvatarArchetypesLookup[warriorArchetype.RefName] = warriorArchetype;
+
+        // Container arcs for the per-kind free-take rules (ArcTradeRules): a death drop,
+        // a battle drop, and a geocache — all stocked by the same Merchant character.
+        AddContainerArc(world, "DeadPlayerRemains", "RemnantLoot", RemnantOwnerId);
+        AddContainerArc(world, "VictorSpoils", "BattleLoot", BattleVictorId);
+        AddContainerArc(world, "TrailCache", "GeoCache", RemnantOwnerId);
+        AddContainerArc(world, "PlayerShop", "Market", ShopOwnerId);
+
+        return world;
+    }
+
+    private static readonly Guid RemnantOwnerId = Guid.NewGuid();
+    private static readonly Guid BattleVictorId = Guid.NewGuid();
+    private static readonly Guid ShopOwnerId = Guid.NewGuid();
+
+    private static void AddContainerArc(World world, string refName, string kind, Guid owner)
+    {
+        var arc = new Arc
+        {
+            RefName = refName,
+            DisplayName = refName,
+            Kind = kind,
+            OwnerAvatarId = owner.ToString(),
+            Latitude = 35.0,
+            Longitude = 139.0
+        };
+        world.ArcLookup[refName] = arc;
+        world.ArcTriggersLookup[refName] = new List<ArcTrigger>();
+    }
+
+    private async Task<Guid> SpawnMerchant(Guid avatarId, string arcRef)
+    {
+        var characterInstanceId = Guid.NewGuid();
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, arcRef);
+
+        var spawnTx = new ArcTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = ArcTransactionType.CharacterSpawned,
+            AvatarId = avatarId.ToString(),
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                ["CharacterRef"] = "Merchant",
+                ["CharacterInstanceId"] = characterInstanceId.ToString()
+            }
+        };
+
+        await _repository.AddTransactionsAsync(instance.InstanceId, new List<ArcTransaction> { spawnTx });
+        await _repository.CommitTransactionsAsync(instance.InstanceId, new List<Guid> { spawnTx.TransactionId });
+
+        return characterInstanceId;
+    }
+
+    private AvatarEntity CreateTestAvatar(Guid avatarId)
+    {
+        return new AvatarEntity
+        {
+            Id = avatarId,
+            AvatarId = avatarId,
+            ArchetypeRef = "Warrior",
+            DisplayName = "Test Avatar",
+            Stats = new CharacterStats
+            {
+                Credits = 1000,
+                Health = 100
+            },
+            Capabilities = new ItemCollection()
+        };
+    }
+
+    [Fact]
+    public async Task TradeItem_BuyFromMerchant_CreatesItemTradedTransaction()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 3,
+            IsBuying = true,
+            PricePerItem = 50
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.True(result.Successful, $"Command failed: {result.ErrorMessage}");
+        Assert.NotEmpty(result.TransactionIds);
+
+        // Verify ItemTraded transaction was created
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "VillageMerchant");
+        var tradeTx = instance.GetCommittedTransactions()
+            .FirstOrDefault(t => t.Type == ArcTransactionType.ItemTraded);
+
+        Assert.NotNull(tradeTx);
+        Assert.Equal("HealthPotion", tradeTx.Data["ItemRef"]);
+        Assert.Equal("3", tradeTx.Data["Quantity"]);
+        Assert.Equal("True", tradeTx.Data["IsBuying"]);
+        Assert.Equal("150", tradeTx.Data["TotalPrice"]); // 3 * 50
+    }
+
+    [Fact]
+    public async Task TradeItem_BuyMoreThanMerchantStocks_Rejected()
+    {
+        // Arrange — fixture merchant stocks 100 HealthPotions
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        avatar.Stats.Credits = 1_000_000;
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 200,
+            IsBuying = true,
+            PricePerItem = 1
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert — merchants are not infinite stock
+        Assert.False(result.Successful);
+        Assert.Contains("not in stock", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task TradeItem_BuyDuplicateEquipment_Accepted()
+    {
+        // Arrange — avatar already owns the sword the merchant stocks. Duplicates are
+        // honest inventory now (crafting produces extras): the buy appends a second entry
+        // instead of being rejected. Price 150 = the fixture sword's catalog buy price
+        // (BaseValue 100 x the default MerchantMarkupMultiplier 2).
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        avatar.Capabilities.Equipment = new[]
+        {
+            new EquipmentEntry { EquipmentRef = "IronSword", Condition = 0.5f }
+        };
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 200
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.True(result.Successful, $"Command failed: {result.ErrorMessage}");
+    }
+
+    [Fact]
+    public async Task TradeItem_SellDuplicateTools_BatchAccepted()
+    {
+        // Arrange — two identical crafted pickaxes sell in one transaction; the old
+        // one-at-a-time rule is gone, and the apply removes exactly the sold count.
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        avatar.Capabilities.Tools = new[]
+        {
+            new ToolEntry { ToolRef = "Pickaxe", Condition = 1f },
+            new ToolEntry { ToolRef = "Pickaxe", Condition = 1f }
+        };
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "Pickaxe",
+            Quantity = 2,
+            IsBuying = false,
+            PricePerItem = 75 // catalog sell price = BaseValue
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.True(result.Successful, $"Command failed: {result.ErrorMessage}");
+    }
+
+    [Fact]
+    public async Task TradeItem_SellMoreDuplicatesThanOwned_Rejected()
+    {
+        // Arrange — one pickaxe owned, three claimed: the payout multiplier the old rule
+        // guarded against is still rejected, now by counting entries.
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        avatar.Capabilities.Tools = new[]
+        {
+            new ToolEntry { ToolRef = "Pickaxe", Condition = 1f }
+        };
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "Pickaxe",
+            Quantity = 3,
+            IsBuying = false,
+            PricePerItem = 75
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.False(result.Successful);
+        Assert.Contains("does not have", result.ErrorMessage);
+    }
+
+    /// <summary>Appends a committed CharacterDefeated transaction carrying the victor.</summary>
+    private async Task DefeatCharacter(Guid avatarId, string arcRef, Guid characterInstanceId, Guid victorAvatarId)
+    {
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, arcRef);
+        var defeatTx = new ArcTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = ArcTransactionType.CharacterDefeated,
+            AvatarId = victorAvatarId.ToString(),
+            Status = TransactionStatus.Pending,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                [TransactionDataKeys.CharacterInstanceId] = characterInstanceId.ToString(),
+                [TransactionDataKeys.CharacterRef] = "Merchant",
+                [TransactionDataKeys.VictorAvatarId] = victorAvatarId.ToString()
+            }
+        };
+        await _repository.AddTransactionsAsync(instance.InstanceId, new List<ArcTransaction> { defeatTx });
+        await _repository.CommitTransactionsAsync(instance.InstanceId, new List<Guid> { defeatTx.TransactionId });
+    }
+
+    [Fact]
+    public async Task TradeItem_TradeWithDefeatedCharacter_Rejected_EvenForVictor()
+    {
+        // Battle drops are BattleLoot remains ARCS — the corpse itself is untouchable,
+        // even for the victor at zero price. (The old loot-the-corpse path is gone.)
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+        await DefeatCharacter(avatarId, "VillageMerchant", characterInstanceId, victorAvatarId: avatarId);
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 0
+        };
+
+        var result = await _mediator.Send(command);
+
+        Assert.False(result.Successful);
+        Assert.Contains("defeated", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task TradeItem_TakeFromDeathRemains_Succeeds_ForAnyone()
+    {
+        // The end-to-end "click Take" on a death drop: a STRANGER (not the dead player)
+        // takes an item from a RemnantLoot arc at price 0 through the full command
+        // pipeline. This is the flow that was broken: the handler priced remains like
+        // merchants and rejected every take with a price mismatch.
+        var strangerId = Guid.NewGuid();
+        var stranger = CreateTestAvatar(strangerId);
+        var characterInstanceId = await SpawnMerchant(strangerId, "DeadPlayerRemains");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = strangerId,
+            Avatar = stranger,
+            ArcRef = "DeadPlayerRemains",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword", // priced 100 in the catalog — the price check must NOT bite
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 0
+        };
+
+        var result = await _mediator.Send(command);
+
+        Assert.True(result.Successful, $"Remains take failed: {result.ErrorMessage}");
+
+        var instance = await _repository.GetOrCreateInstanceAsync(strangerId, "DeadPlayerRemains");
+        var tradeTx = instance.GetCommittedTransactions()
+            .FirstOrDefault(t => t.Type == ArcTransactionType.ItemTraded);
+        Assert.NotNull(tradeTx);
+        Assert.Equal("0", tradeTx!.Data["TotalPrice"]);
+    }
+
+    [Fact]
+    public async Task TradeItem_PricedTradeAtRemains_Rejected()
+    {
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = await SpawnMerchant(avatarId, "DeadPlayerRemains");
+
+        var result = await _mediator.Send(new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "DeadPlayerRemains",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 100
+        });
+
+        Assert.False(result.Successful);
+        Assert.Contains("free", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task TradeItem_DepositIntoRemains_Rejected()
+    {
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        avatar.Capabilities.Consumables = new[]
+        {
+            new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 5 }
+        };
+        var characterInstanceId = await SpawnMerchant(avatarId, "DeadPlayerRemains");
+
+        var result = await _mediator.Send(new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "DeadPlayerRemains",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 1,
+            IsBuying = false,
+            PricePerItem = 0
+        });
+
+        Assert.False(result.Successful);
+        Assert.Contains("remains", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task TradeItem_GeoCacheDepositAndTake_Succeed()
+    {
+        // Leaving something in a geocache (zero-price sell) and taking something out
+        // (zero-price buy) are both legal for anyone — that IS the game.
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        avatar.Capabilities.Consumables = new[]
+        {
+            new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 5 }
+        };
+        var characterInstanceId = await SpawnMerchant(avatarId, "TrailCache");
+
+        var deposit = await _mediator.Send(new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "TrailCache",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 1,
+            IsBuying = false,
+            PricePerItem = 0
+        });
+        Assert.True(deposit.Successful, $"Cache deposit failed: {deposit.ErrorMessage}");
+
+        var take = await _mediator.Send(new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "TrailCache",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 0
+        });
+        Assert.True(take.Successful, $"Cache take failed: {take.ErrorMessage}");
+    }
+
+    [Fact]
+    public async Task SetShopPrice_OwnerListsItem_VisitorPaysExactlyThat()
+    {
+        // The shopkeeper's per-item knob: bread dear in the mountains. The owner lists
+        // the sword at 700 (catalog 100); a visitor pays exactly 700 — no arc multiplier
+        // on top — and any other offered price is refused.
+        var owner = CreateTestAvatar(ShopOwnerId);
+        var setResult = await _mediator.Send(new SetShopPriceCommand
+        {
+            AvatarId = ShopOwnerId,
+            ArcRef = "PlayerShop",
+            ItemRef = "IronSword",
+            PricePerItem = 700
+        });
+        Assert.True(setResult.Successful, $"Owner listing failed: {setResult.ErrorMessage}");
+
+        // The test repository is per-avatar; production shares one multiplayer instance.
+        // Replay the owner's listing into the visitor's instance the way sync would.
+        var visitorId = Guid.NewGuid();
+        var visitor = CreateTestAvatar(visitorId);
+        var characterInstanceId = await SpawnMerchant(visitorId, "PlayerShop");
+        var listingTx = new ArcTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = ArcTransactionType.ShopPriceSet,
+            AvatarId = ShopOwnerId.ToString(),
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                [TransactionDataKeys.ItemRef] = "IronSword",
+                [TransactionDataKeys.PricePerItem] = "700"
+            }
+        };
+        var visitorInstance = await _repository.GetOrCreateInstanceAsync(visitorId, "PlayerShop");
+        await _repository.AddTransactionsAsync(visitorInstance.InstanceId, new List<ArcTransaction> { listingTx });
+        await _repository.CommitTransactionsAsync(visitorInstance.InstanceId, new List<Guid> { listingTx.TransactionId });
+
+        var wrongPrice = await _mediator.Send(new TradeItemCommand
+        {
+            AvatarId = visitorId,
+            Avatar = visitor,
+            ArcRef = "PlayerShop",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 150 // catalog price — but the item is LISTED
+        });
+        Assert.False(wrongPrice.Successful);
+        Assert.Contains("listed at 700", wrongPrice.ErrorMessage);
+
+        var atListing = await _mediator.Send(new TradeItemCommand
+        {
+            AvatarId = visitorId,
+            Avatar = visitor,
+            ArcRef = "PlayerShop",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 700
+        });
+        Assert.True(atListing.Successful, $"Buy at listing failed: {atListing.ErrorMessage}");
+
+        var committed = (await _repository.GetOrCreateInstanceAsync(visitorId, "PlayerShop")).GetCommittedTransactions();
+        var tradeTx = committed.FirstOrDefault(t => t.Type == ArcTransactionType.ItemTraded);
+        Assert.NotNull(tradeTx);
+        Assert.Equal("700", tradeTx!.Data["TotalPrice"]);
+    }
+
+    [Fact]
+    public async Task SetShopPrice_NonOwner_Rejected()
+    {
+        var strangerId = Guid.NewGuid();
+        var result = await _mediator.Send(new SetShopPriceCommand
+        {
+            AvatarId = strangerId,
+            ArcRef = "PlayerShop",
+            ItemRef = "IronSword",
+            PricePerItem = 700
+        });
+
+        Assert.False(result.Successful);
+        Assert.Contains("owner", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task SetShopPrice_BeyondCeiling_Rejected()
+    {
+        // Same 10x ceiling that bounds shop trades: sword buy price 150, ceiling 1500.
+        var result = await _mediator.Send(new SetShopPriceCommand
+        {
+            AvatarId = ShopOwnerId,
+            ArcRef = "PlayerShop",
+            ItemRef = "IronSword",
+            PricePerItem = 999999
+        });
+
+        Assert.False(result.Successful);
+        Assert.Contains("ceiling", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task SetShopPrice_OnRemains_Rejected()
+    {
+        var result = await _mediator.Send(new SetShopPriceCommand
+        {
+            AvatarId = RemnantOwnerId,
+            ArcRef = "DeadPlayerRemains",
+            ItemRef = "IronSword",
+            PricePerItem = 700
+        });
+
+        Assert.False(result.Successful);
+        Assert.Contains("Market", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task TradeItem_BattleLootTake_VictorOnly()
+    {
+        // The victor (the arc's owner) takes freely; anyone else is refused even at
+        // price 0 — battle drops are private remains.
+        var victor = CreateTestAvatar(BattleVictorId);
+        var characterInstanceId = await SpawnMerchant(BattleVictorId, "VictorSpoils");
+
+        var victorTake = await _mediator.Send(new TradeItemCommand
+        {
+            AvatarId = BattleVictorId,
+            Avatar = victor,
+            ArcRef = "VictorSpoils",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 0
+        });
+        Assert.True(victorTake.Successful, $"Victor take failed: {victorTake.ErrorMessage}");
+
+        // The stranger gets their own spawned instance (the test repository is
+        // per-avatar) so the victor-only RULE is what rejects, not a missing character.
+        var strangerId = Guid.NewGuid();
+        var strangerCharacterId = await SpawnMerchant(strangerId, "VictorSpoils");
+        var strangerTake = await _mediator.Send(new TradeItemCommand
+        {
+            AvatarId = strangerId,
+            Avatar = CreateTestAvatar(strangerId),
+            ArcRef = "VictorSpoils",
+            CharacterInstanceId = strangerCharacterId,
+            ItemRef = "HealthPotion",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 0
+        });
+        Assert.False(strangerTake.Successful);
+        Assert.Contains("victor", strangerTake.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task TradeItem_NonVictorTakeFromDefeatedCharacter_Rejected()
+    {
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+        // Someone ELSE defeated the character
+        await DefeatCharacter(avatarId, "VillageMerchant", characterInstanceId, victorAvatarId: Guid.NewGuid());
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 0
+        };
+
+        var result = await _mediator.Send(command);
+
+        Assert.False(result.Successful);
+        Assert.Contains("defeated", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task TradeItem_ZeroPriceSellToDefeatedCharacter_Rejected()
+    {
+        // Even the victor cannot deposit INTO the corpse — free-take is buy-only
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        avatar.Capabilities.Consumables = new[]
+        {
+            new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 5 }
+        };
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+        await DefeatCharacter(avatarId, "VillageMerchant", characterInstanceId, victorAvatarId: avatarId);
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 1,
+            IsBuying = false,
+            PricePerItem = 0
+        };
+
+        var result = await _mediator.Send(command);
+
+        Assert.False(result.Successful);
+        Assert.Contains("defeated", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task TradeItem_SellToMerchant_CreatesItemTradedTransaction()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+
+        // Give avatar some HealthPotions to sell
+        avatar.Capabilities.Consumables = new[]
+        {
+            new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 5 }
+        };
+
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 2,
+            IsBuying = false, // Selling
+            PricePerItem = 40 // Sell price (usually lower than buy price)
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.True(result.Successful, $"Command failed: {result.ErrorMessage}");
+
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "VillageMerchant");
+        var tradeTx = instance.GetCommittedTransactions()
+            .FirstOrDefault(t => t.Type == ArcTransactionType.ItemTraded);
+
+        Assert.NotNull(tradeTx);
+        Assert.Equal("False", tradeTx.Data["IsBuying"]);
+        Assert.Equal("80", tradeTx.Data["TotalPrice"]); // 2 * 40
+    }
+
+    [Fact]
+    public async Task TradeItem_MultipleTrades_AllTracked()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        // Act - Perform multiple trades
+        await _mediator.Send(new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 50
+        });
+
+        await _mediator.Send(new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 2,
+            IsBuying = true,
+            PricePerItem = 50
+        });
+
+        // Assert
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "VillageMerchant");
+        var tradeTransactions = instance.GetCommittedTransactions()
+            .Where(t => t.Type == ArcTransactionType.ItemTraded)
+            .ToList();
+
+        Assert.Equal(2, tradeTransactions.Count);
+
+        // Verify sequence numbers are properly ordered
+        Assert.True(tradeTransactions[0].SequenceNumber < tradeTransactions[1].SequenceNumber);
+    }
+
+    [Fact]
+    public async Task TradeItem_NonExistentCharacter_ReturnsFailure()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var fakeCharacterInstanceId = Guid.NewGuid();
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = fakeCharacterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 50
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.False(result.Successful);
+        Assert.Contains("not found", result.ErrorMessage, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task TradeItem_InvalidArcRef_ReturnsFailure()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = Guid.NewGuid();
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "NonExistentArc",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 50
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.False(result.Successful);
+        Assert.Contains("not found", result.ErrorMessage, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task TradeItem_ZeroQuantity_ReturnsFailure()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 0, // Invalid
+            IsBuying = true,
+            PricePerItem = 50
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.False(result.Successful);
+        Assert.Contains("quantity", result.ErrorMessage, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task TradeItem_PipelineExecutes_TransactionsCommitted()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 50
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.True(result.Successful);
+
+        // Verify all transactions are committed, not pending
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "VillageMerchant");
+        Assert.All(instance.Transactions, tx =>
+            Assert.Equal(TransactionStatus.Committed, tx.Status));
+
+        Assert.All(instance.Transactions, tx =>
+            Assert.NotNull(tx.ServerTimestamp));
+    }
+
+    [Fact]
+    public async Task TradeItem_BuyBelowCatalogPrice_Rejected()
+    {
+        // Arrange — IronSword: BaseValue 100 × default markup 1.5 = 150 buy price.
+        // The client-supplied price is server-validated against the catalog now.
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 50 // tampered: far below the server-computed 150
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.False(result.Successful);
+        Assert.Contains("Price mismatch", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task TradeItem_BuyAtCatalogPrice_Succeeds()
+    {
+        // Arrange — the honest price: 100 × 1.5 markup = 150
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 200
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.True(result.Successful, $"Command failed: {result.ErrorMessage}");
+    }
+
+    [Fact]
+    public async Task TradeItem_SellAboveCatalogPrice_Rejected()
+    {
+        // Arrange — avatar owns an IronSword; sell price is the BaseValue 100
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        avatar.Capabilities.Equipment = new[]
+        {
+            new EquipmentEntry { EquipmentRef = "IronSword", Condition = 0.8f }
+        };
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            ArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword",
+            Quantity = 1,
+            IsBuying = false,
+            PricePerItem = 9999 // tampered: sell far above the catalog's 100
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.False(result.Successful);
+        Assert.Contains("Price mismatch", result.ErrorMessage);
+    }
+
+    public void Dispose()
+    {
+        _database?.Dispose();
+        _serviceProvider?.Dispose();
+    }
+}

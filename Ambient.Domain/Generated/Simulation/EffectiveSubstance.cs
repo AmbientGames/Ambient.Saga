@@ -22,7 +22,7 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class EffectiveSubstance {
         
-        private string substanceRefField;
+        private SubstanceType substanceField;
         
         private float effectivenessMultiplierField;
         
@@ -32,12 +32,12 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string SubstanceRef {
+        public SubstanceType Substance {
             get {
-                return this.substanceRefField;
+                return this.substanceField;
             }
             set {
-                this.substanceRefField = value;
+                this.substanceField = value;
             }
         }
         

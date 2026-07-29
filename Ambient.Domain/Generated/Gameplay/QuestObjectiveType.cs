@@ -30,7 +30,7 @@ namespace Ambient.Domain {
         CharactersDefeatedAtTrigger,
         
         /// <remarks/>
-        SagaDiscovered,
+        ArcDiscovered,
         
         /// <remarks/>
         LocationReached,

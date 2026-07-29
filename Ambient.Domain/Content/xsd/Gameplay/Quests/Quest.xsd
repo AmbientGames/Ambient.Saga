@@ -64,12 +64,12 @@
             </xs:enumeration>
             <xs:enumeration value="CharactersDefeatedAtTrigger">
                 <xs:annotation>
-                    <xs:documentation>A number of characters spawned by a specific saga trigger (TriggerRef) must be defeated — "defeat the guardian at this site". Site-scoped, unlike tag/type matching which counts qualifying defeats anywhere.</xs:documentation>
+                    <xs:documentation>A number of characters spawned by a specific saga trigger (TriggerRef) must be defeated — "defeat the guardian at this site". Site-scoped, unlike CharacterRef/Trait matching which counts qualifying defeats anywhere.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
 
             <!-- Discovery objectives -->
-            <xs:enumeration value="SagaDiscovered">
+            <xs:enumeration value="ArcDiscovered">
                 <xs:annotation>
                     <xs:documentation>The avatar must discover a specific saga arc.</xs:documentation>
                 </xs:annotation>
@@ -214,7 +214,7 @@
                 <xs:documentation>References the map location that must be reached.</xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="SagaArcRef" type="xs:string" use="optional">
+        <xs:attribute name="ArcRef" type="xs:string" use="optional">
             <xs:annotation>
                 <xs:documentation>References the saga arc that must be discovered.</xs:documentation>
             </xs:annotation>

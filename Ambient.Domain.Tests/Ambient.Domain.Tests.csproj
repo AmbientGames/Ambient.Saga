@@ -36,7 +36,7 @@
     </ItemGroup>
 
 	<ItemGroup>
-		<SandboxContent Include="..\Ambient.Saga.Sandbox.DirectX\content\**\*" />
+		<SandboxContent Include="..\Ambient.Rpg.Sandbox.DirectX\content\**\*" />
 	</ItemGroup>
 
 	<Target Name="CopySandboxContent" AfterTargets="Build" Condition="'$(DesignTimeBuild)'!='true' and '$(TargetDir)'!=''">

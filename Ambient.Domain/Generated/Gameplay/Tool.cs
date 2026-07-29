@@ -34,7 +34,7 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("Substance", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("Effective", IsNullable=false)]
         public EffectiveSubstance[] EffectiveSubstances {
             get {
                 return this.effectiveSubstancesField;

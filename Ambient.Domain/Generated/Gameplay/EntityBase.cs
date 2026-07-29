@@ -15,8 +15,8 @@
 namespace Ambient.Domain {
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(SagaArc))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(SagaTrigger))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Arc))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ArcTrigger))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AvatarArchetype))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Faction))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StatusEffect))]

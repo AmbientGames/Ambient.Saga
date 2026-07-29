@@ -155,8 +155,8 @@ public static class WorldValidationService
     private static void ValidateQuestItemReferences(IWorld world, List<string> errors)
     {
         // Build a map of quest keys to entities that provide them
-        // Quest tokens are on: Characters and SagaTriggers
-        // (Sagas are spatial organizers containing triggers)
+        // Quest tokens are on: Characters and ArcTriggers
+        // (Arcs are spatial organizers containing triggers)
         var QuestTokenProviders = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
 
         // Scan all characters to see what quest keys they have or give
@@ -189,25 +189,25 @@ public static class WorldValidationService
             }
         }
 
-        // Validate Saga character associations and structure
-        if (world.Gameplay.SagaArcs != null)
+        // Validate Arc character associations and structure
+        if (world.Gameplay.Saga != null)
         {
-            foreach (var saga in world.Gameplay.SagaArcs)
+            foreach (var arc in world.Gameplay.Saga)
             {
-                var sagaContext = $"Saga '{saga.RefName}'";
+                var arcContext = $"Arc '{arc.RefName}'";
 
                 // Validate inline triggers
-                if (saga.SagaTrigger != null)
+                if (arc.ArcTrigger != null)
                 {
-                    foreach (var sagaTrigger in saga.SagaTrigger)
+                    foreach (var arcTrigger in arc.ArcTrigger)
                     {
-                        var triggerContext = $"{sagaContext} Trigger '{sagaTrigger.RefName}'";
+                        var triggerContext = $"{arcContext} Trigger '{arcTrigger.RefName}'";
 
-                        ValidateSagaTriggerQuestTokens(world, errors, triggerContext, sagaTrigger);
+                        ValidateArcTriggerQuestTokens(world, errors, triggerContext, arcTrigger);
 
-                        if (sagaTrigger.Spawn != null)
+                        if (arcTrigger.Spawn != null)
                         {
-                            foreach (var spawn in sagaTrigger.Spawn)
+                            foreach (var spawn in arcTrigger.Spawn)
                             {
                                 ValidateCharacterSpawn(world, errors, triggerContext, spawn);
                             }
@@ -218,7 +218,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateSagaTriggerQuestTokens(IWorld world, List<string> errors, string context, SagaTrigger trigger)
+    private static void ValidateArcTriggerQuestTokens(IWorld world, List<string> errors, string context, ArcTrigger trigger)
     {
         if (trigger == null) return;
 
@@ -310,6 +310,41 @@ public static class WorldValidationService
                     {
                         ValidateReference(world.CharacterAffinitiesLookup, matchup.TargetAffinityRef, affinityContext, "Matchup.TargetAffinityRef", "CharacterAffinities", errors);
                     }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Spell.AffinityRef and Equipment.AffinityRef must resolve to the world's affinity
+    /// catalog. EffectApplier.CalculateAffinityMultiplier returns 1.0 on unknown refs and
+    /// the battle engine prefers spell.AffinityRef over the caster's, so a bogus ref both
+    /// no-ops the affinity math AND masks the caster's real affinity (audit H11 —
+    /// AffinityRef="Nature" shipped in every world unnoticed).
+    /// Lives in the CI-only playability gate, not ValidateReferentialIntegrity:
+    /// the vendored Arc TestContent worlds (Ise/Kagoshima) still carry the legacy
+    /// ref and must keep loading (same split as the quest playability checks).
+    /// </summary>
+    private static void ValidateAcquirableAffinityReferences(IWorld world, List<string> errors)
+    {
+        if (world.Gameplay.Spells != null)
+        {
+            foreach (var spell in world.Gameplay.Spells)
+            {
+                if (!string.IsNullOrEmpty(spell.AffinityRef))
+                {
+                    ValidateReference(world.CharacterAffinitiesLookup, spell.AffinityRef, $"Spell '{spell.RefName}'", "AffinityRef", "CharacterAffinities", errors);
+                }
+            }
+        }
+
+        if (world.Gameplay.Equipment != null)
+        {
+            foreach (var equipment in world.Gameplay.Equipment)
+            {
+                if (!string.IsNullOrEmpty(equipment.AffinityRef))
+                {
+                    ValidateReference(world.CharacterAffinitiesLookup, equipment.AffinityRef, $"Equipment '{equipment.RefName}'", "AffinityRef", "CharacterAffinities", errors);
                 }
             }
         }
@@ -1212,12 +1247,12 @@ public static class WorldValidationService
                 }
             }
 
-            // Validate SagaArcRef (used by SagasDiscovered, SagasCompleted with filter)
-            if (!string.IsNullOrEmpty(criteria.SagaArcRef))
+            // Validate ArcRef (used by ArcsDiscovered, ArcsCompleted with filter)
+            if (!string.IsNullOrEmpty(criteria.ArcRef))
             {
-                if (!world.SagaArcLookup.ContainsKey(criteria.SagaArcRef))
+                if (!world.ArcLookup.ContainsKey(criteria.ArcRef))
                 {
-                    errors.Add($"{achievementContext}: SagaRef '{criteria.SagaArcRef}' not found in Sagas catalog");
+                    errors.Add($"{achievementContext}: ArcRef '{criteria.ArcRef}' not found in Arcs catalog");
                 }
             }
 
@@ -1461,9 +1496,9 @@ public static class WorldValidationService
 
     private static void ValidateGameplayHeuristics(IWorld world, List<string> errors)
     {
-        // Validate that characters spawned in Sagas have dialogue configured
+        // Validate that characters spawned in Arcs have dialogue configured
         // (unless they have the Ambient or BossFight trait - ambient NPCs and pure boss enemies may not need dialogue)
-        ValidateSagaCharactersHaveDialogue(world, errors);
+        ValidateArcCharactersHaveDialogue(world, errors);
 
         // Track where quest tokens are granted (for duplicate grant detection)
         var tokenGrants = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
@@ -1645,25 +1680,25 @@ public static class WorldValidationService
     }
 
     /// <summary>
-    /// Validates that characters spawned in Sagas have dialogue configured.
+    /// Validates that characters spawned in Arcs have dialogue configured.
     /// Characters without dialogue cannot be interacted with properly.
     ///
     /// Exceptions:
     /// - Characters with BossFight trait AND Hostile trait (pure combat enemies - but should have BattleDialogue)
     /// - Characters with Friendly trait set to 0 (unfriendly background NPCs)
     /// </summary>
-    private static void ValidateSagaCharactersHaveDialogue(IWorld world, List<string> errors)
+    private static void ValidateArcCharactersHaveDialogue(IWorld world, List<string> errors)
     {
-        if (world.Gameplay.SagaArcs == null) return;
+        if (world.Gameplay.Saga == null) return;
 
-        // Collect all CharacterRefs spawned in any Saga
+        // Collect all CharacterRefs spawned in any Arc
         var spawnedCharacterRefs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var saga in world.Gameplay.SagaArcs)
+        foreach (var arc in world.Gameplay.Saga)
         {
-            if (saga.SagaTrigger == null) continue;
+            if (arc.ArcTrigger == null) continue;
 
-            foreach (var trigger in saga.SagaTrigger)
+            foreach (var trigger in arc.ArcTrigger)
             {
                 CollectSpawnedCharacters(trigger, spawnedCharacterRefs);
             }
@@ -1675,7 +1710,7 @@ public static class WorldValidationService
             if (!world.CharactersLookup.TryGetValue(charRef, out var character))
                 continue; // Already validated in ValidateCharacterSpawn
 
-            var context = $"Character '{charRef}' (spawned in Saga)";
+            var context = $"Character '{charRef}' (spawned in Arc)";
 
             // Check for exemptions
             var isBossFight = character.CarriesTrait(CharacterTraitType.BossFight);
@@ -1712,7 +1747,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void CollectSpawnedCharacters(SagaTrigger trigger, HashSet<string> characterRefs)
+    private static void CollectSpawnedCharacters(ArcTrigger trigger, HashSet<string> characterRefs)
     {
         if (trigger.Spawn == null) return;
 
@@ -1740,6 +1775,7 @@ public static class WorldValidationService
         ValidateQuestObjectives(world, errors);
         ValidateQuestRewards(world, errors);
         ValidateQuestAcceptance(world, errors);
+        ValidateAcquirableAffinityReferences(world, errors);
 
         if (errors.Count > 0)
         {
@@ -1824,7 +1860,7 @@ public static class WorldValidationService
                     }
                     else if (!content.FightableCharacters.Contains(objective.CharacterRef))
                     {
-                        errors.Add($"{context}: CharacterRef '{objective.CharacterRef}' is never spawned by a saga trigger or dialogue action, so it can never be defeated");
+                        errors.Add($"{context}: CharacterRef '{objective.CharacterRef}' is never spawned by an arc trigger or dialogue action, so it can never be defeated");
                     }
                     else if (!content.RespawningCharacters.Contains(objective.CharacterRef) &&
                              content.SpawnSupply.GetValueOrDefault(objective.CharacterRef) < objective.Threshold)
@@ -1852,7 +1888,7 @@ public static class WorldValidationService
                 }
                 else if (!content.TriggerRefs.Contains(objective.TriggerRef))
                 {
-                    errors.Add($"{context}: TriggerRef '{objective.TriggerRef}' matches no SagaTrigger RefName");
+                    errors.Add($"{context}: TriggerRef '{objective.TriggerRef}' matches no ArcTrigger RefName");
                 }
                 else if (!content.TriggersWithFightableSpawns.Contains(objective.TriggerRef))
                 {
@@ -1939,30 +1975,46 @@ public static class WorldValidationService
                 }
                 else if (!content.GrantedTokens.Contains(tokenRef))
                 {
-                    errors.Add($"{context}: QuestToken '{tokenRef}' is never granted by any dialogue action, saga trigger, or character, so the objective can never complete");
+                    errors.Add($"{context}: QuestToken '{tokenRef}' is never granted by any dialogue action, arc trigger, or character, so the objective can never complete");
                 }
                 break;
 
-            case QuestObjectiveType.SagaDiscovered:
-                if (!string.IsNullOrEmpty(objective.SagaArcRef) && !world.SagaArcLookup.ContainsKey(objective.SagaArcRef))
+            case QuestObjectiveType.ArcDiscovered:
+                if (!string.IsNullOrEmpty(objective.ArcRef) && !world.ArcLookup.ContainsKey(objective.ArcRef))
                 {
-                    errors.Add($"{context}: SagaArcRef '{objective.SagaArcRef}' not found in SagaArcs");
+                    errors.Add($"{context}: ArcRef '{objective.ArcRef}' not found in the saga");
                 }
                 break;
 
             case QuestObjectiveType.LocationReached:
-                // LocationRef, when present, must name a saga trigger (the evaluator
-                // matches it against SagaTriggerRef on TriggerActivated transactions)
-                if (!string.IsNullOrEmpty(objective.LocationRef) && !content.TriggerRefs.Contains(objective.LocationRef))
+                // LocationRef, when present, must name an arc trigger (the evaluator
+                // matches it against ArcTriggerRef on TriggerActivated transactions)
+                if (!string.IsNullOrEmpty(objective.LocationRef))
                 {
-                    errors.Add($"{context}: LocationRef '{objective.LocationRef}' matches no SagaTrigger RefName");
+                    if (!content.TriggerRefs.Contains(objective.LocationRef))
+                    {
+                        errors.Add($"{context}: LocationRef '{objective.LocationRef}' matches no ArcTrigger RefName");
+                    }
+                }
+                else if (!string.IsNullOrEmpty(objective.ArcRef))
+                {
+                    // The evaluator scopes matching to the target arc's triggers and
+                    // fails closed on an arc that resolves to none
+                    if (!world.ArcTriggersLookup.TryGetValue(objective.ArcRef, out var arcTriggers) || arcTriggers.Count == 0)
+                    {
+                        errors.Add($"{context}: ArcRef '{objective.ArcRef}' resolves to no arc triggers, so the objective can never complete");
+                    }
+                }
+                else
+                {
+                    errors.Add($"{context}: needs LocationRef or ArcRef — with neither, ANY trigger activation anywhere satisfies it");
                 }
                 break;
 
             case QuestObjectiveType.TriggerActivated:
                 if (!string.IsNullOrEmpty(objective.TriggerRef) && !content.TriggerRefs.Contains(objective.TriggerRef))
                 {
-                    errors.Add($"{context}: TriggerRef '{objective.TriggerRef}' matches no SagaTrigger RefName");
+                    errors.Add($"{context}: TriggerRef '{objective.TriggerRef}' matches no ArcTrigger RefName");
                 }
                 break;
 
@@ -2186,13 +2238,13 @@ public static class WorldValidationService
         {
             var index = new WorldContentIndex();
 
-            if (world.Gameplay.SagaArcs != null)
+            if (world.Gameplay.Saga != null)
             {
-                foreach (var saga in world.Gameplay.SagaArcs)
+                foreach (var arc in world.Gameplay.Saga)
                 {
-                    if (saga.SagaTrigger == null) continue;
+                    if (arc.ArcTrigger == null) continue;
 
-                    foreach (var trigger in saga.SagaTrigger)
+                    foreach (var trigger in arc.ArcTrigger)
                     {
                         if (!string.IsNullOrEmpty(trigger.RefName))
                             index.TriggerRefs.Add(trigger.RefName);
@@ -2267,6 +2319,13 @@ public static class WorldValidationService
                     if (character.Interactable?.GivesQuestTokenRef != null)
                     {
                         foreach (var token in character.Interactable.GivesQuestTokenRef.Where(t => !string.IsNullOrEmpty(t)))
+                            index.GrantedTokens.Add(token);
+                    }
+
+                    // Defeat-granted tokens are producers too (awarded via DefeatCharacterHandler).
+                    if (character.GivesQuestTokenOnDefeat != null)
+                    {
+                        foreach (var token in character.GivesQuestTokenOnDefeat.Where(t => !string.IsNullOrEmpty(t)))
                             index.GrantedTokens.Add(token);
                     }
 

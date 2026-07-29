@@ -18,7 +18,7 @@ public interface IBlock : ITradeable
     string? TextureRef { get; }
 
     /// <summary>
-    /// Optional substance type (e.g., "Stone", "Wood", "Metal") for categorization.
+    /// The substance the block is made of (e.g. Stone, Wood, Metal) for categorization.
     /// </summary>
-    string? SubstanceRef { get; }
+    SubstanceType Substance { get; }
 }

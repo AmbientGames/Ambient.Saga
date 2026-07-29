@@ -235,7 +235,7 @@ public static class ItemCollectionExtensions
     /// </summary>
     public static bool TryGetCompatibleBuildingMaterial(
         this ItemCollection collection,
-        string substanceRefName,
+        SubstanceType substance,
         BuildingMaterial[] buildingMaterialDefinitions,
         [NotNullWhen(true)] out BuildingMaterialEntry? material)
     {
@@ -252,7 +252,7 @@ public static class ItemCollectionExtensions
             if (definition?.CompatibleSubstances == null)
                 continue;
 
-            if (Array.Exists(definition.CompatibleSubstances, s => s.SubstanceRef == substanceRefName))
+            if (Array.Exists(definition.CompatibleSubstances, s => s.Substance == substance))
             {
                 material = entry;
                 return true;

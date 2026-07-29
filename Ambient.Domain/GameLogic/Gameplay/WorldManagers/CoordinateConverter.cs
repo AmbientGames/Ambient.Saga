@@ -264,59 +264,59 @@ public static class CoordinateConverter
     }
 
     // ============================================================================
-    // Saga-Relative Coordinate Conversions
+    // Arc-Relative Coordinate Conversions
     // ============================================================================
 
     /// <summary>
-    /// Converts Saga-relative X coordinate (meters from Saga center) to world longitude.
+    /// Converts Arc-relative X coordinate (meters from Arc center) to world longitude.
     /// </summary>
-    public static double SagaRelativeXToLongitude(double sagaRelativeX, double sagaCenterLongitude, IWorld world)
+    public static double ArcRelativeXToLongitude(double arcRelativeX, double arcCenterLongitude, IWorld world)
     {
-        // Convert Saga center to model coordinates
-        var sagaCenterModelX = LongitudeToModelX(sagaCenterLongitude, world);
+        // Convert Arc center to model coordinates
+        var arcCenterModelX = LongitudeToModelX(arcCenterLongitude, world);
 
         // Convert meters to model units
         var horizontalScale = world.IsProcedural ? 1.0 : world.WorldConfiguration.HeightMapSettings.HorizontalScale;
-        var offsetInModelUnits = sagaRelativeX * horizontalScale;
+        var offsetInModelUnits = arcRelativeX * horizontalScale;
 
         // Add offset in model space
-        var characterModelX = sagaCenterModelX + offsetInModelUnits;
+        var characterModelX = arcCenterModelX + offsetInModelUnits;
 
         // Convert back to world longitude
         return ModelXToLongitude(characterModelX, world);
     }
 
     /// <summary>
-    /// Converts Saga-relative Z coordinate (meters from Saga center) to world latitude.
+    /// Converts Arc-relative Z coordinate (meters from Arc center) to world latitude.
     /// </summary>
-    public static double SagaRelativeZToLatitude(double sagaRelativeZ, double sagaCenterLatitude, IWorld world)
+    public static double ArcRelativeZToLatitude(double arcRelativeZ, double arcCenterLatitude, IWorld world)
     {
-        // Convert Saga center to model coordinates
-        var sagaCenterModelZ = LatitudeToModelZ(sagaCenterLatitude, world);
+        // Convert Arc center to model coordinates
+        var arcCenterModelZ = LatitudeToModelZ(arcCenterLatitude, world);
 
         // Convert meters to model units
         var horizontalScale = world.IsProcedural ? 1.0 : world.WorldConfiguration.HeightMapSettings.HorizontalScale;
-        var offsetInModelUnits = sagaRelativeZ * horizontalScale;
+        var offsetInModelUnits = arcRelativeZ * horizontalScale;
 
         // Add offset in model space
-        var characterModelZ = sagaCenterModelZ + offsetInModelUnits;
+        var characterModelZ = arcCenterModelZ + offsetInModelUnits;
 
         // Convert back to world latitude
         return ModelZToLatitude(characterModelZ, world);
     }
 
     /// <summary>
-    /// Converts world longitude to Saga-relative X coordinate (meters from Saga center).
+    /// Converts world longitude to Arc-relative X coordinate (meters from Arc center).
     /// Returns real meters, not model units.
     /// </summary>
-    public static double LongitudeToSagaRelativeX(double longitude, double sagaCenterLongitude, IWorld world)
+    public static double LongitudeToArcRelativeX(double longitude, double arcCenterLongitude, IWorld world)
     {
         // Convert both to model coordinates
         var pointModelX = LongitudeToModelX(longitude, world);
-        var sagaCenterModelX = LongitudeToModelX(sagaCenterLongitude, world);
+        var arcCenterModelX = LongitudeToModelX(arcCenterLongitude, world);
 
         // Model offset
-        var modelOffset = pointModelX - sagaCenterModelX;
+        var modelOffset = pointModelX - arcCenterModelX;
 
         // Convert from model units to meters
         var horizontalScale = world.IsProcedural ? 1.0 : world.WorldConfiguration.HeightMapSettings.HorizontalScale;
@@ -324,17 +324,17 @@ public static class CoordinateConverter
     }
 
     /// <summary>
-    /// Converts world latitude to Saga-relative Z coordinate (meters from Saga center).
+    /// Converts world latitude to Arc-relative Z coordinate (meters from Arc center).
     /// Returns real meters, not model units.
     /// </summary>
-    public static double LatitudeToSagaRelativeZ(double latitude, double sagaCenterLatitude, IWorld world)
+    public static double LatitudeToArcRelativeZ(double latitude, double arcCenterLatitude, IWorld world)
     {
         // Convert both to model coordinates
         var pointModelZ = LatitudeToModelZ(latitude, world);
-        var sagaCenterModelZ = LatitudeToModelZ(sagaCenterLatitude, world);
+        var arcCenterModelZ = LatitudeToModelZ(arcCenterLatitude, world);
 
         // Model offset
-        var modelOffset = pointModelZ - sagaCenterModelZ;
+        var modelOffset = pointModelZ - arcCenterModelZ;
 
         // Convert from model units to meters
         var horizontalScale = world.IsProcedural ? 1.0 : world.WorldConfiguration.HeightMapSettings.HorizontalScale;

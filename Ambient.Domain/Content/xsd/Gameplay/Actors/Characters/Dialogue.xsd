@@ -512,7 +512,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="TradeDiscount">
 				<xs:annotation>
-					<xs:documentation>Percentage discount this merchant applies to trade prices.</xs:documentation>
+					<xs:documentation>Discount this merchant applies to trade prices. The trait Value is the discount percent (0-100): Value="20" means prices are reduced by 20%. The trade engine reads the numeric Value directly; the trait's presence alone grants nothing.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<!-- Bargaining/Trade Traits -->
@@ -528,7 +528,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="NegotiatedDiscount">
 				<xs:annotation>
-					<xs:documentation>Final negotiated discount percentage after bargaining</xs:documentation>
+					<xs:documentation>Discount percent (0-100) locked in by bargaining. Assigned via an AssignTrait dialogue action whose Value is the percent (e.g. Value="15" = 15% off); the trade engine applies that numeric Value to this merchant's prices on subsequent trades.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<!-- Battle Behavior Traits -->

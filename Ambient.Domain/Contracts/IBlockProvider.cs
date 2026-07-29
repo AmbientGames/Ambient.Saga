@@ -25,5 +25,5 @@ public interface IBlockProvider
     /// </summary>
     /// <param name="substanceRef">The substance type to filter by (e.g., "Stone", "Wood").</param>
     /// <returns>Blocks matching the specified substance.</returns>
-    IEnumerable<IBlock> GetBlocksBySubstance(string substanceRef);
+    IEnumerable<IBlock> GetBlocksBySubstance(SubstanceType substance);
 }

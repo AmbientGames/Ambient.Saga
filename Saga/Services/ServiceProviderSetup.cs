@@ -1,0 +1,308 @@
+using Ambient.Application.Contracts;
+using Ambient.Domain.Contracts;
+using Ambient.Domain.Enums;
+using Ambient.Infrastructure.GameLogic;
+using Ambient.Infrastructure.GameLogic.Loading;
+using Ambient.Infrastructure.Logging;
+using Ambient.Rpg.Engine.Application.Behaviors;
+using Ambient.Rpg.Engine.Application.Commands.Arcs;
+using Ambient.Rpg.Engine.Application.ReadModels;
+using Ambient.Rpg.Engine.Application.Services;
+using Ambient.Rpg.Engine.Contracts;
+using Ambient.Rpg.Engine.Contracts.Services;
+using Ambient.Rpg.Engine.Infrastructure.Persistence;
+using Ambient.Rpg.Presentation.UI.ViewModels;
+using Ambient.Saga;
+using Ambient.Saga.WorldContentGenerators;
+using Ambient.Saga.WindowsUI;
+using Ambient.Rpg.Ui.Components.Modals;
+using Ambient.Rpg.Ui.Services;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Steamworks;
+
+namespace Ambient.Saga.Services
+{
+    /// <summary>
+    /// Configures dependency injection for the Sandbox application.
+    /// Mirrors the setup from Ambient.Schema.Sandbox/App.xaml.cs
+    /// </summary>
+    public static class ServiceProviderSetup
+    {
+        public static bool IsSteamInitialized { get; private set; }
+        public static bool SteamStatsReceived { get; private set; }
+
+        private static Callback<UserStatsReceived_t>? _userStatsReceived;
+        private static System.Windows.Forms.Timer? _callbacksTimer;
+        private static TaskCompletionSource<bool>? _statsTcs;
+
+        /// <summary>
+        /// Build the service provider with all dependencies
+        /// </summary>
+        public static ServiceProvider BuildServiceProvider()
+        {
+            var services = new ServiceCollection();
+
+            // Create game settings first - needed for logging path configuration
+            var gameSettings = new GameSettings(PublisherDefaults.PublisherFolder, "Saga");
+
+            // Configure application services
+            ConfigureAppServices(services);
+            ConfigureLogging(services, gameSettings);
+            ConfigureGameplayServices(services, gameSettings);
+            ConfigureSandboxServices(services);
+
+            return services.BuildServiceProvider(new ServiceProviderOptions
+            {
+                ValidateScopes = true,
+                ValidateOnBuild = true
+            });
+        }
+
+        private static void ConfigureAppServices(IServiceCollection services)
+        {
+            // Windows and ViewModels
+            services.AddTransient<MainWindow>();
+            services.AddTransient<RpgMainViewModel>();
+
+            // Archetype selectors - keyed services for WPF and ImGui
+            //services.AddKeyedSingleton<IArchetypeSelector, WpfArchetypeSelector>("wpf");
+
+            // ImGui archetype selector (registered separately to wire up circular dependency)
+            services.AddSingleton<ImGuiArchetypeSelector>();
+            services.AddKeyedSingleton<IArchetypeSelector>(
+                "imgui",
+                (sp, key) => sp.GetRequiredService<ImGuiArchetypeSelector>());
+
+            // Avatar creation — offline for Saga sandbox
+            services.AddSingleton<Ambient.Domain.Contracts.IAvatarCreationService, AvatarCreationServiceOffline>();
+
+            // World content generator (mock implementation)
+            services.AddSingleton<IWorldContentGenerator, MockWorldContentGenerator>();
+
+            // Block provider (mock implementation with sample blocks for UI demonstration)
+            services.AddSingleton<IBlockProvider, MockBlockProvider>();
+
+            // Modal manager for ImGui archetype selector (with circular dependency resolution)
+            services.AddSingleton(sp =>
+            {
+                var selector = sp.GetRequiredService<ImGuiArchetypeSelector>();
+                var mediator = sp.GetRequiredService<IMediator>();
+                var worldContentGenerator = sp.GetRequiredService<IWorldContentGenerator>();
+                var gameSettings = sp.GetRequiredService<IGameSettings>();
+                var loggerFactory = sp.GetService<ILoggerFactory>();
+                var modalManager = new ModalManager(selector, mediator, worldContentGenerator, gameSettings, null, loggerFactory);
+                selector.SetModalManager(modalManager); // Wire up circular reference
+                return modalManager;
+            });
+
+            services.AddSingleton<Ambient.Rpg.Ui.Components.Panels.PanelManager>();
+            services.AddSingleton<Ambient.Rpg.Ui.Components.GameplayOverlay>();
+
+            // World Map UI for Tab 3
+            services.AddTransient<WorldMapUI>();
+        }
+
+        private static void ConfigureLogging(IServiceCollection services, IGameSettings gameSettings)
+        {
+            // Build log file path: %APPDATA%/{PublisherFolder}/{GameName}/logs/latest.log
+            var logDirectory = Path.Combine(gameSettings.GetAppDataBasePath(), "logs");
+            var logFilePath = Path.Combine(logDirectory, "latest.log");
+
+            services.AddLogging(configure =>
+            {
+                configure.AddConsole();
+                configure.AddDebug();
+                configure.AddFile(logFilePath, LogLevel.Information, clearOnStart: true);
+                configure.SetMinimumLevel(LogLevel.Information);
+            });
+        }
+
+        private static void ConfigureGameplayServices(IServiceCollection services, IGameSettings gameSettings)
+        {
+            // Game settings - core configuration for paths and game identity
+            // Provided by the consuming application (test exe defines the game name)
+            services.AddSingleton(gameSettings);
+
+            // Content path resolver - uses game settings for AppData paths
+            services.AddSingleton<IContentPathResolver, ContentPathResolver>();
+
+            // World factory - creates World instances for loading
+            services.AddSingleton<IWorldFactory, WorldFactory>();
+
+            // Gameplay component loader - loads XML content using content path resolver
+            services.AddSingleton<IGameplayComponentLoader, GameplayComponentLoader>();
+
+            // World configuration and asset loaders
+            services.AddSingleton<IWorldConfigurationLoader, WorldConfigurationLoader>();
+            services.AddSingleton<IWorldLoader, WorldAssetLoader>();
+
+            // MediatR for CQRS
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssemblyContaining<UpdateAvatarPositionCommand>();
+
+                // Register pipeline behaviors (run in order)
+                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                cfg.AddOpenBehavior(typeof(AchievementEvaluationBehavior<,>));
+                cfg.AddOpenBehavior(typeof(QuestStageProgressionBehavior<,>));
+            });
+
+            // Repository factory (creates repositories when world loads)
+            services.AddSingleton<IWorldRepositoryFactory, WorldRepositoryFactory>();
+
+            // Saga repositories
+            services.AddSingleton<IArcReadModelRepository, InMemoryArcReadModelRepository>();
+
+            // IArcInstanceRepository factory - will be configured by MainViewModel when world loads
+            services.AddSingleton<ArcInstanceRepositoryProvider>();
+            services.AddSingleton(sp =>
+                sp.GetRequiredService<ArcInstanceRepositoryProvider>().Repository);
+
+            // IAvatarProgressRepository factory - will be configured by MainViewModel when world loads
+            services.AddSingleton<AvatarProgressRepositoryProvider>();
+            services.AddSingleton(sp =>
+                sp.GetRequiredService<AvatarProgressRepositoryProvider>().Repository);
+
+            // World provider - will be configured by MainViewModel when world loads
+            // Returns null until world is loaded - handlers must check for null
+            // Inject BlockProvider to enable block trading and catalog features
+            services.AddSingleton(sp => new WorldProvider(sp.GetRequiredService<IBlockProvider>()));
+            services.AddSingleton(sp => sp.GetRequiredService<WorldProvider>().World);
+
+            // IGameAvatarRepository factory - will be configured by MainViewModel when world loads
+            services.AddSingleton<GameAvatarRepositoryProvider>();
+            services.AddSingleton(sp =>
+                sp.GetRequiredService<GameAvatarRepositoryProvider>().Repository);
+
+            // IWorldStateRepository factory - will be configured by MainViewModel when world loads
+            services.AddSingleton<WorldStateRepositoryProvider>();
+            services.AddSingleton(sp =>
+                sp.GetRequiredService<WorldStateRepositoryProvider>().Repository);
+
+            // Avatar update service (singleton). Repository and world are accessed lazily
+            // via Func<> so the singleton can be constructed before a world is loaded —
+            // GameAvatarRepositoryProvider.Repository throws until SetRepository is called
+            // on world load, so we must defer the access until method-call time.
+            services.AddSingleton<Func<IGameAvatarRepository>>(sp =>
+                () => sp.GetRequiredService<GameAvatarRepositoryProvider>().Repository);
+            services.AddSingleton<Func<IWorld>>(sp =>
+                () => sp.GetRequiredService<WorldProvider>().World);
+            services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
+        }
+
+        private static void ConfigureSandboxServices(IServiceCollection services)
+        {
+            // Register sandbox-specific services using extension method
+            services.AddSchemaSandboxServices();
+        }
+
+        /// <summary>
+        /// Initialize Steam API (called at application startup)
+        /// </summary>
+        public static void InitializeSteam()
+        {
+            try
+            {
+                IsSteamInitialized = SteamAPI.Init();
+
+                if (IsSteamInitialized)
+                {
+                    var appId = SteamUtils.GetAppID();
+                    var steamUserName = SteamFriends.GetPersonaName();
+                    System.Diagnostics.Debug.WriteLine($"[Steam] Init OK | AppID: {appId} | User: {steamUserName}");
+
+                    // Register stats callback
+                    _userStatsReceived = Callback<UserStatsReceived_t>.Create(OnUserStatsReceived);
+
+                    // Request current stats (asynchronous)
+                    var statsRequested = SteamUserStats.RequestCurrentStats();
+                    System.Diagnostics.Debug.WriteLine($"[Steam] RequestCurrentStats: {statsRequested}");
+
+                    // Pump callbacks regularly using WinForms timer
+                    _callbacksTimer = new System.Windows.Forms.Timer
+                    {
+                        Interval = 100
+                    };
+                    _callbacksTimer.Tick += (_, __) => SteamAPI.RunCallbacks();
+                    _callbacksTimer.Start();
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        "Failed to initialize Steam.\\n\\n" +
+                        "Make sure:\\n" +
+                        "1. Steam client is running\\n" +
+                        "2. steam_appid.txt exists in output directory\\n" +
+                        "3. You're logged into Steam\\n\\n" +
+                        "Application will continue without Steam features.");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Steam initialization error: {ex.Message}");
+                IsSteamInitialized = false;
+            }
+        }
+
+        /// <summary>
+        /// Shutdown Steam API (called at application exit)
+        /// </summary>
+        public static void ShutdownSteam()
+        {
+            if (IsSteamInitialized)
+            {
+                _callbacksTimer?.Stop();
+                _callbacksTimer?.Dispose();
+                SteamAPI.Shutdown();
+            }
+        }
+
+        private static void OnUserStatsReceived(UserStatsReceived_t cb)
+        {
+            if (cb.m_eResult == EResult.k_EResultOK)
+            {
+                SteamStatsReceived = true;
+                _statsTcs?.TrySetResult(true);
+
+                var numAchievements = SteamUserStats.GetNumAchievements();
+                System.Diagnostics.Debug.WriteLine($"[Steam] Stats received | Achievements available: {numAchievements}");
+
+                // Enumerate achievements
+                for (uint i = 0; i < numAchievements; i++)
+                {
+                    var name = SteamUserStats.GetAchievementName(i);
+                    SteamUserStats.GetAchievement(name, out var achieved);
+                    var displayName = SteamUserStats.GetAchievementDisplayAttribute(name, "name");
+                    var desc = SteamUserStats.GetAchievementDisplayAttribute(name, "desc");
+                    System.Diagnostics.Debug.WriteLine($"[Steam]  - {name} ({displayName}) [{(achieved ? "UNLOCKED" : "locked")}] | {desc}");
+                }
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"[Steam] UserStatsReceived failed: {cb.m_eResult}");
+                _statsTcs?.TrySetResult(false);
+            }
+        }
+
+        /// <summary>
+        /// Optional helper: await stats readiness from any UI code
+        /// </summary>
+        public static async Task<bool> WaitForSteamStatsAsync(TimeSpan timeout, CancellationToken ct = default)
+        {
+            if (!IsSteamInitialized) return false;
+            if (SteamStatsReceived) return true;
+
+            if (_statsTcs == null || _statsTcs.Task.IsCompleted)
+                _statsTcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            cts.CancelAfter(timeout);
+            await using var _ = cts.Token.Register(() => _statsTcs.TrySetResult(false));
+
+            return await _statsTcs.Task.ConfigureAwait(false);
+        }
+    }
+}

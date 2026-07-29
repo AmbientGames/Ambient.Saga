@@ -20,7 +20,7 @@ derived by replay.
 ## Building
 
 ```bash
-dotnet build Ambient.Saga.sln
+dotnet build Saga.sln
 ```
 
 ## Testing
@@ -31,12 +31,12 @@ dotnet test
 
 ## Try It
 
-`Ambient.Saga.Sandbox.DirectX` is a runnable Windows sandbox (map-based, ImGui +
+`Saga` is a runnable Windows sandbox (map-based, ImGui +
 DirectX 11) with sample worlds (Ise, Kagoshima). Click the map to move; landing near a
 character starts the interaction.
 
 ```bash
-dotnet run --project Ambient.Saga.Sandbox.DirectX/Ambient.Saga.Sandbox.DirectX.csproj
+dotnet run --project Saga/Saga.csproj
 ```
 
 ## Project Structure
@@ -46,10 +46,10 @@ Ambient.Domain/              # Entities, value objects, game logic
 Ambient.Application/         # Contracts and orchestration
 Ambient.Infrastructure/      # EF Core, LiteDB, integrations
 
-Ambient.Saga.Engine/         # CQRS application with MediatR
-Ambient.Saga.UI/             # ImGui game overlay
-Ambient.Saga.Rendering.DirectX/  # DirectX 11 rendering
-Ambient.Saga.Sandbox.DirectX/    # Development sandbox
+Ambient.Rpg.Engine/         # CQRS application with MediatR
+Ambient.Rpg.Ui/             # ImGui game overlay
+Ambient.Rpg.Rendering.DirectX/  # DirectX 11 rendering
+Saga/    # Development sandbox
 ```
 
 ## Documentation

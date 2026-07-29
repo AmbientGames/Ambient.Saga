@@ -57,7 +57,7 @@ namespace Ambient.Domain {
         
         private Quest[] questsField;
         
-        private SagaArc[] sagaArcsField;
+        private Arc[] sagaField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
@@ -248,12 +248,12 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public SagaArc[] SagaArcs {
+        public Arc[] Saga {
             get {
-                return this.sagaArcsField;
+                return this.sagaField;
             }
             set {
-                this.sagaArcsField = value;
+                this.sagaField = value;
             }
         }
     }

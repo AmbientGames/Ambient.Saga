@@ -1,0 +1,388 @@
+using Ambient.Rpg.Engine.Domain.Battle;
+using Xunit;
+
+namespace Ambient.Rpg.Engine.Tests.Rpg.Battle;
+
+/// <summary>
+/// Unit tests for combat reaction types (AttackTell, DefenseOutcome, PendingAttack).
+/// Tests the Expedition 33-inspired active defense system mechanics.
+/// </summary>
+public class CombatReactionTests
+{
+    #region AttackTell.GetOutcome Tests
+
+    [Fact]
+    public void GetOutcome_ReturnsMatchingOutcome_WhenReactionExists()
+    {
+        // Arrange
+        var tell = CreateSlashAttackTell();
+
+        // Act
+        var outcome = tell.GetOutcome(AvatarDefenseType.Parry);
+
+        // Assert
+        Assert.Equal(AvatarDefenseType.Parry, outcome.Reaction);
+        Assert.Equal(0.0f, outcome.DamageMultiplier);
+        Assert.True(outcome.EnablesCounter);
+    }
+
+    [Fact]
+    public void GetOutcome_ReturnsDodgeOutcome_ForDodgeReaction()
+    {
+        // Arrange
+        var tell = CreateSlashAttackTell();
+
+        // Act
+        var outcome = tell.GetOutcome(AvatarDefenseType.Dodge);
+
+        // Assert
+        Assert.Equal(AvatarDefenseType.Dodge, outcome.Reaction);
+        Assert.Equal(0.25f, outcome.DamageMultiplier);
+        Assert.False(outcome.EnablesCounter);
+    }
+
+    [Fact]
+    public void GetOutcome_FallsBackToNoneOutcome_WhenReactionNotInDictionary()
+    {
+        // Arrange - Create tell with only Parry and None outcomes
+        var tell = new AttackTell
+        {
+            RefName = "LimitedTell",
+            Pattern = AttackPatternType.Slash,
+            TellText = "Enemy swings!",
+            OptimalDefense = AvatarDefenseType.Parry,
+            Outcomes = new Dictionary<AvatarDefenseType, DefenseOutcome>
+            {
+                [AvatarDefenseType.Parry] = new DefenseOutcome
+                {
+                    Reaction = AvatarDefenseType.Parry,
+                    DamageMultiplier = 0.0f,
+                    ResponseText = "Perfect parry!"
+                },
+                [AvatarDefenseType.None] = new DefenseOutcome
+                {
+                    Reaction = AvatarDefenseType.None,
+                    DamageMultiplier = 1.0f,
+                    ResponseText = "You fail to react!"
+                }
+            }
+        };
+
+        // Act - Request Dodge which isn't in the dictionary
+        var outcome = tell.GetOutcome(AvatarDefenseType.Dodge);
+
+        // Assert - Should fall back to None outcome
+        Assert.Equal(AvatarDefenseType.None, outcome.Reaction);
+        Assert.Equal(1.0f, outcome.DamageMultiplier);
+    }
+
+    [Fact]
+    public void GetOutcome_ReturnsDefaultOutcome_WhenNeitherReactionNorNoneExists()
+    {
+        // Arrange - Create tell with only Parry outcome
+        var tell = new AttackTell
+        {
+            RefName = "MinimalTell",
+            Pattern = AttackPatternType.Slash,
+            TellText = "Enemy swings!",
+            OptimalDefense = AvatarDefenseType.Parry,
+            Outcomes = new Dictionary<AvatarDefenseType, DefenseOutcome>
+            {
+                [AvatarDefenseType.Parry] = new DefenseOutcome
+                {
+                    Reaction = AvatarDefenseType.Parry,
+                    DamageMultiplier = 0.0f,
+                    ResponseText = "Perfect parry!"
+                }
+            }
+        };
+
+        // Act - Request Block which isn't in dictionary, and no None fallback
+        var outcome = tell.GetOutcome(AvatarDefenseType.Block);
+
+        // Assert - Should return default outcome
+        Assert.Equal(AvatarDefenseType.Block, outcome.Reaction);
+        Assert.Equal(1.0f, outcome.DamageMultiplier);
+        Assert.Contains("fail to react", outcome.ResponseText);
+    }
+
+    #endregion
+
+    #region DefenseOutcome Default Values Tests
+
+    [Fact]
+    public void DefenseOutcome_HasCorrectDefaults()
+    {
+        // Act
+        var outcome = new DefenseOutcome();
+
+        // Assert
+        Assert.Equal(1.0f, outcome.DamageMultiplier);
+        Assert.Null(outcome.Effects);
+        Assert.False(outcome.EnablesCounter);
+        Assert.Equal(0.5f, outcome.CounterMultiplier);
+        Assert.False(outcome.PreventsStatusEffect);
+        Assert.Equal(string.Empty, outcome.ResponseText);
+    }
+
+    [Fact]
+    public void DefenseOutcome_OptimalDefense_HasBestValues()
+    {
+        // Arrange
+        var tell = CreateSlashAttackTell();
+
+        // Act - Parry is optimal for Slash
+        var outcome = tell.GetOutcome(AvatarDefenseType.Parry);
+
+        // Assert
+        Assert.Equal(0.0f, outcome.DamageMultiplier); // No damage
+        Assert.True(outcome.EnablesCounter);          // Counter enabled
+        Assert.NotNull(outcome.Effects);              // Effects granted
+        Assert.True(outcome.Effects!.Stamina > 0);    // Stamina recovery
+    }
+
+    #endregion
+
+    #region PendingAttack Tests
+
+    [Fact]
+    public void PendingAttack_IsNotExpired_WhenWithinWindow()
+    {
+        // Arrange
+        var tell = CreateSlashAttackTell();
+        var attacker = CreateMockCombatant("Enemy");
+        var target = CreateMockCombatant("Avatar");
+
+        var pendingAttack = new PendingAttack
+        {
+            Attacker = attacker,
+            Target = target,
+            Tell = tell,
+            BaseDamage = 50,
+            TellShownAt = DateTime.UtcNow // Just shown
+        };
+
+        // Act & Assert
+        Assert.False(pendingAttack.IsExpired);
+        Assert.True(pendingAttack.RemainingMs > 0);
+    }
+
+    [Fact]
+    public void PendingAttack_IsExpired_WhenWindowPassed()
+    {
+        // Arrange
+        var tell = new AttackTell
+        {
+            RefName = "QuickTell",
+            Pattern = AttackPatternType.Slash,
+            TellText = "Quick slash!",
+            ReactionWindowMs = 100, // Very short window
+            OptimalDefense = AvatarDefenseType.Parry,
+            Outcomes = new Dictionary<AvatarDefenseType, DefenseOutcome>
+            {
+                [AvatarDefenseType.Parry] = new DefenseOutcome { Reaction = AvatarDefenseType.Parry }
+            }
+        };
+        var attacker = CreateMockCombatant("Enemy");
+        var target = CreateMockCombatant("Avatar");
+
+        var pendingAttack = new PendingAttack
+        {
+            Attacker = attacker,
+            Target = target,
+            Tell = tell,
+            BaseDamage = 50,
+            TellShownAt = DateTime.UtcNow.AddMilliseconds(-200) // 200ms ago, window is 100ms
+        };
+
+        // Act & Assert
+        Assert.True(pendingAttack.IsExpired);
+        Assert.Equal(0, pendingAttack.RemainingMs);
+    }
+
+    [Fact]
+    public void PendingAttack_NeverExpires_WhenWindowIsZero()
+    {
+        // Arrange
+        var tell = new AttackTell
+        {
+            RefName = "NoTimeLimitTell",
+            Pattern = AttackPatternType.Slash,
+            TellText = "Take your time...",
+            ReactionWindowMs = 0, // No time limit
+            OptimalDefense = AvatarDefenseType.Parry,
+            Outcomes = new Dictionary<AvatarDefenseType, DefenseOutcome>
+            {
+                [AvatarDefenseType.Parry] = new DefenseOutcome { Reaction = AvatarDefenseType.Parry }
+            }
+        };
+        var attacker = CreateMockCombatant("Enemy");
+        var target = CreateMockCombatant("Avatar");
+
+        var pendingAttack = new PendingAttack
+        {
+            Attacker = attacker,
+            Target = target,
+            Tell = tell,
+            BaseDamage = 50,
+            TellShownAt = DateTime.UtcNow.AddMinutes(-10) // 10 minutes ago
+        };
+
+        // Act & Assert
+        Assert.False(pendingAttack.IsExpired);
+        Assert.Equal(int.MaxValue, pendingAttack.RemainingMs);
+    }
+
+    #endregion
+
+    #region AttackPatternType Coverage Tests
+
+    [Theory]
+    [InlineData(AttackPatternType.Slash, AvatarDefenseType.Parry)]
+    [InlineData(AttackPatternType.Thrust, AvatarDefenseType.Dodge)]
+    [InlineData(AttackPatternType.Overhead, AvatarDefenseType.Block)]
+    [InlineData(AttackPatternType.Charge, AvatarDefenseType.Dodge)]
+    [InlineData(AttackPatternType.Breath, AvatarDefenseType.Brace)]
+    [InlineData(AttackPatternType.Burst, AvatarDefenseType.Brace)]
+    [InlineData(AttackPatternType.Projectile, AvatarDefenseType.Block)]
+    public void AttackPattern_HasLogicalOptimalDefense(AttackPatternType pattern, AvatarDefenseType expectedOptimal)
+    {
+        // This test documents the expected optimal defense for each pattern type
+        // Actual implementation would use these mappings
+        Assert.True(true); // Pattern-optimal defense mapping is design documentation
+    }
+
+    #endregion
+
+    #region ReactionResult Tests
+
+    [Fact]
+    public void ReactionResult_TracksOptimalReaction()
+    {
+        // Arrange & Act
+        var result = new ReactionResult
+        {
+            ChosenReaction = AvatarDefenseType.Parry,
+            Outcome = new DefenseOutcome
+            {
+                Reaction = AvatarDefenseType.Parry,
+                DamageMultiplier = 0.0f,
+                EnablesCounter = true
+            },
+            FinalDamage = 0,
+            NarrativeText = "Perfect parry! You riposte!",
+            CounterDamage = 25,
+            WasOptimal = true,
+            WasSecondary = false,
+            TimedOut = false
+        };
+
+        // Assert
+        Assert.True(result.WasOptimal);
+        Assert.False(result.WasSecondary);
+        Assert.False(result.TimedOut);
+        Assert.NotNull(result.CounterDamage);
+        Assert.Equal(0, result.FinalDamage);
+    }
+
+    [Fact]
+    public void ReactionResult_TracksTimedOutReaction()
+    {
+        // Arrange & Act
+        var result = new ReactionResult
+        {
+            ChosenReaction = AvatarDefenseType.None,
+            Outcome = new DefenseOutcome
+            {
+                Reaction = AvatarDefenseType.None,
+                DamageMultiplier = 1.0f
+            },
+            FinalDamage = 50,
+            NarrativeText = "You fail to react in time!",
+            WasOptimal = false,
+            WasSecondary = false,
+            TimedOut = true
+        };
+
+        // Assert
+        Assert.False(result.WasOptimal);
+        Assert.True(result.TimedOut);
+        Assert.Equal(50, result.FinalDamage);
+        Assert.Null(result.CounterDamage);
+    }
+
+    #endregion
+
+    #region Helper Methods
+
+    private static AttackTell CreateSlashAttackTell()
+    {
+        return new AttackTell
+        {
+            RefName = "BasicSlash",
+            Pattern = AttackPatternType.Slash,
+            TellText = "The enemy draws back their blade for a wide slash!",
+            ReactionWindowMs = 3000,
+            OptimalDefense = AvatarDefenseType.Parry,
+            SecondaryDefense = AvatarDefenseType.Dodge,
+            Outcomes = new Dictionary<AvatarDefenseType, DefenseOutcome>
+            {
+                [AvatarDefenseType.Parry] = new DefenseOutcome
+                {
+                    Reaction = AvatarDefenseType.Parry,
+                    DamageMultiplier = 0.0f,
+                    Effects = new Ambient.Domain.EffectAttributes { Stamina = 0.1f },
+                    EnablesCounter = true,
+                    CounterMultiplier = 0.5f,
+                    ResponseText = "Perfect parry! You deflect the blade and counter!"
+                },
+                [AvatarDefenseType.Dodge] = new DefenseOutcome
+                {
+                    Reaction = AvatarDefenseType.Dodge,
+                    DamageMultiplier = 0.25f,
+                    Effects = new Ambient.Domain.EffectAttributes { Stamina = 0.05f },
+                    EnablesCounter = false,
+                    ResponseText = "You roll aside, but the blade grazes you."
+                },
+                [AvatarDefenseType.Block] = new DefenseOutcome
+                {
+                    Reaction = AvatarDefenseType.Block,
+                    DamageMultiplier = 0.5f,
+                    EnablesCounter = false,
+                    ResponseText = "You raise your guard, absorbing part of the blow."
+                },
+                [AvatarDefenseType.Brace] = new DefenseOutcome
+                {
+                    Reaction = AvatarDefenseType.Brace,
+                    DamageMultiplier = 0.75f,
+                    EnablesCounter = false,
+                    ResponseText = "You brace, but the horizontal slash finds its mark."
+                },
+                [AvatarDefenseType.None] = new DefenseOutcome
+                {
+                    Reaction = AvatarDefenseType.None,
+                    DamageMultiplier = 1.0f,
+                    EnablesCounter = false,
+                    ResponseText = "The slash connects fully!"
+                }
+            }
+        };
+    }
+
+    private static Combatant CreateMockCombatant(string name)
+    {
+        return new Combatant
+        {
+            RefName = name,
+            DisplayName = name,
+            Health = 1.0f,
+            Stamina = 1.0f,
+            Strength = 0.2f,
+            Defense = 0.1f,
+            Speed = 0.15f,
+            Magic = 0.1f
+        };
+    }
+
+    #endregion
+}

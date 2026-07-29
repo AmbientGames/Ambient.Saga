@@ -18,10 +18,25 @@
             <xs:minLength value="1" />
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="SubstanceRef">
-		<xs:annotation><xs:documentation>Reference to a Substance by RefName. Used on blocks, tools, and building materials to specify material type.</xs:documentation></xs:annotation>
+    <xs:simpleType name="SubstanceType">
+		<xs:annotation><xs:documentation>Built-in material classifications. Used on blocks, tools, and building materials to specify material type; engine behavior is bound to the enumeration order, so values may be renamed but never reordered.</xs:documentation></xs:annotation>
         <xs:restriction base="xs:string">
-            <xs:minLength value="1" />
+            <xs:enumeration value="Stone" />
+            <xs:enumeration value="Concrete" />
+            <xs:enumeration value="Wood" />
+            <xs:enumeration value="Structural" />
+            <xs:enumeration value="Decorative" />
+            <xs:enumeration value="Metal" />
+            <xs:enumeration value="Alloy" />
+            <xs:enumeration value="Aggregate" />
+            <xs:enumeration value="Plant" />
+            <xs:enumeration value="Liquid" />
+            <xs:enumeration value="Ore" />
+            <xs:enumeration value="Carbon" />
+            <xs:enumeration value="Precious" />
+            <xs:enumeration value="Reserved13" />
+            <xs:enumeration value="Reserved14" />
+            <xs:enumeration value="Miscellaneous" />
         </xs:restriction>
     </xs:simpleType>
 	<xs:simpleType name="ClimateModel">

@@ -1,4 +1,5 @@
-﻿using Ambient.Domain.ValueObjects;
+﻿using Ambient.Domain.GameLogic.Items;
+using Ambient.Domain.ValueObjects;
 using System.Xml.Serialization;
 
 namespace Ambient.Domain.Contracts;
@@ -45,8 +46,8 @@ public interface IWorld
     Dictionary<string, CharacterAffinity> CharacterAffinitiesLookup { get; set; }
     Dictionary<string, CombatStance> CombatStancesLookup { get; set; }
     Dictionary<string, LoadoutSlot> LoadoutSlotsLookup { get; set; }
-    System.Collections.Concurrent.ConcurrentDictionary<string, SagaArc> SagaArcLookup { get; set; }
-    System.Collections.Concurrent.ConcurrentDictionary<string, List<SagaTrigger>> SagaTriggersLookup { get; set; }
+    System.Collections.Concurrent.ConcurrentDictionary<string, Arc> ArcLookup { get; set; }
+    System.Collections.Concurrent.ConcurrentDictionary<string, List<ArcTrigger>> ArcTriggersLookup { get; set; }
     Dictionary<string, Faction> FactionsLookup { get; set; }
     Dictionary<string, StatusEffect> StatusEffectsLookup { get; set; }
     Dictionary<string, AttackTell> AttackTellsLookup { get; set; }
@@ -73,8 +74,8 @@ public interface IWorld
     public Character GetCharacterByRefName(string characterRefName);
     public Character? TryGetCharacterByRefName(string characterRefName);
 
-    public SagaArc GetSagaArcByRefName(string sagaArcRefName);
-    public SagaArc? TryGetSagaArcByRefName(string sagaArcRefName);
+    public Arc GetArcByRefName(string arcRefName);
+    public Arc? TryGetArcByRefName(string arcRefName);
 
     public QuestToken GetQuestTokenByRefName(string QuestTokenRefName);
     public QuestToken? TryGetQuestTokenByRefName(string QuestTokenRefName);
@@ -138,11 +139,11 @@ public interface IWorld
     public AttackTell? TryGetAttackTellByRefName(string attackTellRefName);
 
     /// <summary>
-    /// Registers a saga arc into the runtime dictionaries so it is processed
+    /// Registers an arc into the runtime dictionaries so it is processed
     /// identically to XML-defined arcs. Used by consumers to inject server-sourced
     /// arcs (e.g. avatar shopkeepers) at runtime.
     /// Idempotent: no-op if the arc's RefName already exists. Throws on invalid input
     /// (null arc, empty RefName, or triggers missing spawns).
     /// </summary>
-    void RegisterSagaArc(SagaArc arc);
+    void RegisterArc(Arc arc);
 }

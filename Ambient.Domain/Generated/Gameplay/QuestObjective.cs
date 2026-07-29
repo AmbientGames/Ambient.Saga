@@ -44,7 +44,7 @@ namespace Ambient.Domain {
         
         private string locationRefField;
         
-        private string sagaArcRefField;
+        private string arcRefField;
         
         private string triggerRefField;
         
@@ -185,12 +185,12 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string SagaArcRef {
+        public string ArcRef {
             get {
-                return this.sagaArcRefField;
+                return this.arcRefField;
             }
             set {
-                this.sagaArcRefField = value;
+                this.arcRefField = value;
             }
         }
         

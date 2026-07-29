@@ -1,0 +1,1063 @@
+using Ambient.Domain;
+using Ambient.Rpg.Engine.Domain.Arcs.TransactionLog;
+using Ambient.Rpg.Presentation.UI.ViewModels;
+using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
+using Ambient.Rpg.Ui.Components.Modals;
+using Ambient.Rpg.Ui.Components.Utilities;
+using Ambient.Rpg.Ui.Configuration;
+using ImGuiNET;
+using System.Numerics;
+using Ambient.Rpg.Engine.Domain;
+using Ambient.Rpg.Rendering.DirectX;
+
+namespace Ambient.Rpg.Ui.Components.Panels;
+
+/// <summary>
+/// Classic RPG Journal panel accessible via J key.
+/// Consolidates player-facing information (quests, bestiary, atlas, history, achievements)
+/// with developer extensions shown when GameConfiguration.ShowDeveloperInfo is true.
+///
+/// Content:
+/// - Quests: Active/completed quest tracking
+/// - Bestiary: Encountered NPCs, merchants, enemies
+/// - Atlas: Discovered locations with GPS coordinates
+/// - History: Transaction log of avatar actions
+/// - Achievements: Unlocked/locked achievements with progress
+/// </summary>
+public class JournalPanel
+{
+    private bool _showCompletedQuests = false;
+    private bool _showLockedAchievements = true;
+    private string _bestiaryFilter = "";
+    private string _historyFilter = "";
+    private string _achievementFilter = "";
+
+    // Bestiary cache — the Characters collection is only ever replaced wholesale
+    // (atomic publish in RpgMainViewModel; a published collection is never mutated),
+    // so the grouped result only changes when the collection reference or filter changes.
+    private object? _cachedBestiarySource;
+    private string _cachedBestiaryFilter = "";
+    private List<(string Key, List<CharacterViewModel> Members)> _cachedBestiaryGroups = new();
+
+    // History cache — RecentTransactions is replaced wholesale on load/refresh, never
+    // mutated in place; key on the collection reference (+ count for safety) and filter.
+    private object? _cachedHistorySource;
+    private int _cachedHistoryCount;
+    private string _cachedHistoryFilter = "";
+    private List<ArcTransaction> _cachedHistoryEntries = new();
+
+    // Achievements cache — RefreshAchievements clears and refills the same collections
+    // with brand-new display items (also when only progress changes), so the first item
+    // of each collection acts as a change sentinel alongside the counts.
+    private object? _cachedAchUnlockedSource;
+    private object? _cachedAchLockedSource;
+    private object? _cachedAchUnlockedSentinel;
+    private object? _cachedAchLockedSentinel;
+    private int _cachedAchUnlockedCount = -1;
+    private int _cachedAchLockedCount = -1;
+    private string _cachedAchFilter = "";
+    private List<AchievementDisplayItem>? _cachedUnlockedAchievements;
+    private List<AchievementDisplayItem>? _cachedLockedAchievements;
+
+    public void Render(RpgMainViewModel viewModel, ModalManager modalManager)
+    {
+        // Header
+        ImGui.TextColored(new Vector4(0.9f, 0.85f, 0.6f, 1f), "JOURNAL");
+
+        // Developer mode indicator
+        if (GameConfiguration.ShowDeveloperInfo)
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(GameConfiguration.DevInfoColor, "[DEV MODE]");
+        }
+
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        // Three-column layout
+        var availableWidth = ImGui.GetContentRegionAvail().X;
+        var availableHeight = ImGui.GetContentRegionAvail().Y;
+        var columnSpacing = 10f * UIConstants.DpiScale;
+        var columnWidth = (availableWidth - (columnSpacing * 2)) / 3f;
+
+        // Column 1: Quests
+        ImGui.BeginChild("JournalCol1", new Vector2(columnWidth, availableHeight), ImGuiChildFlags.None);
+        RenderQuestsColumn(viewModel, modalManager);
+        ImGui.EndChild();
+
+        ImGui.SameLine(0, columnSpacing);
+
+        // Column 2: Bestiary + Atlas
+        ImGui.BeginChild("JournalCol2", new Vector2(columnWidth, availableHeight), ImGuiChildFlags.None);
+        RenderDiscoveryColumn(viewModel, modalManager);
+        ImGui.EndChild();
+
+        ImGui.SameLine(0, columnSpacing);
+
+        // Column 3: History + Achievements
+        ImGui.BeginChild("JournalCol3", new Vector2(columnWidth, availableHeight), ImGuiChildFlags.None);
+        RenderProgressColumn(viewModel);
+        ImGui.EndChild();
+    }
+
+    private void RenderQuestsColumn(RpgMainViewModel viewModel, ModalManager modalManager)
+    {
+        ImGui.TextColored(new Vector4(1f, 0.9f, 0.4f, 1f), "QUESTS");
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        ImGui.BeginChild("QuestsScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill - ImGui.GetFrameHeightWithSpacing()), ImGuiChildFlags.None);
+        RenderQuestsContent(viewModel, modalManager);
+        ImGui.EndChild();
+
+        RenderQuestsFooter();
+    }
+
+    private void RenderDiscoveryColumn(RpgMainViewModel viewModel, ModalManager modalManager)
+    {
+        var halfHeight = (ImGui.GetContentRegionAvail().Y - 10f * UIConstants.DpiScale) / 2f;
+
+        // Bestiary section
+        ImGui.BeginChild("BestiarySection", new Vector2(ImGuiSizes.Fill, halfHeight), ImGuiChildFlags.None);
+        ImGui.TextColored(new Vector4(0.8f, 0.6f, 0.9f, 1f), "BESTIARY");
+        ImGui.Separator();
+        ImGui.Spacing();
+        RenderBestiaryContent(viewModel, modalManager);
+        ImGui.EndChild();
+
+        ImGui.Spacing();
+
+        // Atlas section
+        ImGui.BeginChild("AtlasSection", new Vector2(ImGuiSizes.Fill, halfHeight), ImGuiChildFlags.None);
+        ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1f), "ATLAS");
+        ImGui.Separator();
+        ImGui.Spacing();
+        RenderAtlasContent(viewModel);
+        ImGui.EndChild();
+    }
+
+    private void RenderProgressColumn(RpgMainViewModel viewModel)
+    {
+        var halfHeight = (ImGui.GetContentRegionAvail().Y - 10f * UIConstants.DpiScale) / 2f;
+
+        // History section
+        ImGui.BeginChild("HistorySection", new Vector2(ImGuiSizes.Fill, halfHeight), ImGuiChildFlags.None);
+        ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.9f, 1f), "HISTORY");
+        ImGui.Separator();
+        ImGui.Spacing();
+        RenderHistoryContent(viewModel);
+        ImGui.EndChild();
+
+        ImGui.Spacing();
+
+        // Achievements section
+        ImGui.BeginChild("AchievementsSection", new Vector2(ImGuiSizes.Fill, halfHeight), ImGuiChildFlags.None);
+        ImGui.TextColored(new Vector4(1f, 0.84f, 0f, 1f), "ACHIEVEMENTS");
+        ImGui.Separator();
+        ImGui.Spacing();
+        RenderAchievementsContent(viewModel);
+        ImGui.EndChild();
+    }
+
+    #region Quests
+
+    private void RenderQuestsContent(RpgMainViewModel viewModel, ModalManager modalManager)
+    {
+        if (viewModel.QuestLog == null)
+        {
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No quest log available.");
+            return;
+        }
+
+        // Active Quests
+        var activeCount = viewModel.QuestLog.ActiveQuests?.Count ?? 0;
+        ImGui.TextColored(new Vector4(1f, 0.9f, 0.4f, 1f), $"Active ({activeCount})");
+        ImGui.Spacing();
+
+        if (activeCount > 0)
+        {
+            foreach (var quest in viewModel.QuestLog.ActiveQuests!)
+            {
+                RenderQuestEntry(quest, isCompleted: false, modalManager, viewModel);
+            }
+        }
+        else
+        {
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "No active quests.");
+            ImGui.TextWrapped("Explore the world to discover quests.");
+        }
+
+        // Completed Quests (collapsible)
+        if (_showCompletedQuests)
+        {
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            var completedCount = viewModel.QuestLog.CompletedQuests?.Count ?? 0;
+            ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1f), $"Completed ({completedCount})");
+            ImGui.Spacing();
+
+            if (completedCount > 0)
+            {
+                foreach (var quest in viewModel.QuestLog.CompletedQuests!)
+                {
+                    RenderQuestEntry(quest, isCompleted: true, modalManager, viewModel);
+                }
+            }
+            else
+            {
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "No completed quests yet.");
+            }
+        }
+    }
+
+    private void RenderQuestEntry(QuestDisplayItem quest, bool isCompleted, ModalManager modalManager, RpgMainViewModel viewModel)
+    {
+        var bgColor = isCompleted
+            ? new Vector4(0.0f, 0.15f, 0.0f, 0.3f)
+            : new Vector4(0.1f, 0.1f, 0.15f, 0.3f);
+
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, bgColor);
+
+        var cardHeight = isCompleted
+            ? ImGui.GetFrameHeightWithSpacing() * 2.5f
+            : ImGui.GetFrameHeightWithSpacing() * 3.5f;
+
+        ImGui.BeginChild($"quest_{quest.RefName}", new Vector2(ImGuiSizes.Fill, cardHeight), ImGuiChildFlags.Borders);
+
+        // Quest title
+        var titleColor = isCompleted
+            ? new Vector4(0.6f, 0.9f, 0.6f, 1f)
+            : new Vector4(1f, 0.95f, 0.7f, 1f);
+
+        if (isCompleted)
+        {
+            ImGui.TextColored(new Vector4(0.4f, 0.8f, 0.4f, 1f), "[DONE]");
+            ImGui.SameLine();
+        }
+
+        ImGui.TextColored(titleColor, quest.DisplayName ?? quest.RefName);
+
+        // Developer: RefName
+        if (GameConfiguration.ShowDeveloperInfo)
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(GameConfiguration.DevInfoColor, $"[{quest.RefName}]");
+        }
+
+        // Description
+        if (!string.IsNullOrEmpty(quest.Description))
+        {
+            ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1f), quest.Description);
+        }
+
+        // Progress (active quests only)
+        if (!isCompleted)
+        {
+            var progress = (float)quest.ProgressPercentage / 100f;
+            ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()), quest.ProgressText);
+        }
+
+        // Developer: Additional metadata (progress details)
+        if (GameConfiguration.ShowDeveloperInfo)
+        {
+            ImGui.TextColored(GameConfiguration.DevInfoColor, $"Progress: {quest.CurrentValue}/{quest.TargetValue}");
+        }
+
+        // Make clickable to open details
+        ImGui.SetCursorPos(new Vector2(0, 0));
+        if (ImGui.InvisibleButton($"quest_click_{quest.RefName}", new Vector2(ImGui.GetContentRegionAvail().X, cardHeight - ImGui.GetStyle().WindowPadding.Y * 2)))
+        {
+            modalManager.OpenQuestDetail(quest.RefName, viewModel);
+        }
+
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
+            ImGui.SetTooltip("Click to view quest details");
+        }
+
+        ImGui.EndChild();
+        ImGui.PopStyleColor();
+        ImGui.Spacing();
+    }
+
+    private void RenderQuestsFooter()
+    {
+        ImGui.Separator();
+        ImGui.Checkbox("Show Completed Quests", ref _showCompletedQuests);
+    }
+
+    #endregion
+
+    #region Bestiary
+
+    private void RenderBestiaryContent(RpgMainViewModel viewModel, ModalManager modalManager)
+    {
+        // Filter input
+        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 50 * UIConstants.DpiScale);
+        ImGui.InputTextWithHint("##BestiaryFilter", "Filter...", ref _bestiaryFilter, 100);
+        ImGui.SameLine();
+        if (ImGui.SmallButton("X##ClearBestiary"))
+        {
+            _bestiaryFilter = "";
+        }
+
+        ImGui.Spacing();
+
+        ImGui.BeginChild("BestiaryScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
+
+        if (viewModel.Characters == null || viewModel.Characters.Count == 0)
+        {
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No characters encountered yet.");
+            ImGui.EndChild();
+            return;
+        }
+
+        // Filter and group characters (cached; rebuilt when the collection or filter changes)
+        var characters = viewModel.Characters;
+        if (!ReferenceEquals(_cachedBestiarySource, characters) || _cachedBestiaryFilter != _bestiaryFilter)
+        {
+            _cachedBestiarySource = characters;
+            _cachedBestiaryFilter = _bestiaryFilter;
+
+            IEnumerable<CharacterViewModel> filteredCharacters = string.IsNullOrWhiteSpace(_bestiaryFilter)
+                ? characters
+                : characters.Where(c =>
+                    (c.DisplayName?.Contains(_bestiaryFilter, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (c.CharacterType?.Contains(_bestiaryFilter, StringComparison.OrdinalIgnoreCase) ?? false));
+
+            // Group by type
+            _cachedBestiaryGroups = filteredCharacters
+                .GroupBy(c => c.CharacterType ?? "Unknown")
+                .OrderBy(g => g.Key)
+                .Select(g => (g.Key, g.ToList()))
+                .ToList();
+        }
+
+        if (_cachedBestiaryGroups.Count == 0)
+        {
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No matches.");
+            ImGui.EndChild();
+            return;
+        }
+
+        foreach (var group in _cachedBestiaryGroups)
+        {
+            if (ImGui.CollapsingHeader($"{group.Key} ({group.Members.Count})###best_{group.Key}", ImGuiTreeNodeFlags.DefaultOpen))
+            {
+                foreach (var character in group.Members)
+                {
+                    RenderBestiaryEntry(character, viewModel, modalManager);
+                }
+            }
+        }
+
+        ImGui.EndChild();
+    }
+
+    private void RenderBestiaryEntry(CharacterViewModel character, RpgMainViewModel viewModel, ModalManager modalManager)
+    {
+        var bgColor = character.IsAlive
+            ? new Vector4(0.1f, 0.1f, 0.15f, 0.3f)
+            : new Vector4(0.15f, 0.05f, 0.05f, 0.3f);
+
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, bgColor);
+
+        var cardHeight = GameConfiguration.ShowDeveloperInfo
+            ? ImGui.GetFrameHeightWithSpacing() * 3f
+            : ImGui.GetFrameHeightWithSpacing() * 2.5f;
+
+        // Keyed on CharacterInstanceId, not position: a moving character keyed on PixelX
+        // gets a new widget identity every frame (audit D9).
+        ImGui.BeginChild($"bestiary_{character.CharacterInstanceId}", new Vector2(ImGuiSizes.Fill, cardHeight), ImGuiChildFlags.Borders);
+
+        // Character name and status
+        var typeColor = GetCharacterTypeColor(character.CharacterType);
+        ImGui.TextColored(typeColor, character.DisplayName ?? "Unknown");
+
+        ImGui.SameLine();
+        if (character.IsAlive)
+        {
+            ImGui.TextColored(new Vector4(0.4f, 0.8f, 0.4f, 1f), "[Alive]");
+        }
+        else
+        {
+            ImGui.TextColored(new Vector4(0.8f, 0.4f, 0.4f, 1f), "[Defeated]");
+        }
+
+        // Developer: CharacterRef
+        if (GameConfiguration.ShowDeveloperInfo && !string.IsNullOrEmpty(character.CharacterRef))
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(GameConfiguration.DevInfoColor, $"[{character.CharacterRef}]");
+        }
+
+        // Character type and interaction hints
+        var interactions = new List<string>();
+        if (character.CanDialogue) interactions.Add("Talk");
+        if (character.CanTrade) interactions.Add("Trade");
+        if (character.CanAttack) interactions.Add("Combat");
+
+        if (interactions.Count > 0)
+        {
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), $"  {string.Join(" | ", interactions)}");
+        }
+
+        // Developer: Coordinates
+        if (GameConfiguration.ShowDeveloperInfo)
+        {
+            ImGui.TextColored(GameConfiguration.DevInfoColor, $"  Pixel: ({character.PixelX:F0}, {character.PixelY:F0})");
+        }
+
+        // Make clickable to interact
+        ImGui.SetCursorPos(new Vector2(0, 0));
+        if (ImGui.InvisibleButton($"bestiary_click_{character.CharacterInstanceId}", new Vector2(ImGui.GetContentRegionAvail().X, cardHeight - ImGui.GetStyle().WindowPadding.Y * 2)))
+        {
+            modalManager.OpenCharacterInteraction(character, viewModel);
+        }
+
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
+            ImGui.SetTooltip("Click to interact");
+        }
+
+        ImGui.EndChild();
+        ImGui.PopStyleColor();
+        ImGui.Spacing();
+    }
+
+    private static Vector4 GetCharacterTypeColor(string? characterType)
+    {
+        return characterType switch
+        {
+            "Boss" => new Vector4(1f, 0.3f, 0.3f, 1f),
+            "Merchant" => new Vector4(1f, 0.84f, 0f, 1f),
+            "Quest" => new Vector4(0.4f, 0.6f, 1f, 1f),
+            "Encounter" => new Vector4(0.4f, 0.9f, 0.4f, 1f),
+            _ => new Vector4(0.9f, 0.9f, 0.9f, 1f)
+        };
+    }
+
+    #endregion
+
+    #region Atlas
+
+    private void RenderAtlasContent(RpgMainViewModel viewModel)
+    {
+        ImGui.BeginChild("AtlasScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
+
+        var world = viewModel.CurrentWorld;
+
+        if (world == null)
+        {
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No world loaded.");
+            ImGui.EndChild();
+            return;
+        }
+
+        var locations = world.ArcLookup?.Values?.ToList();
+        if (locations == null || locations.Count == 0)
+        {
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No locations discovered yet.");
+            ImGui.TextWrapped("Explore to discover points of interest.");
+            ImGui.EndChild();
+            return;
+        }
+
+        // Header
+        ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1f), $"Locations ({locations.Count})");
+        ImGui.Spacing();
+
+        // Group by category
+        var grouped = locations
+            .GroupBy(l => l.Category)
+            .OrderBy(g => g.Key.ToString());
+
+        foreach (var group in grouped)
+        {
+            var categoryName = GetCategoryDisplayName(group.Key);
+            if (ImGui.CollapsingHeader($"{categoryName} ({group.Count()})###atlas_{group.Key}", ImGuiTreeNodeFlags.DefaultOpen))
+            {
+                foreach (var location in group.OrderBy(l => l.DisplayName ?? l.RefName))
+                {
+                    RenderAtlasEntry(location);
+                }
+            }
+        }
+
+        ImGui.EndChild();
+    }
+
+    private void RenderAtlasEntry(Arc location)
+    {
+        var bgColor = new Vector4(0.1f, 0.1f, 0.15f, 0.3f);
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, bgColor);
+
+        var cardHeight = GameConfiguration.ShowDeveloperInfo
+            ? ImGui.GetFrameHeightWithSpacing() * 4f
+            : ImGui.GetFrameHeightWithSpacing() * 3f;
+
+        ImGui.BeginChild($"atlas_{location.RefName}", new Vector2(ImGuiSizes.Fill, cardHeight), ImGuiChildFlags.Borders);
+
+        // Category icon and name
+        var categoryColor = GetCategoryColor(location.Category);
+        ImGui.TextColored(categoryColor, $"[{GetCategoryDisplayName(location.Category)}]");
+        ImGui.SameLine();
+        ImGui.TextColored(new Vector4(1f, 0.95f, 0.7f, 1f), location.DisplayName ?? location.RefName);
+
+        // Developer: RefName
+        if (GameConfiguration.ShowDeveloperInfo)
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(GameConfiguration.DevInfoColor, $"[{location.RefName}]");
+        }
+
+        // Description
+        if (!string.IsNullOrEmpty(location.Description))
+        {
+            ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1f), location.Description);
+        }
+
+        // GPS coordinates
+        ImGui.TextColored(new Vector4(0.6f, 0.7f, 0.8f, 1f), $"GPS: ({location.Latitude:F4}, {location.Longitude:F4})");
+
+        // Developer: Additional metadata
+        if (GameConfiguration.ShowDeveloperInfo)
+        {
+            ImGui.TextColored(GameConfiguration.DevInfoColor, $"DiscoverRadius: {location.DiscoverRadius:F0}m | Kind: {location.Kind} | InitialState: {location.InitialState}");
+            var triggerCount = location.ArcTrigger?.Length ?? 0;
+            if (triggerCount > 0)
+            {
+                ImGui.TextColored(GameConfiguration.DevInfoColor, $"Triggers: {triggerCount}");
+            }
+        }
+
+        ImGui.EndChild();
+        ImGui.PopStyleColor();
+        ImGui.Spacing();
+    }
+
+    private static string GetCategoryDisplayName(ArcCategory category)
+    {
+        return category switch
+        {
+            ArcCategory.Facility => "Facility",
+            ArcCategory.Stronghold => "Stronghold",
+            ArcCategory.Religious => "Religious Site",
+            ArcCategory.Ruin => "Ruin",
+            ArcCategory.Landmark => "Landmark",
+            ArcCategory.Infrastructure => "Infrastructure",
+            ArcCategory.Passage => "Passage",
+            ArcCategory.Waypoint => "Waypoint",
+            ArcCategory.Camp => "Camp",
+            ArcCategory.QuestHub => "Quest Hub",
+            ArcCategory.Service => "Service",
+            ArcCategory.Default => "Location",
+            _ => category.ToString()
+        };
+    }
+
+    private static Vector4 GetCategoryColor(ArcCategory category)
+    {
+        return category switch
+        {
+            ArcCategory.Stronghold => new Vector4(1f, 0.3f, 0.3f, 1f),      // Red - dangerous
+            ArcCategory.Religious => new Vector4(0.9f, 0.8f, 0.3f, 1f),     // Gold - sacred
+            ArcCategory.Ruin => new Vector4(0.6f, 0.5f, 0.4f, 1f),          // Brown - ancient
+            ArcCategory.Landmark => new Vector4(0.4f, 0.8f, 0.4f, 1f),      // Green - natural
+            ArcCategory.QuestHub => new Vector4(0.4f, 0.6f, 1f, 1f),        // Blue - important
+            ArcCategory.Service => new Vector4(1f, 0.84f, 0f, 1f),          // Yellow - merchant
+            ArcCategory.Camp => new Vector4(0.8f, 0.6f, 0.4f, 1f),          // Orange - rest
+            ArcCategory.Facility => new Vector4(0.7f, 0.7f, 0.8f, 1f),      // Gray-blue - industrial
+            ArcCategory.Infrastructure => new Vector4(0.5f, 0.5f, 0.6f, 1f), // Gray - utility
+            ArcCategory.Passage => new Vector4(0.6f, 0.7f, 0.6f, 1f),       // Muted green - path
+            ArcCategory.Waypoint => new Vector4(0.5f, 0.7f, 0.9f, 1f),      // Light blue - navigation
+            _ => new Vector4(0.8f, 0.8f, 0.8f, 1f)                              // Default gray
+        };
+    }
+
+    #endregion
+
+    #region History
+
+    private void RenderHistoryContent(RpgMainViewModel viewModel)
+    {
+        // Filter input
+        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 50 * UIConstants.DpiScale);
+        ImGui.InputTextWithHint("##HistoryFilter", "Filter...", ref _historyFilter, 100);
+        ImGui.SameLine();
+        if (ImGui.SmallButton("X##ClearHistory"))
+        {
+            _historyFilter = "";
+        }
+
+        ImGui.Spacing();
+
+        ImGui.BeginChild("HistoryScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
+
+        var transactions = viewModel.RecentTransactions;
+        if (transactions == null || transactions.Count == 0)
+        {
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No events recorded yet.");
+            ImGui.TextWrapped("Actions will be logged here.");
+            ImGui.EndChild();
+            return;
+        }
+
+        // Filter transactions (cached; rebuilt when the collection, its count or the filter changes)
+        if (!ReferenceEquals(_cachedHistorySource, transactions) ||
+            _cachedHistoryCount != transactions.Count ||
+            _cachedHistoryFilter != _historyFilter)
+        {
+            _cachedHistorySource = transactions;
+            _cachedHistoryCount = transactions.Count;
+            _cachedHistoryFilter = _historyFilter;
+
+            IEnumerable<ArcTransaction> filteredTransactions = string.IsNullOrWhiteSpace(_historyFilter)
+                ? transactions
+                : transactions.Where(t =>
+                    GetTransactionDisplayText(t).Contains(_historyFilter, StringComparison.OrdinalIgnoreCase) ||
+                    t.Type.ToString().Contains(_historyFilter, StringComparison.OrdinalIgnoreCase));
+
+            // Reverse chronological order (most recent first)
+            _cachedHistoryEntries = filteredTransactions
+                .OrderByDescending(t => t.GetCanonicalTimestamp())
+                .Take(50)
+                .ToList();
+        }
+
+        // Display transactions in reverse chronological order (most recent first)
+        foreach (var transaction in _cachedHistoryEntries)
+        {
+            RenderHistoryEntry(transaction);
+        }
+
+        ImGui.EndChild();
+    }
+
+    private void RenderHistoryEntry(ArcTransaction transaction)
+    {
+        var bgColor = GetTransactionBackgroundColor(transaction.Type);
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, bgColor);
+
+        var cardHeight = GameConfiguration.ShowDeveloperInfo
+            ? ImGui.GetFrameHeightWithSpacing() * 2.5f
+            : ImGui.GetFrameHeightWithSpacing() * 1.5f;
+
+        ImGui.BeginChild($"history_{transaction.TransactionId}", new Vector2(ImGuiSizes.Fill, cardHeight), ImGuiChildFlags.Borders);
+
+        // Timestamp
+        var timestamp = transaction.GetCanonicalTimestamp();
+        var relativeTime = GetRelativeTimeString(timestamp);
+        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), $"[{relativeTime}]");
+        ImGui.SameLine();
+
+        // Event text
+        var displayText = GetTransactionDisplayText(transaction);
+        var typeColor = GetTransactionTypeColor(transaction.Type);
+        ImGui.TextColored(typeColor, displayText);
+
+        // Developer: Additional metadata
+        if (GameConfiguration.ShowDeveloperInfo)
+        {
+            ImGui.TextColored(GameConfiguration.DevInfoColor, $"Type: {transaction.Type} | Seq: {transaction.SequenceNumber} | ID: {transaction.TransactionId:N}");
+            if (transaction.Data.Count > 0)
+            {
+                var dataPreview = string.Join(", ", transaction.Data.Take(3).Select(kv => $"{kv.Key}={kv.Value}"));
+                if (transaction.Data.Count > 3)
+                    dataPreview += "...";
+                ImGui.TextColored(GameConfiguration.DevInfoColor, $"Data: {dataPreview}");
+            }
+        }
+
+        ImGui.EndChild();
+        ImGui.PopStyleColor();
+        ImGui.Spacing();
+    }
+
+    private static string GetTransactionDisplayText(ArcTransaction transaction)
+    {
+        // Extract common data fields
+        transaction.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var characterRef);
+        transaction.Data.TryGetValue(TransactionDataKeys.QuestRef, out var questRef);
+        transaction.Data.TryGetValue(TransactionDataKeys.EquipmentRef, out var equipmentRef);
+        transaction.Data.TryGetValue(TransactionDataKeys.ConsumableRef, out var consumableRef);
+        transaction.Data.TryGetValue(TransactionDataKeys.FeatureRef, out var featureRef);
+        transaction.Data.TryGetValue(TransactionDataKeys.TriggerRef, out var triggerRef);
+        transaction.Data.TryGetValue(TransactionDataKeys.ItemRef, out var itemRef);
+
+        return transaction.Type switch
+        {
+            ArcTransactionType.CharacterDefeated => $"Defeated {characterRef ?? "enemy"}",
+            ArcTransactionType.CharacterDamaged => $"Attacked {characterRef ?? "enemy"}",
+            ArcTransactionType.CharacterSpawned => $"Encountered {characterRef ?? "character"}",
+            ArcTransactionType.QuestAccepted => $"Accepted quest: {questRef ?? "unknown"}",
+            ArcTransactionType.QuestCompleted => $"Completed quest: {questRef ?? "unknown"}",
+            ArcTransactionType.QuestAbandoned => $"Abandoned quest: {questRef ?? "unknown"}",
+            ArcTransactionType.QuestObjectiveCompleted => $"Objective completed: {questRef ?? "unknown"}",
+            ArcTransactionType.QuestStageAdvanced => $"Quest advanced: {questRef ?? "unknown"}",
+            ArcTransactionType.DialogueStarted => $"Spoke with {characterRef ?? "character"}",
+            ArcTransactionType.DialogueCompleted => $"Finished talking with {characterRef ?? "character"}",
+            ArcTransactionType.ItemTraded => $"Traded with {characterRef ?? "merchant"}",
+            ArcTransactionType.LootAwarded => "Collected loot",
+            ArcTransactionType.EquipmentChanged => $"Equipped {equipmentRef ?? "item"}",
+            ArcTransactionType.ConsumableUsed => $"Used {consumableRef ?? "item"}",
+            ArcTransactionType.ArcDiscovered => $"Found new area: {triggerRef ?? "unknown"}",
+            ArcTransactionType.ArcCompleted => $"Area completed: {triggerRef ?? "unknown"}",
+            ArcTransactionType.BattleStarted => $"Battle started with {characterRef ?? "enemy"}",
+            ArcTransactionType.BattleEnded => "Battle ended",
+            ArcTransactionType.BattleTurnExecuted => "Attack executed",
+            ArcTransactionType.TriggerActivated => $"Entered: {triggerRef ?? "area"}",
+            ArcTransactionType.TriggerCompleted => $"Left: {triggerRef ?? "area"}",
+            ArcTransactionType.AvatarEntered => "Arrived at location",
+            ArcTransactionType.AvatarExited => "Departed location",
+            ArcTransactionType.AffinityGranted => $"Learned about {characterRef ?? "character"}",
+            ArcTransactionType.CurrencyChanged => "Currency changed",
+            ArcTransactionType.PartyMemberJoined => $"{characterRef ?? "Companion"} joined party",
+            ArcTransactionType.PartyMemberLeft => $"{characterRef ?? "Companion"} left party",
+            ArcTransactionType.StatusEffectApplied => "Status effect applied",
+            ArcTransactionType.StatusEffectRemoved => "Status effect removed",
+            ArcTransactionType.ReputationChanged => "Reputation changed",
+            _ => transaction.Type.ToString()
+        };
+    }
+
+    private static string GetRelativeTimeString(DateTime timestamp)
+    {
+        var now = DateTime.UtcNow;
+        var diff = now - timestamp;
+
+        if (diff.TotalSeconds < 60)
+            return "Just now";
+        if (diff.TotalMinutes < 60)
+            return $"{(int)diff.TotalMinutes} min ago";
+        if (diff.TotalHours < 24)
+            return $"{(int)diff.TotalHours} hr ago";
+        if (diff.TotalDays < 7)
+            return $"{(int)diff.TotalDays} days ago";
+
+        return timestamp.ToString("MMM dd");
+    }
+
+    private static Vector4 GetTransactionTypeColor(ArcTransactionType type)
+    {
+        return type switch
+        {
+            // Combat - red tones
+            ArcTransactionType.CharacterDefeated => new Vector4(1f, 0.4f, 0.4f, 1f),
+            ArcTransactionType.CharacterDamaged => new Vector4(1f, 0.5f, 0.3f, 1f),
+            ArcTransactionType.BattleStarted => new Vector4(1f, 0.3f, 0.3f, 1f),
+            ArcTransactionType.BattleEnded => new Vector4(0.8f, 0.4f, 0.4f, 1f),
+            ArcTransactionType.BattleTurnExecuted => new Vector4(1f, 0.6f, 0.4f, 1f),
+
+            // Quests - blue tones
+            ArcTransactionType.QuestAccepted => new Vector4(0.4f, 0.6f, 1f, 1f),
+            ArcTransactionType.QuestCompleted => new Vector4(0.4f, 0.9f, 0.4f, 1f),
+            ArcTransactionType.QuestObjectiveCompleted => new Vector4(0.5f, 0.7f, 1f, 1f),
+            ArcTransactionType.QuestStageAdvanced => new Vector4(0.5f, 0.8f, 1f, 1f),
+
+            // Dialogue/Social - yellow tones
+            ArcTransactionType.DialogueStarted => new Vector4(1f, 0.9f, 0.4f, 1f),
+            ArcTransactionType.DialogueCompleted => new Vector4(0.9f, 0.85f, 0.5f, 1f),
+            ArcTransactionType.ItemTraded => new Vector4(1f, 0.84f, 0f, 1f),
+
+            // Discovery - green tones
+            ArcTransactionType.ArcDiscovered => new Vector4(0.5f, 0.9f, 0.6f, 1f),
+
+            // Loot/Items - gold/orange
+            ArcTransactionType.LootAwarded => new Vector4(1f, 0.7f, 0.2f, 1f),
+            ArcTransactionType.EquipmentChanged => new Vector4(0.9f, 0.7f, 0.3f, 1f),
+            ArcTransactionType.ConsumableUsed => new Vector4(0.8f, 0.6f, 0.9f, 1f),
+
+            // Default - white
+            _ => new Vector4(0.9f, 0.9f, 0.9f, 1f)
+        };
+    }
+
+    private static Vector4 GetTransactionBackgroundColor(ArcTransactionType type)
+    {
+        return type switch
+        {
+            // Combat events - slight red tint
+            ArcTransactionType.CharacterDefeated or
+            ArcTransactionType.CharacterDamaged or
+            ArcTransactionType.BattleStarted or
+            ArcTransactionType.BattleEnded => new Vector4(0.15f, 0.05f, 0.05f, 0.3f),
+
+            // Quest events - slight blue tint
+            ArcTransactionType.QuestAccepted or
+            ArcTransactionType.QuestCompleted or
+            ArcTransactionType.QuestObjectiveCompleted => new Vector4(0.05f, 0.05f, 0.15f, 0.3f),
+
+            // Discovery events - slight green tint
+            ArcTransactionType.ArcDiscovered => new Vector4(0.05f, 0.15f, 0.05f, 0.3f),
+
+            // Default - neutral
+            _ => new Vector4(0.1f, 0.1f, 0.1f, 0.3f)
+        };
+    }
+
+    #endregion
+
+    #region Achievements
+
+    private void RenderAchievementsContent(RpgMainViewModel viewModel)
+    {
+        if (viewModel.Achievements == null)
+        {
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No achievements available.");
+            return;
+        }
+
+        // Overall progress bar
+        var totalCount = viewModel.Achievements.TotalAchievements;
+        var unlockedCount = viewModel.Achievements.UnlockedCount;
+        if (totalCount > 0)
+        {
+            var overallProgress = (float)unlockedCount / totalCount;
+            ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(1, 0.843f, 0, 1));
+            ImGui.ProgressBar(overallProgress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()), $"{unlockedCount}/{totalCount}");
+            ImGui.PopStyleColor();
+        }
+
+        // Filter and toggle row
+        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 100 * UIConstants.DpiScale);
+        ImGui.InputTextWithHint("##AchievementFilter", "Filter...", ref _achievementFilter, 100);
+        ImGui.SameLine();
+        ImGui.Checkbox("Locked", ref _showLockedAchievements);
+        ImGui.Spacing();
+
+        ImGui.BeginChild("AchievementsScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
+
+        // Filter achievements
+        var filterActive = !string.IsNullOrWhiteSpace(_achievementFilter);
+
+        EnsureAchievementsCache(viewModel, filterActive);
+
+        // Unlocked Achievements
+        var unlockedAchievements = _cachedUnlockedAchievements;
+
+        var filteredUnlockedCount = unlockedAchievements?.Count ?? 0;
+        ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1f), $"Unlocked ({filteredUnlockedCount})");
+        ImGui.Spacing();
+
+        if (filteredUnlockedCount > 0)
+        {
+            foreach (var achievement in unlockedAchievements!)
+            {
+                RenderAchievementEntry(achievement, isUnlocked: true);
+            }
+        }
+        else if (!filterActive)
+        {
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "No achievements unlocked yet.");
+        }
+
+        // Locked Achievements (collapsible)
+        if (_showLockedAchievements)
+        {
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            var lockedAchievements = _cachedLockedAchievements;
+
+            var filteredLockedCount = lockedAchievements?.Count ?? 0;
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), $"Locked ({filteredLockedCount})");
+            ImGui.Spacing();
+
+            if (filteredLockedCount > 0)
+            {
+                foreach (var achievement in lockedAchievements!)
+                {
+                    RenderAchievementEntry(achievement, isUnlocked: false);
+                }
+            }
+            else if (!filterActive)
+            {
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "All achievements unlocked!");
+            }
+        }
+
+        ImGui.EndChild();
+    }
+
+    /// <summary>
+    /// Rebuilds the filtered unlocked/locked lists when the source collections change.
+    /// RefreshAchievements (the only mutator) clears and refills the collections with
+    /// brand-new items — also for pure progress updates — so besides the collection
+    /// references and counts, the first item of each collection is a change sentinel.
+    /// </summary>
+    private void EnsureAchievementsCache(RpgMainViewModel viewModel, bool filterActive)
+    {
+        var unlockedSource = viewModel.Achievements.UnlockedAchievements;
+        var lockedSource = viewModel.Achievements.LockedAchievements;
+        var unlockedSentinel = unlockedSource is { Count: > 0 } ? unlockedSource[0] : null;
+        var lockedSentinel = lockedSource is { Count: > 0 } ? lockedSource[0] : null;
+
+        if (ReferenceEquals(_cachedAchUnlockedSource, unlockedSource) &&
+            ReferenceEquals(_cachedAchLockedSource, lockedSource) &&
+            ReferenceEquals(_cachedAchUnlockedSentinel, unlockedSentinel) &&
+            ReferenceEquals(_cachedAchLockedSentinel, lockedSentinel) &&
+            _cachedAchUnlockedCount == (unlockedSource?.Count ?? -1) &&
+            _cachedAchLockedCount == (lockedSource?.Count ?? -1) &&
+            _cachedAchFilter == _achievementFilter)
+        {
+            return;
+        }
+
+        _cachedAchUnlockedSource = unlockedSource;
+        _cachedAchLockedSource = lockedSource;
+        _cachedAchUnlockedSentinel = unlockedSentinel;
+        _cachedAchLockedSentinel = lockedSentinel;
+        _cachedAchUnlockedCount = unlockedSource?.Count ?? -1;
+        _cachedAchLockedCount = lockedSource?.Count ?? -1;
+        _cachedAchFilter = _achievementFilter;
+
+        _cachedUnlockedAchievements = unlockedSource?
+            .Where(a => !filterActive ||
+                (a.DisplayName?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (a.Description?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false))
+            .ToList();
+
+        _cachedLockedAchievements = lockedSource?
+            .Where(a => !filterActive ||
+                (a.DisplayName?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (a.Description?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false))
+            .ToList();
+    }
+
+    private void RenderAchievementEntry(Ambient.Presentation.WindowsUI.RpgControls.ViewModels.AchievementDisplayItem achievement, bool isUnlocked)
+    {
+        var bgColor = isUnlocked
+            ? new Vector4(0.0f, 0.15f, 0.0f, 0.3f)
+            : new Vector4(0.1f, 0.1f, 0.1f, 0.2f);
+
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, bgColor);
+
+        // Card height varies: unlocked shows status, locked shows criteria + progress
+        var cardHeight = isUnlocked
+            ? ImGui.GetFrameHeightWithSpacing() * 3f
+            : ImGui.GetFrameHeightWithSpacing() * 4f;
+
+        if (GameConfiguration.ShowDeveloperInfo)
+        {
+            cardHeight += ImGui.GetFrameHeightWithSpacing() * 0.5f;
+        }
+
+        ImGui.BeginChild($"achievement_{achievement.RefName}", new Vector2(ImGuiSizes.Fill, cardHeight), ImGuiChildFlags.Borders);
+
+        // Achievement title with trophy icon for unlocked
+        if (isUnlocked)
+        {
+            ImGui.TextColored(new Vector4(1f, 0.84f, 0f, 1f), "* ");
+            ImGui.SameLine();
+            ImGui.TextColored(new Vector4(0.6f, 0.9f, 0.6f, 1f), achievement.DisplayName ?? achievement.RefName);
+        }
+        else
+        {
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "-");
+            ImGui.SameLine();
+            ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1f), achievement.DisplayName ?? achievement.RefName);
+        }
+
+        // Developer: RefName
+        if (GameConfiguration.ShowDeveloperInfo)
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(GameConfiguration.DevInfoColor, $"[{achievement.RefName}]");
+        }
+
+        // Description
+        if (!string.IsNullOrEmpty(achievement.Description))
+        {
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), achievement.Description);
+        }
+
+        if (isUnlocked)
+        {
+            // Status text (unlocked date)
+            ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1f), $"Unlocked: {achievement.UnlockedDate ?? "Unknown"}");
+        }
+        else
+        {
+            // Criteria text with full type support
+            var criteriaText = GetAchievementCriteriaText(achievement.CriteriaType, achievement.Threshold);
+            ImGui.TextColored(new Vector4(0.6f, 0.8f, 1f, 1f), criteriaText);
+
+            // Progress bar
+            var progress = achievement.ProgressPercentage / 100f;
+            ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.3f, 0.6f, 1, 1));
+            ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight() * 0.7f), $"{achievement.CurrentValue:F0} / {achievement.Threshold:F0}");
+            ImGui.PopStyleColor();
+        }
+
+        // Developer: Additional metadata
+        if (GameConfiguration.ShowDeveloperInfo)
+        {
+            ImGui.TextColored(GameConfiguration.DevInfoColor, $"Type: {achievement.CriteriaType} | Progress: {achievement.CurrentValue:F0}/{achievement.Threshold:F0}");
+        }
+
+        ImGui.EndChild();
+        ImGui.PopStyleColor();
+        ImGui.Spacing();
+    }
+
+    /// <summary>
+    /// Gets human-readable criteria text for every achievement criteria type
+    /// </summary>
+    private static string GetAchievementCriteriaText(AchievementCriteriaType criteriaType, float threshold)
+    {
+        return criteriaType switch
+        {
+            // Progression
+            AchievementCriteriaType.BlocksPlaced => $"Place {threshold:F0} blocks",
+            AchievementCriteriaType.BlocksDestroyed => $"Destroy {threshold:F0} blocks",
+
+            // Combat
+            AchievementCriteriaType.CharactersDefeated => $"Defeat {threshold:F0} characters",
+            AchievementCriteriaType.CharactersDefeatedByTrait => $"Defeat {threshold:F0} with trait",
+            AchievementCriteriaType.CharactersDefeatedByRef => $"Defeat specific character",
+            AchievementCriteriaType.CriticalHitsDealt => $"Deal {threshold:F0} critical hits",
+            AchievementCriteriaType.CombosExecuted => $"Execute {threshold:F0} combos",
+
+            // Exploration
+            AchievementCriteriaType.ArcsDiscovered => $"Discover {threshold:F0} arc arcs",
+            AchievementCriteriaType.ArcsCompleted => $"Complete {threshold:F0} arc arcs",
+            AchievementCriteriaType.ArcTriggersActivated => $"Activate {threshold:F0} triggers",
+
+            // Social
+            AchievementCriteriaType.DialogueTreesCompleted => $"Complete {threshold:F0} dialogues",
+            AchievementCriteriaType.DialogueNodesVisited => $"Visit {threshold:F0} dialogue nodes",
+            AchievementCriteriaType.UniqueCharactersMet => $"Meet {threshold:F0} characters",
+
+            // Traits
+            AchievementCriteriaType.TraitsAssigned => $"Assign {threshold:F0} traits",
+            AchievementCriteriaType.TraitsAssignedByType => $"Assign {threshold:F0} traits of type",
+            AchievementCriteriaType.TraitsAssignedToCharacterType => $"Assign to {threshold:F0} character types",
+
+            // Economy
+            AchievementCriteriaType.ItemsTraded => $"Trade {threshold:F0} items",
+            AchievementCriteriaType.LootAwarded => $"Collect {threshold:F0} loot items",
+            AchievementCriteriaType.QuestTokensEarned => $"Earn {threshold:F0} quest tokens",
+
+            // Quests
+            AchievementCriteriaType.QuestsCompleted => $"Complete {threshold:F0} quests",
+            AchievementCriteriaType.QuestsCompletedByRef => $"Complete specific quest",
+
+            // Reputation
+            AchievementCriteriaType.ReputationReached => $"Reach reputation {threshold:F0}",
+            AchievementCriteriaType.FactionsAtReputationLevel => $"Rep with {threshold:F0} factions",
+
+            // Status Effects
+            AchievementCriteriaType.StatusEffectsApplied => $"Apply {threshold:F0} effects",
+
+            _ => $"Reach {threshold:F0}"
+        };
+    }
+
+    #endregion
+}

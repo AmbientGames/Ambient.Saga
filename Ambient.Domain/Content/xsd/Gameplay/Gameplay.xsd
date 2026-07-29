@@ -18,7 +18,7 @@
     <xs:include schemaLocation="Achievements/Achievement.xsd" />
     <xs:include schemaLocation="Factions/Faction.xsd" />
     <xs:include schemaLocation="Quests/Quest.xsd" />
-    <xs:include schemaLocation="SagaEngine/SagaArcs.xsd" />
+    <xs:include schemaLocation="Saga/Saga.xsd" />
     <xs:element name="Consumables" type="ConsumableCatalog">
         <xs:key name="UniqueConsumableRefName">
             <xs:selector xpath="Consumable" />
@@ -121,9 +121,9 @@
             <xs:field xpath="@RefName" />
         </xs:key>
     </xs:element>
-    <xs:element name="SagaArcs" type="SagaArcs">
-        <xs:key name="UniqueSagaArcRefName">
-            <xs:selector xpath="SagaArc" />
+    <xs:element name="Saga" type="Saga">
+        <xs:key name="UniqueArcRefName">
+            <xs:selector xpath="Arc" />
             <xs:field xpath="@RefName" />
         </xs:key>
     </xs:element>
@@ -146,7 +146,7 @@
             <xs:element ref="Factions" />
             <xs:element ref="QuestTokens" />
             <xs:element ref="Quests" />
-            <xs:element ref="SagaArcs" />
+            <xs:element ref="Saga" />
         </xs:sequence>
     </xs:complexType>
 </xs:schema>

@@ -1,0 +1,632 @@
+﻿using Ambient.Domain;
+using Ambient.Rpg.Engine.Domain.Dialogue.Events;
+using Ambient.Rpg.Engine.Domain.Arcs.TransactionLog;
+
+namespace Ambient.Rpg.Engine.Domain.Dialogue.Execution;
+
+/// <summary>
+/// Executes dialogue actions (give/take items, unlock achievements, trigger system transitions).
+/// Fully data-driven - no special cases needed for new action types.
+/// </summary>
+public class DialogueActionExecutor
+{
+    private readonly IDialogueStateProvider _stateProvider;
+    private readonly ArcDialogueContext? _arcContext;
+    private readonly List<DialogueSystemEvent> _raisedEvents = new();
+    private readonly List<ArcTransaction> _staged = new();
+
+    public DialogueActionExecutor(IDialogueStateProvider stateProvider, ArcDialogueContext? arcContext = null)
+    {
+        _stateProvider = stateProvider ?? throw new ArgumentNullException(nameof(stateProvider));
+        _arcContext = arcContext;
+    }
+
+    /// <summary>
+    /// Events raised during action execution (for system transitions).
+    /// </summary>
+    public IReadOnlyList<DialogueSystemEvent> RaisedEvents => _raisedEvents.AsReadOnly();
+
+    /// <summary>
+    /// Transactions staged during the most recent action execution.
+    /// Not yet attached to the ArcInstance — caller decides whether to flush or discard.
+    /// </summary>
+    public IReadOnlyList<ArcTransaction> StagedTransactions => _staged.AsReadOnly();
+
+    /// <summary>
+    /// Clears all raised events and any staged transactions.
+    /// Call this before processing the next dialogue node so previous staging cannot leak forward.
+    /// </summary>
+    public void ClearEvents()
+    {
+        _raisedEvents.Clear();
+        _staged.Clear();
+    }
+
+    /// <summary>
+    /// Appends any staged transactions to the ArcInstance (if an arc context is present)
+    /// and clears the staging buffer. Called after ExecuteAll returns successfully.
+    /// </summary>
+    public void FlushStaged()
+    {
+        if (_staged.Count == 0)
+            return;
+
+        if (_arcContext != null)
+        {
+            foreach (var tx in _staged)
+            {
+                _arcContext.ArcInstance.AddTransaction(tx);
+            }
+        }
+
+        _staged.Clear();
+    }
+
+    /// <summary>
+    /// Drops any staged transactions without attaching them to the ArcInstance.
+    /// Called when action execution fails so partial rewards are not persisted.
+    /// </summary>
+    public void DiscardStaged() => _staged.Clear();
+
+    /// <summary>
+    /// Executes a single action.
+    /// </summary>
+    /// <param name="action">Action to execute</param>
+    /// <param name="dialogueTreeRef">Dialogue tree reference (for context)</param>
+    /// <param name="nodeId">Node ID (for context)</param>
+    /// <param name="characterRef">Character reference (for idempotency checking)</param>
+    /// <param name="shouldAwardRewards">Whether rewards should be awarded (checked once per node, not per action)</param>
+    public void Execute(DialogueAction action, string dialogueTreeRef, string nodeId, string characterRef, bool shouldAwardRewards)
+    {
+        switch (action.Type)
+        {
+            // Quest tokens - IDEMPOTENT (only give on first visit)
+            case DialogueActionType.GiveQuestToken:
+                if (shouldAwardRewards)
+                {
+                    _stateProvider.AddQuestToken(action.RefName);
+
+                    // Create transaction for persistence and achievement tracking
+                    if (_arcContext != null)
+                    {
+                        var transaction = DialogueTransactionHelper.CreateQuestTokenAwardedTransaction(
+                            _arcContext.AvatarId,
+                            action.RefName,
+                            characterRef, // Source = character who gave the token
+                            _arcContext.ArcInstance.InstanceId
+                        );
+                        _staged.Add(transaction);
+                    }
+                }
+                break;
+            // Stackable items - IDEMPOTENT (only give on first visit)
+            case DialogueActionType.GiveConsumable:
+                if (shouldAwardRewards)
+                    _stateProvider.AddConsumable(action.RefName, action.Amount);
+                break;
+            case DialogueActionType.TakeConsumable:
+                if (shouldAwardRewards)
+                    _stateProvider.RemoveConsumable(action.RefName, action.Amount);
+                break;
+            case DialogueActionType.GiveMaterial:
+                if (shouldAwardRewards)
+                    _stateProvider.AddMaterial(action.RefName, action.Amount);
+                break;
+            case DialogueActionType.TakeMaterial:
+                if (shouldAwardRewards)
+                    _stateProvider.RemoveMaterial(action.RefName, action.Amount);
+                break;
+            case DialogueActionType.GiveBlock:
+                if (shouldAwardRewards)
+                    _stateProvider.AddBlock(action.RefName, action.Amount);
+                break;
+            case DialogueActionType.TakeBlock:
+                if (shouldAwardRewards)
+                    _stateProvider.RemoveBlock(action.RefName, action.Amount);
+                break;
+
+            // Degradable items - IDEMPOTENT (only give on first visit)
+            case DialogueActionType.GiveEquipment:
+                if (shouldAwardRewards)
+                    _stateProvider.AddEquipment(action.RefName);
+                break;
+            case DialogueActionType.TakeEquipment:
+                if (shouldAwardRewards)
+                    _stateProvider.RemoveEquipment(action.RefName);
+                break;
+            case DialogueActionType.GiveTool:
+                if (shouldAwardRewards)
+                    _stateProvider.AddTool(action.RefName);
+                break;
+            case DialogueActionType.TakeTool:
+                if (shouldAwardRewards)
+                    _stateProvider.RemoveTool(action.RefName);
+                break;
+            case DialogueActionType.GiveSpell:
+                if (shouldAwardRewards)
+                    _stateProvider.AddSpell(action.RefName);
+                break;
+            case DialogueActionType.TakeSpell:
+                if (shouldAwardRewards)
+                    _stateProvider.RemoveSpell(action.RefName);
+                break;
+
+            // Currency - IDEMPOTENT (only transfer on first visit)
+            case DialogueActionType.TransferCurrency:
+                if (shouldAwardRewards)
+                {
+                    _stateProvider.TransferCurrency(action.Amount);
+
+                    // Record the credit movement — CurrencyCollected quest objectives
+                    // read CurrencyChanged transactions
+                    if (_arcContext != null && action.Amount != 0)
+                    {
+                        _staged.Add(new ArcTransaction
+                        {
+                            TransactionId = Guid.NewGuid(),
+                            Type = ArcTransactionType.CurrencyChanged,
+                            AvatarId = _arcContext.AvatarId,
+                            Status = TransactionStatus.Pending,
+                            LocalTimestamp = DateTime.UtcNow,
+                            Data = new Dictionary<string, string>
+                            {
+                                [TransactionDataKeys.Amount] = action.Amount.ToString(),
+                                [TransactionDataKeys.Reason] = "Dialogue",
+                                [TransactionDataKeys.CharacterRef] = characterRef
+                            }
+                        });
+                    }
+                }
+                break;
+
+            // Achievements - IDEMPOTENT (only unlock on first visit)
+            case DialogueActionType.UnlockAchievement:
+                if (shouldAwardRewards)
+                    _stateProvider.UnlockAchievement(action.RefName);
+                break;
+
+            // System transitions (raise events) - NOT IDEMPOTENT (always trigger)
+            // These are UI/system events, not rewards
+            case DialogueActionType.OpenMerchantTrade:
+                _raisedEvents.Add(new OpenMerchantTradeEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    CharacterRef = action.CharacterRef
+                });
+                break;
+
+            case DialogueActionType.StartBossBattle:
+                _raisedEvents.Add(new StartBossBattleEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    CharacterRef = action.CharacterRef
+                });
+                break;
+
+            case DialogueActionType.StartCombat:
+                _raisedEvents.Add(new StartCombatEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    CharacterRef = action.CharacterRef
+                });
+                break;
+
+            case DialogueActionType.SpawnCharacters:
+                _raisedEvents.Add(new SpawnCharactersEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    CharacterRef = action.CharacterRef,
+                    Amount = action.Amount
+                });
+                break;
+
+            // Character trait management - IDEMPOTENT (only assign on first visit)
+            case DialogueActionType.AssignTrait:
+                if (shouldAwardRewards)
+                {
+                    if (!action.TraitSpecified)
+                        throw new InvalidOperationException("AssignTrait action requires Trait attribute to be specified");
+
+                    var traitName = action.Trait.ToString();
+                    var traitValue = action.TraitValueSpecified ? (int?)action.TraitValue : null;
+                    _stateProvider.AssignTrait(traitName, traitValue);
+
+                    // Create transaction for persistence and achievement tracking
+                    // Traits are assigned TO the character being talked to, not the avatar
+                    if (_arcContext != null)
+                    {
+                        var transaction = DialogueTransactionHelper.CreateTraitAssignedTransaction(
+                            _arcContext.AvatarId,
+                            characterRef, // Character receiving the trait
+                            traitName,
+                            traitValue,
+                            _arcContext.ArcInstance.InstanceId
+                        );
+                        _staged.Add(transaction);
+                    }
+                }
+                break;
+
+            case DialogueActionType.RemoveTrait:
+                if (shouldAwardRewards)
+                {
+                    if (!action.TraitSpecified)
+                        throw new InvalidOperationException("RemoveTrait action requires Trait attribute to be specified");
+
+                    var traitName = action.Trait.ToString();
+                    _stateProvider.RemoveTrait(traitName);
+
+                    // Create transaction for persistence
+                    if (_arcContext != null)
+                    {
+                        var transaction = DialogueTransactionHelper.CreateTraitRemovedTransaction(
+                            _arcContext.AvatarId,
+                            characterRef, // Character losing the trait
+                            traitName,
+                            _arcContext.ArcInstance.InstanceId
+                        );
+                        _staged.Add(transaction);
+                    }
+                }
+                break;
+
+            // Character state management - IDEMPOTENT (only set on first visit)
+            case DialogueActionType.SetCharacterState:
+                if (shouldAwardRewards)
+                {
+                    _stateProvider.SetCharacterState(action.RefName);
+
+                    // Create transaction for persistence
+                    if (_arcContext != null)
+                    {
+                        var transaction = DialogueTransactionHelper.CreateTraitAssignedTransaction(
+                            _arcContext.AvatarId,
+                            characterRef, // Character whose state is changing
+                            action.RefName, // State name (Neutral, Friendly, Hostile, InBattle, Defeated)
+                            null,
+                            _arcContext.ArcInstance.InstanceId
+                        );
+                        _staged.Add(transaction);
+                    }
+                }
+                break;
+
+            // Quest management - NOT IDEMPOTENT (always raise events)
+            // These trigger CQRS commands which handle the actual quest logic
+            case DialogueActionType.AcceptQuest:
+                _raisedEvents.Add(new AcceptQuestEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    QuestRef = action.RefName,
+                    ArcRef = _arcContext?.ArcInstance.ArcRef ?? string.Empty,
+                    QuestGiverRef = characterRef
+                });
+                break;
+
+            case DialogueActionType.CompleteQuest:
+                _raisedEvents.Add(new CompleteQuestEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    QuestRef = action.RefName,
+                    ArcRef = _arcContext?.ArcInstance.ArcRef ?? string.Empty
+                });
+                break;
+
+            case DialogueActionType.AbandonQuest:
+                _raisedEvents.Add(new AbandonQuestEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    QuestRef = action.RefName,
+                    ArcRef = _arcContext?.ArcInstance.ArcRef ?? string.Empty
+                });
+                break;
+
+            // Party management - IDEMPOTENT (only modify on first visit)
+            case DialogueActionType.JoinParty:
+                if (shouldAwardRewards)
+                {
+                    // Use CharacterRef from action, or fall back to the current dialogue character
+                    var joinCharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef;
+                    _stateProvider.AddPartyMember(joinCharacterRef);
+
+                    // Raise event for UI/system handling
+                    _raisedEvents.Add(new PartyMemberJoinedEvent
+                    {
+                        DialogueTreeRef = dialogueTreeRef,
+                        NodeId = nodeId,
+                        CharacterRef = joinCharacterRef
+                    });
+
+                    if (_arcContext != null)
+                    {
+                        var transaction = DialogueTransactionHelper.CreatePartyMemberJoinedTransaction(
+                            _arcContext.AvatarId,
+                            joinCharacterRef,
+                            _arcContext.ArcInstance.InstanceId
+                        );
+                        _staged.Add(transaction);
+                    }
+                }
+                break;
+
+            case DialogueActionType.LeaveParty:
+                if (shouldAwardRewards)
+                {
+                    // Use CharacterRef from action, or fall back to the current dialogue character
+                    var leaveCharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef;
+                    _stateProvider.RemovePartyMember(leaveCharacterRef);
+
+                    // Raise event for UI/system handling
+                    _raisedEvents.Add(new PartyMemberLeftEvent
+                    {
+                        DialogueTreeRef = dialogueTreeRef,
+                        NodeId = nodeId,
+                        CharacterRef = leaveCharacterRef
+                    });
+
+                    if (_arcContext != null)
+                    {
+                        var transaction = DialogueTransactionHelper.CreatePartyMemberLeftTransaction(
+                            _arcContext.AvatarId,
+                            leaveCharacterRef,
+                            _arcContext.ArcInstance.InstanceId
+                        );
+                        _staged.Add(transaction);
+                    }
+                }
+                break;
+
+            // Affinity granting - IDEMPOTENT (only grant on first visit)
+            case DialogueActionType.GrantAffinity:
+                if (shouldAwardRewards)
+                {
+                    // Use CharacterRef from action, or fall back to the current dialogue character
+                    var sourceCharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef;
+                    _stateProvider.AddAffinity(action.RefName, sourceCharacterRef);
+
+                    // Raise event for UI/system handling
+                    _raisedEvents.Add(new AffinityGrantedEvent
+                    {
+                        DialogueTreeRef = dialogueTreeRef,
+                        NodeId = nodeId,
+                        AffinityRef = action.RefName,
+                        CapturedFromCharacterRef = sourceCharacterRef
+                    });
+
+                    if (_arcContext != null)
+                    {
+                        var transaction = DialogueTransactionHelper.CreateAffinityGrantedTransaction(
+                            _arcContext.AvatarId,
+                            action.RefName,
+                            sourceCharacterRef,
+                            _arcContext.ArcInstance.InstanceId
+                        );
+                        _staged.Add(transaction);
+                    }
+                }
+                break;
+
+            // Faction reputation - IDEMPOTENT (only change on first visit)
+            case DialogueActionType.ChangeReputation:
+                if (shouldAwardRewards)
+                {
+                    _stateProvider.ChangeReputation(action.FactionRef, action.Amount);
+
+                    // Raise event for UI/system handling
+                    _raisedEvents.Add(new ReputationChangedEvent
+                    {
+                        DialogueTreeRef = dialogueTreeRef,
+                        NodeId = nodeId,
+                        FactionRef = action.FactionRef,
+                        Amount = action.Amount
+                    });
+
+                    if (_arcContext != null)
+                    {
+                        var transaction = DialogueTransactionHelper.CreateReputationChangedTransaction(
+                            _arcContext.AvatarId,
+                            action.FactionRef,
+                            action.Amount,
+                            _arcContext.ArcInstance.InstanceId
+                        );
+                        _staged.Add(transaction);
+                    }
+
+                    // Spillover to related factions (allies gain, enemies lose) —
+                    // each gets its own ReputationChanged transaction so replay
+                    // and the progress projection see the full picture
+                    foreach (var (spillFactionRef, spillAmount) in _stateProvider.GetReputationSpillover(action.FactionRef, action.Amount))
+                    {
+                        _stateProvider.ChangeReputation(spillFactionRef, spillAmount);
+
+                        if (_arcContext != null)
+                        {
+                            _staged.Add(DialogueTransactionHelper.CreateReputationChangedTransaction(
+                                _arcContext.AvatarId,
+                                spillFactionRef,
+                                spillAmount,
+                                _arcContext.ArcInstance.InstanceId));
+                        }
+                    }
+                }
+                break;
+
+            // Battle-related actions - NOT IDEMPOTENT (always raise events)
+            // These are system events that trigger battle mechanics
+            case DialogueActionType.ChangeStance:
+                _raisedEvents.Add(new ChangeStanceEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    StanceRef = action.RefName,
+                    CharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef
+                });
+                break;
+
+            case DialogueActionType.ChangeAffinity:
+                _raisedEvents.Add(new ChangeAffinityEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    AffinityRef = action.RefName,
+                    CharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef
+                });
+                break;
+
+            case DialogueActionType.CastSpell:
+                _raisedEvents.Add(new CastSpellEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    SpellRef = action.RefName,
+                    CharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef
+                });
+                break;
+
+            case DialogueActionType.SummonAlly:
+                _raisedEvents.Add(new SummonAllyEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    CharacterRef = action.CharacterRef
+                });
+                break;
+
+            case DialogueActionType.EndBattle:
+                _raisedEvents.Add(new EndBattleEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    Result = action.RefName // RefName contains the result: "Victory", "Defeat", "Flee", "Draw"
+                });
+                break;
+
+            case DialogueActionType.HealSelf:
+                _raisedEvents.Add(new HealSelfEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    CharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef,
+                    Amount = action.Amount
+                });
+                break;
+
+            case DialogueActionType.ApplyStatusEffect:
+                _raisedEvents.Add(new ApplyStatusEffectEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    StatusEffectRef = action.RefName,
+                    TargetCharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef
+                });
+                break;
+
+            default:
+                throw new NotSupportedException($"Unknown action type: {action.Type}");
+        }
+    }
+
+    /// <summary>
+    /// Executes multiple actions in sequence.
+    /// </summary>
+    /// <param name="actions">Actions to execute</param>
+    /// <param name="dialogueTreeRef">Dialogue tree reference</param>
+    /// <param name="nodeId">Node ID</param>
+    /// <param name="characterRef">Character reference (for idempotency checking)</param>
+    public void ExecuteAll(DialogueAction[] actions, string dialogueTreeRef, string nodeId, string characterRef)
+    {
+        if (actions == null || actions.Length == 0)
+            return;
+
+        // Check idempotency ONCE for all actions in this node.
+        // Node rewards are first-visit-only: the committed DialogueNodeVisited history
+        // is the ledger (closing the farming loop where closing and re-opening a
+        // conversation re-paid currency/consumables on every visit), and the pending
+        // scan closes the window before the first visit is committed.
+        // (Our own in-progress staging lives in _staged, not on the instance, so it is not seen here.)
+        var shouldAwardRewards =
+            _stateProvider.ShouldAwardNodeRewards(characterRef, nodeId)
+            && !HasPendingNodeVisit(characterRef, nodeId)
+            && !HasCommittedNodeVisit(dialogueTreeRef, nodeId, characterRef);
+
+        // If any action throws, drop everything staged during this call so the ArcInstance
+        // is not left with a partial reward set paired with a visit record that would block retry.
+        try
+        {
+            foreach (var action in actions)
+            {
+                Execute(action, dialogueTreeRef, nodeId, characterRef, shouldAwardRewards);
+            }
+        }
+        catch
+        {
+            _staged.Clear();
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// True if this node's rewards were already granted in a previous conversation:
+    /// a committed DialogueNodeVisited transaction for the same character/tree/node
+    /// exists in the instance log. This is the first-visit-only reward ledger.
+    /// Visits undone by a committed TransactionReversed compensation don't count —
+    /// the avatar-side persistence failed, so the reward was never made durable
+    /// and must be re-awardable (audit B6).
+    /// </summary>
+    private bool HasCommittedNodeVisit(string dialogueTreeRef, string nodeId, string characterRef)
+    {
+        if (_arcContext == null)
+            return false;
+
+        var reversedIds = new HashSet<Guid>();
+        foreach (var tx in _arcContext.ArcInstance.Transactions)
+        {
+            if (tx.Type == ArcTransactionType.TransactionReversed &&
+                tx.Status == TransactionStatus.Committed &&
+                Guid.TryParse(tx.GetData<string>(TransactionDataKeys.ReversedTransactionId), out var reversedId))
+            {
+                reversedIds.Add(reversedId);
+            }
+        }
+
+        var avatarId = _arcContext.AvatarId;
+        return _arcContext.ArcInstance.Transactions.Any(tx =>
+            tx.Type == ArcTransactionType.DialogueNodeVisited &&
+            tx.Status == TransactionStatus.Committed &&
+            !reversedIds.Contains(tx.TransactionId) &&
+            string.Equals(tx.AvatarId, avatarId, StringComparison.Ordinal) &&
+            string.Equals(tx.GetData<string>(TransactionDataKeys.CharacterRef), characterRef, StringComparison.Ordinal) &&
+            string.Equals(tx.GetData<string>(TransactionDataKeys.DialogueTreeRef), dialogueTreeRef, StringComparison.Ordinal) &&
+            string.Equals(tx.GetData<string>(TransactionDataKeys.DialogueNodeId), nodeId, StringComparison.Ordinal));
+    }
+
+    private bool HasPendingNodeVisit(string characterRef, string nodeId)
+    {
+        if (_arcContext == null)
+            return false;
+
+        var avatarId = _arcContext.AvatarId;
+        foreach (var tx in _arcContext.ArcInstance.Transactions)
+        {
+            if (tx.Type != ArcTransactionType.DialogueNodeVisited)
+                continue;
+            if (tx.Status != TransactionStatus.Pending)
+                continue;
+            if (!string.Equals(tx.AvatarId, avatarId, StringComparison.Ordinal))
+                continue;
+            if (!string.Equals(tx.GetData<string>(TransactionDataKeys.CharacterRef), characterRef, StringComparison.Ordinal))
+                continue;
+            if (!string.Equals(tx.GetData<string>(TransactionDataKeys.DialogueNodeId), nodeId, StringComparison.Ordinal))
+                continue;
+            return true;
+        }
+        return false;
+    }
+}

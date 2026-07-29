@@ -1,0 +1,287 @@
+using Ambient.Domain;
+using Ambient.Domain.Contracts;
+using Ambient.Infrastructure.GameLogic.Loading;
+
+namespace Ambient.Rpg.Engine.Tests;
+
+public class LoadingTests : IAsyncLifetime
+{
+    private readonly IWorldConfigurationLoader _configurationLoader = TestWorldFactory.CreateTestWorldConfigurationLoader();
+    private readonly IWorldLoader _worldLoader;
+    private readonly string _dataDirectory;
+    private readonly string _definitionDirectory;
+    private IWorld _world;
+
+    public LoadingTests()
+    {
+        // Content/xsd is copied to output directory by Ambient.Domain
+        _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "xsd");
+
+        // Content/Worlds is at solution root (shared by all Sandboxes)
+        _dataDirectory = FindWorldsDirectory();
+
+        _worldLoader = TestWorldFactory.CreateTestWorldAssetLoader();
+    }
+
+    private static string FindWorldsDirectory()
+    {
+        var directory = AppDomain.CurrentDomain.BaseDirectory;
+        while (directory != null)
+        {
+            var worldDefPath = Path.Combine(directory, "Content", "Worlds");
+            if (Directory.Exists(worldDefPath))
+                return worldDefPath;
+            directory = Directory.GetParent(directory)?.FullName;
+        }
+
+        throw new InvalidOperationException("Could not find Content/Worlds directory");
+    }
+
+    public async Task InitializeAsync()
+    {
+        _world = await _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Ise");
+    }
+
+    public Task DisposeAsync()
+    {
+        return Task.CompletedTask;
+    }
+
+    [Fact]
+    public void WorldCombined_ShouldNotBeNull()
+    {
+        Assert.NotNull(_world);
+    }
+
+    [Fact]
+    public void WorlConfiguration_ShouldNotBeNull()
+    {
+        Assert.NotNull(_world?.WorldConfiguration);
+    }
+
+    [Fact]
+    public void Consumables_ShouldNotBeNull()
+    {
+        Assert.NotNull(_world?.Gameplay.Consumables);
+    }
+
+    [Fact]
+    public void Equipment_ShouldNotBeNull()
+    {
+        Assert.NotNull(_world?.Gameplay.Equipment);
+    }
+
+    [Fact]
+    public void Characters_ShouldNotBeNull()
+    {
+        Assert.NotNull(_world?.Gameplay.Characters);
+    }
+
+    [Fact]
+    public void Avatars_ShouldNotBeNull()
+    {
+        Assert.NotNull(_world?.Gameplay.AvatarArchetypes);
+    }
+
+    [Fact]
+    public void Tools_ShouldNotBeNull()
+    {
+        Assert.NotNull(_world?.Gameplay.Tools);
+    }
+
+    [Fact]
+    public void DialogueTrees_ShouldNotBeNull()
+    {
+        Assert.NotNull(_world?.Gameplay.DialogueTrees);
+    }
+
+    [Fact]
+    public async Task AvailableWorldConfigurations_ShouldLoadMultipleConfigurations()
+    {
+        // Act
+        var availableConfigurations = await _configurationLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
+
+        // Assert
+        Assert.NotNull(availableConfigurations);
+        Assert.True(availableConfigurations.Length > 1);
+    }
+
+    [Fact]
+    public void SelectedWorldConfiguration_ShouldBeAssigned()
+    {
+        Assert.NotNull(_world?.WorldConfiguration);
+        Assert.NotNull(_world.WorldConfiguration.RefName);
+        Assert.NotEmpty(_world.WorldConfiguration.RefName);
+    }
+
+    [Fact]
+    public async Task HeightMapConfiguration_ShouldCastCorrectly()
+    {
+        // Act - Load Kagoshima world which uses HeightMapSettings
+        var kagoshimaWorld = await _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Kagoshima");
+
+        // Assert
+        Assert.NotNull(kagoshimaWorld.WorldConfiguration);
+        Assert.Equal("Kagoshima", kagoshimaWorld.WorldConfiguration.RefName);
+        Assert.IsType<HeightMapSettings>(kagoshimaWorld.WorldConfiguration.Item);
+
+        var heightMapSettings = (HeightMapSettings)kagoshimaWorld.WorldConfiguration.Item;
+        Assert.NotNull(heightMapSettings);
+    }
+
+    [Fact]
+    public async Task ConfigurationSwitchPattern_ShouldWorkForHeightMap()
+    {
+        // Load a HeightMap configuration to test switch pattern
+        var heightMapWorld = await _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Kagoshima");
+        Assert.NotNull(heightMapWorld.WorldConfiguration);
+        Assert.IsType<HeightMapSettings>(heightMapWorld.WorldConfiguration.Item);
+    }
+
+    [Fact]
+    public void ConfigurationProperties_ShouldBeAccessible()
+    {
+        Assert.NotNull(_world?.WorldConfiguration);
+
+        // Test basic properties
+        Assert.NotNull(_world.WorldConfiguration.DisplayName);
+        Assert.NotNull(_world.WorldConfiguration.Description);
+        Assert.NotNull(_world.WorldConfiguration.ContentPackLibrary);
+    }
+
+    //[Fact]
+    //public void WorldTemplate_ShouldHaveMetadata()
+    //{
+    //    Assert.NotNull(_world?.WorldTemplate?.Metadata);
+    //    Assert.NotNull(_world.WorldTemplate.Metadata.Name);
+    //    Assert.NotNull(_world.WorldTemplate.Metadata.Description);
+    //    Assert.NotNull(_world.WorldTemplate.Metadata.Version);
+    //    Assert.NotNull(_world.WorldTemplate.Metadata.Author);
+    //}
+
+    [Fact]
+    public void Arcs_ShouldBeLoaded()
+    {
+        Assert.NotNull(_world?.Gameplay.Saga);
+        Assert.NotEmpty(_world.Gameplay.Saga);
+
+        // Test that arcs have proper coordinates
+        foreach (var arc in _world.Gameplay.Saga)
+        {
+            Assert.NotNull(arc.RefName);
+            Assert.NotNull(arc.DisplayName);
+            // Coordinates can be 0, so just check they're defined
+            Assert.True(arc.Latitude != double.MinValue);
+            Assert.True(arc.Longitude != double.MinValue);
+        }
+    }
+
+    [Fact]
+    public void ArcsLookup_ShouldWork()
+    {
+        Assert.NotNull(_world?.ArcLookup);
+        Assert.NotEmpty(_world.ArcLookup);
+
+        // Test that we can find arcs by RefName
+        var firstArc = _world.Gameplay.Saga.First();
+        var foundArc = _world.GetArcByRefName(firstArc.RefName);
+
+        Assert.Equal(firstArc.RefName, foundArc.RefName);
+        Assert.Equal(firstArc.DisplayName, foundArc.DisplayName);
+    }
+
+    [Fact]
+    public async Task HeightMapMetadata_ShouldBeLoadedForHeightMapConfigurations()
+    {
+        // Act - Load Kagoshima world which uses HeightMapSettings
+        var kagoshimaWorld = await _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Kagoshima");
+
+        // Assert
+        Assert.NotNull(kagoshimaWorld.HeightMapMetadata);
+
+        // Verify basic metadata properties are accessible
+        Assert.True(kagoshimaWorld.HeightMapMetadata.ImageWidth > 0);
+        Assert.True(kagoshimaWorld.HeightMapMetadata.ImageHeight > 0);
+    }
+
+    [Fact]
+    public async Task HeightMapBounds_ShouldBeLoadedForHeightMapConfigurations()
+    {
+        // Act - Load Kagoshima world which uses HeightMapSettings
+        var kagoshimaWorld = await _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Kagoshima");
+
+        // Assert
+        Assert.NotNull(kagoshimaWorld.HeightMapMetadata);
+
+        // Now we can do proper math operations on the bounds!
+        var metadata = kagoshimaWorld.HeightMapMetadata;
+        Assert.True(metadata.North > metadata.South, "North should be greater than South");
+        Assert.True(metadata.East > metadata.West, "East should be greater than West");
+        Assert.True(metadata.Width > 0, "Width should be positive");
+        Assert.True(metadata.Height > 0, "Height should be positive");
+
+        // Verify the bounds make sense for Japan (Kagoshima area)
+        Assert.InRange(metadata.North, 24.0, 46.0);
+        Assert.InRange(metadata.South, 24.0, 46.0);
+        Assert.InRange(metadata.East, 123.0, 146.0);
+        Assert.InRange(metadata.West, 123.0, 146.0);
+    }
+
+    [Fact]
+    public async Task HeightMapMetadata_ShouldContainGeoTiffInformation()
+    {
+        // Act - Load Kagoshima world which uses HeightMapSettings
+        var kagoshimaWorld = await _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Kagoshima");
+
+        // Assert - Check for GeoTIFF-specific metadata
+        Assert.NotNull(kagoshimaWorld.HeightMapMetadata);
+        var metadata = kagoshimaWorld.HeightMapMetadata;
+
+        // Should have pixel scale and tie point information for proper GeoTIFF files
+        Assert.True(metadata.PixelScale.X > 0);
+        Assert.True(metadata.PixelScale.Y > 0);
+        Assert.True(metadata.PixelScale.Z >= 0); // Z can be 0
+
+        // Verify tie point has reasonable values for raster and model coordinates
+        Assert.True(metadata.TiePoint.I >= 0); // Raster X
+        Assert.True(metadata.TiePoint.J >= 0); // Raster Y
+        Assert.True(metadata.TiePoint.X != 0); // Model X (longitude)
+        Assert.True(metadata.TiePoint.Y != 0); // Model Y (latitude)
+    }
+
+    [Fact]
+    public async Task HeightMapMetadata_ShouldSupportMathOperations()
+    {
+        // Act - Load Kagoshima world which uses HeightMapSettings
+        var kagoshimaWorld = await _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Kagoshima");
+
+        // Assert
+        Assert.NotNull(kagoshimaWorld.HeightMapMetadata);
+        var metadata = kagoshimaWorld.HeightMapMetadata;
+
+        // Demonstrate math operations that are now possible
+        var centerLatitude = (metadata.North + metadata.South) / 2;
+        var centerLongitude = (metadata.East + metadata.West) / 2;
+        var aspectRatio = metadata.Width / metadata.Height;
+        var area = metadata.Width * metadata.Height; // in square degrees
+
+        // Calculate pixel size in degrees
+        var pixelSizeX = metadata.Width / metadata.ImageWidth;
+        var pixelSizeY = metadata.Height / metadata.ImageHeight;
+
+        // Verify calculated values are reasonable
+        Assert.InRange(centerLatitude, metadata.South, metadata.North);
+        Assert.InRange(centerLongitude, metadata.West, metadata.East);
+        Assert.True(aspectRatio > 0);
+        Assert.True(area > 0);
+        Assert.True(pixelSizeX > 0);
+        Assert.True(pixelSizeY > 0);
+
+        // For a 1x1 degree tile, area should be close to 1
+        Assert.InRange(area, 0.5, 2.0);
+
+        // Verify we can access both bounds and image properties
+        Assert.True(metadata.ImageWidth > 0);
+        Assert.True(metadata.ImageHeight > 0);
+    }
+}

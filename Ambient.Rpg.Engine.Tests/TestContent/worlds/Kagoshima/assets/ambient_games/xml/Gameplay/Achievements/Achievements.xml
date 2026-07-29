@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Achievement RefName="ACH_COMPLETE_KAGOSHIMA" DisplayName="Legend of Kagoshima" Description="Write your name in the annals of Kagoshima's history by completing the main quest.">
+    <Criteria Type="ArcsCompleted" Threshold="3" />
+  </Achievement>
+  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_KAGOSHIMA" DisplayName="Slayer" Description="Bring low every mighty enemy that terrorizes the lands of Kagoshima.">
+    <Criteria Type="CharactersDefeatedByTrait" Trait="BossFight" Threshold="2" />
+  </Achievement>
+  <Achievement RefName="ACH_EXPLORER_KAGOSHIMA" DisplayName="Trailblazer" Description="Be the first to set foot in all the locations of Kagoshima.">
+    <Criteria Type="ArcsDiscovered" Threshold="3" />
+  </Achievement>
+  <Achievement RefName="ACH_SOCIAL_KAGOSHIMA" DisplayName="Charmer" Description="Win the attention of every character in Kagoshima.">
+    <Criteria Type="UniqueCharactersMet" Threshold="102" />
+  </Achievement>
+  <Achievement RefName="ACH_DIALOGUE_MASTER_KAGOSHIMA" DisplayName="Eloquent" Description="Leave no word unspoken in your travels through Kagoshima.">
+    <Criteria Type="DialogueTreesCompleted" Threshold="102" />
+  </Achievement>
+  <Achievement RefName="ACH_COLLECTOR_KAGOSHIMA" DisplayName="Completionist" Description="Collect every quest token available in Kagoshima.">
+    <Criteria Type="QuestTokensEarned" Threshold="21" />
+  </Achievement>
+  <Achievement RefName="ACH_MERCHANT_KAGOSHIMA" DisplayName="Haggler" Description="Strike deals with all the traders throughout Kagoshima.">
+    <Criteria Type="ItemsTraded" Threshold="115" />
+  </Achievement>
+  <Achievement RefName="ACH_DIPLOMAT_KAGOSHIMA" DisplayName="Diplomat" Description="Forge friendships with the people of Kagoshima through kindness.">
+    <Criteria Type="TraitsAssignedByType" Trait="Friendly" Threshold="51" />
+  </Achievement>
+  <Achievement RefName="BANDIT_SLAYER" DisplayName="Bandit Slayer" Description="Defeat the Bandit Chief and make the roads safe again.">
+    <Criteria Type="CharactersDefeatedByRef" Threshold="1" CharacterRef="BanditChief_Boss" />
+  </Achievement>
+  <Achievement RefName="TREASUREHUNTER" DisplayName="Treasure Hunter" Description="Follow the faded map to its end and claim the hidden cache.">
+    <Criteria Type="QuestsCompletedByRef" Threshold="1" QuestRef="HiddenCache_Quest" />
+  </Achievement>
+  <Achievement RefName="MASTERSTUDENT" DisplayName="Master's Student" Description="Pass the three trials and learn the Lost Technique from its last master.">
+    <Criteria Type="QuestsCompletedByRef" Threshold="1" QuestRef="LostTechnique_Quest" />
+  </Achievement>
+</Achievements>
