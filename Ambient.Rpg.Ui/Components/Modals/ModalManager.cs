@@ -1,4 +1,4 @@
-﻿using Ambient.Application.Contracts;
+using Ambient.Application.Contracts;
 using Ambient.Rpg.Engine.Contracts;
 using Ambient.Rpg.Presentation.UI.ViewModels;
 using Ambient.Rpg.Engine.Application.Queries.Arcs;
@@ -6,6 +6,8 @@ using MediatR;
 using Ambient.Rpg.Ui.Components.Panels;
 using Ambient.Rpg.Ui.Services;
 using Microsoft.Extensions.Logging;
+
+using Ambient.Rpg.Rendering.DirectX;
 
 namespace Ambient.Rpg.Ui.Components.Modals;
 

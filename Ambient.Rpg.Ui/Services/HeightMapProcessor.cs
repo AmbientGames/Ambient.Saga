@@ -58,55 +58,10 @@ public class HeightMapProcessor
         };
     }
 
+    // ONE home now: Ambient.Domain.Sampling.HeightMapFlattening (hoisted 2026-08-01 so
+    // the server loads elevation maps with byte-identical flatten pads).
     public static IEnumerable<FlattenLocation> GetFlattenLocations(IWorld world)
-    {
-        // all offsets are in blocks
-        const int StructureElevationOffset = 2;
-        const double StructureRadius = 30;
-        const int DefaultElevationOffset = 1;
-        const double DefaultRadius = 10;
-
-        // Check if we have the necessary data
-        if (world.ArcLookup == null || world.ArcLookup.Count == 0)
-            yield break;
-
-        if (world.HeightMapMetadata == null)
-            yield break;
-
-        foreach (var arc in world.ArcLookup.Values)
-        {
-            // Convert GPS coordinates to heightmap pixel coordinates
-            var pixelX = (int)Ambient.Domain.GameLogic.Gameplay.WorldManagers.CoordinateConverter.HeightMapLongitudeToPixelX(arc.Longitude, world.HeightMapMetadata);
-            var pixelY = (int)Ambient.Domain.GameLogic.Gameplay.WorldManagers.CoordinateConverter.HeightMapLatitudeToPixelY(arc.Latitude, world.HeightMapMetadata);
-
-            // Determine elevation offset and radius based on feature type
-            // Categories with large structures need more terrain flattening
-            var elevationOffset = DefaultElevationOffset / world.WorldConfiguration.HeightMapSettings.VerticalScale;
-            var radius = DefaultRadius / world.WorldConfiguration.HeightMapSettings.HorizontalScale / world.WorldConfiguration.HeightMapSettings.MapResolutionInMeters;
-
-            var isLargeStructure = arc.Category is
-                Domain.ArcCategory.Stronghold or
-                Domain.ArcCategory.Facility or
-                Domain.ArcCategory.Religious or
-                Domain.ArcCategory.Ruin or
-                Domain.ArcCategory.Service or
-                Domain.ArcCategory.Camp;
-
-            if (isLargeStructure)
-            {
-                elevationOffset = StructureElevationOffset / world.WorldConfiguration.HeightMapSettings.VerticalScale;
-                radius = StructureRadius / world.WorldConfiguration.HeightMapSettings.HorizontalScale / world.WorldConfiguration.HeightMapSettings.MapResolutionInMeters;
-            }
-
-            // Ensure within bounds (accounting for sample radius which is radius + 1)
-            var sampleRadius = radius + 1;
-            if (pixelX < sampleRadius || pixelX >= world.HeightMapMetadata.ImageWidth - sampleRadius ||
-                pixelY < sampleRadius || pixelY >= world.HeightMapMetadata.ImageHeight - sampleRadius)
-                continue;
-
-            yield return new FlattenLocation(pixelX, pixelY, (int)Math.Round(elevationOffset), (int)Math.Round(radius));
-        }
-    }
+        => HeightMapFlattening.GetFlattenLocations(world);
 
     /// <summary>
     /// Gets color for elevation considering water detection

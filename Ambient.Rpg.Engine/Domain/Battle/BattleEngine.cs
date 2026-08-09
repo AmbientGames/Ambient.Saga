@@ -518,7 +518,7 @@ public class BattleEngine
 
         // A failed action (stunned, failed flee roll, not enough energy, ...) still
         // consumes the avatar's turn: companions and the enemy respond either way
-        // (BATTLE.md turn flow steps 3-4). Gating this on action.Success left the
+        // (the battle skill's BATTLE.md, turn flow steps 3-4). Gating this on action.Success left the
         // state wedged in AvatarTurn, which skipped the enemy response entirely —
         // a failed flee was a consequence-free retry until the roll succeeded, and
         // stunning the AVATAR silently cost the ENEMY its turns. A successful flee

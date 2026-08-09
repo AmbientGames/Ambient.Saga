@@ -1,3 +1,5 @@
+using Ambient.Rpg.Rendering.DirectX;
+
 namespace Ambient.Rpg.Ui.Components.Modals;
 
 /// <summary>

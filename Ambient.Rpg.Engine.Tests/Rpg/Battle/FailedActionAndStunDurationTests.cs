@@ -9,7 +9,7 @@ namespace Ambient.Rpg.Engine.Tests.Rpg.Battle;
 /// Regression tests for two battle-audit findings (2026-07-12).
 ///
 /// F1 — a FAILED avatar action must still consume the avatar's turn. Per
-/// BATTLE.md turn flow (steps 3-4), every avatar action — including failures
+/// the battle skill's BATTLE.md turn flow (steps 3-4), every avatar action — including failures
 /// like a failed flee roll or being stunned — is followed by companion turns
 /// and the enemy response. The engine used to advance the state machine only
 /// on action.Success, which wedged failures in AvatarTurn: a failed flee was

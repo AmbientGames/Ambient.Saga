@@ -11,6 +11,7 @@ env:
 jobs:
   publish:
     runs-on: windows-latest
+    timeout-minutes: 40
 
     steps:
       - name: Checkout
