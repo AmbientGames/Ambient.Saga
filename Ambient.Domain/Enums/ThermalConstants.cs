@@ -15,15 +15,18 @@ public static class ThermalConstants
     /// <summary>Normal human body temperature.</summary>
     public const float NormalBodyTemp = 37f;
 
-    /// <summary>Mild hypothermia — HUD should show a cold warning.</summary>
+    /// <summary>Mild hypothermia — the cold WARNING band begins (no damage yet: mild
+    /// damage starts one degree past this, at 34 °C — SurvivalCalculator's damage-onset
+    /// tuning, 2026-07-15).</summary>
     public const float ColdWarning = 35f;
 
-    /// <summary>Severe hypothermia — health damage begins.</summary>
+    /// <summary>Severe hypothermia — damage escalates to the SEVERE rate.</summary>
     public const float ColdCritical = 33f;
 
-    /// <summary>Mild hyperthermia — HUD should show a hot warning.</summary>
+    /// <summary>Mild hyperthermia — the hot WARNING band begins (mild damage starts at
+    /// 40 °C).</summary>
     public const float HotWarning = 39f;
 
-    /// <summary>Severe hyperthermia — health damage begins.</summary>
+    /// <summary>Severe hyperthermia — damage escalates to the SEVERE rate.</summary>
     public const float HotCritical = 41f;
 }

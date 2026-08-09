@@ -26,9 +26,9 @@
             <xs:enumeration value="CharactersDefeated" />
             <xs:enumeration value="CharactersDefeatedByTrait" />
             <xs:enumeration value="CharactersDefeatedByRef" />
-            <xs:enumeration value="SagaArcsDiscovered" />
-            <xs:enumeration value="SagaArcsCompleted" />
-            <xs:enumeration value="SagaTriggersActivated" />
+            <xs:enumeration value="ArcsDiscovered" />
+            <xs:enumeration value="ArcsCompleted" />
+            <xs:enumeration value="ArcTriggersActivated" />
             <xs:enumeration value="DialogueTreesCompleted" />
             <xs:enumeration value="DialogueNodesVisited" />
             <xs:enumeration value="UniqueCharactersMet" />
@@ -52,7 +52,7 @@
         <xs:attribute name="Threshold" type="xs:float" use="required"></xs:attribute>
         <xs:attribute name="CharacterType" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="CharacterRef" type="xs:string" use="optional"></xs:attribute>
-        <xs:attribute name="SagaArcRef" type="xs:string" use="optional"></xs:attribute>
+        <xs:attribute name="ArcRef" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="Trait" type="CharacterTraitType" use="optional"></xs:attribute>
         <xs:attribute name="QuestTokenRef" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="QuestRef" type="xs:string" use="optional"></xs:attribute>

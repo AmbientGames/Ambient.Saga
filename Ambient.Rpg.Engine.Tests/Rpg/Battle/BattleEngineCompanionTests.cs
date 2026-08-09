@@ -1,0 +1,528 @@
+using Ambient.Domain;
+using Ambient.Domain.Contracts;
+using Ambient.Domain.Partials;
+using Ambient.Rpg.Engine.Domain.Battle;
+using Ambient.Rpg.Engine.Domain.Arcs.TransactionLog;
+using Xunit;
+
+namespace Ambient.Rpg.Engine.Tests.Rpg.Battle;
+
+/// <summary>
+/// Tests for BattleEngine companion/party support.
+/// Validates turn order, targeting, and victory/defeat conditions with party members.
+/// </summary>
+public class BattleEngineCompanionTests
+{
+    private readonly IWorld _world;
+
+    public BattleEngineCompanionTests()
+    {
+        _world = CreateMinimalBattleWorld();
+    }
+
+    #region Party Setup Tests
+
+    [Fact]
+    public void Constructor_WithCompanions_InitializesParty()
+    {
+        // Arrange
+        var avatar = CreateCombatant("Avatar", 100);
+        var enemy = CreateCombatant("Enemy", 50);
+        var companion1 = CreateCombatant("Companion1", 80);
+        var companion2 = CreateCombatant("Companion2", 60);
+
+        // Act
+        var engine = new BattleEngine(
+            avatar, enemy,
+            enemyMind: null,
+            world: _world,
+            companions: new List<Combatant> { companion1, companion2 });
+
+        // Assert
+        Assert.Equal(3, engine.Party.Count);  // Avatar + 2 companions
+        Assert.Contains(engine.Party, c => c.RefName == "Avatar");
+        Assert.Contains(engine.Party, c => c.RefName == "Companion1");
+        Assert.Contains(engine.Party, c => c.RefName == "Companion2");
+    }
+
+    [Fact]
+    public void Constructor_WithoutCompanions_AvatarOnlyInParty()
+    {
+        // Arrange
+        var avatar = CreateCombatant("Avatar", 100);
+        var enemy = CreateCombatant("Enemy", 50);
+
+        // Act
+        var engine = new BattleEngine(avatar, enemy);
+
+        // Assert
+        Assert.Single(engine.Party);
+        Assert.Equal("Avatar", engine.Party[0].RefName);
+    }
+
+    #endregion
+
+    #region Turn Order Tests
+
+    [Fact]
+    public void StartBattle_EnemyMovesFirst()
+    {
+        // Arrange
+        var avatar = CreateCombatant("Avatar", 100);
+        var enemy = CreateCombatant("Enemy", 50);
+        var companion = CreateCombatant("Companion", 80);
+        var enemyAI = new CombatAI(_world);
+
+        var engine = new BattleEngine(
+            avatar, enemy, enemyAI, _world,
+            randomSeed: 12345,
+            companions: new List<Combatant> { companion });
+
+        // Act
+        engine.StartBattle();
+
+        // Assert - Enemy's turn should have been executed
+        Assert.NotEmpty(engine.ActionHistory);
+        Assert.Equal("Enemy", engine.ActionHistory[0].ActorName);
+        Assert.Equal(BattleState.AvatarTurn, engine.State);
+    }
+
+    [Fact]
+    public void AfterAvatarTurn_CompanionTurnsFollow()
+    {
+        // Arrange
+        var avatar = CreateCombatant("Avatar", 100);
+        var enemy = CreateCombatant("Enemy", 100);
+        var companion1 = CreateCombatant("Companion1", 80);
+        var companion2 = CreateCombatant("Companion2", 60);
+        var ai = new CombatAI(_world);
+
+        var engine = new BattleEngine(
+            avatar, enemy, ai, _world,
+            randomSeed: 12345,
+            companions: new List<Combatant> { companion1, companion2 });
+
+        engine.StartBattle();  // Enemy moves first
+
+        // Act - Avatar executes their turn
+        var avatarResult = engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
+
+        // Assert - Should now be companion turn
+        Assert.True(avatarResult.Success);
+        Assert.Equal(BattleState.CompanionTurn, engine.State);
+        Assert.NotNull(engine.CurrentCompanion);
+    }
+
+    [Fact]
+    public void CompanionTurn_ExecutesAIDecision()
+    {
+        // Arrange
+        var avatar = CreateCombatant("Avatar", 100);
+        var enemy = CreateCombatant("Enemy", 100);
+        var companion = CreateCombatant("Companion", 80);
+        var ai = new CombatAI(_world);
+
+        var engine = new BattleEngine(
+            avatar, enemy, ai, _world,
+            randomSeed: 12345,
+            companions: new List<Combatant> { companion });
+
+        engine.StartBattle();
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
+
+        // Act - Execute companion's turn
+        var companionResult = engine.ExecuteCompanionTurn();
+
+        // Assert
+        Assert.True(companionResult.Success);
+        Assert.Equal("Companion", companionResult.ActorName);
+        Assert.Equal("Enemy", companionResult.TargetName);
+    }
+
+    [Fact]
+    public void AfterAllCompanionTurns_EnemyTurnFollows()
+    {
+        // Arrange
+        var avatar = CreateCombatant("Avatar", 100);
+        var enemy = CreateCombatant("Enemy", 200);  // High HP to survive
+        var companion = CreateCombatant("Companion", 80);
+        var ai = new CombatAI(_world);
+
+        var engine = new BattleEngine(
+            avatar, enemy, ai, _world,
+            randomSeed: 12345,
+            companions: new List<Combatant> { companion });
+
+        engine.StartBattle();  // Enemy turn
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });  // Avatar turn
+
+        // Act - Execute companion's turn
+        var result = engine.ExecuteCompanionTurn();
+
+        // Assert - Should transition to enemy turn after all companions
+        Assert.True(result.Success);
+        Assert.Equal(BattleState.EnemyTurn, engine.State);
+    }
+
+    #endregion
+
+    #region Targeting Tests
+
+    [Fact]
+    public void EnemyTargeting_CanTargetAvatar()
+    {
+        // Arrange
+        var avatar = CreateCombatant("Avatar", 100);
+        var enemy = CreateCombatant("Enemy", 50);
+        var companion = CreateCombatant("Companion", 80);
+        var ai = new CombatAI(_world);
+
+        // Use a seed where enemy targets avatar
+        var engine = new BattleEngine(
+            avatar, enemy, ai, _world,
+            randomSeed: 42,  // Testing seed
+            companions: new List<Combatant> { companion });
+
+        // Act
+        engine.StartBattle();
+
+        // Assert - Enemy should attack either avatar or companion
+        var enemyAction = engine.ActionHistory.First();
+        Assert.True(
+            enemyAction.TargetName == "Avatar" || enemyAction.TargetName == "Companion",
+            $"Enemy targeted {enemyAction.TargetName}, expected Avatar or Companion");
+    }
+
+    [Fact]
+    public void EnemyTargeting_CanTargetCompanions()
+    {
+        // This test runs multiple battles with different seeds to verify companions can be targeted
+        var ai = new CombatAI(_world);
+
+        var targetedCompanion = false;
+
+        // Run multiple times with different seeds
+        for (int seed = 0; seed < 100; seed++)
+        {
+            var engine = new BattleEngine(
+                CreateCombatant("Avatar", 100),
+                CreateCombatant("Enemy", 50),
+                ai, _world,
+                randomSeed: seed,
+                companions: new List<Combatant> { CreateCombatant("Companion", 80) });
+
+            engine.StartBattle();
+
+            if (engine.ActionHistory.First().TargetName == "Companion")
+            {
+                targetedCompanion = true;
+                break;
+            }
+        }
+
+        Assert.True(targetedCompanion, "Enemy never targeted companion in 100 battles");
+    }
+
+    [Fact]
+    public void EnemyTargeting_OnlyTargetsAliveCombatants()
+    {
+        // Arrange
+        var avatar = CreateCombatant("Avatar", 100);
+        var enemy = CreateCombatant("Enemy", 100);
+        var deadCompanion = CreateCombatant("DeadCompanion", 0);  // Already dead
+        var aliveCompanion = CreateCombatant("AliveCompanion", 80);
+        var ai = new CombatAI(_world);
+
+        var engine = new BattleEngine(
+            avatar, enemy, ai, _world,
+            randomSeed: 12345,
+            companions: new List<Combatant> { deadCompanion, aliveCompanion });
+
+        // Act
+        engine.StartBattle();
+
+        // Assert - Enemy should not target dead companion
+        var enemyAction = engine.ActionHistory.First();
+        Assert.NotEqual("DeadCompanion", enemyAction.TargetName);
+    }
+
+    #endregion
+
+    #region Victory/Defeat Conditions
+
+    [Fact]
+    public void AvatarDefeat_WhenAvatarDies_BattleEnds()
+    {
+        // Arrange - Avatar with very low HP
+        var avatar = CreateCombatant("Avatar", 1);
+        var enemy = CreateCombatant("Enemy", 100, strength: 50);  // High damage
+        var companion = CreateCombatant("Companion", 100);
+        var ai = new CombatAI(_world);
+
+        var engine = new BattleEngine(
+            avatar, enemy, ai, _world,
+            randomSeed: 12345,
+            companions: new List<Combatant> { companion });
+
+        // Act
+        engine.StartBattle();  // Enemy attacks, likely kills avatar
+
+        // Assert - Battle should end in defeat if avatar died
+        if (!avatar.IsAlive)
+        {
+            Assert.Equal(BattleState.Defeat, engine.State);
+        }
+    }
+
+    [Fact]
+    public void CompanionDeath_BattleContinues()
+    {
+        // Arrange - Companion with very low HP
+        var avatar = CreateCombatant("Avatar", 100);
+        var enemy = CreateCombatant("Enemy", 100);
+        var weakCompanion = CreateCombatant("WeakCompanion", 1);
+        var ai = new CombatAI(_world);
+
+        // Create engine where we manually damage companion
+        var engine = new BattleEngine(
+            avatar, enemy, ai, _world,
+            randomSeed: 12345,
+            companions: new List<Combatant> { weakCompanion });
+
+        engine.StartBattle();
+
+        // Manually kill companion (simulate damage)
+        weakCompanion.Health = 0;
+
+        // Act - Continue battle
+        var avatarResult = engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
+
+        // Assert - Battle should continue
+        Assert.True(avatarResult.Success);
+        Assert.NotEqual(BattleState.Defeat, engine.State);
+    }
+
+    [Fact]
+    public void Victory_WhenEnemyDefeated_WithCompanions()
+    {
+        // Arrange - Enemy with very low HP
+        var avatar = CreateCombatant("Avatar", 100, strength: 50);  // High damage
+        var enemy = CreateCombatant("Enemy", 1);
+        var companion = CreateCombatant("Companion", 80);
+        var ai = new CombatAI(_world);
+
+        var engine = new BattleEngine(
+            avatar, enemy, ai, _world,
+            randomSeed: 12345,
+            companions: new List<Combatant> { companion });
+
+        engine.StartBattle();
+
+        // Act - Avatar attacks weak enemy
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
+
+        // Assert - Battle should end in victory
+        Assert.Equal(BattleState.Victory, engine.State);
+    }
+
+    #endregion
+
+    #region Skip Dead Companions
+
+    [Fact]
+    public void CompanionTurn_SkipsDeadCompanions()
+    {
+        // Arrange
+        var avatar = CreateCombatant("Avatar", 100);
+        var enemy = CreateCombatant("Enemy", 200);
+        var deadCompanion = CreateCombatant("DeadCompanion", 0);  // Dead
+        var aliveCompanion = CreateCombatant("AliveCompanion", 80);
+        var ai = new CombatAI(_world);
+
+        var engine = new BattleEngine(
+            avatar, enemy, ai, _world,
+            randomSeed: 12345,
+            companions: new List<Combatant> { deadCompanion, aliveCompanion });
+
+        engine.StartBattle();
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
+
+        // Act - Execute companion turns
+        var companionResult = engine.ExecuteCompanionTurn();
+
+        // Assert - Should be the alive companion
+        Assert.Equal("AliveCompanion", companionResult.ActorName);
+    }
+
+    [Fact]
+    public void CompanionTurn_AllDeadCompanions_SkipsToEnemyTurn()
+    {
+        // Arrange
+        var avatar = CreateCombatant("Avatar", 100);
+        var enemy = CreateCombatant("Enemy", 200);
+        var deadCompanion1 = CreateCombatant("DeadCompanion1", 0);
+        var deadCompanion2 = CreateCombatant("DeadCompanion2", 0);
+        var ai = new CombatAI(_world);
+
+        var engine = new BattleEngine(
+            avatar, enemy, ai, _world,
+            randomSeed: 12345,
+            companions: new List<Combatant> { deadCompanion1, deadCompanion2 });
+
+        engine.StartBattle();
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
+
+        // Assert - Should skip directly to enemy turn
+        Assert.Equal(BattleState.EnemyTurn, engine.State);
+    }
+
+    #endregion
+
+    #region Companion-Aimed Telegraph (H6)
+
+    // A telegraphed enemy attack can be aimed at a companion (SelectEnemyTarget picks
+    // from the whole party and the base damage is computed against that target's
+    // Defense). The tell survives the command boundary as a transaction; on rebuild the
+    // handlers used to hardcode GetAvatar() as the target, so a companion-aimed hit
+    // landed on the AVATAR with damage derived from the companion's stats. The fix
+    // persists the target and rebuilds through BattleTransactionHelper.ResolveTellTarget.
+
+    [Fact]
+    public void CompanionAimedTell_LandsOnCompanion_AvatarUnharmed()
+    {
+        // Arrange — party of avatar + one companion; enemy telegraphs at the companion
+        var avatar = CreateCombatant("Avatar", 100);
+        var enemy = CreateCombatant("Enemy", 50);
+        var companion = CreateCombatant("Sherpa", 80);
+        var engine = new BattleEngine(
+            avatar, enemy,
+            enemyMind: null,
+            world: _world,
+            companions: new List<Combatant> { companion });
+        engine.RegisterAttackTell(MakeUnavoidableTell("HeavySwing"));
+
+        // The persisted tell records the companion as its target (what the handler now writes)
+        var tellTx = new ArcTransaction
+        {
+            Data = new Dictionary<string, string>
+            {
+                [BattleTransactionHelper.TellTargetRefKey] = "Sherpa"
+            }
+        };
+
+        // Rebuild the target the same way SubmitReaction/ExecuteBattleTurn now do
+        var target = BattleTransactionHelper.ResolveTellTarget(tellTx, avatar, engine.GetCompanions());
+        Assert.Same(companion, target);
+
+        // Act — enemy's telegraphed 30-damage swing lands un-reacted
+        engine.BeginAttackWithTell(enemy, target, "HeavySwing", baseDamage: 30f);
+        var result = engine.ResolveReaction(AvatarDefenseType.None);
+
+        // Assert — the companion took the hit; the avatar was never touched
+        Assert.NotNull(result);
+        Assert.Equal(50f, companion.Health);   // 80 - 30
+        Assert.Equal(100f, avatar.Health);      // the bug landed this on the avatar
+    }
+
+    [Fact]
+    public void ResolveTellTarget_NoTargetKey_DefaultsToAvatar()
+    {
+        var avatar = CreateCombatant("Avatar", 100);
+        var companion = CreateCombatant("Sherpa", 80);
+
+        // Legacy/avatar-aimed tell: no target key persisted
+        var tellTx = new ArcTransaction { Data = new Dictionary<string, string>() };
+
+        var target = BattleTransactionHelper.ResolveTellTarget(
+            tellTx, avatar, new List<Combatant> { companion });
+
+        Assert.Same(avatar, target);
+    }
+
+    [Fact]
+    public void ResolveTellTarget_UnknownTargetRef_DefaultsToAvatar()
+    {
+        var avatar = CreateCombatant("Avatar", 100);
+        var companion = CreateCombatant("Sherpa", 80);
+
+        // Target ref that matches no live companion (e.g. companion since fell/left)
+        var tellTx = new ArcTransaction
+        {
+            Data = new Dictionary<string, string>
+            {
+                [BattleTransactionHelper.TellTargetRefKey] = "GhostWhoLeft"
+            }
+        };
+
+        var target = BattleTransactionHelper.ResolveTellTarget(
+            tellTx, avatar, new List<Combatant> { companion });
+
+        Assert.Same(avatar, target);
+    }
+
+    #endregion
+
+    #region Helper Methods
+
+    /// <summary>A tell whose only authored outcome is a full-damage un-reacted (None) hit.
+    /// Fully qualified: both this namespace and Ambient.Domain declare an AttackTell.</summary>
+    private static Ambient.Rpg.Engine.Domain.Battle.AttackTell MakeUnavoidableTell(string refName) =>
+        new Ambient.Rpg.Engine.Domain.Battle.AttackTell
+        {
+            RefName = refName,
+            Pattern = Ambient.Rpg.Engine.Domain.Battle.AttackPatternType.Slash,
+            TellText = "The enemy winds up!",
+            OptimalDefense = AvatarDefenseType.Dodge,
+            Outcomes = new Dictionary<AvatarDefenseType, Ambient.Rpg.Engine.Domain.Battle.DefenseOutcome>
+            {
+                [AvatarDefenseType.None] = new Ambient.Rpg.Engine.Domain.Battle.DefenseOutcome
+                {
+                    Reaction = AvatarDefenseType.None,
+                    DamageMultiplier = 1.0f,
+                    ResponseText = "The blow lands!"
+                }
+            }
+        };
+
+    private Combatant CreateCombatant(string name, float health, float strength = 10)
+    {
+        return new Combatant
+        {
+            RefName = name,
+            DisplayName = name,
+            Health = health,
+            Stamina = 100,
+            Strength = strength,
+            Defense = 5,
+            Speed = 10,
+            Magic = 5,
+            AffinityRef = "IRON",
+            Capabilities = new ItemCollection()
+        };
+    }
+
+    private static World CreateMinimalBattleWorld()
+    {
+        var world = new World();
+
+        // Initialize with minimal gameplay components needed for battle
+        world.WorldTemplate = new WorldTemplate
+        {
+            Gameplay = new GameplayComponents
+            {
+                Equipment = Array.Empty<Equipment>(),
+                Consumables = Array.Empty<Consumable>(),
+                Spells = Array.Empty<Spell>(),
+                Characters = Array.Empty<Character>(),
+                DialogueTrees = Array.Empty<DialogueTree>(),
+                QuestTokens = Array.Empty<QuestToken>(),
+                Factions = Array.Empty<Faction>(),
+                Saga = Array.Empty<Arc>()
+            }
+        };
+
+        return world;
+    }
+
+    #endregion
+}

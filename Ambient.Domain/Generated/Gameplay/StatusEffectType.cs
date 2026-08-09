@@ -46,8 +46,5 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         StatBoost,
-        
-        /// <remarks/>
-        StatPenalty,
     }
 }

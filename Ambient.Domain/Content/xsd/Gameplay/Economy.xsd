@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
-    <xs:simpleType name="WholesalePrice">
+    <xs:simpleType name="BaseValue">
         <xs:annotation><xs:documentation>Non-negative integer price. The base price of an item before merchant markup.</xs:documentation></xs:annotation>
         <xs:restriction base="xs:int">
             <xs:minInclusive value="0" />
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="MarkupMultiplier">
-        <xs:annotation><xs:documentation>Non-negative float multiplier applied to the wholesale price when a merchant sells an item.</xs:documentation></xs:annotation>
+        <xs:annotation><xs:documentation>Non-negative float multiplier a shop multiplies an item's BaseValue by when selling it.</xs:documentation></xs:annotation>
         <xs:restriction base="xs:float">
             <xs:minInclusive value="0.0" />
         </xs:restriction>
@@ -15,13 +15,13 @@
 
     <xs:attributeGroup name="TradePricingAttributes">
         <xs:annotation>
-            <xs:documentation>Trade pricing for acquirable items. WholesalePrice is the base cost; MerchantMarkupMultiplier scales the price when sold by merchants. Default WholesalePrice of max-int marks an item as untradeable.</xs:documentation>
+            <xs:documentation>Trade pricing for acquirable items. BaseValue is the base cost; MerchantMarkupMultiplier scales the price when sold by merchants. Default BaseValue of max-int marks an item as untradeable.</xs:documentation>
         </xs:annotation>
-        <xs:attribute name="WholesalePrice" type="WholesalePrice" use="optional" default="2147483647">
-            <xs:annotation><xs:documentation>Base price in credits. Default of 2147483647 (max int) indicates the item cannot be traded.</xs:documentation></xs:annotation>
+        <xs:attribute name="BaseValue" type="BaseValue" use="optional" default="2147483647">
+            <xs:annotation><xs:documentation>What the item is worth in credits — the price a merchant pays the player for it. Default of 2147483647 (max int) marks the item untradeable.</xs:documentation></xs:annotation>
         </xs:attribute>
-        <xs:attribute name="MerchantMarkupMultiplier" type="MarkupMultiplier" use="optional" default="1.5">
-            <xs:annotation><xs:documentation>Multiplier applied to WholesalePrice when a merchant sells this item. 1.5 = 50% markup.</xs:documentation></xs:annotation>
+        <xs:attribute name="MerchantMarkupMultiplier" type="MarkupMultiplier" use="optional" default="2">
+            <xs:annotation><xs:documentation>What a shop multiplies an item's value by when selling it: buy price = BaseValue x this; trading in still pays plain BaseValue. Example: an item worth 100 sells in the shop for 200 at the default 2. Never a way to express what an item is worth — that is BaseValue. Location pricing (a mountain shop charging 7x for hauled-in bread, ore nearly free there) is the shop's per-item decision: today the Arc's MarkupMultiplier/BuybackMultiplier, later a player-run shop's own setting.</xs:documentation></xs:annotation>
         </xs:attribute>
     </xs:attributeGroup>
 </xs:schema>

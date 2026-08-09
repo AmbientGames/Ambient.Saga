@@ -11,6 +11,7 @@ env:
 jobs:
   publish:
     runs-on: windows-latest
+    timeout-minutes: 40
 
     steps:
       - name: Checkout
@@ -33,16 +34,16 @@ jobs:
         shell: pwsh
 
       - name: Restore dependencies
-        run: dotnet restore Ambient.Saga.sln
+        run: dotnet restore Saga.sln
 
       - name: Build
-        run: dotnet build Ambient.Saga.sln --configuration Release --no-restore
+        run: dotnet build Saga.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test Ambient.Saga.sln --configuration Release --no-build --verbosity normal
+        run: dotnet test Saga.sln --configuration Release --no-build --verbosity normal
 
       - name: Pack NuGet package
-        run: nuget pack Ambient.Saga.nuspec -Version ${{ steps.version.outputs.VERSION }} -Properties configuration=Release -OutputDirectory ./nupkgs
+        run: nuget pack Saga.nuspec -Version ${{ steps.version.outputs.VERSION }} -Properties configuration=Release -OutputDirectory ./nupkgs
 
       - name: Push to NuGet
         run: dotnet nuget push ./nupkgs/Ambient.Saga.${{ steps.version.outputs.VERSION }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

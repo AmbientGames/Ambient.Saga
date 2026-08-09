@@ -28,7 +28,7 @@ public static class WorldRuntimeSetup
         {
             foreach (var substance in tool.EffectiveSubstances)
             {
-                tool.Class |= SubstanceSuitabilityEncoder.Encode(substance.SubstanceRef);
+                tool.Class |= SubstanceSuitabilityEncoder.Encode(substance.Substance);
             }
         }
     }

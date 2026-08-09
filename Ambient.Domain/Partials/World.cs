@@ -44,8 +44,8 @@ public partial class World : IWorld
     [XmlIgnore] public Dictionary<string, CharacterAffinity> CharacterAffinitiesLookup { get; set; } = new Dictionary<string, CharacterAffinity>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, CombatStance> CombatStancesLookup { get; set; } = new Dictionary<string, CombatStance>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, LoadoutSlot> LoadoutSlotsLookup { get; set; } = new Dictionary<string, LoadoutSlot>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public System.Collections.Concurrent.ConcurrentDictionary<string, SagaArc> SagaArcLookup { get; set; } = new System.Collections.Concurrent.ConcurrentDictionary<string, SagaArc>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public System.Collections.Concurrent.ConcurrentDictionary<string, List<SagaTrigger>> SagaTriggersLookup { get; set; } = new System.Collections.Concurrent.ConcurrentDictionary<string, List<SagaTrigger>>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public System.Collections.Concurrent.ConcurrentDictionary<string, Arc> ArcLookup { get; set; } = new System.Collections.Concurrent.ConcurrentDictionary<string, Arc>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public System.Collections.Concurrent.ConcurrentDictionary<string, List<ArcTrigger>> ArcTriggersLookup { get; set; } = new System.Collections.Concurrent.ConcurrentDictionary<string, List<ArcTrigger>>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, Faction> FactionsLookup { get; set; } = new Dictionary<string, Faction>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, StatusEffect> StatusEffectsLookup { get; set; } = new Dictionary<string, StatusEffect>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, AttackTell> AttackTellsLookup { get; set; } = new Dictionary<string, AttackTell>(StringComparer.OrdinalIgnoreCase);
@@ -228,30 +228,30 @@ public partial class World : IWorld
     }
 
     /// <summary>
-    /// Looks up a Saga object by its RefName using the efficient SagasLookup dictionary.
+    /// Looks up an arc object by its RefName using the efficient ArcLookup dictionary.
     /// </summary>
-    /// <param name="sagaArcRefName">The RefName of the saga to find</param>
-    /// <returns>The Saga object with the specified RefName</returns>
-    /// <exception cref="InvalidOperationException">Thrown if the saga is not found</exception>
-    public SagaArc GetSagaArcByRefName(string sagaArcRefName)
+    /// <param name="arcRefName">The RefName of the arc to find</param>
+    /// <returns>The Arc object with the specified RefName</returns>
+    /// <exception cref="InvalidOperationException">Thrown if the arc is not found</exception>
+    public Arc GetArcByRefName(string arcRefName)
     {
-        if (SagaArcLookup.TryGetValue(sagaArcRefName, out var saga))
+        if (ArcLookup.TryGetValue(arcRefName, out var arc))
         {
-            return saga;
+            return arc;
         }
 
-        throw new InvalidOperationException($"Saga with RefName '{sagaArcRefName}' not found in Sagas catalog");
+        throw new InvalidOperationException($"Arc with RefName '{arcRefName}' not found in Arcs catalog");
     }
 
     /// <summary>
-    /// Tries to look up a Saga object by its RefName. Returns null if not found.
+    /// Tries to look up an arc object by its RefName. Returns null if not found.
     /// </summary>
-    /// <param name="sagaArcRefName">The RefName of the saga to find</param>
-    /// <returns>The Saga object with the specified RefName, or null if not found</returns>
-    public SagaArc? TryGetSagaArcByRefName(string sagaArcRefName)
+    /// <param name="arcRefName">The RefName of the arc to find</param>
+    /// <returns>The Arc object with the specified RefName, or null if not found</returns>
+    public Arc? TryGetArcByRefName(string arcRefName)
     {
-        SagaArcLookup.TryGetValue(sagaArcRefName, out var saga);
-        return saga;
+        ArcLookup.TryGetValue(arcRefName, out var arc);
+        return arc;
     }
 
     /// <summary>
@@ -498,12 +498,12 @@ public partial class World : IWorld
     }
 
     /// <inheritdoc />
-    public void RegisterSagaArc(SagaArc arc)
+    public void RegisterArc(Arc arc)
     {
-        if (SagaArcLookup.ContainsKey(arc.RefName))
+        if (ArcLookup.ContainsKey(arc.RefName))
             return;
 
-        SagaArcLookup[arc.RefName] = arc;
-        SagaTriggersLookup[arc.RefName] = arc.SagaTrigger.ToList();
+        ArcLookup[arc.RefName] = arc;
+        ArcTriggersLookup[arc.RefName] = arc.ArcTrigger.ToList();
     }
 }

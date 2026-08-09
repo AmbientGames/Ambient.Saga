@@ -2,7 +2,7 @@ namespace Ambient.Application.Contracts;
 
 /// <summary>
 /// Repository interface for AvatarDiscovery persistence.
-/// AvatarDiscovery tracks when avatars discover entities (lore, achievements, sagas, etc.)
+/// AvatarDiscovery tracks when avatars discover entities (lore, achievements, arcs, etc.)
 /// and their trigger history (cooldowns, interaction counts).
 /// </summary>
 public interface IAvatarDiscoveryRepository

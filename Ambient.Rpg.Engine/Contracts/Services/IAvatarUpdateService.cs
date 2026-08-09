@@ -1,0 +1,132 @@
+﻿using Ambient.Domain;
+using Ambient.Domain.Contracts;
+using Ambient.Domain.Entities;
+using Ambient.Rpg.Engine.Domain.Achievements;
+using Ambient.Rpg.Engine.Domain.Arcs.TransactionLog;
+
+namespace Ambient.Rpg.Engine.Contracts.Services;
+
+/// <summary>
+/// Service for updating avatar state based on Arc transactions.
+/// Handles avatar state mutations and persistence after Arc events.
+/// </summary>
+public interface IAvatarUpdateService
+{
+    /// <summary>
+    /// Raised after any transaction that mutates <c>avatar.Stats.Credits</c>
+    /// (Trade, Effect). Hosts forward these to the authoritative server
+    /// so the server-side balance stays in sync. Fires after the local mutation
+    /// is applied, so <c>avatar.Stats.Credits</c> already reflects the delta
+    /// when subscribers run.
+    /// </summary>
+    event Action<CreditChangeNotification>? CreditsChanged;
+
+    /// <summary>
+    /// Updates avatar inventory and credits based on a trade transaction.
+    /// </summary>
+    /// <param name="avatar">The avatar to update</param>
+    /// <param name="arcInstance">The Arc instance containing trade transactions</param>
+    /// <param name="tradeTransactionId">The ID of the ItemTraded transaction</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>The updated avatar</returns>
+    Task<AvatarEntity> UpdateAvatarForTradeAsync(
+        AvatarEntity avatar,
+        ArcInstance arcInstance,
+        Guid tradeTransactionId,
+        CancellationToken ct = default);
+
+    /// <summary>
+    /// Updates avatar health, energy, and equipment based on battle transactions.
+    /// </summary>
+    /// <param name="avatar">The avatar to update</param>
+    /// <param name="arcInstance">The Arc instance containing battle transactions</param>
+    /// <param name="battleStartedTransactionId">The ID of the BattleStarted transaction</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>The updated avatar</returns>
+    Task<AvatarEntity> UpdateAvatarForBattleAsync(
+        AvatarEntity avatar,
+        ArcInstance arcInstance,
+        Guid battleStartedTransactionId,
+        CancellationToken ct = default);
+
+    /// <summary>
+    /// Updates avatar stats based on an EffectApplied transaction.
+    /// Applies stat bonuses like health, stamina, strength, defense, etc.
+    /// </summary>
+    /// <param name="avatar">The avatar to update</param>
+    /// <param name="arcInstance">The Arc instance containing effect transactions</param>
+    /// <param name="effectTransactionId">The ID of the EffectApplied transaction</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>The updated avatar</returns>
+    Task<AvatarEntity> UpdateAvatarForEffectsAsync(
+        AvatarEntity avatar,
+        ArcInstance arcInstance,
+        Guid effectTransactionId,
+        CancellationToken ct = default);
+
+    /// <summary>
+    /// Updates avatar block inventory after mining (adds mined blocks).
+    /// Skips blocks that would exceed carry weight capacity.
+    /// </summary>
+    /// <param name="avatar">The avatar to update</param>
+    /// <param name="blocksMined">Dictionary of BlockRef -> quantity mined</param>
+    /// <param name="archetype">The avatar's archetype (for max carry weight)</param>
+    /// <param name="worldConfig">The world configuration (for category weights)</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>The updated avatar</returns>
+    Task<AvatarEntity> UpdateAvatarForMiningAsync(
+        AvatarEntity avatar,
+        Dictionary<string, int> blocksMined,
+        AvatarArchetype archetype,
+        IWorldConfiguration worldConfig,
+        CancellationToken ct = default);
+
+    /// <summary>
+    /// Updates avatar block/material inventory after building (removes consumed materials).
+    /// </summary>
+    /// <param name="avatar">The avatar to update</param>
+    /// <param name="materialsConsumed">Dictionary of MaterialRef -> quantity consumed</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>The updated avatar</returns>
+    Task<AvatarEntity> UpdateAvatarForBuildingAsync(
+        AvatarEntity avatar,
+        Dictionary<string, int> materialsConsumed,
+        CancellationToken ct = default);
+
+    /// <summary>
+    /// Updates avatar tool condition after use.
+    /// </summary>
+    /// <param name="avatar">The avatar to update</param>
+    /// <param name="toolRef">The tool reference</param>
+    /// <param name="newCondition">The new tool condition (0.0 - 1.0)</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>The updated avatar</returns>
+    Task<AvatarEntity> UpdateAvatarForToolWearAsync(
+        AvatarEntity avatar,
+        string toolRef,
+        float newCondition,
+        CancellationToken ct = default);
+
+    /// <summary>
+    /// Persists avatar to repository.
+    /// </summary>
+    /// <param name="avatar">The avatar to persist</param>
+    /// <param name="ct">Cancellation token</param>
+    Task PersistAvatarAsync(AvatarEntity avatar, CancellationToken ct = default);
+
+    /// <summary>
+    /// Gets achievement instances for an avatar.
+    /// </summary>
+    /// <param name="avatarId">The avatar ID</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>List of achievement instances</returns>
+    Task<List<AchievementInstance>> GetAchievementInstancesAsync(Guid avatarId, CancellationToken ct = default);
+
+    /// <summary>
+    /// Updates achievement instances for an avatar.
+    /// </summary>
+    /// <param name="avatarId">The avatar ID</param>
+    /// <param name="instances">The updated achievement instances</param>
+    /// <param name="ct">Cancellation token</param>
+    Task UpdateAchievementInstancesAsync(Guid avatarId, List<AchievementInstance> instances, CancellationToken ct = default);
+}

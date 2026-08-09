@@ -36,13 +36,13 @@ namespace Ambient.Domain {
         CharactersDefeatedByRef,
         
         /// <remarks/>
-        SagaArcsDiscovered,
+        ArcsDiscovered,
         
         /// <remarks/>
-        SagaArcsCompleted,
+        ArcsCompleted,
         
         /// <remarks/>
-        SagaTriggersActivated,
+        ArcTriggersActivated,
         
         /// <remarks/>
         DialogueTreesCompleted,

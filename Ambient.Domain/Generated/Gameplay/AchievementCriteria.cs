@@ -30,7 +30,7 @@ namespace Ambient.Domain {
         
         private string characterRefField;
         
-        private string sagaArcRefField;
+        private string arcRefField;
         
         private CharacterTraitType traitField;
         
@@ -92,12 +92,12 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string SagaArcRef {
+        public string ArcRef {
             get {
-                return this.sagaArcRefField;
+                return this.arcRefField;
             }
             set {
-                this.sagaArcRefField = value;
+                this.arcRefField = value;
             }
         }
         

@@ -67,7 +67,7 @@ public class GameplayComponentLoader : IGameplayComponentLoader
         world.Gameplay.AvatarArchetypes = (await LoadXmlAsync<AvatarArchetypes>(worldRef, library, ns, xsdFilePath, "Gameplay", "Actors", "AvatarArchetypes.xml")).AvatarArchetype ?? [];
         world.Gameplay.Achievements = (await LoadXmlAsync<Achievements>(worldRef, library, ns, xsdFilePath, "Gameplay", "Achievements", "Achievements.xml")).Achievement ?? [];
         world.Gameplay.Quests = (await LoadXmlAsync<Quests>(worldRef, library, ns, xsdFilePath, "Gameplay", "Quests", "Quests.xml")).Quest ?? [];
-        world.Gameplay.SagaArcs = (await LoadXmlAsync<SagaArcs>(worldRef, library, ns, xsdFilePath, "Gameplay", "Sagas.xml")).SagaArc ?? [];
+        world.Gameplay.Saga = (await LoadXmlAsync<Saga>(worldRef, library, ns, xsdFilePath, "Gameplay", "Saga.xml")).Arc ?? [];
         world.Gameplay.Factions = (await LoadXmlAsync<Factions>(worldRef, library, ns, xsdFilePath, "Gameplay", "Factions", "Factions.xml")).Faction ?? [];
         world.Gameplay.StatusEffects = (await LoadXmlAsync<StatusEffects>(worldRef, library, ns, xsdFilePath, "Gameplay", "Actors", "StatusEffects.xml")).StatusEffect ?? [];
         world.Gameplay.AttackTells = (await LoadXmlAsync<AttackTells>(worldRef, library, ns, xsdFilePath, "Gameplay", "Combat", "AttackTells.xml")).AttackTell ?? [];
@@ -105,13 +105,13 @@ public class GameplayComponentLoader : IGameplayComponentLoader
         BuildLookup(world.Gameplay.DialogueTrees, world.DialogueTreesLookup);
         BuildLookup(world.Gameplay.Achievements, world.AchievementsLookup);
         BuildLookup(world.Gameplay.Quests, world.QuestsLookup);
-        BuildLookup(world.Gameplay.SagaArcs, world.SagaArcLookup);
+        BuildLookup(world.Gameplay.Saga, world.ArcLookup);
         BuildLookup(world.Gameplay.Factions, world.FactionsLookup);
         BuildLookup(world.Gameplay.StatusEffects, world.StatusEffectsLookup);
         BuildLookup(world.Gameplay.AttackTells, world.AttackTellsLookup);
 
-        // Expand all Saga triggers (TriggerPatternRef -> List<SagaTrigger>)
-        BuildSagaTriggersLookup(world);
+        // Expand all arc triggers (TriggerPatternRef -> List<ArcTrigger>)
+        BuildArcTriggersLookup(world);
     }
 
     private static void BuildLookup<T>(IEnumerable<T> items, IDictionary<string, T> lookup) where T : class
@@ -140,19 +140,19 @@ public class GameplayComponentLoader : IGameplayComponentLoader
         }
     }
 
-    private static void BuildSagaTriggersLookup(IWorld world)
+    private static void BuildArcTriggersLookup(IWorld world)
     {
-        world.SagaTriggersLookup.Clear();
+        world.ArcTriggersLookup.Clear();
 
-        if (world.Gameplay.SagaArcs == null)
+        if (world.Gameplay.Saga == null)
             return;
 
-        foreach (var saga in world.Gameplay.SagaArcs)
+        foreach (var arc in world.Gameplay.Saga)
         {
-            if (!string.IsNullOrEmpty(saga.RefName))
+            if (!string.IsNullOrEmpty(arc.RefName))
             {
-                // Triggers are now defined directly on SagaArc, no expansion needed
-                var triggers = saga.SagaTrigger?.ToList() ?? new List<SagaTrigger>();
+                // Triggers are now defined directly on Arc, no expansion needed
+                var triggers = arc.ArcTrigger?.ToList() ?? new List<ArcTrigger>();
 
                 // Validate that every trigger has at least one Spawn
                 foreach (var trigger in triggers)
@@ -160,11 +160,11 @@ public class GameplayComponentLoader : IGameplayComponentLoader
                     if (trigger.Spawn == null || trigger.Spawn.Length == 0)
                     {
                         throw new InvalidOperationException(
-                            $"SagaTrigger '{trigger.RefName}' in SagaArc '{saga.RefName}' has no Spawn elements. Every trigger must have at least one character spawn.");
+                            $"ArcTrigger '{trigger.RefName}' in Arc '{arc.RefName}' has no Spawn elements. Every trigger must have at least one character spawn.");
                     }
                 }
 
-                world.SagaTriggersLookup[saga.RefName] = triggers;
+                world.ArcTriggersLookup[arc.RefName] = triggers;
             }
         }
     }

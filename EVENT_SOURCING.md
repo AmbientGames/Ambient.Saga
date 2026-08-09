@@ -10,7 +10,7 @@ underpins all game state.
 
 **The transaction log is the source of truth.** Every state change — a character
 spawning, a dialogue choice, a quest accepted, a boss defeated — is recorded as an
-immutable `SagaTransaction`. Current state is derived by replaying transactions, never
+immutable `ArcTransaction`. Current state is derived by replaying transactions, never
 stored directly.
 
 ```
@@ -25,21 +25,25 @@ This gives us:
 
 ---
 
-## Saga Arcs
+## Arcs
 
-A **Saga** is a story. A **Saga Arc** is a fragment of that story, tied to a physical
-location in the world. One saga (e.g., BanditChief) spans multiple arcs (the town, the
-hideout, the boss lair).
+An **Arc** is a fragment of story tied to a physical location in the world — a town, a
+hideout, a boss lair. A world's **Saga** is the entire collection of its arcs: one saga
+per world, authored together in `Gameplay/Saga.xml`. The saga is not a separate object
+with its own state; it *is* the collection.
+
+Everything scoped to a single location is therefore named `Arc*` — `ArcInstance`,
+`ArcTransaction`, `ArcState`. `Saga` appears only where the whole collection is meant.
 
 Each arc is self-contained for its own local state:
 
 | Component | Description |
 |---|---|
-| `SagaArc` | Immutable template from XML — location, triggers, metadata |
-| `SagaInstance` | Per-avatar runtime container — the transaction log. In multiplayer, one shared instance per arc (`OwnerAvatarId == null`, composite key `"NULL|{sagaRef}"`) |
-| `SagaTransaction` | Immutable event record — type, data, timestamp, sequence number |
-| `SagaState` | Derived by replay — characters, triggers, dialogue visits |
-| `SagaStateMachine` | Replays transactions to produce `SagaState` |
+| `Arc` | Immutable template from XML — location, triggers, metadata |
+| `ArcInstance` | Per-avatar runtime container — the transaction log. In multiplayer, one shared instance per arc (`OwnerAvatarId == null`, composite key `"NULL|{arcRef}"`) |
+| `ArcTransaction` | Immutable event record — type, data, timestamp, sequence number |
+| `ArcState` | Derived by replay — characters, triggers, dialogue visits |
+| `ArcStateMachine` | Replays transactions to produce `ArcState` |
 
 ### What lives in the arc's transaction log
 
@@ -54,7 +58,7 @@ Each arc is self-contained for its own local state:
 Cross-arc state — things the avatar has achieved across all arcs — lives in **avatar
 progress tables** (see below). An arc's log only records what happened within that arc.
 
-Note: `SagaState.AwardedQuestTokens` is still populated during replay from the arc's
+Note: `ArcState.AwardedQuestTokens` is still populated during replay from the arc's
 own `QuestTokenAwarded` transactions. This is retained for debugging and audit (which
 tokens were earned in THIS arc) but is not used for gating decisions — all readers use
 the avatar progress table instead.
@@ -68,15 +72,15 @@ the avatar progress table instead.
 2. **Commit atomically.** Use `AddAndCommitTransactionsAsync` (write + cross-arc
    projection + commit in one LiteDB transaction). Prefer the atomic API over the
    two-phase Add/Commit pair.
-3. **Invariant culture, always.** `SagaTransaction.SetData/GetData` and every battle
+3. **Invariant culture, always.** `ArcTransaction.SetData/GetData` and every battle
    value serialize with `CultureInfo.InvariantCulture` (with a tolerant fallback for
    legacy comma-decimal saves). Never `ToString()`/`Parse` a float into `Data` raw.
 4. **Every consumed field must be produced, and vice versa.** The write side and the
    read side of a transaction type live in different files; when you add a field,
    grep for both.
-5. **New transaction types must be handled in `SagaStateMachine.ApplyTransaction`**
+5. **New transaction types must be handled in `ArcStateMachine.ApplyTransaction`**
    or listed in `StatelessTransactionTypes` — types the engine emits that
-   intentionally have no `SagaState` fold because their consumers read the log
+   intentionally have no `ArcState` fold because their consumers read the log
    directly or mutate the avatar entity (battle transactions, `EquipmentChanged`,
    `ConsumableUsed`, `CurrencyChanged`, `AvatarTeleported`, party events, and the
    retired `LootAwarded` — corpse looting was removed; the enum value is reserved so
@@ -132,7 +136,7 @@ avatar-level LiteDB collections, projected from the transaction log on commit.
 
 ### Projection
 
-When `SagaInstanceRepository.AddAndCommitTransactionsAsync` commits transactions, it
+When `ArcInstanceRepository.AddAndCommitTransactionsAsync` commits transactions, it
 calls `AvatarProgressRepository.ProjectTransactions` inside the same LiteDB
 transaction. This is atomic — either both the arc log and the avatar table update, or
 neither does.
@@ -150,7 +154,7 @@ For **shared multiplayer instances** (null owner), projection runs per transacti
 did, even though the arc log is shared.
 
 All readers — trigger availability, dialogue conditions, quest prerequisites, UI —
-read from the avatar tables. No reader iterates across saga arcs. If an arc-local
+read from the avatar tables. No reader iterates across arcs. If an arc-local
 replay and the projection disagree, the projection is the cross-arc truth; arc-local
 state is the within-arc truth.
 
@@ -160,7 +164,7 @@ Cross-device sync is a host responsibility — pulling bytes, decryption, sessio
 handling. The engine keeps the invariants: instances carry push/pull watermarks
 (`LastSyncedSequenceNumber`, `LastPulledServerTimestamp`), and watermark updates key
 the in-memory cache by the instance's `CompositeKey` — never hand-build
-`"{owner}|{ref}"` strings. `SagaInstanceRepository.ImportTransactionsAsync` preserves
+`"{owner}|{ref}"` strings. `ArcInstanceRepository.ImportTransactionsAsync` preserves
 server-assigned sequence numbers, inserts the newly-arrived transactions, and projects
 them to the avatar progress tables in the **same LiteDB transaction**, so the log and
 the `Avatar*` tables cannot drift on imports any more than they can on local commits.
@@ -228,16 +232,16 @@ extended.
 
 ## Trigger Availability
 
-Saga triggers define proximity-based encounters. A trigger can gate on quest tokens:
+Arc triggers define proximity-based encounters. A trigger can gate on quest tokens:
 
 ```xml
-<SagaTrigger RefName="BOSS_FIGHT" EnterRadius="25.0">
+<ArcTrigger RefName="BOSS_FIGHT" EnterRadius="25.0">
     <RequiresQuestTokenRef>TOKEN_OUTER_COMPLETE</RequiresQuestTokenRef>
     <GivesQuestTokenRef>TOKEN_BOSS_DEFEATED</GivesQuestTokenRef>
     <Spawn Count="1">
         <CharacterRef>BOSS_CHARACTER</CharacterRef>
     </Spawn>
-</SagaTrigger>
+</ArcTrigger>
 ```
 
 `TriggerAvailabilityChecker.CanActivate` reads from the avatar progress table. If the
@@ -290,20 +294,20 @@ require cross-arc lookup.
 
 | File | Role |
 |---|---|
-| `Domain/Rpg/Sagas/TransactionLog/SagaTransaction.cs` | Transaction record (invariant-culture `SetData`/`GetData`) |
-| `Domain/Rpg/Sagas/TransactionLog/SagaStateMachine.cs` | Replay engine, `StatelessTransactionTypes`, reversal folds, unknown-type quarantine |
-| `Domain/Rpg/Sagas/TransactionLog/SagaState.cs` | Derived state |
-| `Domain/Rpg/Sagas/TransactionLog/SagaInstance.cs` | Per-avatar arc container, composite key, sync watermarks |
+| `Domain/Arcs/TransactionLog/ArcTransaction.cs` | Transaction record (invariant-culture `SetData`/`GetData`) |
+| `Domain/Arcs/TransactionLog/ArcStateMachine.cs` | Replay engine, `StatelessTransactionTypes`, reversal folds, unknown-type quarantine |
+| `Domain/Arcs/TransactionLog/ArcState.cs` | Derived state |
+| `Domain/Arcs/TransactionLog/ArcInstance.cs` | Per-avatar arc container, composite key, sync watermarks |
 | `Domain/TransactionDataKeys.cs` | String constants for transaction `Data` keys |
 | `Domain/AvatarProgress/` | Five document models for avatar tables |
 | `Contracts/Persistence/IAvatarProgressRepository.cs` | Read + write interface |
 | `Infrastructure/Persistence/AvatarProgressRepository.cs` | LiteDB implementation + projection |
-| `Infrastructure/Persistence/SagaInstanceRepository.cs` | Transaction persistence, cache, sync, projection trigger |
-| `Domain/Rpg/Sagas/TriggerAvailabilityChecker.cs` | Trigger gate evaluation |
+| `Infrastructure/Persistence/ArcInstanceRepository.cs` | Transaction persistence, cache, sync, projection trigger |
+| `Domain/Arcs/TriggerAvailabilityChecker.cs` | Trigger gate evaluation |
 | `Domain/Rpg/Dialogue/DirectDialogueStateProvider.cs` | Dialogue condition provider |
-| `Application/Handlers/Saga/DefeatCharacterHandler.cs` | Character defeat + token award |
+| `Application/Handlers/Arcs/DefeatCharacterHandler.cs` | Character defeat + token award |
 
-(All paths relative to `Ambient.Saga.Engine/`.)
+(All paths relative to `Ambient.Rpg.Engine/`.)
 
 ---
 

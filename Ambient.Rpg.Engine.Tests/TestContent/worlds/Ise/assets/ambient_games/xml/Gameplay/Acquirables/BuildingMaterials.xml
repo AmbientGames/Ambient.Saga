@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BuildingMaterials xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <BuildingMaterial RefName="Nails" DisplayName="Nails" Description="Basic construction nails from the hardware store" BaseValue="2" TextureRef="Nails">
+    <CompatibleSubstances>
+      <Compatible Substance="Wood" />
+      <Compatible Substance="Plant" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Mortar" DisplayName="Quick-Set Cement" Description="Fast-drying cement mix" BaseValue="3" TextureRef="Mortar">
+    <CompatibleSubstances>
+      <Compatible Substance="Stone" />
+      <Compatible Substance="Aggregate" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Clay" DisplayName="Modeling Clay" Description="Moldable clay from the art supplies" BaseValue="2" TextureRef="Mortar">
+    <CompatibleSubstances>
+      <Compatible Substance="Aggregate" />
+      <Compatible Substance="Stone" />
+      <Compatible Substance="Carbon" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="WoodGlue" DisplayName="Carpenter's Glue" Description="Strong wood adhesive" BaseValue="4" TextureRef="WoodGlue">
+    <CompatibleSubstances>
+      <Compatible Substance="Wood" />
+      <Compatible Substance="Plant" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Cement" DisplayName="Construction Cement" Description="Professional-grade cement mix" BaseValue="5" TextureRef="Cement">
+    <CompatibleSubstances>
+      <Compatible Substance="Stone" />
+      <Compatible Substance="Aggregate" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Screws" DisplayName="Wood Screws" Description="Self-tapping screws for assembly" BaseValue="3" TextureRef="Screws">
+    <CompatibleSubstances>
+      <Compatible Substance="Metal" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Bolts" DisplayName="Machine Bolts" Description="Heavy-duty bolts with nuts" BaseValue="4" TextureRef="Bolts">
+    <CompatibleSubstances>
+      <Compatible Substance="Metal" />
+      <Compatible Substance="Wood" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Epoxy" DisplayName="Two-Part Epoxy" Description="Industrial-strength bonding compound" BaseValue="12" TextureRef="Epoxy">
+    <CompatibleSubstances>
+      <Compatible Substance="Wood" />
+      <Compatible Substance="Metal" />
+      <Compatible Substance="Stone" />
+      <Compatible Substance="Plant" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+</BuildingMaterials>

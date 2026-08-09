@@ -25,7 +25,7 @@ namespace Ambient.Domain {
         private CompatibleSubstance[] compatibleSubstancesField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("Substance", IsNullable=false)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("Compatible", IsNullable=false)]
         public CompatibleSubstance[] CompatibleSubstances {
             get {
                 return this.compatibleSubstancesField;

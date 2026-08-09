@@ -28,7 +28,7 @@ Ambient.Saga is a **narrative RPG engine** that provides:
 - **Trading system** for merchant interactions
 - **Party management** for companion NPCs
 
-The engine uses **Clean Architecture** with **CQRS** (Command Query Responsibility Segregation) via MediatR, making it easy to integrate into any game client. Games consume the engine externally; `Ambient.Saga.Sandbox.DirectX` in this repo is the reference host.
+The engine uses **Clean Architecture** with **CQRS** (Command Query Responsibility Segregation) via MediatR, making it easy to integrate into any game client. Games consume the engine externally; `Saga` in this repo is the reference host.
 
 ---
 
@@ -36,7 +36,7 @@ The engine uses **Clean Architecture** with **CQRS** (Command Query Responsibili
 
 ### Event Sourcing & Transaction Log
 
-All game state changes are recorded as immutable transactions. Saga arcs are self-contained — each arc's state is derived by replaying its own transaction log. Cross-arc state (quest tokens, quest progress, boss defeats, faction reputation, character traits) is projected to avatar-level progress tables on commit.
+All game state changes are recorded as immutable transactions. Arcs are self-contained — each arc's state is derived by replaying its own transaction log. Cross-arc state (quest tokens, quest progress, boss defeats, faction reputation, character traits) is projected to avatar-level progress tables on commit.
 
 See **[EVENT_SOURCING.md](EVENT_SOURCING.md)** for the full architecture: the self-containment model, log-health rules (invariant culture, stateless transaction types, reversal), battle snapshots, avatar progress tables, quest token lifecycle, trigger gating, dialogue conditions, and content authoring rules.
 
@@ -68,7 +68,7 @@ var state = await mediator.Send(new GetBattleStateQuery { ... });
 - Equipment durability accumulates across a battle (equipment is disposable by design — there is no repair mechanic)
 - Battle dialogue triggers (boss taunts on health thresholds / turn numbers / outcome; `OnDefeat` does not fire on flee)
 
-The domain core (`BattleEngine`, `Combatant`, `CombatAI` in `Ambient.Saga.Engine/Domain/Rpg/Battle/`) executes individual decisions; the handlers own reconstruction and persistence.
+The domain core (`BattleEngine`, `Combatant`, `CombatAI` in `Ambient.Rpg.Engine/Domain/Rpg/Battle/`) executes individual decisions; the handlers own reconstruction and persistence.
 
 ### Dialogue System
 
@@ -171,7 +171,7 @@ The rule that governs everything: **things happen through characters.** Quests a
 4. **Turn-in via the giver** — the final stage is held even when complete; it advances (and the quest completes, distributing rewards) when the player interacts with the quest giver again. Authored `CompleteQuest` dialogue actions also work anywhere (turn in at a different NPC). Quests with no recorded giver complete immediately on the final stage.
 5. **Abandon / re-accept** — re-accepting starts a fresh scope; old progress and branch choices do not carry over.
 
-**Objective Types**: `TriggerActivated` / `LocationReached` (trigger refs), `CharacterDefeated`, `CharactersDefeatedByTag` / `CharactersDefeatedByType`, `ItemCollected`, `ItemDelivered`, `ItemTraded`, `DialogueCompleted`, `DialogueChoiceSelected`, `DialogueNodeVisited`, `QuestTokenCollected`, `CurrencyCollected`, `SagaDiscovered`. Every type has a real gameplay producer (producer-less types `ItemCrafted` and `Custom` were removed 2026-07-04). Each has a `Threshold`; `Optional="true"` objectives don't block stage completion.
+**Objective Types**: `TriggerActivated` / `LocationReached` (trigger refs), `CharacterDefeated`, `CharactersDefeatedByTag` / `CharactersDefeatedByType`, `ItemCollected`, `ItemDelivered`, `ItemTraded`, `DialogueCompleted`, `DialogueChoiceSelected`, `DialogueNodeVisited`, `QuestTokenCollected`, `CurrencyCollected`, `ArcDiscovered`. Every type has a real gameplay producer (producer-less types `ItemCrafted` and `Custom` were removed 2026-07-04). Each has a `Threshold`; `Optional="true"` objectives don't block stage completion.
 
 **Rewards** (OnSuccess / OnBranch / OnObjective): Currency, Experience, Equipment, Consumable are applied to the avatar; Achievement unlocks on the avatar's ledger; Reputation is emitted as `ReputationChanged` transactions (with faction spillover) committed atomically with the causing quest transaction.
 
@@ -179,9 +179,9 @@ The rule that governs everything: **things happen through characters.** Quests a
 
 Nothing proximity-related happens on its own — the host sends `UpdateAvatarPositionCommand` (the position pump) roughly once per second, and all ring evaluation happens inside that command.
 
-- **Trigger rings** (on `SagaArc`): `DiscoverRadius` reveals the arc, `EnterRadius` fires the trigger — spawning its characters and awarding `GivesQuestTokenRef` tokens — and `ExitRadius` records departure. Triggers can be gated with `RequiresQuestTokenRef`. Entering a ring spawns characters; that is all it does.
+- **Trigger rings** (on `Arc`): `DiscoverRadius` reveals the arc, `EnterRadius` fires the trigger — spawning its characters and awarding `GivesQuestTokenRef` tokens — and `ExitRadius` records departure. Triggers can be gated with `RequiresQuestTokenRef`. Entering a ring spawns characters; that is all it does.
 - **Character ApproachRadius** (on the character's `<Interactable>` section): `GetAvailableInteractionsQuery` lists in-range interactable characters; `GetInitiatedInteractionQuery` (the arbiter) picks the single highest-priority in-range character that wants to engage.
-- **Walk-up dialogue**: if the arbiter's winner can talk, the view model (`SagaMainViewModel`) starts the dialogue session and raises `DialogueRequested` for the host to show. The sandbox subscribes to this — clicking the map teleports the avatar, and landing inside a character's ApproachRadius is what starts the interaction.
+- **Walk-up dialogue**: if the arbiter's winner can talk, the view model (`RpgMainViewModel`) starts the dialogue session and raises `DialogueRequested` for the host to show. The sandbox subscribes to this — clicking the map teleports the avatar, and landing inside a character's ApproachRadius is what starts the interaction.
 - **Proximity assault**: a spawned, alive character whose **effective traits** (template + replayed `TraitAssigned`/`TraitRemoved`) include `Hostile` and no truce trait (`Disengaged`/`Spared`) initiates battle when approached. The engine computes `IsAssault`; the view model raises `AssaultRequested`; the host opens the battle via `ModalManager.TryOpenAssault` — the same path as clicking Attack. Assault goes **straight into battle** (menace speech is the `battle_opening` battle-dialogue trigger; talk-first villains are authored as normal dialogue with a `StartCombat` action). A successful flee assigns `Disengaged`, which suppresses further assaults from that instance; fresh spawns of the same template start hostile again.
 - The arbiter check is subscription-gated: if a host subscribes neither `DialogueRequested` nor `AssaultRequested`, no engine-initiated interactions occur.
 
@@ -225,7 +225,7 @@ Track player accomplishments with Steam integration:
 </Achievement>
 ```
 
-**Achievement Criteria Types** (selection): `CharactersDefeated` (+`ByRef`/`ByTag`/`ByType`), `QuestsCompleted` (+`ByRef`), `QuestTokensEarned`, `ItemsTraded`, `DialogueTreesCompleted`, `DialogueNodesVisited`, `UniqueCharactersMet`, `SagaArcsDiscovered`, `SagaArcsCompleted`, `SagaTriggersActivated`, `ReputationReached`, `FactionsAtReputationLevel`, `TraitsAssigned`, `StatusEffectsApplied`, `CriticalHitsDealt`, `DistanceTraveled`, `PlayTimeHours`.
+**Achievement Criteria Types** (selection): `CharactersDefeated` (+`ByRef`/`ByTag`/`ByType`), `QuestsCompleted` (+`ByRef`), `QuestTokensEarned`, `ItemsTraded`, `DialogueTreesCompleted`, `DialogueNodesVisited`, `UniqueCharactersMet`, `ArcDiscovered`, `ArcCompleted`, `ArcTriggersActivated`, `ReputationReached`, `FactionsAtReputationLevel`, `TraitsAssigned`, `StatusEffectsApplied`, `CriticalHitsDealt`, `DistanceTraveled`, `PlayTimeHours`.
 
 Evaluation runs as a MediatR pipeline behavior (`AchievementEvaluationBehavior`) after each saga command; unlocks live on the avatar's ledger and replay to Steam on load.
 
@@ -243,7 +243,7 @@ Evaluation runs as a MediatR pipeline behavior (`AchievementEvaluationBehavior`)
 
 ```bash
 # Build the solution
-dotnet build Ambient.Saga.sln
+dotnet build Saga.sln
 
 # Run all tests
 dotnet test
@@ -252,7 +252,7 @@ dotnet test
 dotnet build -c Release
 
 # Run the sandbox (Windows)
-dotnet run --project Ambient.Saga.Sandbox.DirectX/Ambient.Saga.Sandbox.DirectX.csproj
+dotnet run --project Saga/Saga.csproj
 ```
 
 ### Basic Integration
@@ -264,8 +264,8 @@ services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblyContaining<UpdateAvatarPositionCommand>();
 
     // Pipeline behaviors (run in order)
-    cfg.AddOpenBehavior(typeof(SagaLoggingBehavior<,>));
-    cfg.AddOpenBehavior(typeof(SagaValidationBehavior<,>));
+    cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
     cfg.AddOpenBehavior(typeof(AchievementEvaluationBehavior<,>));
     cfg.AddOpenBehavior(typeof(QuestStageProgressionBehavior<,>)); // automatic quest stage advancement
 });
@@ -292,32 +292,32 @@ var interactions = await mediator.Send(new GetAvailableInteractionsQuery { ... }
 await mediator.Send(new StartDialogueCommand { ... });
 ```
 
-The higher-level integration path is `Ambient.Saga.UI`'s `SagaMainViewModel` + `ModalManager`: the view model runs the position pump and the interaction arbiter and raises `DialogueRequested` / `AssaultRequested`; the host subscribes and opens the matching modal (see `Ambient.Saga.Sandbox.DirectX/MainWindow.cs`).
+The higher-level integration path is `Ambient.Rpg.Ui`'s `RpgMainViewModel` + `ModalManager`: the view model runs the position pump and the interaction arbiter and raises `DialogueRequested` / `AssaultRequested`; the host subscribes and opens the matching modal (see `Saga/MainWindow.cs`).
 
 ---
 
 ## Game Systems
 
-### Saga Arcs
+### Arcs
 
-Sagas are geographic story containers that spawn characters via concentric trigger rings (all triggers of one arc share the arc's coordinates — distinct places are distinct arcs):
+Arcs are geographic story containers that spawn characters via concentric trigger rings (all triggers of one arc share the arc's coordinates — distinct places are distinct arcs):
 
 ```xml
-<SagaArc RefName="forest_adventure" DisplayName="Forest Adventure"
+<Arc RefName="forest_adventure" DisplayName="Forest Adventure"
          Latitude="35.67" Longitude="139.65" Category="Wilderness" InitialState="Visible">
-    <SagaTrigger RefName="forest_patrol" EnterRadius="120.0">
+    <ArcTrigger RefName="forest_patrol" EnterRadius="120.0">
         <Spawn>
             <CharacterRef>wandering_merchant</CharacterRef>
         </Spawn>
-    </SagaTrigger>
-    <SagaTrigger RefName="forest_boss" EnterRadius="25.0">
+    </ArcTrigger>
+    <ArcTrigger RefName="forest_boss" EnterRadius="25.0">
         <RequiresQuestTokenRef>TOKEN_PATROL_CLEARED</RequiresQuestTokenRef>
         <GivesQuestTokenRef>TOKEN_BOSS_REACHED</GivesQuestTokenRef>
         <Spawn Count="1">
             <CharacterRef>forest_boss</CharacterRef>
         </Spawn>
-    </SagaTrigger>
-</SagaArc>
+    </ArcTrigger>
+</Arc>
 ```
 
 ### Characters
@@ -385,7 +385,7 @@ Never edit `Ambient.Domain/Generated/` by hand; extensions go in `Ambient.Domain
 
 ### World Structure
 
-Sample worlds ship with the sandbox under `Ambient.Saga.Sandbox.DirectX/Content/worlds/`:
+Sample worlds ship with the sandbox under `Saga/content/worlds/`:
 
 ```
 Content/worlds/
@@ -399,7 +399,7 @@ Content/worlds/
 │           ├── Combat/                 # AttackTells, LoadoutSlots
 │           ├── Factions/Factions.xml
 │           ├── Quests/Quests.xml
-│           └── Sagas.xml
+│           └── Saga.xml
 └── Kagoshima/
     └── ...
 ```
@@ -459,7 +459,7 @@ All entities follow this pattern:
 | `UseConsumableCommand` | Consume an item outside battle |
 | `EquipItemOutsideBattleCommand` | Change equipment outside battle |
 | `SharpenToolCommand` | Tool upkeep |
-| `CompleteSagaCommand` | Mark a saga arc completed |
+| `CompleteArcCommand` | Mark a saga arc completed |
 | `SpawnDevCharacterCommand` | Dev-spawn a character for testing |
 
 ### Character Commands
@@ -473,12 +473,12 @@ All entities follow this pattern:
 | Query | Description |
 |---------|-------------|
 | `LoadWorldQuery` / `LoadAvailableWorldConfigurationsQuery` | World loading |
-| `GetSagaStateQuery` | Replayed state of an arc |
+| `GetArcStateQuery` | Replayed state of an arc |
 | `GetBattleStateQuery` | Read-only battle reconstruction |
 | `GetDialogueStateQuery` / `GetDialogueOptionsQuery` | Dialogue state |
 | `GetAvailableInteractionsQuery` | In-range interactable characters |
 | `GetInitiatedInteractionQuery` | The interaction arbiter (walk-up dialogue / proximity assault) |
-| `GetQuestProgressQuery` / `GetSagaForQuestQuery` | Quest progress |
+| `GetQuestProgressQuery` / `GetArcForQuestQuery` | Quest progress |
 | `GetAchievementProgressQuery` | Achievement progress |
 | `GetSpawnedCharactersQuery` / `GetCharacterByIdQuery` / `GetTriggersInRangeQuery` / `CanActivateTriggerQuery` | World queries |
 
@@ -500,7 +500,7 @@ Ambient.Saga/
 ├── Ambient.Infrastructure/      # External integrations
 │   └── GameLogic/               # World loading, validation
 │
-├── Ambient.Saga.Engine/         # Game engine (main library)
+├── Ambient.Rpg.Engine/         # Game engine (main library)
 │   ├── Application/
 │   │   ├── Commands/            # CQRS commands
 │   │   ├── Queries/             # CQRS queries (Saga/ and Loading/)
@@ -514,7 +514,7 @@ Ambient.Saga/
 │   │       ├── Battle/          # Combat system
 │   │       ├── Dialogue/        # Conversation engine
 │   │       ├── Quests/          # Quest evaluation and rewards
-│   │       ├── Sagas/           # Arcs, triggers, event sourcing (TransactionLog/)
+│   │       ├── Arcs/           # Arcs, triggers, event sourcing (TransactionLog/)
 │   │       ├── Trade/           # Merchant system
 │   │       ├── Reputation/      # Faction standing
 │   │       ├── Progression/     # Experience/levels
@@ -522,9 +522,9 @@ Ambient.Saga/
 │   └── Infrastructure/
 │       └── Persistence/         # LiteDB repositories (saga instances, avatar progress)
 │
-├── Ambient.Saga.UI/             # ImGui overlay (SagaMainViewModel, ModalManager, panels/modals)
-├── Ambient.Saga.Rendering.DirectX/  # DirectX 11 rendering
-└── Ambient.Saga.Sandbox.DirectX/    # Development sandbox (reference host; sample worlds in Content/worlds/)
+├── Ambient.Rpg.Ui/             # ImGui overlay (RpgMainViewModel, ModalManager, panels/modals)
+├── Ambient.Rpg.Rendering.DirectX/  # DirectX 11 rendering
+└── Saga/    # Development sandbox (reference host; sample worlds in Content/worlds/)
 ```
 
 ---
@@ -570,9 +570,9 @@ The `Ambient.Saga` package includes:
 - `Ambient.Domain.dll` - Core entities and business logic
 - `Ambient.Application.dll` - Use cases and contracts
 - `Ambient.Infrastructure.dll` - Persistence and integrations
-- `Ambient.Saga.Engine.dll` - Game engine with CQRS handlers
-- `Ambient.Saga.UI.dll` - ImGui overlay (OS-agnostic)
-- `Ambient.Saga.Rendering.DirectX.dll` - DirectX 11 rendering (Windows-only)
+- `Ambient.Rpg.Engine.dll` - Game engine with CQRS handlers
+- `Ambient.Rpg.Ui.dll` - ImGui overlay (OS-agnostic)
+- `Ambient.Rpg.Rendering.DirectX.dll` - DirectX 11 rendering (Windows-only)
 
 ---
 

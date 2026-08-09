@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Spells xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Spell RefName="PowerStrike" DisplayName="Mighty Swing" Description="Channel your resolve into a powerful strike" BaseValue="80" Category="Combat" AffinityRef="Iron" UseType="Offensive">
+    <Effects Health="-0.2" />
+  </Spell>
+  <Spell RefName="ShieldBash" DisplayName="Guard Break" Description="Shatter enemy defenses with a forceful blow" BaseValue="90" Category="Combat" AffinityRef="Iron" UseType="Offensive">
+    <Effects Health="-0.1" Speed="-0.15" />
+  </Spell>
+  <Spell RefName="BattleCry" DisplayName="Kiai Shout" Description="A martial arts shout that intimidates foes" BaseValue="100" Category="Combat" AffinityRef="Iron">
+    <Effects Stamina="0.1" Strength="0.1" Defense="0.05" />
+  </Spell>
+  <Spell RefName="CrushingBlow" DisplayName="Skull Crusher" Description="A devastating overhead attack" BaseValue="150" Category="Combat" AffinityRef="Iron" UseType="Offensive">
+    <Effects Health="-0.25" Defense="-0.15" />
+  </Spell>
+  <Spell RefName="Whirlwind" DisplayName="Tatsumaki" Description="Spin like a tornado, striking all nearby enemies" BaseValue="200" Category="Combat" AffinityRef="Iron" UseType="Offensive">
+    <Effects Health="-0.3" />
+  </Spell>
+  <Spell RefName="Taunt" DisplayName="Provoke" Description="Draw enemy attention with taunting gestures" BaseValue="70" Category="Combat" AffinityRef="Iron">
+    <Effects Defense="0.1" />
+  </Spell>
+  <Spell RefName="Disarm" DisplayName="Weapon Break" Description="Strike the enemy's weapon from their hands" BaseValue="120" Category="Combat" AffinityRef="Iron" UseType="Offensive">
+    <Effects Strength="-0.2" />
+  </Spell>
+  <Spell RefName="Charge" DisplayName="Bull Rush" Description="Charge forward with unstoppable momentum" BaseValue="110" Category="Combat" AffinityRef="Iron" UseType="Offensive">
+    <Effects Health="-0.15" Speed="0.2" />
+  </Spell>
+  <Spell RefName="PerfectStrike" DisplayName="Zan'ei" Description="A flawless technique channeling inner focus into a devastating blow" BaseValue="300" Category="Combat" AffinityRef="Iron" UseType="Offensive">
+    <Effects Health="-0.4" Strength="0.15" Speed="0.1" />
+  </Spell>
+  <Spell RefName="WarCry" DisplayName="Rally Shout" Description="A rallying cry that intimidates enemies and steels allies" BaseValue="95" Category="Combat" AffinityRef="Iron" UseType="Offensive">
+    <Effects Strength="-0.15" Defense="-0.1" />
+  </Spell>
+  <Spell RefName="BerserkerRage" DisplayName="Oni Mode" Description="Unleash your inner demon for devastating power" BaseValue="80" Category="Rage" AffinityRef="Fire" UseType="Offensive">
+    <Effects Strength="0.25" Defense="-0.1" Speed="0.1" />
+  </Spell>
+  <Spell RefName="BloodFrenzy" DisplayName="Blood Rampage" Description="Pain only makes you stronger and faster" BaseValue="150" Category="Rage" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="-0.1" Stamina="0.2" Strength="0.35" Defense="-0.15" Speed="0.15" />
+  </Spell>
+  <Spell RefName="PrimalRoar" DisplayName="Demon Roar" Description="A terrifying roar that shakes enemies to their core" BaseValue="100" Category="Rage" AffinityRef="Fire" UseType="Offensive">
+    <Effects Strength="-0.1" Defense="-0.1" Speed="-0.05" />
+  </Spell>
+  <Spell RefName="RecklessAssault" DisplayName="Wild Swing" Description="Attack with abandon, sacrificing defense for offense" BaseValue="130" Category="Rage" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="-0.35" Strength="0.15" Defense="-0.2" />
+  </Spell>
+  <Spell RefName="UnstoppableForce" DisplayName="Juggernaut" Description="Become an unstoppable force of destruction" BaseValue="180" Category="Rage" AffinityRef="Fire">
+    <Effects Stamina="0.15" Strength="0.1" Defense="0.05" Speed="0.25" />
+  </Spell>
+  <Spell RefName="Bloodlust" DisplayName="Crimson Fury" Description="Each hit fuels your thirst for battle" BaseValue="200" Category="Rage" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="0.1" Stamina="0.1" Strength="0.2" Speed="0.1" />
+  </Spell>
+  <Spell RefName="WarStomp" DisplayName="Ground Pound" Description="Slam the earth, staggering nearby foes" BaseValue="140" Category="Rage" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="-0.2" Speed="-0.2" />
+  </Spell>
+  <Spell RefName="IgnorePain" DisplayName="Numb Mind" Description="Block out pain through sheer willpower" BaseValue="120" Category="Rage" AffinityRef="Fire">
+    <Effects Defense="0.3" Magic="-0.1" />
+  </Spell>
+  <Spell RefName="ShadowStep" DisplayName="Kage Bunshin" Description="Move through shadows to reposition instantly" BaseValue="100" Category="Stealth" AffinityRef="Umbral">
+    <Effects Defense="0.2" Speed="0.15" />
+  </Spell>
+  <Spell RefName="CloakOfNight" DisplayName="Shadow Veil" Description="Wrap yourself in darkness to avoid detection" BaseValue="180" Category="Stealth" AffinityRef="Umbral">
+    <Effects Defense="0.3" Speed="0.2" />
+  </Spell>
+  <Spell RefName="Vanish" DisplayName="Smoke Escape" Description="Disappear in a puff of smoke" BaseValue="90" Category="Stealth" AffinityRef="Umbral">
+    <Effects Defense="0.25" />
+  </Spell>
+  <Spell RefName="Backstab" DisplayName="Fatal Strike" Description="A lethal attack from the shadows" BaseValue="120" Category="Stealth" AffinityRef="Umbral" UseType="Offensive">
+    <Effects Health="-0.35" />
+  </Spell>
+  <Spell RefName="SmokeBomb" DisplayName="Ninja Smoke" Description="Create a cloud of blinding smoke" BaseValue="80" Category="Stealth" AffinityRef="Umbral">
+    <Effects Defense="0.15" Speed="0.1" />
+  </Spell>
+  <Spell RefName="SilentStrike" DisplayName="Silent Kill" Description="Strike without making a sound" BaseValue="150" Category="Stealth" AffinityRef="Umbral" UseType="Offensive">
+    <Effects Health="-0.25" Speed="0.1" />
+  </Spell>
+  <Spell RefName="ShadowMeld" DisplayName="One with Shadow" Description="Merge completely with the darkness" BaseValue="220" Category="Stealth" AffinityRef="Umbral">
+    <Effects Defense="0.4" Speed="0.15" />
+  </Spell>
+  <Spell RefName="Ambush" DisplayName="Surprise Attack" Description="Spring from hiding with deadly precision" BaseValue="200" Category="Stealth" AffinityRef="Umbral" UseType="Offensive">
+    <Effects Health="-0.4" Strength="0.1" />
+  </Spell>
+  <Spell RefName="PoisonBlade" StatusEffectRef="Poison" StatusEffectChance="0.7" DisplayName="Venom Edge" Description="Coat your weapon in deadly toxins" BaseValue="90" Category="Poison" AffinityRef="Nature" UseType="Offensive">
+    <Effects Health="-0.15" Stamina="-0.1" />
+  </Spell>
+  <Spell RefName="VenomSpit" StatusEffectRef="Poison" StatusEffectChance="0.7" DisplayName="Toxic Spray" Description="Spit a stream of corrosive venom" BaseValue="80" Category="Poison" AffinityRef="Nature" UseType="Offensive">
+    <Effects Health="-0.2" Defense="-0.05" />
+  </Spell>
+  <Spell RefName="ToxicCloud" DisplayName="Miasma" Description="Release a cloud of poisonous gas" BaseValue="150" Category="Poison" AffinityRef="Nature" UseType="Offensive">
+    <Effects Health="-0.1" Stamina="-0.15" Strength="-0.05" Speed="-0.05" />
+  </Spell>
+  <Spell RefName="NeurotoxinDart" DisplayName="Paralysis Needle" Description="A precise strike that numbs the body" BaseValue="130" Category="Poison" AffinityRef="Nature" UseType="Offensive">
+    <Effects Health="-0.1" Strength="-0.1" Speed="-0.2" />
+  </Spell>
+  <Spell RefName="CorrosiveTouch" DisplayName="Acid Palm" Description="Melt through defenses with corrosive touch" BaseValue="140" Category="Poison" AffinityRef="Nature" UseType="Offensive">
+    <Effects Health="-0.15" Defense="-0.2" />
+  </Spell>
+  <Spell RefName="DeadlyVenom" StatusEffectRef="Poison" StatusEffectChance="0.7" DisplayName="Death Poison" Description="Inject a lethal dose of toxin" BaseValue="200" Category="Poison" AffinityRef="Nature" UseType="Offensive">
+    <Effects Health="-0.3" Stamina="-0.15" Strength="-0.1" Speed="-0.1" />
+  </Spell>
+  <Spell RefName="NaturesGrasp" DisplayName="Vine Snare" Description="Summon vines to entangle enemies" BaseValue="90" Category="Nature" AffinityRef="Wild" UseType="Offensive">
+    <Effects Health="-0.1" Speed="-0.25" />
+  </Spell>
+  <Spell RefName="WildRegeneration" DisplayName="Forest Blessing" Description="Call upon nature's healing power" BaseValue="110" Category="Nature" AffinityRef="Wild">
+    <Effects Health="0.25" Stamina="0.1" />
+  </Spell>
+  <Spell RefName="ThornBarrier" DisplayName="Thorn Wall" Description="Create a barrier of sharp thorns" BaseValue="100" Category="Nature" AffinityRef="Wild">
+    <Effects Defense="0.2" />
+  </Spell>
+  <Spell RefName="EntanglingRoots" StatusEffectRef="Root" StatusEffectChance="0.6" DisplayName="Root Bind" Description="Roots burst from the ground to immobilize foes" BaseValue="120" Category="Nature" AffinityRef="Wild" UseType="Offensive">
+    <Effects Health="-0.05" Speed="-0.35" />
+  </Spell>
+  <Spell RefName="CallOfTheWild" DisplayName="Beast Call" Description="Summon animal spirits to aid you" BaseValue="180" Category="Nature" AffinityRef="Wild" UseType="Offensive">
+    <Effects Strength="0.15" Defense="0.1" />
+  </Spell>
+  <Spell RefName="Barkskin" DisplayName="Tree Armor" Description="Harden your skin like ancient bark" BaseValue="90" Category="Nature" AffinityRef="Wild">
+    <Effects Defense="0.25" Speed="-0.05" />
+  </Spell>
+  <Spell RefName="NaturalRemedy" DisplayName="Herb Cure" Description="Use natural herbs to heal ailments" BaseValue="80" Category="Nature" AffinityRef="Wild">
+    <Effects Health="0.15" Stamina="0.05" />
+  </Spell>
+  <Spell RefName="StormOfLeaves" DisplayName="Leaf Storm" Description="A whirlwind of razor-sharp leaves" BaseValue="150" Category="Nature" AffinityRef="Wild" UseType="Offensive">
+    <Effects Health="-0.25" Speed="-0.1" />
+  </Spell>
+  <Spell RefName="HuntersMark" DisplayName="Spirit Mark" Description="Mark a target for your affinity to track" BaseValue="80" Category="Tracking" AffinityRef="Wild" UseType="Offensive">
+    <Effects Strength="0.15" Defense="-0.1" />
+  </Spell>
+  <Spell RefName="EagleEye" DisplayName="Hawk Vision" Description="See with supernatural clarity" BaseValue="70" Category="Tracking" AffinityRef="Wild">
+    <Effects Strength="0.1" Magic="0.05" />
+  </Spell>
+  <Spell RefName="ScentOfBlood" DisplayName="Blood Trail" Description="Detect wounded enemies from afar" BaseValue="90" Category="Tracking" AffinityRef="Wild" UseType="Offensive">
+    <Effects Health="-0.1" Strength="0.1" Speed="0.1" />
+  </Spell>
+  <Spell RefName="TrapSense" DisplayName="Danger Sense" Description="Your instincts warn of hidden threats" BaseValue="60" Category="Tracking" AffinityRef="Wild">
+    <Effects Defense="0.15" Speed="0.05" />
+  </Spell>
+  <Spell RefName="PredatorsInstinct" DisplayName="Hunter's Focus" Description="Lock onto prey with predatory precision" BaseValue="130" Category="Tracking" AffinityRef="Wild" UseType="Offensive">
+    <Effects Stamina="0.1" Strength="0.15" Speed="0.15" />
+  </Spell>
+  <Spell RefName="NaturesCompass" DisplayName="Spirit Guide" Description="Let the spirits show you the way" BaseValue="50" Category="Tracking" AffinityRef="Wild">
+    <Effects Stamina="0.05" Speed="0.1" />
+  </Spell>
+  <Spell RefName="Fireball" StatusEffectRef="Burn" StatusEffectChance="0.5" DisplayName="Agi" Description="Hurl a ball of searing flame" BaseValue="120" Category="Elemental" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="-0.3" />
+  </Spell>
+  <Spell RefName="Icebolt" StatusEffectRef="Slow" StatusEffectChance="0.5" DisplayName="Bufu" Description="Launch a shard of freezing ice" BaseValue="100" Category="Elemental" AffinityRef="Water" UseType="Offensive">
+    <Effects Health="-0.2" Speed="-0.1" />
+  </Spell>
+  <Spell RefName="LightningBolt" DisplayName="Zio" Description="Call down a bolt of lightning" BaseValue="130" Category="Elemental" AffinityRef="Storm" UseType="Offensive">
+    <Effects Health="-0.25" Stamina="-0.05" />
+  </Spell>
+  <Spell RefName="StoneSpike" DisplayName="Magna" Description="Impale enemies with stone spikes" BaseValue="110" Category="Elemental" AffinityRef="Stone" UseType="Offensive">
+    <Effects Health="-0.2" Defense="-0.1" />
+  </Spell>
+  <Spell RefName="Gust" DisplayName="Garu" Description="Blast enemies with cutting wind" BaseValue="80" Category="Elemental" AffinityRef="Storm" UseType="Offensive">
+    <Effects Health="-0.1" Speed="-0.15" />
+  </Spell>
+  <Spell RefName="WaterWhip" DisplayName="Aqua" Description="Lash out with a tendril of water" BaseValue="90" Category="Elemental" AffinityRef="Water" UseType="Offensive">
+    <Effects Health="-0.15" Speed="-0.05" />
+  </Spell>
+  <Spell RefName="FlameWall" StatusEffectRef="Burn" StatusEffectChance="0.5" DisplayName="Maragi" Description="Create a wall of roaring flames" BaseValue="150" Category="Elemental" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="-0.2" Defense="0.15" />
+  </Spell>
+  <Spell RefName="FrostNova" StatusEffectRef="Slow" StatusEffectChance="0.5" DisplayName="Mabufu" Description="Flash-freeze the area around you" BaseValue="160" Category="Elemental" AffinityRef="Water" UseType="Offensive">
+    <Effects Health="-0.15" Speed="-0.2" />
+  </Spell>
+  <Spell RefName="ChainLightning" DisplayName="Mazio" Description="Lightning arcs between multiple targets" BaseValue="200" Category="Elemental" AffinityRef="Storm" UseType="Offensive">
+    <Effects Health="-0.3" Stamina="-0.1" />
+  </Spell>
+  <Spell RefName="Earthquake" DisplayName="Mamagna" Description="Shake the earth beneath your enemies" BaseValue="220" Category="Elemental" AffinityRef="Stone" UseType="Offensive">
+    <Effects Health="-0.25" Defense="-0.15" Speed="-0.2" />
+  </Spell>
+  <Spell RefName="ArcaneBlast" DisplayName="Megido" Description="Pure destructive energy from beyond" BaseValue="100" Category="Destruction" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="-0.25" />
+  </Spell>
+  <Spell RefName="Disintegrate" DisplayName="Megidola" Description="Reduce matter to nothing" BaseValue="250" Category="Destruction" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="-0.45" Defense="-0.1" />
+  </Spell>
+  <Spell RefName="MeteorStrike" DisplayName="Megidolaon" Description="Call down devastating cosmic power" BaseValue="320" Category="Destruction" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="-0.45" Speed="-0.15" />
+  </Spell>
+  <Spell RefName="Shatter" DisplayName="Psi" Description="Shatter reality around the target" BaseValue="140" Category="Destruction" AffinityRef="Water" UseType="Offensive">
+    <Effects Health="-0.35" Defense="-0.15" />
+  </Spell>
+  <Spell RefName="Incinerate" DisplayName="Agidyne" Description="Engulf enemies in intense flames" BaseValue="180" Category="Destruction" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="-0.4" />
+  </Spell>
+  <Spell RefName="VoidRift" DisplayName="Eigaon" Description="Tear open a rift to the void" BaseValue="300" Category="Destruction" AffinityRef="Void" UseType="Offensive">
+    <Effects Health="-0.4" Stamina="-0.1" Mana="-0.1" Strength="-0.1" Defense="-0.1" />
+  </Spell>
+  <Spell RefName="Obliterate" DisplayName="Morning Star" Description="Annihilate with ultimate power" BaseValue="400" Category="Destruction" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="-0.5" Strength="-0.15" Defense="-0.15" />
+  </Spell>
+  <Spell RefName="ArcaneMissile" DisplayName="Spirit Arrow" Description="Fire bolts of pure spiritual energy" BaseValue="80" Category="Arcane" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="-0.15" />
+  </Spell>
+  <Spell RefName="ManaShield" DisplayName="Spirit Shield" Description="Create a barrier of spiritual force" BaseValue="120" Category="Arcane" AffinityRef="Arcane">
+    <Effects Mana="-0.1" Defense="0.25" />
+  </Spell>
+  <Spell RefName="Teleport" DisplayName="Traesto" Description="Instantly transport to safety" BaseValue="200" Category="Arcane" AffinityRef="Arcane">
+    <Effects Speed="0.5" />
+  </Spell>
+  <Spell RefName="Counterspell" DisplayName="Dekaja" Description="Nullify enemy magical enhancements" BaseValue="150" Category="Arcane" AffinityRef="Arcane">
+    <Effects Defense="0.15" Magic="0.1" />
+  </Spell>
+  <Spell RefName="SpellSteal" DisplayName="Spirit Drain" Description="Absorb spiritual energy from foes" BaseValue="180" Category="Arcane" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Mana="0.1" Strength="0.05" Defense="0.05" Magic="0.05" />
+  </Spell>
+  <Spell RefName="ArcaneIntellect" DisplayName="Mind Charge" Description="Focus your mind for devastating magic" BaseValue="100" Category="Arcane" AffinityRef="Arcane">
+    <Effects Mana="0.15" Magic="0.15" />
+  </Spell>
+  <Spell RefName="Blink" DisplayName="Quick Step" Description="Teleport a short distance instantly" BaseValue="130" Category="Arcane" AffinityRef="Arcane">
+    <Effects Defense="0.2" Speed="0.3" />
+  </Spell>
+  <Spell RefName="TimeWarp" DisplayName="Sukukaja" Description="Accelerate time around yourself" BaseValue="250" Category="Arcane" AffinityRef="Arcane">
+    <Effects Stamina="0.1" Defense="0.1" Speed="0.4" />
+  </Spell>
+  <Spell RefName="Wisdom" DisplayName="Makakaja" Description="Enhance magical power" BaseValue="150" Category="Buff" AffinityRef="Spirit">
+    <Effects Mana="0.1" Magic="0.05" />
+  </Spell>
+  <Spell RefName="Fortitude" DisplayName="Rakukaja" Description="Strengthen defenses" BaseValue="100" Category="Buff" AffinityRef="Spirit">
+    <Effects Health="0.1" Defense="0.15" />
+  </Spell>
+  <Spell RefName="Agility" DisplayName="Sukukaja" Description="Increase speed and evasion" BaseValue="90" Category="Buff" AffinityRef="Spirit">
+    <Effects Speed="0.2" />
+  </Spell>
+  <Spell RefName="MightyStrength" DisplayName="Tarukaja" Description="Boost physical attack power" BaseValue="110" Category="Buff" AffinityRef="Spirit">
+    <Effects Strength="0.2" />
+  </Spell>
+  <Spell RefName="MagicArmor" DisplayName="Makarakarn" Description="Create a magic-reflecting barrier" BaseValue="130" Category="Buff" AffinityRef="Arcane">
+    <Effects Defense="0.25" Magic="0.05" />
+  </Spell>
+  <Spell RefName="Heroism" DisplayName="Heat Riser" Description="Greatly enhance all abilities" BaseValue="180" Category="Buff" AffinityRef="Spirit">
+    <Effects Health="0.1" Stamina="0.1" Strength="0.15" Defense="0.1" Speed="0.05" />
+  </Spell>
+  <Spell RefName="Swiftness" DisplayName="Auto-Sukukaja" Description="Permanent speed enhancement" BaseValue="80" Category="Buff" AffinityRef="Storm">
+    <Effects Stamina="0.05" Speed="0.25" />
+  </Spell>
+  <Spell RefName="Concentration" DisplayName="Concentrate" Description="Focus for a powerful next attack" BaseValue="120" Category="Buff" AffinityRef="Arcane">
+    <Effects Mana="0.2" Magic="0.1" />
+  </Spell>
+  <Spell RefName="Curse" StatusEffectRef="Weaken" StatusEffectChance="0.7" DisplayName="Mudo" Description="Curse enemies with dark energy" BaseValue="100" Category="Debuff" AffinityRef="Umbral" UseType="Offensive">
+    <Effects Strength="-0.15" Defense="-0.1" />
+  </Spell>
+  <Spell RefName="Slow" DisplayName="Sukunda" Description="Reduce enemy speed" BaseValue="90" Category="Debuff" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Speed="-0.25" />
+  </Spell>
+  <Spell RefName="Weakness" DisplayName="Tarunda" Description="Weaken enemy attacks" BaseValue="90" Category="Debuff" AffinityRef="Umbral" UseType="Offensive">
+    <Effects Stamina="-0.1" Strength="-0.25" />
+  </Spell>
+  <Spell RefName="Silence" StatusEffectRef="Silence" StatusEffectChance="0.7" DisplayName="Makajam" Description="Seal enemy spellcasting" BaseValue="140" Category="Debuff" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Mana="-0.2" Magic="-0.3" />
+  </Spell>
+  <Spell RefName="Blind" StatusEffectRef="Blind" StatusEffectChance="0.6" DisplayName="Pulinpa" Description="Confuse the target's senses" BaseValue="120" Category="Debuff" AffinityRef="Umbral" UseType="Offensive">
+    <Effects Strength="-0.1" Defense="-0.2" Speed="-0.15" />
+  </Spell>
+  <Spell RefName="Exhaust" DisplayName="Dormina" Description="Drain the target's stamina" BaseValue="110" Category="Debuff" AffinityRef="Void" UseType="Offensive">
+    <Effects Stamina="-0.3" Strength="-0.1" Speed="-0.1" />
+  </Spell>
+  <Spell RefName="Doom" DisplayName="Hamaon" Description="Invoke a holy death sentence" BaseValue="200" Category="Debuff" AffinityRef="Void" UseType="Offensive">
+    <Effects Health="-0.2" Stamina="-0.15" Mana="-0.15" Strength="-0.1" Defense="-0.1" Speed="-0.1" Magic="-0.1" />
+  </Spell>
+  <Spell RefName="MagicBreak" DisplayName="Rakunda" Description="Shatter enemy defenses" BaseValue="150" Category="Debuff" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Mana="-0.25" Defense="-0.15" Magic="-0.25" />
+  </Spell>
+  <Spell RefName="MinorHeal" DisplayName="Dia" Description="Minor healing light" BaseValue="50" Category="Healing" AffinityRef="Holy">
+    <Effects Health="0.1" />
+  </Spell>
+  <Spell RefName="Heal" DisplayName="Diarama" Description="Moderate healing restoration" BaseValue="100" Category="Healing" AffinityRef="Holy">
+    <Effects Health="0.2" />
+  </Spell>
+  <Spell RefName="GreaterHeal" DisplayName="Diarahan" Description="Full healing restoration" BaseValue="180" Category="Healing" AffinityRef="Holy">
+    <Effects Health="0.35" />
+  </Spell>
+  <Spell RefName="Revitalize" DisplayName="Mediarahan" Description="Fully heal all allies" BaseValue="150" Category="Healing" AffinityRef="Holy">
+    <Effects Health="0.2" Stamina="0.2" />
+  </Spell>
+  <Spell RefName="CurePoison" DisplayName="Posumudi" Description="Cleanse poison from the body" BaseValue="80" Category="Healing" AffinityRef="Holy">
+    <Effects Health="0.1" Stamina="0.05" Strength="0.05" Speed="0.05" />
+  </Spell>
+  <Spell RefName="Restoration" DisplayName="Amrita" Description="Cure all status ailments" BaseValue="220" Category="Healing" AffinityRef="Holy">
+    <Effects Health="0.3" Stamina="0.15" Mana="0.1" />
+  </Spell>
+  <Spell RefName="HealingAura" DisplayName="Media" Description="Heal all allies with gentle light" BaseValue="250" Category="Healing" AffinityRef="Holy">
+    <Effects Health="0.25" Stamina="0.1" />
+  </Spell>
+  <Spell RefName="Resurrection" DisplayName="Samarecarm" Description="Revive fallen allies fully" BaseValue="500" Category="Healing" AffinityRef="Holy">
+    <Effects Health="0.5" Stamina="0.25" Mana="0.25" />
+  </Spell>
+  <Spell RefName="DivineLight" DisplayName="Hama" Description="Smite enemies with holy light" BaseValue="100" Category="Holy" AffinityRef="Holy" UseType="Offensive">
+    <Effects Health="-0.25" />
+  </Spell>
+  <Spell RefName="Blessing" DisplayName="Amaterasu's Light" Description="Bless allies with divine protection" BaseValue="130" Category="Holy" AffinityRef="Holy">
+    <Effects Health="0.1" Defense="0.15" Magic="0.05" />
+  </Spell>
+  <Spell RefName="Smite" DisplayName="Hamaon" Description="Powerful holy judgment" BaseValue="120" Category="Holy" AffinityRef="Holy" UseType="Offensive">
+    <Effects Health="-0.3" />
+  </Spell>
+  <Spell RefName="HolyFire" StatusEffectRef="Burn" StatusEffectChance="0.5" DisplayName="Kougaon" Description="Sacred flames that purify evil" BaseValue="150" Category="Holy" AffinityRef="Holy" UseType="Offensive">
+    <Effects Health="-0.35" Magic="-0.05" />
+  </Spell>
+  <Spell RefName="Consecrate" DisplayName="Holy Ground" Description="Sanctify the battlefield" BaseValue="140" Category="Holy" AffinityRef="Holy">
+    <Effects Health="0.1" Defense="0.2" />
+  </Spell>
+  <Spell RefName="Exorcism" DisplayName="Expel" Description="Banish dark spirits with holy power" BaseValue="180" Category="Holy" AffinityRef="Holy" UseType="Offensive">
+    <Effects Health="-0.4" Magic="-0.15" />
+  </Spell>
+  <Spell RefName="DivineJudgment" DisplayName="Divine Verdict" Description="Pass judgment on the wicked" BaseValue="300" Category="Holy" AffinityRef="Holy" UseType="Offensive">
+    <Effects Health="-0.5" Strength="-0.1" Defense="-0.1" Magic="-0.2" />
+  </Spell>
+  <Spell RefName="Shield" DisplayName="Tetrakarn" Description="Create a physical barrier" BaseValue="80" Category="Protection" AffinityRef="Holy">
+    <Effects Defense="0.2" />
+  </Spell>
+  <Spell RefName="DivineShield" DisplayName="Tetraja" Description="Ward against instant death" BaseValue="200" Category="Protection" AffinityRef="Holy">
+    <Effects Defense="0.4" />
+  </Spell>
+  <Spell RefName="Sanctuary" DisplayName="Spirit Wall" Description="Create a protective sanctuary" BaseValue="160" Category="Protection" AffinityRef="Holy">
+    <Effects Health="0.1" Defense="0.25" Magic="0.1" />
+  </Spell>
+  <Spell RefName="WardEvil" DisplayName="Null Dark" Description="Become immune to dark attacks" BaseValue="120" Category="Protection" AffinityRef="Holy">
+    <Effects Defense="0.25" Magic="0.15" />
+  </Spell>
+  <Spell RefName="AbsorbMagic" DisplayName="Drain Magic" Description="Absorb incoming magical attacks" BaseValue="150" Category="Protection" AffinityRef="Arcane">
+    <Effects Mana="0.15" Defense="0.15" Magic="0.2" />
+  </Spell>
+  <Spell RefName="Invulnerability" DisplayName="Infinity" Description="Become temporarily invincible" BaseValue="350" Category="Protection" AffinityRef="Holy">
+    <Effects Defense="0.6" Magic="0.2" />
+  </Spell>
+  <Spell RefName="HolyArmor" DisplayName="Angelic Grace" Description="Divine armor protects from harm" BaseValue="140" Category="Protection" AffinityRef="Holy">
+    <Effects Health="0.05" Defense="0.3" Speed="-0.05" />
+  </Spell>
+  <Spell RefName="SoothingSong" DisplayName="Healing Melody" Description="A song that soothes wounds" BaseValue="90" Category="Charm" AffinityRef="Spirit">
+    <Effects Health="0.15" Stamina="0.1" />
+  </Spell>
+  <Spell RefName="InspiringVerse" DisplayName="Power Ballad" Description="Inspire allies with an uplifting song" BaseValue="120" Category="Charm" AffinityRef="Spirit">
+    <Effects Strength="0.1" Defense="0.1" Speed="0.05" />
+  </Spell>
+  <Spell RefName="MesmerizingMelody" DisplayName="Charming Voice" Description="Entrance enemies with your voice" BaseValue="100" Category="Charm" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Strength="-0.1" Defense="-0.15" Speed="-0.1" />
+  </Spell>
+  <Spell RefName="SongOfCourage" DisplayName="Battle Anthem" Description="Inspire courage in your allies" BaseValue="110" Category="Charm" AffinityRef="Spirit">
+    <Effects Stamina="0.1" Strength="0.15" Defense="0.1" />
+  </Spell>
+  <Spell RefName="Lullaby" DisplayName="Sleep Song" Description="Sing enemies into a deep slumber" BaseValue="140" Category="Charm" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Stamina="-0.2" Strength="-0.15" Defense="-0.1" Speed="-0.25" />
+  </Spell>
+  <Spell RefName="HymnOfValor" DisplayName="Hero's Chorus" Description="A song of legendary heroism" BaseValue="180" Category="Charm" AffinityRef="Spirit">
+    <Effects Health="0.1" Stamina="0.15" Strength="0.2" Defense="0.15" Speed="0.1" />
+  </Spell>
+  <Spell RefName="DiscordantNote" DisplayName="Sonic Scream" Description="A jarring note that damages foes" BaseValue="80" Category="Charm" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Health="-0.15" Stamina="-0.05" />
+  </Spell>
+  <Spell RefName="SymphonyOfPower" DisplayName="Ultimate Concert" Description="Your magnum opus of raw power" BaseValue="250" Category="Charm" AffinityRef="Spirit">
+    <Effects Health="0.15" Stamina="0.15" Mana="0.1" Strength="0.15" Defense="0.15" Speed="0.1" Magic="0.1" />
+  </Spell>
+  <Spell RefName="Distraction" DisplayName="Misdirection" Description="Create a distracting illusion" BaseValue="80" Category="Illusion" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Defense="-0.15" />
+  </Spell>
+  <Spell RefName="MirrorImage" DisplayName="Double Image" Description="Create illusory copies of yourself" BaseValue="130" Category="Illusion" AffinityRef="Arcane">
+    <Effects Defense="0.25" />
+  </Spell>
+  <Spell RefName="Invisibility" DisplayName="Vanish" Description="Become completely invisible" BaseValue="180" Category="Illusion" AffinityRef="Arcane">
+    <Effects Defense="0.35" Speed="0.15" />
+  </Spell>
+  <Spell RefName="PhantasmalForce" DisplayName="Phantom Pain" Description="Illusions that cause real pain" BaseValue="150" Category="Illusion" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="-0.2" />
+  </Spell>
+  <Spell RefName="Confuse" DisplayName="Tentarafoo" Description="Confuse all enemies" BaseValue="120" Category="Illusion" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Strength="-0.1" Defense="-0.2" Speed="-0.1" Magic="-0.1" />
+  </Spell>
+  <Spell RefName="Hallucination" DisplayName="Mind Break" Description="Shatter the target's perception" BaseValue="160" Category="Illusion" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="-0.1" Stamina="-0.1" Strength="-0.15" Defense="-0.15" Speed="-0.15" />
+  </Spell>
+  <Spell RefName="Disguise" DisplayName="Shape Shift" Description="Take on another's appearance" BaseValue="90" Category="Illusion" AffinityRef="Arcane">
+    <Effects Defense="0.1" />
+  </Spell>
+  <Spell RefName="MassIllusion" DisplayName="Grand Illusion" Description="Deceive all who behold it" BaseValue="220" Category="Illusion" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Strength="-0.15" Defense="-0.25" Speed="-0.15" />
+  </Spell>
+  <Spell RefName="Illusion" DisplayName="Kitsune no Maboroshi" Description="Create a convincing fox-fire illusion to deceive and misdirect" BaseValue="100" Category="Illusion" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Defense="-0.1" Speed="-0.1" />
+  </Spell>
+  <Spell RefName="ShadowStrike" DisplayName="Kage no Ichigeki" Description="Strike from the shadows with deadly kitsune precision" BaseValue="250" Category="Stealth" AffinityRef="Umbral" UseType="Offensive">
+    <Effects Health="-0.35" Strength="0.1" Speed="0.15" />
+  </Spell>
+  <Spell RefName="SummonSpirit" DisplayName="Call Shikigami" Description="Summon a paper spirit servant" BaseValue="150" Category="Summoning" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Strength="0.15" Defense="0.1" />
+  </Spell>
+  <Spell RefName="BindElemental" DisplayName="Elemental Contract" Description="Bind an elemental spirit to serve" BaseValue="250" Category="Summoning" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Strength="0.2" Defense="0.15" Speed="0.1" Magic="0.1" />
+  </Spell>
+  <Spell RefName="SummonFamiliar" DisplayName="Spirit Partner" Description="Call your bonded spirit companion" BaseValue="120" Category="Summoning" AffinityRef="Spirit">
+    <Effects Mana="0.1" Strength="0.1" Defense="0.1" Magic="0.1" />
+  </Spell>
+  <Spell RefName="SummonBeast" DisplayName="Beast Spirit" Description="Summon a powerful animal spirit" BaseValue="180" Category="Summoning" AffinityRef="Wild" UseType="Offensive">
+    <Effects Strength="0.25" Defense="0.1" Speed="0.1" />
+  </Spell>
+  <Spell RefName="SummonDemon" DisplayName="Oni Servant" Description="Call forth a demon to fight" BaseValue="300" Category="Summoning" AffinityRef="Void" UseType="Offensive">
+    <Effects Health="-0.1" Strength="0.35" Defense="0.05" Speed="0.15" Magic="0.1" />
+  </Spell>
+  <Spell RefName="SummonAngel" DisplayName="Tennin Call" Description="Summon a celestial being" BaseValue="350" Category="Summoning" AffinityRef="Holy">
+    <Effects Health="0.15" Strength="0.2" Defense="0.25" Speed="0.1" Magic="0.2" />
+  </Spell>
+  <Spell RefName="SummonGolem" DisplayName="Earth Guardian" Description="Animate stone into a guardian" BaseValue="220" Category="Summoning" AffinityRef="Stone" UseType="Offensive">
+    <Effects Strength="0.3" Defense="0.3" Speed="-0.1" />
+  </Spell>
+  <Spell RefName="SummonPhoenix" DisplayName="Ho-oh Spirit" Description="Call the legendary firebird" BaseValue="400" Category="Summoning" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="0.2" Stamina="0.1" Mana="0.1" Strength="0.25" Defense="0.15" Speed="0.2" Magic="0.15" />
+  </Spell>
+  <Spell RefName="ConjureWeapon" DisplayName="Spirit Blade" Description="Manifest a weapon from your will" BaseValue="100" Category="Conjuration" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Strength="0.2" />
+  </Spell>
+  <Spell RefName="ConjureShield" DisplayName="Spirit Barrier" Description="Create a shield of pure energy" BaseValue="90" Category="Conjuration" AffinityRef="Arcane">
+    <Effects Defense="0.25" />
+  </Spell>
+  <Spell RefName="ConjureArmor" DisplayName="Spirit Raiment" Description="Cloak yourself in spirit armor" BaseValue="130" Category="Conjuration" AffinityRef="Arcane">
+    <Effects Defense="0.3" Speed="-0.05" />
+  </Spell>
+  <Spell RefName="ConjureFood" DisplayName="Spirit Feast" Description="Create food from spiritual energy" BaseValue="60" Category="Conjuration" AffinityRef="Arcane">
+    <Effects Health="0.1" Stamina="0.15" />
+  </Spell>
+  <Spell RefName="ConjureFlames" StatusEffectRef="Burn" StatusEffectChance="0.5" DisplayName="Kagutsuchi's Gift" Description="Conjure flames from the fire kami" BaseValue="110" Category="Conjuration" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="-0.25" />
+  </Spell>
+  <Spell RefName="ConjureStorm" DisplayName="Raijin's Wrath" Description="Call forth a raging storm" BaseValue="200" Category="Conjuration" AffinityRef="Storm" UseType="Offensive">
+    <Effects Health="-0.3" Stamina="-0.1" Speed="-0.15" />
+  </Spell>
+  <Spell RefName="ConjurePortal" DisplayName="Spirit Gate" Description="Open a portal to another location" BaseValue="250" Category="Conjuration" AffinityRef="Void">
+    <Effects Speed="0.5" />
+  </Spell>
+  <Spell RefName="ConjureServant" DisplayName="Manifest Shikigami" Description="Create a spirit servant from paper" BaseValue="140" Category="Conjuration" AffinityRef="Arcane">
+    <Effects Stamina="0.1" Strength="0.1" Defense="0.1" Speed="0.1" />
+  </Spell>
+  <Spell RefName="Freeze" StatusEffectRef="Slow" StatusEffectChance="0.5" DisplayName="Ice Hold" Description="Freeze the target in place" BaseValue="150" Category="Control" AffinityRef="Water" UseType="Offensive">
+    <Effects Health="-0.1" Speed="-0.3" />
+  </Spell>
+  <Spell RefName="Paralyze" StatusEffectRef="Stun" StatusEffectChance="0.4" DisplayName="Shock Bind" Description="Paralyze with electric shock" BaseValue="180" Category="Control" AffinityRef="Storm" UseType="Offensive">
+    <Effects Stamina="-0.15" Strength="-0.1" Speed="-0.35" />
+  </Spell>
+  <Spell RefName="Fear" DisplayName="Evil Touch" Description="Fill the target with dread" BaseValue="120" Category="Control" AffinityRef="Umbral" UseType="Offensive">
+    <Effects Stamina="-0.1" Strength="-0.2" Defense="-0.15" Speed="0.1" />
+  </Spell>
+  <Spell RefName="Charm" DisplayName="Marin Karin" Description="Charm the target to your side" BaseValue="180" Category="Control" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Strength="-0.25" Defense="-0.2" />
+  </Spell>
+  <Spell RefName="Dominate" DisplayName="Mind Control" Description="Take complete control of the target" BaseValue="280" Category="Control" AffinityRef="Void" UseType="Offensive">
+    <Effects Strength="-0.3" Defense="-0.25" Speed="-0.2" Magic="-0.2" />
+  </Spell>
+  <Spell RefName="Stun" StatusEffectRef="Stun" StatusEffectChance="0.4" DisplayName="Dizzy" Description="Stun the target momentarily" BaseValue="100" Category="Control" AffinityRef="Storm" UseType="Offensive">
+    <Effects Stamina="-0.1" Defense="-0.1" Speed="-0.25" />
+  </Spell>
+  <Spell RefName="Banish" DisplayName="Expel" Description="Banish spirits back to their realm" BaseValue="300" Category="Control" AffinityRef="Void" UseType="Offensive">
+    <Effects Health="-0.3" Magic="-0.3" />
+  </Spell>
+  <Spell RefName="Dash" DisplayName="Quick Dash" Description="Move with supernatural speed" BaseValue="60" Category="Movement" AffinityRef="Storm">
+    <Effects Stamina="-0.05" Speed="0.3" />
+  </Spell>
+  <Spell RefName="Levitate" DisplayName="Float" Description="Hover above the ground" BaseValue="120" Category="Movement" AffinityRef="Arcane">
+    <Effects Defense="0.1" Speed="0.15" />
+  </Spell>
+  <Spell RefName="Fly" DisplayName="Spirit Flight" Description="Take to the skies" BaseValue="200" Category="Movement" AffinityRef="Arcane">
+    <Effects Defense="0.15" Speed="0.4" />
+  </Spell>
+  <Spell RefName="PhaseWalk" DisplayName="Ghost Walk" Description="Pass through solid objects" BaseValue="220" Category="Movement" AffinityRef="Void">
+    <Effects Defense="0.3" Speed="0.2" />
+  </Spell>
+  <Spell RefName="WaterWalk" DisplayName="Suijin's Blessing" Description="Walk on water's surface" BaseValue="80" Category="Movement" AffinityRef="Water">
+    <Effects Speed="0.1" />
+  </Spell>
+  <Spell RefName="FeatherFall" DisplayName="Slow Fall" Description="Descend gently like a feather" BaseValue="70" Category="Movement" AffinityRef="Storm">
+    <Effects Defense="0.15" />
+  </Spell>
+  <Spell RefName="DimensionDoor" DisplayName="Goho-M" Description="Return instantly to a safe location" BaseValue="280" Category="Movement" AffinityRef="Void">
+    <Effects Speed="0.6" />
+  </Spell>
+</Spells>

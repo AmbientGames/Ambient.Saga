@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+	<xs:include schemaLocation="../../EntityBase.xsd" />
+	<xs:include schemaLocation="ArcCommon.xsd" />
+
+	<xs:simpleType name="ArcCategory">
+		<xs:annotation>
+			<xs:documentation>Classifies a point of interest by its functional role in the world.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Facility">
+				<xs:annotation>
+					<xs:documentation>A functional building such as a shop, forge, or hospital.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Stronghold">
+				<xs:annotation>
+					<xs:documentation>A fortified location such as a castle, fortress, or military outpost.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Religious">
+				<xs:annotation>
+					<xs:documentation>A place of worship such as a shrine, temple, or monastery.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Ruin">
+				<xs:annotation>
+					<xs:documentation>An abandoned or destroyed structure that may contain loot or lore.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Landmark">
+				<xs:annotation>
+					<xs:documentation>A notable geographic or man-made feature used for navigation or discovery.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Infrastructure">
+				<xs:annotation>
+					<xs:documentation>A transportation or utility structure such as a bridge, road, or dam.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Passage">
+				<xs:annotation>
+					<xs:documentation>A traversable route such as a cave entrance, tunnel, or mountain pass.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Waypoint">
+				<xs:annotation>
+					<xs:documentation>A minor navigational marker or rest stop along a travel route.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Camp">
+				<xs:annotation>
+					<xs:documentation>A temporary or semi-permanent encampment for rest, trade, or staging.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="QuestHub">
+				<xs:annotation>
+					<xs:documentation>A location that serves as a central point for accepting and turning in quests.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Service">
+				<xs:annotation>
+					<xs:documentation>A location offering avatar services such as healing, repair, or fast travel.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Default">
+				<xs:annotation>
+					<xs:documentation>A generic point of interest with no specific category assigned.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ArcKind">
+		<xs:annotation>
+			<xs:documentation>A free-form sub-classification within a ArcCategory, such as Shrine, Airport, or Bridge.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<!-- Examples: Shrine, Temple, Airport, Bridge, BaseCamp, Viewpoint -->
+			<!-- Allow letters/digits with optional separators to keep it filesystem-friendly -->
+			<xs:pattern value="[A-Za-z][A-Za-z0-9]*(?:[._-][A-Za-z0-9]+)*"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ArcInitialState">
+		<xs:annotation>
+			<xs:documentation>Controls whether a Arc is revealed on the map before the avatar discovers it.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Hidden">
+				<xs:annotation>
+					<xs:documentation>The point of interest is invisible on the map until the avatar enters its DiscoverRadius.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Visible">
+				<xs:annotation>
+					<xs:documentation>The point of interest is shown on the map from the start of the game.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="Arc">
+		<xs:annotation>
+			<xs:documentation>A geo-located point of interest in the world that contains one or more proximity triggers for spawning NPCs.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EntityBase">
+				<xs:sequence>
+					<xs:element name="ArcTrigger" type="ArcTrigger" minOccurs="1" maxOccurs="unbounded" />
+				</xs:sequence>
+
+				<xs:attribute name="Latitude" type="xs:double" use="required">
+					<xs:annotation>
+						<xs:documentation>Geographic latitude of this point of interest in decimal degrees.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="Longitude" type="xs:double" use="required">
+					<xs:annotation>
+						<xs:documentation>Geographic longitude of this point of interest in decimal degrees.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="Category" type="ArcCategory" use="required">
+					<xs:annotation>
+						<xs:documentation>The functional classification of this point of interest.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="Kind" type="ArcKind" use="optional" default="Default">
+					<xs:annotation>
+						<xs:documentation>A more specific sub-type within the chosen Category.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+
+				<!-- Deterministic POI interaction envelope -->
+				<xs:attribute name="DiscoverRadius" type="xs:double" use="optional" default="200">
+					<xs:annotation>
+						<xs:documentation>Distance in meters at which the avatar discovers this point of interest and it becomes visible on the map.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="InitialState" type="ArcInitialState" use="optional" default="Hidden">
+					<xs:annotation>
+						<xs:documentation>Whether this point of interest is visible or hidden on the map before discovery.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="OwnerAvatarId" type="xs:string" use="optional">
+					<xs:annotation>
+						<xs:documentation>Avatar ID of the player who owns this saga arc. Owner can trade freely with characters (no cost), characters will not be hostile to owner. Used for player-created arcs such as shopkeepers.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="MarkupMultiplier" type="xs:double" use="optional" default="1">
+					<xs:annotation>
+						<xs:documentation>Multiplier applied to the catalog price of items SOLD BY characters in this arc to a non-owner (the shop's selling price). 1.0 means catalog price (no markup), 1.25 means a 25% markup, 0.5 means a 50% discount. Authored arcs typically leave this at the default; player-owned shops raise it to express their resale margin. Owner always pays zero regardless.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="BuybackMultiplier" type="xs:double" use="optional" default="1">
+					<xs:annotation>
+						<xs:documentation>Multiplier applied to the catalog price of items BOUGHT BY characters in this arc from a non-owner (the shop's buy-back price when a player sells to it). 1.0 means catalog price, 0.5 means the shop pays half (typical RPG buyback). Owner-side trades always go at zero regardless.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="Saga">
+		<xs:annotation>
+			<xs:documentation>A collection of Arc definitions representing all points of interest in a world.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Arc" type="Arc" maxOccurs="unbounded">
+				<xs:unique name="UniqueArcTriggerRefPerArc">
+					<xs:selector xpath="ArcTrigger" />
+					<xs:field xpath="@RefName" />
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

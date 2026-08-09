@@ -1,4 +1,4 @@
-namespace Ambient.Domain;
+namespace Ambient.Domain.GameLogic.Items;
 
 /// <summary>
 /// The one place the "variant folded into an item ref" format is written or read. An item's
@@ -7,7 +7,7 @@ namespace Ambient.Domain;
 /// <see cref="Combine"/> to fold a variant in, and <see cref="Split"/> / <see cref="BaseRef"/> /
 /// <see cref="VariantOf"/> to pull it back out.
 ///
-/// A general item concept — any <see cref="Ambient.Domain.Contracts.ITradeable"/> may have variants
+/// A general item concept — any <see cref="Contracts.ITradeable"/> may have variants
 /// (a wool colour, a sword skin), not a block or voxel concept. How a variant is realised (a block's
 /// texture, an item's skin) lives below this layer; here it is just an index.
 /// </summary>

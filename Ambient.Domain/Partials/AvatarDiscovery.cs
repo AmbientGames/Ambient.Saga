@@ -17,7 +17,7 @@ public class AvatarDiscovery
     public string AvatarId { get; set; } = string.Empty;
 
     /// <summary>
-    /// Type of entity discovered (Landmark, Achievement, Saga, etc.).
+    /// Type of entity discovered (Landmark, Achievement, Arc, etc.).
     /// </summary>
     public string EntityType { get; set; } = string.Empty;
 

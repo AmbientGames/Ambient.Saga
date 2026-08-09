@@ -9,6 +9,7 @@ on:
 jobs:
   build-and-test:
     runs-on: windows-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -22,13 +23,13 @@ jobs:
             10.0.x
 
       - name: Restore dependencies
-        run: dotnet restore Ambient.Saga.sln
+        run: dotnet restore Saga.sln
 
       - name: Build
-        run: dotnet build Ambient.Saga.sln --configuration Release --no-restore
+        run: dotnet build Saga.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test Ambient.Saga.sln --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
+        run: dotnet test Saga.sln --configuration Release --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx"
 
       - name: Upload test results
         uses: actions/upload-artifact@v4

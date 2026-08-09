@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="LiteDB" Version="5.0.21" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ambient.Domain\Ambient.Domain.csproj" />
+    <ProjectReference Include="..\Ambient.Rpg.Ui\Ambient.Rpg.Ui.csproj" />
+    <ProjectReference Include="..\Ambient.Rpg.Engine\Ambient.Rpg.Engine.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SandboxContent Include="..\Ambient.Rpg.Sandbox.DirectX\content\**\*" />
+  </ItemGroup>
+
+  <Target Name="CopySandboxContent" AfterTargets="Build" Condition="'$(DesignTimeBuild)'!='true' and '$(TargetDir)'!=''">
+    <Copy SourceFiles="@(SandboxContent)" DestinationFiles="@(SandboxContent->'$(TargetDir)content\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
+  </Target>
+
+  <!-- Saga-flavor (xmlns="Ambient.Domain") sample worlds for the real-content E2E tests.
+       In the upstream repo the SandboxContent copy above already provides Ise/Kagoshima in
+       <output>\content\worlds; in Foundry the sandbox lives elsewhere, so vendor the same
+       worlds from the engine test project. World discovery looks in <output>\content\worlds. -->
+  <ItemGroup>
+    <SagaTestContent Include="..\Ambient.Rpg.Engine.Tests\TestContent\**\*" />
+  </ItemGroup>
+
+  <Target Name="CopySagaTestContent" AfterTargets="Build" Condition="'$(DesignTimeBuild)'!='true' and '$(TargetDir)'!=''">
+    <Copy SourceFiles="@(SagaTestContent)" DestinationFiles="@(SagaTestContent->'$(TargetDir)content\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>
