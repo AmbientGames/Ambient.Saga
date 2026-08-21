@@ -80,7 +80,8 @@ public interface IArcInstanceRepository
     /// (IAvatarProgressRepository). Imported and already-rejected transactions are
     /// skipped — rejection handling applies only to LocalUnsynced pushes.
     /// Avatar-entity side effects (items/credits already applied by handlers) are
-    /// NOT reversed here — see FEATURE-STATUS "online path".
+    /// NOT reversed here: reversing through IAvatarUpdateService needs an inverse-trade
+    /// path that does not exist. Known gap.
     /// Returns the compensating transactions written.
     /// </summary>
     Task<List<ArcTransaction>> RejectAndCompensateTransactionsAsync(Guid instanceId, IReadOnlyList<TransactionRejection> rejections, CancellationToken ct = default);

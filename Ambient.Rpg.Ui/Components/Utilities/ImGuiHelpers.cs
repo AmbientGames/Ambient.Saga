@@ -16,7 +16,6 @@ public static class ImGuiSizes
 
 /// <summary>
 /// Helper methods for rendering common UI components in ImGui.
-/// See .claude/skills/imgui/SKILL.md (repo root) for the ImGui house rules.
 /// </summary>
 public static class ImGuiHelpers
 {

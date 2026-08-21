@@ -10,6 +10,15 @@ public interface IContentPathResolver
     string? ResolveModelPath(string library, string ns, string modelName);
     string? ResolveModelPathByCategoryKind(string library, string ns, string category, string? kind, Random? random = null);
     string? ResolveModelRefByCategoryKind(string library, string ns, string category, string? kind, Random? random = null);
+
+    /// <summary>
+    /// EVERY model matching a Category/Kind, sorted, as names. Generation calls this to
+    /// write the world's model set down; nothing at runtime should be enumerating a
+    /// directory, because the answer changes whenever a file is added and differs
+    /// between machines with their own content packs.
+    /// </summary>
+    IReadOnlyList<string> EnumerateModelRefsByCategoryKind(string library, string ns, string category, string? kind)
+        => Array.Empty<string>();
     string? ResolveXmlPath(string worldRef, string library, string ns, params string[] relativePath);
 
     /// <summary>
