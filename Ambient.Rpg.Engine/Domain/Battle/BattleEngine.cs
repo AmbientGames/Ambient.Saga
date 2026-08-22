@@ -894,8 +894,8 @@ public class BattleEngine
         // Stats are normalized 0-1: full Speed = the 30% cap (the old /100 was
         // leftover 0-100-scale arithmetic that capped real crit chance at ~1%)
         var effectiveSpeed = GetEffectiveSpeed(attacker);
-        var critChance = Math.Min(0.3f, effectiveSpeed * 0.3f);
-        var isCritical = _random.NextDouble() < critChance;
+        var criticalHitChance = Math.Min(0.3f, effectiveSpeed * 0.3f);
+        var isCritical = _random.NextDouble() < criticalHitChance;
 
         if (isCritical)
         {
@@ -1033,9 +1033,9 @@ public class BattleEngine
         // Critical hit calculation - base chance from speed + weapon CriticalHitBonus
         // (normalized 0-1 stats: full Speed = the 30% base cap)
         var effectiveSpeed = GetEffectiveSpeed(attacker);
-        var baseCritChance = Math.Min(0.3f, effectiveSpeed * 0.3f);
-        var critChance = Math.Min(0.5f, baseCritChance + weapon.CriticalHitBonus); // Cap at 50%
-        var isCritical = _random.NextDouble() < critChance;
+        var baseCriticalHitChance = Math.Min(0.3f, effectiveSpeed * 0.3f);
+        var criticalHitChance = Math.Min(0.5f, baseCriticalHitChance + weapon.CriticalHitBonus); // Cap at 50%
+        var isCritical = _random.NextDouble() < criticalHitChance;
 
         // Apply weapon effects using EffectApplier
         var effects = EffectApplier.ApplyEffects(
@@ -1113,7 +1113,7 @@ public class BattleEngine
         if (!string.IsNullOrEmpty(weapon.StatusEffectRef) && weapon.StatusEffectChance > 0)
         {
             // Check if status effect should only apply on critical hits
-            var shouldApply = !weapon.StatusEffectOnCritOnly || isCritical;
+            var shouldApply = !weapon.StatusEffectOnCriticalHitOnly || isCritical;
             if (shouldApply)
             {
                 appliedStatusEffect = TryApplyStatusEffect(
