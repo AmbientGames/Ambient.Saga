@@ -62,8 +62,7 @@ public class AchievementProgressEvaluatorTests
         string? questTokenRef = null,
         string? questRef = null,
         string? factionRef = null,
-        string? reputationLevel = null,
-        string? statusEffectType = null)
+        string? reputationLevel = null)
     {
         return new Achievement
         {
@@ -77,8 +76,7 @@ public class AchievementProgressEvaluatorTests
                 QuestTokenRef = questTokenRef,
                 QuestRef = questRef,
                 FactionRef = factionRef,
-                ReputationLevel = reputationLevel,
-                StatusEffectType = statusEffectType
+                ReputationLevel = reputationLevel
             }
         };
     }
@@ -601,91 +599,10 @@ public class AchievementProgressEvaluatorTests
 
     #endregion
 
-    #region Battle Achievement Tests
-
-    [Fact]
-    public void EvaluateProgress_StatusEffectsApplied_CountsAllStatusEffects()
-    {
-        // Arrange
-        var world = CreateTestWorld();
-        var achievement = CreateAchievement(AchievementCriteriaType.StatusEffectsApplied, 10);
-        var arc = CreateArcWithTransactions(
-            CreateTransaction(ArcTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "Poison" }),
-            CreateTransaction(ArcTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "Burn" }),
-            CreateTransaction(ArcTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "Stun" })
-        );
-        var arcInstances = new List<ArcInstance> { arc };
-
-        // Act
-        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, arcInstances, world, TestAvatarId);
-
-        // Assert
-        Assert.Equal(0.3f, progress, precision: 2); // 3 out of 10
-    }
-
-    [Fact]
-    public void EvaluateProgress_StatusEffectsApplied_FiltersSpecificType()
-    {
-        // Arrange
-        var world = CreateTestWorld();
-        var achievement = CreateAchievement(AchievementCriteriaType.StatusEffectsApplied, 5, statusEffectType: "Poison");
-        var arc = CreateArcWithTransactions(
-            CreateTransaction(ArcTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "Poison" }),
-            CreateTransaction(ArcTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "DeadlyPoison" }),
-            CreateTransaction(ArcTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "Burn" }),
-            CreateTransaction(ArcTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "Poison" })
-        );
-        var arcInstances = new List<ArcInstance> { arc };
-
-        // Act
-        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, arcInstances, world, TestAvatarId);
-
-        // Assert
-        Assert.Equal(0.6f, progress, precision: 2); // 3 poison-related out of 5 (Poison, DeadlyPoison, Poison)
-    }
-
-    [Fact]
-    public void EvaluateProgress_CriticalHitsDealt_CountsAllCriticals()
-    {
-        // Arrange
-        var world = CreateTestWorld();
-        var achievement = CreateAchievement(AchievementCriteriaType.CriticalHitsDealt, 20);
-        var arc = CreateArcWithTransactions(
-            CreateTransaction(ArcTransactionType.CriticalHitDealt, TestAvatarId),
-            CreateTransaction(ArcTransactionType.CriticalHitDealt, TestAvatarId),
-            CreateTransaction(ArcTransactionType.CriticalHitDealt, TestAvatarId),
-            CreateTransaction(ArcTransactionType.CriticalHitDealt, TestAvatarId)
-        );
-        var arcInstances = new List<ArcInstance> { arc };
-
-        // Act
-        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, arcInstances, world, TestAvatarId);
-
-        // Assert
-        Assert.Equal(0.2f, progress, precision: 2); // 4 out of 20
-    }
-
-    [Fact]
-    public void EvaluateProgress_CombosExecuted_CountsAllCombos()
-    {
-        // Arrange
-        var world = CreateTestWorld();
-        var achievement = CreateAchievement(AchievementCriteriaType.CombosExecuted, 10);
-        var arc = CreateArcWithTransactions(
-            CreateTransaction(ArcTransactionType.ComboExecuted, TestAvatarId),
-            CreateTransaction(ArcTransactionType.ComboExecuted, TestAvatarId),
-            CreateTransaction(ArcTransactionType.ComboExecuted, TestAvatarId)
-        );
-        var arcInstances = new List<ArcInstance> { arc };
-
-        // Act
-        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, arcInstances, world, TestAvatarId);
-
-        // Assert
-        Assert.Equal(0.3f, progress, precision: 2); // 3 out of 10
-    }
-
-    #endregion
+    // (Battle Achievement Tests region removed 2026-08-21 — the four tests fabricated
+    // StatusEffectApplied / CriticalHitDealt / ComboExecuted transactions that no production
+    // code has ever written, so they proved the counters could add up, not that the feature
+    // worked. Criteria, counters and transaction types all deleted.)
 
     #region EvaluateAllAchievements Tests
 

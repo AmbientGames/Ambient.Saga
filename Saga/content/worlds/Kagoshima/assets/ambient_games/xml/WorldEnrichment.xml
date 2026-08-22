@@ -1,0 +1,1750 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WorldEnrichment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" WorldRef="Kagoshima" Theme="feudal_japan" xmlns="Ambient.WorldContentGenerator">
+  <StoryCastEnrichment CharacterRef="BanditChief_QuestGiver" DisplayName="Ashen Warden Kenji" Description="Shrine keeper at Terukuni whose fields lie buried under Sakurajima ash and whose son vanished on the bandit roads">
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="greeting_hub">
+      <Line>Kenji watches you from the shrine gate.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="greeting_not_started">
+      <Line>Traveler, you carry a sword well. Our roads are lost to bandits.</Line>
+      <Line>No merchant reaches the harbor anymore.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="greeting_active">
+      <Line>Any word of the bandits? The ashfall is heavy enough without them.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="greeting_completed_end">
+      <Line>The roads breathe again. The village owes you its life.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="greeting_veteran_end">
+      <Line>I remember that face. Still cutting down the mountain scum.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="explain">
+      <Line>Their leader calls himself the Chief. He turned scattered thieves into an army.</Line>
+      <Line>They strike the harbor caravans and drag folk into the hills.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="reward">
+      <Line>The castle posted two hundred credits for the Chief's head.</Line>
+      <Line>Take whatever else you find in their lair. They stole it from us.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="location">
+      <Line>The hideout lies somewhere above the lava fields. We only know the scouts hold a map.</Line>
+      <Line>Clear the road patrols and one may drop it.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="numbers">
+      <Line>At least twelve, maybe more. The Chief keeps three strong enforcers close.</Line>
+      <Line>The rest patrol the ash paths.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="accept_end">
+      <Line>The gods watch you. These are no ordinary mountain thieves.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="decline_end">
+      <Line>I understand. When the ash grows too thick, come back.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="progress_end">
+      <Line>Every bandit gone weakens their grip.</Line>
+      <Line>Find the lair and strike before they move again.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="encouragement_end">
+      <Line>Another caravan vanished yesterday. The harbor grows quiet.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="victory">
+      <Line>That badge... you truly ended the Chief?</Line>
+      <Line>The harbor will ring with bells tonight.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_QuestStart" NodeId="reward_complete">
+      <Line>Take the bounty. The village adds its thanks.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="BanditChief_Scout" DisplayName="Road Watcher Sato" Description="A lean scout who reads ash tracks and signals caravans from the lava slopes">
+    <NodeText TreeRef="BanditChief_ScoutEncounter" NodeId="ambush">
+      <Line>Stop. Empty your pack and you walk away.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_ScoutEncounter" NodeId="intimidate_attempt">
+      <Line>The scout's hand trembles on his blade.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_ScoutEncounter" NodeId="intimidate_success_end">
+      <Line>Wait! Take this map to the hideout. Just let me vanish into the ash.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_ScoutEncounter" NodeId="intimidate_failed">
+      <Line>Brave words from a fool. With me!</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_ScoutEncounter" NodeId="fight">
+      <Line>You'll regret stepping on these paths!</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="BanditChief_Enforcer" DisplayName="Axe-Bearer Goro" Description="A hulking former dock laborer who enforces the Chief's rule with a heavy axe">
+    <NodeText TreeRef="BanditChief_EnforcerEncounter" NodeId="enforcer_confront">
+      <Line>A broad figure blocks the trail, axe across his chest.</Line>
+      <Line>The Chief wants no visitors in his hills.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_EnforcerEncounter" NodeId="enforcer_fight">
+      <Line>Then you die here!</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="BanditChief_Boss" DisplayName="Chief Kuroda" Description="A scarred ronin who rules the volcano bandits from the ruins of Tsurumaru castle">
+    <NodeText TreeRef="BanditChief_BossConfrontation" NodeId="chief_confront">
+      <Line>Kuroda rises from a broken throne, hand on his sword.</Line>
+      <Line>The village finally sends someone worth my blade. Approach.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_BossConfrontation" NodeId="chief_fight">
+      <Line>Come then! Let's see your blood on the stone.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_BossBattle" NodeId="battle_opening">
+      <Line>So you're the one thinning my ranks.</Line>
+      <Line>I've buried stronger swordsmen under the ash.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_BossBattle" NodeId="battle_impressed">
+      <Line>You have some skill. More than those harbor fools.</Line>
+      <Line>Skill alone won't save you from Sakurajima's fire.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_BossBattle" NodeId="battle_enraged">
+      <Line>Enough! I climbed from the docks to this power. No wanderer takes it!</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_BossBattle" NodeId="battle_desperate">
+      <Line>This... cannot be. I am the Chief!</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_BossBattle" NodeId="battle_offer_mercy_end">
+      <Line>Surrender? Me?</Line>
+      <Line>...You have strength and honor. I yield. Take what you want.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_BossBattle" NodeId="battle_no_mercy_end">
+      <Line>Then I'll drag you down with me!</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_BossBattle" NodeId="battle_chief_falls_end">
+      <Line>You... actually took the hills. Heh.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_BossBattle" NodeId="battle_chief_triumphs_end">
+      <Line>Another body for the lava fields. The Chief always wins.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="BanditChief_Prisoner" DisplayName="Bound Merchant Ichi" Description="A trembling rice trader captured while crossing the ash roads to the harbor">
+    <NodeText TreeRef="BanditChief_PrisonerRescue" NodeId="rescue_start">
+      <Line>You approach the bound man.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_PrisonerRescue" NodeId="rescue_hub">
+      <Line>Thank the gods! They planned to sell me back to my clan or worse.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_PrisonerRescue" NodeId="rescue_hub_return_end">
+      <Line>You saved me once more. I won't forget.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_PrisonerRescue" NodeId="grateful_end">
+      <Line>Take this. It's all I kept from them.</Line>
+    </NodeText>
+    <NodeText TreeRef="BanditChief_PrisonerRescue" NodeId="information">
+      <Line>The Chief hides his best loot in a chest. The lock is 4-7-2.</Line>
+      <Line>Please get me out before they return!</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="ElementalSage_Sage" DisplayName="Flame Keeper Haru" Description="An ancient fire spirit bound to Sakurajima who grants the Fire affinity to worthy seekers">
+    <NodeText TreeRef="ElementalSage_Introduction" NodeId="introduction_hub">
+      <Line>Flames coil around a seated figure within the crater shrine.</Line>
+    </NodeText>
+    <NodeText TreeRef="ElementalSage_Introduction" NodeId="first_meeting">
+      <Line>Few reach this vent. Fewer still are ready.</Line>
+      <Line>I guard the Fire affinity: passion, ruin, and rebirth.</Line>
+    </NodeText>
+    <NodeText TreeRef="ElementalSage_Introduction" NodeId="explain_affinity">
+      <Line>Affinities are the world's hidden currents.</Line>
+      <Line>Fire devours the Wild, yet Water can still it.</Line>
+    </NodeText>
+    <NodeText TreeRef="ElementalSage_Introduction" NodeId="explain_trial">
+      <Line>Power is earned. Face my Guardian below and prove your spirit burns true.</Line>
+    </NodeText>
+    <NodeText TreeRef="ElementalSage_Introduction" NodeId="accept_trial_end">
+      <Line>So be it. The Guardian waits in the lower chamber.</Line>
+    </NodeText>
+    <NodeText TreeRef="ElementalSage_Introduction" NodeId="prepare_end">
+      <Line>Return when your will is steady.</Line>
+    </NodeText>
+    <NodeText TreeRef="ElementalSage_Introduction" NodeId="dismiss_end">
+      <Line>Not all are meant for flame. Walk safely.</Line>
+    </NodeText>
+    <NodeText TreeRef="ElementalSage_Introduction" NodeId="trial_complete">
+      <Line>The flames rise higher. Your spirit proved itself.</Line>
+      <Line>Receive the Fire affinity.</Line>
+    </NodeText>
+    <NodeText TreeRef="ElementalSage_Introduction" NodeId="grant_affinity_end">
+      <Line>Flame passes from my hand to yours.</Line>
+      <Line>It will burn the Wild, but heed the sea's tide.</Line>
+    </NodeText>
+    <NodeText TreeRef="ElementalSage_Introduction" NodeId="already_granted_end">
+      <Line>The fire already lives in you. Tend it well.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="ElementalSage_Guardian" DisplayName="Lava Sentinel" Description="A towering spirit of living flame that bars the inner sanctum of Sakurajima">
+    <NodeText TreeRef="ElementalSage_GuardianEncounter" NodeId="guardian_challenge">
+      <Line>A pillar of flame rises.</Line>
+      <Line>Prove your worth, seeker. Only the strong claim the fire.</Line>
+    </NodeText>
+    <NodeText TreeRef="ElementalSage_GuardianEncounter" NodeId="begin_combat">
+      <Line>The sentinel blazes and attacks!</Line>
+    </NodeText>
+    <NodeText TreeRef="ElementalSage_GuardianEncounter" NodeId="retreat_end">
+      <Line>The flames dim.</Line>
+      <Line>Return when your spirit burns brighter.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="FalseProphet_Concerned" DisplayName="Elder Miya" Description="A harbor elder whose niece vanished into the prophet's growing circle of followers">
+    <NodeText TreeRef="FalseProphet_Start" NodeId="worry_hub">
+      <Line>Elder Miya pulls you aside near the pier.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_Start" NodeId="worry_not_started">
+      <Line>Stranger, I have no one else. A prophet arrived and the people listen too closely.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_Start" NodeId="worry_active_end">
+      <Line>What have you learned? More join each day.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_Start" NodeId="concern">
+      <Line>Families give away their last rice. Questioners vanish or return empty-eyed.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_Start" NodeId="doubt">
+      <Line>I want to believe, yet I've seen sleight-of-hand. My niece joined and no longer speaks to me.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_Start" NodeId="defend_prophet">
+      <Line>No. She was bright once. Now she is hollow.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_Start" NodeId="ask_help">
+      <Line>Will you uncover the truth? A scholar in the market shares my fear.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_Start" NodeId="accept">
+      <Line>Be careful. The prophet's followers are many.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_Start" NodeId="consider_end">
+      <Line>Do not wait. Each day more are lost.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="FalseProphet_Prophet" DisplayName="The Wanderer Rei" Description="A silver-tongued figure claiming divine vision who gathers followers near the volcano">
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="prophet_hub">
+      <Line>Rei sits among silent followers at the cliff shrine.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="audience">
+      <Line>Rei turns sharp eyes on you.</Line>
+      <Line>I sense doubt... and possibility.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="flattery">
+      <Line>Your name has reached even these shores. Perhaps you were meant to stand with us.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="questions">
+      <Line>Questions are welcome. Truth welcomes light.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="accusation">
+      <Line>Rei's smile stays fixed.</Line>
+      <Line>Others thought the same. They changed their minds.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="defend_followers">
+      <Line>They have found peace in unity. Is that so strange?</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="miracles">
+      <Line>The divine moves through me. Those who believe may share it.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="demonstration_hub">
+      <Line>Rei's hands begin to glow.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="teaching_end">
+      <Line>The world is broken. Only unity heals it.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="purpose">
+      <Line>Then why stand here?</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="veiled_threat_end">
+      <Line>I threaten no one. The faithful simply protect what they love.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="show_proof">
+      <Line>Rei's face flickers at the false relic.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="confrontation">
+      <Line>That proves nothing. The faithful will believe me. Guards!</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="impressed_end">
+      <Line>Many are. Perhaps you will join later.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="dismissed_end">
+      <Line>Satisfy your curiosity elsewhere. We have work.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="finale_hub">
+      <Line>You gather the crowd and Rei for judgment.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="money_reveal">
+      <Line>Murmurs rise as ledgers are shown.</Line>
+      <Line>Rei steps forward. Yes, I took coin. I gave purpose in return.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="dark_reveal">
+      <Line>Gasps follow the letters.</Line>
+      <Line>Rei's calm cracks. You understand nothing!</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="explanation">
+      <Line>An entity was coming. I bought time with their faith!</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="redemption_path">
+      <Line>Rei hesitates. You would trust me still?</Line>
+      <Line>There is a rite, but it requires my life.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="find_alternative_end">
+      <Line>The scholar may know another way. I will accept judgment after.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="sacrifice_end">
+      <Line>Then I make amends. Tell them I tried to shield them.</Line>
+      <Line>Rei begins the rite, light swallowing them.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="condemn">
+      <Line>The crowd surges forward.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="demand_return_end">
+      <Line>Rei sighs. The wealth returns to the people.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="crowd_justice_end">
+      <Line>An elder speaks. They face proper trial.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="mob_justice_end">
+      <Line>The crowd advances. Rei does not resist.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FirstMeet" NodeId="mercy_end">
+      <Line>You step between them. Anger fades to shame.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_Battle" NodeId="battle_disbelief">
+      <Line>You raise steel against the divine? The faithful will answer!</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_Battle" NodeId="battle_desperate">
+      <Line>This cannot be. I am chosen!</Line>
+      <Line>Name your price!</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_Battle" NodeId="battle_surrender">
+      <Line>Rei drops the weapon. Do what you must.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_Battle" NodeId="battle_continue">
+      <Line>Then we finish this!</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="FalseProphet_Devoted" DisplayName="Disciple Yuna" Description="A once-lively harbor girl who surrendered everything to follow the prophet">
+    <NodeText TreeRef="FalseProphet_DevotedTalk" NodeId="devoted_greet">
+      <Line>The Enlightened One sees all. The Enlightened One provides.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_DevotedTalk" NodeId="devoted_doubt_end">
+      <Line>Doubt is a sickness. The Enlightened One cured me.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_DevotedTalk" NodeId="devoted_gave_end">
+      <Line>Nothing remains. Property means nothing beside purpose.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_DevotedTalk" NodeId="devoted_leave_end">
+      <Line>Walk in the light. It is never too late.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="FalseProphet_Former" DisplayName="Ash-veiled Exile" Description="A once-devout islander whose faith broke after glimpsing the prophet's staged rites amid Sakurajima's smoke">
+    <NodeText TreeRef="FalseProphet_FormerTalk" NodeId="hiding">
+      <Line>Who—oh. The scholar sent you?</Line>
+      <Line>I shouldn't speak of this here.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FormerTalk" NodeId="convince">
+      <Line>I know. I stood where they stand now. Blind and devoted.</Line>
+      <Line>The prophet holds real presence. It pulls you in like the tide.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FormerTalk" NodeId="fear">
+      <Line>Those who leave meet accidents or sudden fevers.</Line>
+      <Line>The prophet claims nothing, yet we all see the pattern.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FormerTalk" NodeId="awakening">
+      <Line>I saw the curtain pulled back. The miracles use props and timed smoke.</Line>
+      <Line>I took this before fleeing. *holds up a fake glowing stone*</Line>
+      <Line>Chemicals inside make the false divine light.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FormerTalk" NodeId="prophet_knowledge">
+      <Line>The odd part is they may believe it now themselves.</Line>
+      <Line>They began as a trickster yet drank their own tale.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_FormerTalk" NodeId="warning_end">
+      <Line>The prophet's quarters hold ledgers of every donation's true path.</Line>
+      <Line>Watch the temple guardians. They fight to the last for their prophet.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="FalseProphet_Guard" DisplayName="Wave-Worn Sōhei" Description="A scarred monk who guards the seaside shrine after losing his fishing village to Sakurajima's last roar">
+    <NodeText TreeRef="FalseProphet_GuardTalk" NodeId="guard_challenge">
+      <Line>Halt. The sanctuary opens only to the faithful.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_GuardTalk" NodeId="guard_allow_end">
+      <Line>Public audiences begin at dusk. Mind your manners before the Enlightened One.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_GuardTalk" NodeId="guard_dismiss_end">
+      <Line>See that you are. The faithful watch all.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="FalseProphet_Investigator" DisplayName="Harbor Kannushi" Description="A sharp-eyed Shinto priest from the port who tracks false miracles and missing offerings along the volcanic coast">
+    <NodeText TreeRef="FalseProphet_ScholarMeet" NodeId="scholar_hub">
+      <Line>*The scholar looks up from a desk buried in notes*</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_ScholarMeet" NodeId="meet">
+      <Line>Another skeptic? Good. I feared I was the only clear head left.</Line>
+      <Line>I've tracked the prophet's miracles. None survive close inspection.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_ScholarMeet" NodeId="evidence">
+      <Line>The healing waters carry stimulants. The visions match herbal smoke.</Line>
+      <Line>The prophet's circle grew rich just before joining.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_ScholarMeet" NodeId="followers">
+      <Line>Some. The devoted repeat the same phrases like waves.</Line>
+      <Line>I found a former follower willing to speak in secret.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_ScholarMeet" NodeId="leads_end">
+      <Line>The prophet's quarters hide wealth despite the vow of nothing.</Line>
+      <Line>Speak to the former follower. They hold the missing pieces.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_ScholarMeet" NodeId="danger_end">
+      <Line>Once. They smiled at my questions then sent guards to my door.</Line>
+      <Line>They do not tolerate threats to their scheme.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_ScholarMeet" NodeId="former_location_end">
+      <Line>The old mill outside town. They hide there, fearing daylight.</Line>
+      <Line>They speak only to one they trust. Say I sent you.</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_ScholarMeet" NodeId="sneak">
+      <Line>*The scholar nods and takes lookout*</Line>
+      <Line>*You slip into the prophet's quarters*</Line>
+      <Line>*The room gleams with silk and lacquer far from simple vows*</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_ScholarMeet" NodeId="find_ledgers">
+      <Line>*Behind a false panel lie stacks of records*</Line>
+      <Line>*Donations, bribes, land buys—the prophet grows wealthy beyond measure*</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_ScholarMeet" NodeId="find_secret">
+      <Line>*A locked chest holds dark letters*</Line>
+      <Line>*The prophet promises souls to something for power*</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_ScholarMeet" NodeId="escape">
+      <Line>*Footsteps approach*</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_ScholarMeet" NodeId="hide_success_end">
+      <Line>*A guard passes without notice*</Line>
+      <Line>*You slip away with the proof*</Line>
+    </NodeText>
+    <NodeText TreeRef="FalseProphet_ScholarMeet" NodeId="caught">
+      <Line>*A temple guardian blocks the exit*</Line>
+      <Line>Intruder! You defile the prophet's sanctuary!</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="HiddenCache_MapSeller" DisplayName="Volcano Curio Trader" Description="An eccentric port merchant who found an old map among goods washed ashore after a Sakurajima eruption">
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="browse_hub">
+      <Line>*The eccentric collector notices you*</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="browse_not_started">
+      <Line>A customer! Seeking something rare? Curios from every shore.</Line>
+      <Line>You carry the look of one who hunts lost things.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="browse_active">
+      <Line>Any luck with that map? The sea still hides its secrets.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="browse_completed">
+      <Line>So? What did the map yield? The tide waits for no tale.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="hook">
+      <Line>I found something odd. A map, very old.</Line>
+      <Line>Marked with signs I cannot read, yet the spot lies near.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="show_map">
+      <Line>*unrolls a faded map*</Line>
+      <Line>These marks point to something hidden and worth the risk.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="skeptical">
+      <Line>A scam? I am insulted. This is a true relic.</Line>
+      <Line>Fine. Another will claim it.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="provenance">
+      <Line>An estate sale. The owner studied old sites.</Line>
+      <Line>He searched years for one thing and never found it.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="negotiate_hub">
+      <Line>*The collector sizes you up*</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="negotiate_skilled">
+      <Line>For one who knows treasure's worth? 50 credits.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="negotiate_unskilled">
+      <Line>75 credits. It may lead to fortune.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="haggle">
+      <Line>40. My final word, and I am generous.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="purchase">
+      <Line>Well met. May the waves favor your search.</Line>
+      <Line>The local historian reads the old marks. Worth a visit.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="purchase_discount">
+      <Line>You bargain hard. Here it is.</Line>
+      <Line>The historian in town can read those marks.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_MapStart" NodeId="leave_end">
+      <Line>As you wish. Return if the tide changes your mind.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="HiddenCache_Scholar" DisplayName="Coastline Recorder" Description="A scholar who has mapped every cove and lava flow around Sakurajima for decades">
+    <NodeText TreeRef="HiddenCache_ScholarHelp" NodeId="consult">
+      <Line>May I help you with something?</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_ScholarHelp" NodeId="examine_map">
+      <Line>*studies the map* These are old protective signs.</Line>
+      <Line>Not merely a map—a puzzle. Each mark leads to the next.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_ScholarHelp" NodeId="cache_history">
+      <Line>Legends speak of caches hidden in war times.</Line>
+      <Line>This may be treasure or tomb. Walk with care.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_ScholarHelp" NodeId="first_location_end">
+      <Line>The first sign means the weeping stone. Old texts name a rock near water.</Line>
+      <Line>A waterfall in the eastern hills hides a cleft behind the fall.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_ScholarHelp" NodeId="farewell_end">
+      <Line>Safe travels, friend.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="HiddenCache_Hermit" DisplayName="Lava-Scarred Sennin" Description="An ancient recluse who has watched travelers vanish near the volcano's hidden paths for generations">
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="hermit_hub">
+      <Line>*A weathered figure watches you from the treeline*</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="hermit_leave_end">
+      <Line>*The hermit turns away without a word*</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="encounter">
+      <Line>*The weathered figure blocks your path*</Line>
+      <Line>Outsider. You seek the old places. Others have tried.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="knows">
+      <Line>The weeping stone, then twin peaks, then the hollow oak. Three trials before the door.</Line>
+      <Line>Guardians still walk. They never sleep.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="guardian_warning_end">
+      <Line>Machines of the old ones. They feel nothing. Built to guard forever.</Line>
+      <Line>The key stops them. Without it they will end you.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="give_clue_end">
+      <Line>Here. The way shows only to those who look long.</Line>
+      <Line>*hands you a crude drawing*</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="hostile_end">
+      <Line>Pride walks before ruin. Find your own path.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="guardian_confront">
+      <Line>*A hulking construct rises at the vault door*</Line>
+      <Line>The old machine yields its key only when broken. No other way.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="trap_trigger">
+      <Line>So. You took the key. Come—the door waits beyond the old passage.</Line>
+      <Line>*Click* The floor shifts. Ancient gears wake.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="dodge_attempt_hub">
+      <Line>*You react without thought*</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="dodge_attempt_fast">
+      <Line>*You roll clear as darts whistle past*</Line>
+      <Line>Close. The trap has spent itself.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="dodge_attempt_slow">
+      <Line>*A dart grazes your arm*</Line>
+      <Line>Painful yet not fatal. The trap is spent.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="disable_attempt">
+      <Line>*You spot the core of counterweights*</Line>
+      <Line>*You jam a stone into the gears*</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="arrival">
+      <Line>*The ancient door opens to the key*</Line>
+      <Line>*Inside glints gold and shapes of forgotten things*</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="search">
+      <Line>*Among the treasure lie old writings*</Line>
+      <Line>*They tell of war and those who hid these to keep them safe*</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="quick_grab">
+      <Line>*You take handfuls of coins and bright items*</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="complete">
+      <Line>*You emerge with treasure and knowledge of a lost age*</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_HermitMeet" NodeId="complete_quick">
+      <Line>*You emerge richer, if not wiser*</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="HiddenCache_Rival" DisplayName="Ronin Map-Chaser" Description="A calculating swordsman who has followed the same volcanic trail for months">
+    <NodeText TreeRef="HiddenCache_RivalMeet" NodeId="confrontation">
+      <Line>Well. I am not the only one reading that map.</Line>
+      <Line>I have tracked this cache for months. You will not take it.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_RivalMeet" NodeId="cooperate">
+      <Line>Share? You seem able enough.</Line>
+      <Line>Fine. We split the haul. I keep any relics.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_RivalMeet" NodeId="partnership_end">
+      <Line>Agreed, partner. I found the third marker near the old oak grove.</Line>
+      <Line>Something guards the approach. We work as one.</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_RivalMeet" NodeId="race_end">
+      <Line>A race then. May the swiftest win.</Line>
+      <Line>Do not weep when I reach it first.</Line>
+      <Line>*In haste they drop a note showing the final spot*</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_RivalMeet" NodeId="fight">
+      <Line>So be it. I preferred not to share anyway.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="HiddenCache_Guardian" DisplayName="Stone Sentinel" Description="An ancient construct left to guard a war-era cache beneath Sakurajima's slopes">
+    <NodeText TreeRef="HiddenCache_GuardianBattle" NodeId="battle_activation">
+      <Line>*ANCIENT MECHANISM ACTIVATES*</Line>
+      <Line>*INTRUDER DETECTED. INITIATING DEFENSE.*</Line>
+    </NodeText>
+    <NodeText TreeRef="HiddenCache_GuardianBattle" NodeId="battle_damage_warning">
+      <Line>*CRITICAL DAMAGE SUSTAINED. INCREASING COMBAT.*</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="LostTechnique_Storyteller" DisplayName="Harbor Tale-Weaver" Description="A wandering storyteller who gathers legends from sailors and ash-covered pilgrims">
+    <NodeText TreeRef="LostTechnique_Story" NodeId="tale">
+      <Line>*the bard strums their instrument* You seek more than coin.</Line>
+      <Line>Shall I speak of the Lost Technique? Empires once warred for it.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_Story" NodeId="legend">
+      <Line>Long ago a master felled a hundred foes with one motion.</Line>
+      <Line>The Singular Path joined body, mind, and spirit into one act.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_Story" NodeId="master_alive">
+      <Line>*leans in* The last master still lives high in the mountains.</Line>
+      <Line>Many sought them. Few returned. None learned the art.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_Story" NodeId="skeptic">
+      <Line>Perhaps. Yet I met one who trained briefly under them.</Line>
+      <Line>They returned changed, even in failure.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_Story" NodeId="location">
+      <Line>The mountains beyond the great valley hold a village at their base.</Line>
+      <Line>Elders there know the old paths, but the climb tests the spirit.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_Story" NodeId="dismiss_end">
+      <Line>As you wish. Some tales find those who need them.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="LostTechnique_Master" DisplayName="Mountain Sword-Hermit" Description="The final living master of an ancient sword art who meditates above the smoking volcano">
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="master_hub">
+      <Line>*The master regards you in silence*</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="mastered_end">
+      <Line>*The master bows slightly* The lineage continues in you. Walk your path well.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="arrival">
+      <Line>*an elderly figure sits in meditation*</Line>
+      <Line>*without looking up* You have come far. Distance means nothing.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="direct">
+      <Line>*finally looks at you* Many seek. Few are worthy. Why should I teach you?</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="patient">
+      <Line>*a long moment passes*</Line>
+      <Line>*the master opens their eyes* Patience. The first lesson, and you already grasp it.</Line>
+      <Line>Tell me—why do you seek this path?</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="dedication">
+      <Line>Dedication alone is not enough. The river is dedicated to the sea yet still drowns.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="protection">
+      <Line>*nods slowly* A worthy goal. But can you protect without becoming what you fight?</Line>
+      <Line>The art grants great power. Power corrupts even the righteous.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="power">
+      <Line>*eyes narrow* Power for its own sake? You have already failed.</Line>
+      <Line>Leave this mountain. You are not welcome.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="understanding_end">
+      <Line>*smiles slightly* The deepest answer, and the hardest path.</Line>
+      <Line>Very well. I will test you. Three trials—body, mind, and spirit.</Line>
+      <Line>Speak to me again when ready for the first.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="agree_test_end">
+      <Line>Words are wind. Actions speak truth. You will face three trials.</Line>
+      <Line>Pass them and I teach. Fail and you leave forever.</Line>
+      <Line>Speak to me again when ready for the first.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="second_chance_end">
+      <Line>*studies you carefully* Honesty in admitting error matters.</Line>
+      <Line>I grant one chance. Three trials. Do not disappoint me again.</Line>
+      <Line>Speak to me again when ready for the first.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="attack_master">
+      <Line>*sighs* How predictable.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="begin_trial">
+      <Line>The first trial tests your body. You will spar with me.</Line>
+      <Line>This is not about winning. It is about showing what you can do.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="clarify">
+      <Line>I will match your intensity. Push yourself and I push back.</Line>
+      <Line>Show me your limits. Then we speak of breaking them.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="spar">
+      <Line>*rises smoothly* Show me what you have learned.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="begin_mind">
+      <Line>The second trial tests your mind. Sit in meditation until I release you.</Line>
+      <Line>You may face visions. Doubts. Do not move. Do not speak.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="duration">
+      <Line>As long as needed. Hours. Days. The mind must learn stillness.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="meditate">
+      <Line>*gestures to a spot on the ground* Begin.</Line>
+      <Line>*Hours pass. Your body screams. Your mind races.*</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="focus">
+      <Line>*A vision appears—everything you desire, within reach. Just stand and take it.*</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="resist">
+      <Line>*A voice whispers* You waste time. You could be training, fighting, doing something.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="pass_mind_end">
+      <Line>*The master's voice breaks through* You may open your eyes.</Line>
+      <Line>*A full day has passed* You have passed the second trial. Your mind is disciplined.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="fail_mind">
+      <Line>*The master sighs* You have failed. Your mind rules you.</Line>
+      <Line>*pauses* Yet I see effort. Rest tonight and try again tomorrow.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="retry_meditation">
+      <Line>*The next day arrives. You take your position once more.*</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="begin_spirit">
+      <Line>The final trial tests your spirit. This is the hardest.</Line>
+      <Line>I will ask a question. There is no right answer—only yours.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="question">
+      <Line>You have mastered the technique. Before you stands a villain who has hurt many.</Line>
+      <Line>Using the technique you could destroy them or spare them.</Line>
+      <Line>Which do you choose?</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="answer_destroy_end">
+      <Line>*nods* Decisive. Perhaps too quick to judge—yet clarity in your resolve.</Line>
+      <Line>You know yourself. That is what this measures.</Line>
+      <Line>You have passed the final trial. You are ready.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="answer_spare_end">
+      <Line>*considers* Compassion can be weakness or greatest strength.</Line>
+      <Line>You chose the harder path. You chose with conviction.</Line>
+      <Line>You have passed the final trial. You are ready.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="answer_choice_end">
+      <Line>*eyes widen slightly* Unexpected. You would burden them with choice, as I burden you.</Line>
+      <Line>That is wisdom beyond your years. The technique is only a tool.</Line>
+      <Line>You have passed the final trial. You are ready.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="begin_teaching">
+      <Line>You have passed all three trials. You are worthy.</Line>
+      <Line>The technique cannot be taught with words. It must be felt.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="demonstrate">
+      <Line>*The master moves—a single motion impossibly fast and smooth*</Line>
+      <Line>*Every movement in their life has led here. Every breath, every thought, unified.*</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="first_attempt">
+      <Line>*You try. You fail. Yet in failing you understand something.*</Line>
+      <Line>*Days of practice follow. Slowly the pieces join.*</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="breakthrough">
+      <Line>*Finally it happens. Body, mind, and spirit align. For one perfect moment you ARE the technique.*</Line>
+      <Line>*The master watches, a rare smile on their face*</Line>
+      <Line>You have learned. Now you must master. That takes a lifetime.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_MasterMeet" NodeId="farewell">
+      <Line>Thank me by living well. By using what you learned with wisdom.</Line>
+      <Line>*hands you a small token* Take this. You are now part of the lineage.</Line>
+      <Line>When I am gone you will be the last. Perhaps one day you will teach another.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_SparBattle" NodeId="begin_end">
+      <Line>Good stance. But stance is only the start.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_SparBattle" NodeId="player_low">
+      <Line>You are wounded. Do you yield or continue?</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_SparBattle" NodeId="respect_end">
+      <Line>Courage. Good. Yet know when perseverance becomes stubbornness.</Line>
+      <Line>Enough. You have passed the first trial.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_SparBattle" NodeId="yield_end">
+      <Line>Wisdom to know your limits. That too is strength.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_SparBattle" NodeId="impressed_end">
+      <Line>*slight nod* Better than most. You have trained well.</Line>
+      <Line>Enough. You have passed the first trial.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="LostTechnique_Failed" DisplayName="Ash-Scared Wanderer" Description="A bitter exile who once climbed Sakurajima's slopes seeking forbidden sword arts before the volcano itself rejected him.">
+    <NodeText TreeRef="LostTechnique_FailedMeet" NodeId="encounter">
+      <Line>*a scarred figure blocks your path*</Line>
+      <Line>You're heading up the volcano. I see it in your eyes. Don't.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_FailedMeet" NodeId="warning">
+      <Line>Trained there. For three years. Came so close to mastering it.</Line>
+      <Line>Then the master said I lacked... something. Sent me away.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_FailedMeet" NodeId="flaw">
+      <Line>*bitter laugh* 'Harmony,' they said. 'You fight against yourself, not with yourself.'</Line>
+      <Line>Riddles. It's all riddles with them. The technique is real though. Devastatingly real.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_FailedMeet" NodeId="trial_info_end">
+      <Line>Three trials. Body, mind, spirit. The first is combat. The second is patience.</Line>
+      <Line>The third... I never learned. Failed before I got there.</Line>
+      <Line>*sighs* Maybe you'll do better.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_FailedMeet" NodeId="insult">
+      <Line>*eyes flash with anger* Careful. I may have failed, but I learned enough to crush most warriors.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_FailedMeet" NodeId="aggressive_end">
+      <Line>Pride. That'll be your downfall too.</Line>
+      <Line>*steps aside* Go on then. Die on that volcano for all I care.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_FailedMeet" NodeId="apologize_end">
+      <Line>*calms down* Just... be careful. The master sees everything. Every flaw. Every weakness.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_FailedMeet" NodeId="fight">
+      <Line>Your funeral.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_FailedMeet" NodeId="part_ways_end">
+      <Line>Good luck. You'll need it.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="LostTechnique_Rival" DisplayName="Wave-Born Challenger" Description="A swift swordsman from the fishing villages who races to claim the lost technique before the next eruption buries it.">
+    <NodeText TreeRef="LostTechnique_RivalMeet" NodeId="cross_paths">
+      <Line>*another traveler approaches from the opposite direction*</Line>
+      <Line>You're going to the master too? Ha! Then we're rivals.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_RivalMeet" NodeId="friendly">
+      <Line>*considers* Perhaps. The master might take multiple students. Or perhaps not.</Line>
+      <Line>Let's travel together for now. The volcano is dangerous.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_RivalMeet" NodeId="competitive">
+      <Line>*grins* I like you. Fair competition then. First to reach the top wins.</Line>
+      <Line>No sabotage, no tricks. Just speed and skill.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_RivalMeet" NodeId="hostile">
+      <Line>*hand moves to weapon* That's not how this works. The volcano path is open to all seekers.</Line>
+      <Line>Back down, or we settle this now.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_RivalMeet" NodeId="alliance_end">
+      <Line>Good. Two is better than one against the guardian. I've heard stories.</Line>
+      <Line>Let's go. Time is wasting.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_RivalMeet" NodeId="solo_end">
+      <Line>Your choice. See you at the top - if you make it.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_RivalMeet" NodeId="race_end">
+      <Line>Then let's move! The volcano awaits!</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_RivalMeet" NodeId="reluctant_alliance_end">
+      <Line>*relaxes* Wise choice. I don't want to fight anyway. Not before the real challenge.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_RivalMeet" NodeId="fight_rival">
+      <Line>Your arrogance will be your downfall!</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="LostTechnique_Elder" DisplayName="Harbor Path Elder" Description="An aged fisherman who recalls when the master's hut still stood above the smoking crater before the last great ashfall.">
+    <NodeText TreeRef="LostTechnique_ElderMeet" NodeId="village">
+      <Line>You seek the master on the volcano. *nods slowly* We see your kind, from time to time.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_ElderMeet" NodeId="path">
+      <Line>The path is marked by white stones. Follow them to the summit.</Line>
+      <Line>But the volcano tests those who climb. A guardian waits at the halfway point.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_ElderMeet" NodeId="master_info">
+      <Line>They came here decades ago. Already old then. Now? Who knows.</Line>
+      <Line>They asked only for solitude. We provide supplies; they leave us in peace.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_ElderMeet" NodeId="guardian_advice_end">
+      <Line>The guardian doesn't fight to kill. They fight to test your resolve.</Line>
+      <Line>Show courage, and they will let you pass. Show fear or cruelty... they will not.</Line>
+    </NodeText>
+    <NodeText TreeRef="LostTechnique_ElderMeet" NodeId="farewell_end">
+      <Line>May the volcano judge you worthy.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="MissingHeirloom_Victim" DisplayName="Net-Mender Grandmother" Description="A seaside elder whose ancestral fishing net, woven with sacred knots, was stolen from her stilt house by the shore.">
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="greeting_hub">
+      <Line>*The elder looks at you expectantly*</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="greeting_not_started">
+      <Line>Please, you must help me! My family's most precious treasure has been stolen!</Line>
+      <Line>It has been in our family for generations. Without it, we are dishonored.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="greeting_active">
+      <Line>Have you found anything? Please, any news?</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="greeting_completed_end">
+      <Line>Thank you again for returning our treasure. You will always be welcome here.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="explain_theft">
+      <Line>It happened last night. I heard nothing, but when I woke, it was gone.</Line>
+      <Line>The lock wasn't broken - whoever did this knew what they were doing.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="describe_item">
+      <Line>It is an ancient heirloom, passed down through countless generations.</Line>
+      <Line>Its value is beyond mere currency - it represents our family's honor and legacy.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="mention_witness">
+      <Line>The neighbor mentioned seeing someone unfamiliar lurking around yesterday.</Line>
+      <Line>Perhaps they can tell you more?</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="examine_scene">
+      <Line>Yes, please. Look around carefully - perhaps you'll find something I missed.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="accept_quest">
+      <Line>Thank you! I will reward you well if you can recover our treasure.</Line>
+      <Line>Come - let me show you where it was kept. Perhaps you will spot something I missed.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="decline_end">
+      <Line>I understand. If you change your mind, please return. Time is of the essence.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="still_looking_end">
+      <Line>Please hurry. Every moment that passes, the thief could sell it to someone else.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="report_evidence_check_end">
+      <Line>You know who took it? That's wonderful news! Please, recover it if you can.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="report_evidence_generic_end">
+      <Line>Any evidence is helpful. Keep looking - you're on the right track.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="return">
+      <Line>Is that... could it be? You found it!</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="receive_hub">
+      <Line>*The elder examines the heirloom*</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="receive_merciful">
+      <Line>Words cannot express my gratitude. You've restored our family's honor.</Line>
+      <Line>And you showed mercy to the thief? You are truly noble.</Line>
+      <Line>Please accept this additional reward for your compassion.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Victim_Start" NodeId="receive_standard">
+      <Line>Thank you! Thank you! Our family is whole again.</Line>
+      <Line>Please, accept this reward for your service.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="MissingHeirloom_Witness" DisplayName="Dockside Watcher" Description="A sharp-eyed fishmonger who spotted a cloaked figure slipping through the lantern-lit alleys near the old pier.">
+    <NodeText TreeRef="MissingHeirloom_Witness_Dialogue" NodeId="greeting_hub">
+      <Line>*The neighbor notices you*</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Witness_Dialogue" NodeId="greeting_quest_active">
+      <Line>You're investigating the theft? Good. That poor family deserves justice.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Witness_Dialogue" NodeId="greeting_default_end">
+      <Line>Hello there. Can I help you with something?</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Witness_Dialogue" NodeId="describe_suspect">
+      <Line>I saw someone I didn't recognize, moving furtively near their home.</Line>
+      <Line>They wore dark clothing and seemed nervous. When they noticed me watching, they fled.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Witness_Dialogue" NodeId="timing">
+      <Line>It was late - past midnight. I couldn't sleep, which is why I was looking outside.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Witness_Dialogue" NodeId="direction">
+      <Line>They ran toward the outskirts. There's an abandoned building out there...</Line>
+      <Line>I've heard rumors that unsavory types use it as a hideout.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Witness_Dialogue" NodeId="description">
+      <Line>They were of medium build, moved quickly. The cloth of their sleeve was torn.</Line>
+      <Line>I remember thinking it looked freshly ripped.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Witness_Dialogue" NodeId="farewell_end">
+      <Line>Good luck. I hope you catch whoever did this.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="MissingHeirloom_Thief" DisplayName="Storm-Driven Ronin" Description="A masterless swordsman forced to steal to feed his children after the last ashfall ruined his coastal fields.">
+    <NodeText TreeRef="MissingHeirloom_Thief_Confront" NodeId="confront_hub">
+      <Line>*You approach the thief*</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Confront" NodeId="confront_identified">
+      <Line>Wait! Don't come any closer! How did you find me?</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Confront" NodeId="confront_unknown">
+      <Line>Who are you? What do you want?</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Confront" NodeId="deny">
+      <Line>I don't know what you're talking about. Get lost.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Confront" NodeId="demand">
+      <Line>Look, I... I didn't want to do it. I had no choice!</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Confront" NodeId="explain_motive">
+      <Line>My family is starving. The crops failed and the landlord demands rent we can't pay.</Line>
+      <Line>I thought... I thought if I sold it, we could survive the winter.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Confront" NodeId="remorse">
+      <Line>I know. I've been sick with guilt ever since. But what choice did I have?</Line>
+      <Line>Watch my children starve?</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Confront" NodeId="peaceful_resolution_end">
+      <Line>You... you would do that? After what I've done?</Line>
+      <Line>Here. Take it. I'm sorry. I'm so sorry.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Confront" NodeId="bargain_start_willing">
+      <Line>Fine. But I already sold it to a dealer. I can tell you where, for a price.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Confront" NodeId="bargain_price">
+      <Line>50 credits. That's what I need to feed my family.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Confront" NodeId="reveal_fence_end">
+      <Line>The dealer works out of the market district. Look for the shady stall near the back.</Line>
+      <Line>Be careful - they don't take kindly to accusations.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Confront" NodeId="bargain_fail">
+      <Line>Then we have nothing more to discuss.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Confront" NodeId="fight">
+      <Line>I won't go down without a fight!</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Battle" NodeId="battle_start">
+      <Line>You'll regret this!</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Battle" NodeId="surrender">
+      <Line>Stop! Please! I yield!</Line>
+      <Line>I'll tell you everything. Just spare me.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Battle" NodeId="reveal_after_battle_end">
+      <Line>I sold it to a dealer in the market. The shady one near the back.</Line>
+      <Line>Please, let me go. I have a family.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Thief_Battle" NodeId="continue_fight_end">
+      <Line>No... no!</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="MissingHeirloom_Fence" DisplayName="Tidepool Trader" Description="A sly merchant who sells salvaged goods from storm-wrecked ships in the shadowed corners of the fish market.">
+    <NodeText TreeRef="MissingHeirloom_Fence_Dialogue" NodeId="approach_hub">
+      <Line>*The dealer looks you over*</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Fence_Dialogue" NodeId="approach_with_confession">
+      <Line>What do you want? I run a legitimate business here.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Fence_Dialogue" NodeId="approach_default">
+      <Line>Looking for something special? I have... unique merchandise.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Fence_Dialogue" NodeId="accuse">
+      <Line>Stolen? I had no idea. Everything here was purchased fairly.</Line>
+      <Line>But if you want it back... well, I have expenses to cover.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Fence_Dialogue" NodeId="inquire">
+      <Line>Ah yes, I may have acquired something matching that description recently.</Line>
+      <Line>A fine piece. Very valuable.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Fence_Dialogue" NodeId="negotiate_hub">
+      <Line>*The dealer assesses your bargaining skills*</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Fence_Dialogue" NodeId="negotiate_skilled">
+      <Line>For someone of your... negotiating prowess... 100 credits.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Fence_Dialogue" NodeId="negotiate_unskilled">
+      <Line>200 credits. Firm price. Take it or leave it.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Fence_Dialogue" NodeId="final_offer">
+      <Line>80 credits. That's my final offer. I'm already losing money here.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Fence_Dialogue" NodeId="purchase_end">
+      <Line>Pleasure doing business. And remember - you never saw me.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Fence_Dialogue" NodeId="appraise_end">
+      <Line>*The dealer holds it to the light and points out the maker's mark*</Line>
+      <Line>See the engraving under the clasp? No forger bothers with that. It's genuine - now take it and forget this place.</Line>
+    </NodeText>
+    <NodeText TreeRef="MissingHeirloom_Fence_Dialogue" NodeId="fight">
+      <Line>You'll regret that decision!</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="RefugeeEscort_Leader" DisplayName="Crater-Edge Elder" Description="A village headman guiding his people away from the rumbling volcano after raiders burned their coastal homes.">
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="start_hub">
+      <Line>Please, stranger... we need help. We're fleeing for our lives.</Line>
+      <Line>We have children, elderly... we cannot defend ourselves.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="start_active">
+      <Line>We're ready to move when you give the word. The longer we wait, the closer they get.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="start_completed_end">
+      <Line>We have found peace here, thanks to you. You saved us all.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="explain_situation">
+      <Line>Our village was attacked. They said we were harboring enemies, but we're just farmers.</Line>
+      <Line>We fled with nothing. Now they hunt us like animals.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="destination">
+      <Line>There's a safe territory beyond the mountains. If we can cross the border, we'll be safe.</Line>
+      <Line>But the journey is dangerous, and we're being pursued.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="urgency">
+      <Line>A day, maybe less. Their scouts are skilled trackers.</Line>
+      <Line>Please... our children are terrified. Will you help us?</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="accept_immediately">
+      <Line>Thank the gods! You have a kind heart. We won't forget this.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="accept_quest">
+      <Line>Thank you, thank you! I'll gather everyone immediately.</Line>
+      <Line>The young ones will help carry supplies. Our healer can tend any wounds.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="decline_end">
+      <Line>I... I understand. May the gods watch over you, then.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="depart_end">
+      <Line>May fortune guide our steps. Stay close, everyone!</Line>
+      <Line>*The group sets off. After hours of travel you reach the first waypoint —</Line>
+      <Line>but the enemy's scouts have found your trail, and they close in for the kill.*</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="need_supplies_end">
+      <Line>You're right. I'll have our healer gather what medicine we have left.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="panic">
+      <Line>The child! Where is the child?! They were right here!</Line>
+      <Line>Oh gods, they must have wandered off when we stopped to rest.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="search_end">
+      <Line>Please hurry! They're just a child... they'll be so frightened.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="abandon">
+      <Line>No! We can't leave them! Please, I'm begging you!</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="leave_behind_end">
+      <Line>How could you... monsters. You're just as bad as them.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="gratitude">
+      <Line>We... we made it. We're actually safe.</Line>
+      <Line>I don't know how to thank you. You gave us our lives back.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="future">
+      <Line>We'll rebuild. It won't be easy, but we have each other.</Line>
+      <Line>And we have hope again, thanks to you.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="farewell_hub">
+      <Line>*The elder looks at the group*</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="farewell_all_survived">
+      <Line>Every single one of us survived because of you. That's a miracle.</Line>
+      <Line>Please, take this. It's all we have, but you deserve so much more.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Start" NodeId="farewell_losses">
+      <Line>We lost some along the way... but those who remain will never forget.</Line>
+      <Line>Here. It isn't much, but please take it.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="RefugeeEscort_Fighter" DisplayName="Forge-Born Youth" Description="A sturdy young farmer who once hammered tools beside the hot springs and now seeks to defend his fleeing kin.">
+    <NodeText TreeRef="RefugeeEscort_FighterJoin" NodeId="volunteer_hub">
+      <Line>I want to fight alongside you. I'm tired of feeling helpless.</Line>
+      <Line>My family... they didn't make it. Let me protect the others.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_FighterJoin" NodeId="party_size_end">
+      <Line>However many already march at your side, there is always room for one more blade.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_FighterJoin" NodeId="in_party_end">
+      <Line>Ready for whatever comes. Just say the word - I'm with you until everyone is safe.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_FighterJoin" NodeId="prove_worth">
+      <Line>I worked the forge before... before everything. I'm strong. Quick to learn.</Line>
+      <Line>Give me a chance. I won't let you down.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_FighterJoin" NodeId="join_end">
+      <Line>I won't disappoint you. For my family - and for everyone here.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_FighterJoin" NodeId="refuse_end">
+      <Line>I understand. I'll protect them from within the group, then.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="RefugeeEscort_Healer" DisplayName="Sulfur-Herb Healer" Description="A quiet herbalist who gathers medicinal plants from the volcano's warm slopes to tend the wounded refugees.">
+    <NodeText TreeRef="RefugeeEscort_HealerTalk" NodeId="healer_hub">
+      <Line>*The healer looks up from sorting herbs*</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_HealerTalk" NodeId="healer_status">
+      <Line>Tired. Frightened. But alive, and that is what matters.</Line>
+      <Line>Keep them moving and I will keep them standing.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_HealerTalk" NodeId="healer_supplies">
+      <Line>Take this. You will make better use of it on the front of the column than I will at the back.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_HealerTalk" NodeId="healer_farewell_end">
+      <Line>Walk safely. I will be here if anyone is hurt.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="RefugeeEscort_Stranger" DisplayName="Silent Haruto" Description="A quiet swordsman who joined the refugees after his fishing boat was lost in Sakurajima's last ash fall">
+    <NodeText TreeRef="RefugeeEscort_StrangerReveal" NodeId="confrontation">
+      <Line>You notice the stranger slipping away from the group at night</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_StrangerReveal" NodeId="follow">
+      <Line>The stranger meets with a pursuer scout and exchanges words</Line>
+      <Line>They're pointing back toward the refugee camp...</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_StrangerReveal" NodeId="ambush_captain_end">
+      <Line>Steel rings in the dark - the pursuer captain steps from the trees, and there is no more time for talk.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_StrangerReveal" NodeId="confront">
+      <Line>I... I needed air. The stress of travel...</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_StrangerReveal" NodeId="witness">
+      <Line>The scout leaves. The stranger returns, unaware they were seen</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_StrangerReveal" NodeId="expose_later">
+      <Line>In the morning light, you reveal what you witnessed</Line>
+      <Line>The refugees gasp. The stranger's face goes pale.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_StrangerReveal" NodeId="explanation">
+      <Line>They... they have my family. They said if I led them to you, they'd be spared.</Line>
+      <Line>I'm sorry. I had no choice. Please...</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_StrangerReveal" NodeId="banish_end">
+      <Line>I know. I'm sorry. I'll go...</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_StrangerReveal" NodeId="banish_merciful_end">
+      <Line>Thank you for understanding. I... I hope you survive this.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_StrangerReveal" NodeId="redemption_end">
+      <Line>Fight? Against them? *pause* ...You're right. I owe these people that much.</Line>
+      <Line>I know their tactics. I can help. Let me make amends.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_StrangerReveal" NodeId="suspicious_end">
+      <Line>Of course. I... I wouldn't dream of betraying the group.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="RefugeeEscort_Child" DisplayName="Frightened Kenji" Description="A small boy who lost his parents when the volcano's smoke drove their village to the sea">
+    <NodeText TreeRef="RefugeeEscort_FindChild" NodeId="found">
+      <Line>The child is huddled behind a rock, crying softly</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_FindChild" NodeId="comfort_end">
+      <Line>*sniff* I was so scared... I thought the bad people got me...</Line>
+      <Line>Thank you for coming. I'll stay close, I promise.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_FindChild" NodeId="hurry_end">
+      <Line>The child nods, terrified, and follows you silently</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="RefugeeEscort_Pursuer" DisplayName="Ashigaru Tracker" Description="A foot soldier sent to follow the refugees along the volcanic coast" />
+  <StoryCastEnrichment CharacterRef="RefugeeEscort_Captain" DisplayName="Coastal Commander" Description="A stern officer tasked with stopping anyone fleeing the warlord's reach near the harbor">
+    <NodeText TreeRef="RefugeeEscort_CaptainBattle" NodeId="battle_opening">
+      <Line>So, you're the one protecting these traitors. It ends here.</Line>
+      <Line>Hand them over and I might let you walk away.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_CaptainBattle" NodeId="battle_retreat">
+      <Line>This isn't over! You can't protect them forever!</Line>
+      <Line>*The captain signals retreat*</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_CaptainBattle" NodeId="battle_gambit">
+      <Line>You fight well. But I did not come alone, and I do not fall easily.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_CaptainBattle" NodeId="battle_reinforce_end">
+      <Line>A scout crashes from the treeline as the captain draws on a fell strength, flame wreathing their blade</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_CaptainBattle" NodeId="battle_yield_end">
+      <Line>The captain reads the battle, spits in the dust, and breaks off the pursuit</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="RefugeeEscort_BorderGuard" DisplayName="Harbor Sentinel" Description="A border guard at the domain's seaside checkpoint who weighs every traveler's story">
+    <NodeText TreeRef="RefugeeEscort_Border" NodeId="checkpoint">
+      <Line>Halt. State your business.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Border" NodeId="asylum_hub">
+      <Line>The guard examines the group</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Border" NodeId="asylum_all_survived_end">
+      <Line>The guard looks at the tired but complete group</Line>
+      <Line>You brought them all this far? Impressive. Enter, refugees. You're safe now.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Border" NodeId="asylum_some_lost_end">
+      <Line>Refugees? *looks at the weary group* Very well. You may enter.</Line>
+      <Line>Report to the refugee office in the town center.</Line>
+    </NodeText>
+    <NodeText TreeRef="RefugeeEscort_Border" NodeId="lie_end">
+      <Line>Travelers with twenty people, half of them children? Don't insult my intelligence.</Line>
+      <Line>Refugees are permitted. Just tell the truth next time.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="RivalGuild_GuildMaster" DisplayName="Dockside Overseer" Description="The sharp-eyed leader of the local trade house who tracks every ship entering Kagoshima bay">
+    <NodeText TreeRef="RivalGuild_Report" NodeId="report_hub">
+      <Line>The guild master awaits your report</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Report" NodeId="report_combat">
+      <Line>I heard what happened. You've destroyed our rivals completely.</Line>
+      <Line>With their leader gone, their guild will crumble. Well done.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Report" NodeId="report_peace">
+      <Line>A peace treaty? I wasn't expecting that approach.</Line>
+      <Line>*considers* But territory without bloodshed? Perhaps it's wiser.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Report" NodeId="reward_combat">
+      <Line>And you exceeded expectations. Here's your payment - plus a bonus.</Line>
+      <Line>You've earned a place among our inner circle.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Report" NodeId="reward_peace">
+      <Line>True. And peace lets us consolidate without looking over our shoulder.</Line>
+      <Line>You've done well. Very well.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="RivalGuild_Enforcer" DisplayName="Market Warden" Description="A broad-shouldered man who keeps the guild's warehouses safe from rival interference">
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="approach_hub">
+      <Line>The guild recruiter notices you</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="approach_not_started">
+      <Line>You there. You look capable. I represent certain... business interests.</Line>
+      <Line>We're expanding our operations and need reliable people.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="approach_active_end">
+      <Line>How goes the work? The guild master is eager for results.</Line>
+      <Line>Word is you've been busy. Keep at it - the guild rewards results, not promises.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="explain">
+      <Line>We control trade in this district. But there's competition - another guild.</Line>
+      <Line>They're undercutting our businesses, stealing our contracts. It can't continue.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="benefits">
+      <Line>Protection. Connections. And a generous cut of our profits.</Line>
+      <Line>10% of everything you bring in, plus bonuses for special jobs.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="reassure">
+      <Line>It's business. We prefer... subtle methods. But yes, sometimes force is required.</Line>
+      <Line>That's where you come in.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="mission_overview">
+      <Line>First, we need intelligence. Then sabotage their operations.</Line>
+      <Line>Finally, we break their leadership. Simple, effective.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="accept">
+      <Line>Wise choice. Here's your guild charter - proof of membership.</Line>
+      <Line>The spy in the market can sell you information about our rivals. Start there.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="consider_end">
+      <Line>Don't take too long. Opportunities like this don't wait.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="decline_end">
+      <Line>Your loss. But don't interfere with our business - that would be... unwise.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="arrive">
+      <Line>Good. The enforcer walks you to the docks under cover of darkness, then melts into the shadows.</Line>
+      <Line>*You approach the rival's warehouse*</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="scout">
+      <Line>You spot two guards at the front, one at the back, and a loading dock</Line>
+      <Line>The loading dock has a broken lock - easy entry.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="stealth_entry">
+      <Line>You slip through the broken lock and into the warehouse</Line>
+      <Line>Crates everywhere. In the corner, you see their ledgers and supply cache.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="distraction">
+      <Line>You start a small fire in a trash heap across the street</Line>
+      <Line>Guards rush to investigate, leaving the entrance unguarded</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="wait">
+      <Line>The guards change shifts. There's a brief window of confusion</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="infiltrate">
+      <Line>You're inside. The warehouse is full of trade goods</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="sabotage_supplies">
+      <Line>You puncture oil barrels, cut ropes, and contaminate their goods</Line>
+      <Line>This will cost them dearly</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="steal_documents">
+      <Line>You find their shipping schedules and client lists</Line>
+      <Line>This intelligence is invaluable</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="both">
+      <Line>You work quickly, sabotaging supplies AND grabbing documents</Line>
+      <Line>But you hear footsteps approaching</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="escape_end">
+      <Line>You slip out the way you came, undetected</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="caught">
+      <Line>A rival enforcer blocks your path</Line>
+      <Line>Thief! You'll pay for this!</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Recruitment" NodeId="escape_chase_end">
+      <Line>You crash through a window and sprint into the night</Line>
+      <Line>Behind you, angry shouts echo</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="RivalGuild_RivalLeader" DisplayName="Bay Trade Chief" Description="The clever head of a rival house who seeks to control all sea routes around the volcano">
+    <NodeText TreeRef="RivalGuild_Confrontation" NodeId="confront">
+      <Line>The rival guild leader stands before you, sword drawn</Line>
+      <Line>You've caused enough damage. This ends now.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Confrontation" NodeId="fight">
+      <Line>Then draw your weapon. One of us leaves here victorious.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Confrontation" NodeId="talk">
+      <Line>Talk? After you've destroyed my warehouses? Stolen my clients?</Line>
+      <Line>*pauses* But I'm not fool enough to ignore opportunity. Speak.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Confrontation" NodeId="merge_offer">
+      <Line>Merge? Under whose leadership?</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Confrontation" NodeId="partnership_end">
+      <Line>*considers* It's... not the worst idea. But my guild master would never agree.</Line>
+      <Line>Unless you can convince yours?</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Confrontation" NodeId="peace_offer">
+      <Line>Territory lines? *strokes chin* That... could work.</Line>
+      <Line>You take the eastern district, we keep the west. The market stays neutral.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Confrontation" NodeId="haggle_territory">
+      <Line>Then we have nothing more to discuss.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_Confrontation" NodeId="peaceful_resolution_end">
+      <Line>Then we have an accord. *extends hand*</Line>
+      <Line>May this peace hold longer than the last.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_RivalBattle" NodeId="battle_opening">
+      <Line>So, you're the one who's been destroying my operations.</Line>
+      <Line>I should have known your guild would resort to thuggery.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_RivalBattle" NodeId="battle_midpoint">
+      <Line>You fight well. But this changes nothing! My guild will rise again!</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_RivalBattle" NodeId="battle_negotiate">
+      <Line>Wait! Enough blood has been spilled.</Line>
+      <Line>Perhaps... perhaps we can negotiate?</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_RivalBattle" NodeId="battle_refuse_peace">
+      <Line>Then so be it. One of us ends here!</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_RivalBattle" NodeId="battle_peace_offer">
+      <Line>We divide the territory. No more fighting. Both guilds survive.</Line>
+      <Line>What do you say?</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_RivalBattle" NodeId="battle_accept_peace">
+      <Line>Then we have an accord. May it last.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="RivalGuild_Lieutenant" DisplayName="Warehouse Second" Description="The trusted aide who carries out the rival guild's orders along the docks" />
+  <StoryCastEnrichment CharacterRef="RivalGuild_Spy" DisplayName="Alley Informant" Description="A hooded figure who sells harbor secrets to any guild that pays in coin">
+    <NodeText TreeRef="RivalGuild_SpyInfo" NodeId="meeting_hub">
+      <Line>A shadowy figure waits in the alley</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_SpyInfo" NodeId="meeting_with_charter">
+      <Line>*speaks quietly* You're from the guild. I have what you need.</Line>
+      <Line>But information has a price. 50 credits for their patrol routes.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_SpyInfo" NodeId="meeting_no_charter">
+      <Line>I sell to those who can pay. What do you want?</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_SpyInfo" NodeId="need_charter_end">
+      <Line>And your credentials? I don't sell to just anyone.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_SpyInfo" NodeId="pay_full_end">
+      <Line>*hands over a folded paper* Their warehouse on the docks. That's where they're vulnerable.</Line>
+      <Line>Strike at midnight when the guard changes.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_SpyInfo" NodeId="negotiate_hub">
+      <Line>The spy considers your offer</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_SpyInfo" NodeId="negotiate_skilled">
+      <Line>*sighs* 35. But only because I like the look of you.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_SpyInfo" NodeId="negotiate_unskilled">
+      <Line>Take it or leave it. 50 credits. My information is worth every coin.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_SpyInfo" NodeId="pay_discount_end">
+      <Line>*hands over the information* The warehouse. Midnight. Good luck.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_SpyInfo" NodeId="leave_end">
+      <Line>Your choice. But don't blame me when you walk into a trap.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="RivalGuild_Arbiter" DisplayName="Ashport Magistrate" Description="A stern port official who settles merchant quarrels under falling Sakurajima ash">
+    <NodeText TreeRef="RivalGuild_ArbiterTalk" NodeId="arbiter_hub">
+      <Line>*The magistrate reviews scrolls at a desk dusted with ash*</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_ArbiterTalk" NodeId="arbiter_neutral_end">
+      <Line>The guilds again. As long as their quarrel stays off my docks, I stay out of it.</Line>
+      <Line>You keep your dealings civil. See that it stays that way, and my door stays open.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_ArbiterTalk" NodeId="arbiter_hated_end">
+      <Line>I know who you are. The rival guild has filed grievance after grievance with your name on them.</Line>
+      <Line>Watch yourself. The city tolerates guild politics, not open war.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_ArbiterTalk" NodeId="arbiter_unfriendly_end">
+      <Line>The rival guild has soured on you, unfriendly words, nothing more. Keep it that way.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_ArbiterTalk" NodeId="arbiter_hostile_end">
+      <Line>They call you an enemy now. Hostile in every ledger they keep. Watch the alleys.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_ArbiterTalk" NodeId="arbiter_hated_check_end">
+      <Line>Hated. There is no lower standing. The rival guild would see you dead on sight.</Line>
+    </NodeText>
+    <NodeText TreeRef="RivalGuild_ArbiterTalk" NodeId="arbiter_provoke_end">
+      <Line>You make your enmity with the rival guild a matter of public record. Word travels fast, and it will not be forgotten.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="RivalGuild_RivalEnforcer" DisplayName="Dockside Breaker" Description="A former wrestler turned enforcer who crushes rivals for the competing merchant guild" />
+  <StoryCastEnrichment CharacterRef="WanderingMerchant_Merchant" DisplayName="Ferry Peddler" Description="A shrewd trader who sails the ash-choked waters between coastal towns">
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="check_quest_state">
+      <Line>*The merchant approaches*</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="showcase_hub">
+      <Line>Care to see everything a traveling trader can do for you?</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_hub">
+      <Line>*The merchant flips open a weathered ledger and runs a finger down the page*</Line>
+      <Line>Let's see what the road says about you. Ask away.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_has_blade_end">
+      <Line>A knife at your hip, good. The roads reward the prepared.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_lacks_blade_end">
+      <Line>No blade at all? Even a paring knife beats empty hands out here.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_has_tool_end">
+      <Line>A multitool in the pack. You could mend a wheel or a fence with that.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_lacks_tool_end">
+      <Line>No tools? The first broken axle will teach you better.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_has_nails_end">
+      <Line>Carrying nails, I see. A practical soul.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_lacks_nails_end">
+      <Line>Not a nail on you. Take some from my give-away crate before you go.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_has_charm_end">
+      <Line>You know the mending charm. That one's saved more traders than any sword.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_lacks_charm_end">
+      <Line>No healing charm? Learn one before the mountain teaches you why.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_patron_end">
+      <Line>Ah, a patron of my trade, says the ledger. Your credit is good with me.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_rich_end">
+      <Line>A purse that heavy buys a lot of goodwill on this road.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_poor_end">
+      <Line>Light pockets, friend. Mind the toll roads.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_hale_end">
+      <Line>Hale and hearty. The mountain air agrees with you.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_wounded_end">
+      <Line>Those wounds want tending before the next leg. Rest a while.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_bandit_slain_end">
+      <Line>Word travels, you're the one who put that road bandit down. The caravans thank you.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_company_end">
+      <Line>Travelling with company. Wise, the passes are no place to walk alone.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_alone_end">
+      <Line>All alone out here? Find a companion before the high passes.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_guild_favored_end">
+      <Line>The guild's books mark you a friend of the trade. Doors will open for that.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_guild_stranger_end">
+      <Line>The guild doesn't know your name yet. Coin in the road fund would fix that.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_pack_end">
+      <Line>I'll stow the blade, the tool and the charm-script in my strongbox, lighter travels, friend.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="ledger_donate_end">
+      <Line>Six hundred to the road fund! The guild will hear the name of its newest benefactor.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="showcase_give_end">
+      <Line>Here, a good multitool and a fistful of nails for the road. Consider yourself a patron of my trade.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="showcase_take_end">
+      <Line>And when you wish to travel light, I'll take back the nails, the tool, a spare blade, even a healing charm, for a price. Old debts forgiven, old grudges too.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="showcase_haves_end">
+      <Line>A blade at your hip, tools in your pack, coin in your purse, and the Merchants' Guild speaks well of you. A well-appointed traveler indeed.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="showcase_lacks_end">
+      <Line>Whatever you lack, a blade, a tool, nails, a healing charm, I can likely supply it. You look hale enough, and word travels of the foes you've felled.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="repeat_greeting">
+      <Line>Back again, friend? The road keeps bringing us together.</Line>
+      <Line>What can I do for you this time?</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="repeat_greeting_end">
+      <Line>Ha! May your purse stay heavy and your blade stay sharp.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="greeting_hub">
+      <Line>Ah, a capable-looking traveler! Perhaps the gods have answered my prayers.</Line>
+      <Line>I need to make a trading run, but the roads are too dangerous to travel alone.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="greeting_active">
+      <Line>Ready to continue? We should keep moving while the weather holds.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="greeting_completed_end">
+      <Line>My friend! Our journey together was most profitable. Need anything from my stock?</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="explain">
+      <Line>I have goods to deliver to two destinations. Fine merchandise that will fetch good prices.</Line>
+      <Line>But bandits roam the roads, and I'm no fighter. I need protection.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="payment">
+      <Line>A share of the profits, of course! Say, 30% of what we make.</Line>
+      <Line>Plus, you can trade with my contacts at preferential rates.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="negotiate">
+      <Line>*The merchant considers your counteroffer*</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="negotiate_skilled">
+      <Line>Ha! You drive a hard bargain. Very well, 35%. You've earned my respect already.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="negotiate_unskilled">
+      <Line>I admire your boldness, but I can only go as high as 32%. Business must be sustainable.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="destinations">
+      <Line>First to a small town to deliver specialty goods. Then onward to a larger market.</Line>
+      <Line>It's a three-day journey if we keep a good pace.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="accept">
+      <Line>Excellent! Let me gather my things and we can depart immediately.</Line>
+      <Line>Here, take some of the lighter goods, just in case we get separated.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="decline_end">
+      <Line>I understand. The roads are indeed dangerous. Perhaps I'll wait for a caravan.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="continue_end">
+      <Line>Onward to fortune! Stay alert, danger could come from anywhere.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Introduction" NodeId="wait_end">
+      <Line>Of course. I'll check the goods while you prepare. Don't take too long!</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="WanderingMerchant_TollGuard" DisplayName="Ash Gate Sentinel" Description="A checkpoint official who demands transit taxes on all goods passing near the volcano">
+    <NodeText TreeRef="WanderingMerchant_Toll" NodeId="checkpoint">
+      <Line>Halt! This is an official toll road. 50 credits for merchant carts.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Toll" NodeId="pay_toll_end">
+      <Line>Thank you for your cooperation. Safe travels.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Toll" NodeId="negotiate_toll_hub">
+      <Line>*The guard considers your request*</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Toll" NodeId="negotiate_toll_skilled">
+      <Line>Well, I suppose I could accept 30 for a small merchant like your friend.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Toll" NodeId="negotiate_toll_unskilled">
+      <Line>The toll is the toll. Pay or turn back.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Toll" NodeId="discount_toll_end">
+      <Line>Pleasure doing business. Move along.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Toll" NodeId="intimidate_hub">
+      <Line>*You step forward menacingly*</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Toll" NodeId="intimidate_success_end">
+      <Line>I, on second thought, merchants are exempt today. Move along.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Toll" NodeId="refuse_end">
+      <Line>Your choice. But the detour adds a full day to your journey.</Line>
+      <Line>*You find an alternate path around the checkpoint*</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="WanderingMerchant_Bandit" DisplayName="Lava Path Ambusher" Description="A desperate thief who ambushes travelers on the volcanic mountain paths">
+    <NodeText TreeRef="WanderingMerchant_Ambush" NodeId="ambush">
+      <Line>Well well, what do we have here? A merchant with goods and a guard?</Line>
+      <Line>Hand over the merchandise and nobody gets hurt.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Ambush" NodeId="fight">
+      <Line>The hard way it is!</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Ambush" NodeId="bluff_hub">
+      <Line>*You try to look unassuming*</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Ambush" NodeId="bluff_success_end">
+      <Line>Hmm, you don't look like you're worth the trouble. Move along.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Ambush" NodeId="bluff_fail">
+      <Line>Nice try. But I can smell a loaded cart from a mile away. Get them!</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Ambush" NodeId="bribe_end">
+      <Line>Smart move. This is enough for today. Get out of here before I change my mind.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="WanderingMerchant_BuyerOne" DisplayName="Harbor Shopkeeper" Description="A prosperous shopkeeper eager to acquire exotic goods from afar">
+    <NodeText TreeRef="WanderingMerchant_DeliveryOne" NodeId="arrival">
+      <Line>Ah, fresh goods from the capital! Let me see what you've brought.</Line>
+      <Line>Excellent quality. I'll take the lot.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryOne" NodeId="negotiate_sale_hub">
+      <Line>*The shopkeeper examines your goods*</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryOne" NodeId="negotiate_sale_skilled">
+      <Line>For goods this fine? 150 credits. And that's my best offer.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryOne" NodeId="negotiate_sale_unskilled">
+      <Line>I can offer 120 credits. Take it or leave it.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryOne" NodeId="push_harder">
+      <Line>160. That's as high as I go. Final offer.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryOne" NodeId="complete_sale_best_end">
+      <Line>Pleasure doing business. You're quite the negotiator!</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryOne" NodeId="complete_sale_good_end">
+      <Line>A fair deal for both of us. Come back anytime.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryOne" NodeId="complete_sale_basic_end">
+      <Line>Good. The goods are mine now. Safe travels.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryOne" NodeId="no_goods_end">
+      <Line>Hm, nothing to sell today? Come back when you've got goods to move.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="WanderingMerchant_BuyerTwo" DisplayName="Noble Factor" Description="A rich collector representing a noble house seeking rare commodities">
+    <NodeText TreeRef="WanderingMerchant_DeliveryTwo" NodeId="guild_arrival">
+      <Line>The traveling merchant and escort, I presume? We've been expecting you.</Line>
+      <Line>Your reputation precedes you. Let's discuss terms.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryTwo" NodeId="guild_offer">
+      <Line>250 credits for the remaining stock. Standard guild rates.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryTwo" NodeId="guild_negotiate">
+      <Line>*The guild factor considers your point*</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryTwo" NodeId="guild_negotiate_with_intel">
+      <Line>Hmm. I've heard about your journey. The hazards you overcame are impressive.</Line>
+      <Line>300 credits. And the guild will remember your name.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryTwo" NodeId="guild_negotiate_basic">
+      <Line>Risk is part of the business. 270, final offer.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryTwo" NodeId="guild_accept">
+      <Line>Efficient. I like that. Here's your payment.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryTwo" NodeId="guild_better">
+      <Line>A fair compromise. Payment transferred.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryTwo" NodeId="guild_best">
+      <Line>Well earned. The guild values competence.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_DeliveryTwo" NodeId="merchant_payment">
+      <Line>Ah yes! You've more than earned it. Here's your share, and a little extra for keeping us safe.</Line>
+      <Line>If you ever need work, look me up. It's been an honor traveling with you.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <StoryCastEnrichment CharacterRef="WanderingMerchant_Innkeeper" DisplayName="Lodge Master" Description="A jovial innkeeper whose seaside lodge shelters weary travelers from the ash">
+    <NodeText TreeRef="WanderingMerchant_Innkeeper" NodeId="welcome">
+      <Line>Welcome, travelers! Rest your feet and warm your bellies!</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Innkeeper" NodeId="supplies_offer">
+      <Line>Depends what you're carrying. I trade road-tips for goods.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Innkeeper" NodeId="supplies_have_end">
+      <Line>A potion? That'll do nicely. Here's what I know of the road ahead.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Innkeeper" NodeId="supplies_lack_end">
+      <Line>Empty-handed, eh? Come back when you've something worth trading.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Innkeeper" NodeId="road_info">
+      <Line>The northern pass is clear, but bandits have been spotted on the southern route.</Line>
+      <Line>If you're headed that way, stick to the main road. Strength in visibility.</Line>
+    </NodeText>
+    <NodeText TreeRef="WanderingMerchant_Innkeeper" NodeId="farewell_end">
+      <Line>Safe travels! May your purse grow heavy.</Line>
+    </NodeText>
+  </StoryCastEnrichment>
+  <QuestEnrichment RefName="OFFICIAL_MAIN_CHAIN" DisplayName="Path of Three Sanctuaries" Description="Unite three legendary sites scattered across the realm in a journey of honor." />
+  <QuestEnrichment RefName="REGIONAL_Tsurumarujō" DisplayName="Survey Tsurumaru-jō Lands" Description="Discover 2 locations in the Tsurumaru-jō area amid the volcano's gaze." />
+  <QuestEnrichment RefName="CONNECT_Tsurumarujō_TO_TerukuniDaimyōjinsha" DisplayName="Road to the Shrine" Description="Travel 1km from Tsurumaru-jō to Terukuni Daimyōjin-sha through misty paths." />
+  <QuestEnrichment RefName="CONNECT_TerukuniDaimyōjinsha_TO_Tsurumarujō" DisplayName="Return to the Castle" Description="Travel 1km from Terukuni Daimyōjin-sha to Tsurumaru-jō under watchful skies." />
+  <QuestEnrichment RefName="MAIN_QUEST_01" DisplayName="Aid the Coastal Folk" Description="Gather resources and aid the people of Iso-teien, Tsurumaru-jō, Terukuni Daimyōjin-sha." />
+  <QuestEnrichment RefName="BOUNTY_Tsurumarujō" DisplayName="Bounty at the Fortress" Description="Defeat Story Character at Tsurumaru-jō and claim the bounty in the name of order." />
+  <QuestEnrichment RefName="BOUNTY_Crossroads1" DisplayName="Bounty at the Crossing" Description="Defeat Story Character at Crossroads and claim the bounty for the realm's peace." />
+  <QuestEnrichment RefName="REGIONAL_SURVEY" DisplayName="Map the Volcanic Arc" Description="Chart the region: map the arc, light its beacon, and fund the effort near Sakurajima." />
+  <QuestEnrichment RefName="HIDDEN_FORGOTTEN_SHRINE" DisplayName="Veiled Shrine of Ages" Description="An ancient shrine marked on a mysterious map holds forgotten secrets of the spirit world." />
+  <QuestEnrichment RefName="HIDDEN_MASTER_CRAFTSMAN" DisplayName="Forge of the Masters" Description="Only true masters of crafting can unlock this legendary workshop hidden in the hills." />
+  <QuestEnrichment RefName="HIDDEN_COLLECTOR_PARADISE" DisplayName="Vault of the Seals" Description="A legendary collector's vault, accessible only to those who possess all the ancient seals." />
+  <QuestEnrichment RefName="HIDDEN_TIME_TRIAL" DisplayName="Trial of Swift Blades" Description="Complete a series of challenges against the clock where only the fastest will prevail." />
+</WorldEnrichment>

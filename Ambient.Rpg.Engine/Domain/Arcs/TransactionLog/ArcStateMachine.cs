@@ -447,7 +447,18 @@ public class ArcStateMachine
         // Look up character template from world
         var characterTemplate = _world.CharactersLookup.TryGetValue(characterRef, out var template) ? template : null;
         if (characterTemplate == null)
-            return; // Can't spawn without valid template
+        {
+            // Catalog miss used to be silent. CharacterSpawned then never ran, so every
+            // following ItemTraded seed on this instance vanished (empty shops / loot).
+            // The generator emits the runtime catalog (BATTLE_LOOT, REMNANT_LOOT,
+            // GEOCACHE, SHOPKEEPER_Generic_0..9). A miss here is a missing catalog
+            // entry or a typo — do not fabricate a shell.
+            _logger?.LogError(
+                "CharacterSpawned CharacterRef '{CharacterRef}' is not in the world catalog; spawn dropped (instance {InstanceId}). Following ItemTraded stock will not attach.",
+                characterRef,
+                characterInstanceId);
+            return;
+        }
 
         // Copy stats from template
         CharacterStats? copiedStats = null;

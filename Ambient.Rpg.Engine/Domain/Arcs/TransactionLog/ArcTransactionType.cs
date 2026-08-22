@@ -25,10 +25,12 @@ public enum ArcTransactionType
     BattleStarted,          // Battle initiated with equipment/affinity snapshot
     BattleTurnExecuted,     // A single turn (attack, spell, item, equipment change, etc.)
     BattleEnded,            // Battle concluded with victor
-    StatusEffectApplied,    // Status effect applied (poison, stun, bleed, burn, etc.)
-    StatusEffectRemoved,    // Status effect expired or cleansed
-    CriticalHitDealt,       // Critical hit dealt in combat
-    ComboExecuted,          // Combo chain attack executed
+    // (StatusEffectApplied / StatusEffectRemoved / CriticalHitDealt / ComboExecuted removed
+    // 2026-08-21 — never implemented. No producer ever existed, so no persisted log can
+    // contain them; only the achievement evaluator read them, which meant the three battle
+    // criteria they backed could never progress past zero. Battle status effects live on
+    // CombatEvent.StatusEffectApplied, which is a per-turn field, not a transaction. Same
+    // reasoning as QuestFailed below: wire formats carry enum NAMES, so removal is safe.)
 
     // Avatar interactions
     AvatarEntered,
@@ -87,9 +89,8 @@ public enum ArcTransactionType
     // the member is safe: a historical "QuestFailed" string no longer parses and
     // falls back to Extension, which the validator rejects and replay skips.)
 
-    // Structure interactions
-    StructureDamaged,
-    StructureRepaired,
+    // (StructureDamaged / StructureRepaired removed 2026-08-21 — never implemented.
+    // Zero references anywhere in the repo: no producer, no reader, not even a test.)
 
     // Extension point for domain-specific transaction types (e.g., the host game's voxel claims)
     // When Type = Extension, check ExtensionTypeName for the actual type identifier

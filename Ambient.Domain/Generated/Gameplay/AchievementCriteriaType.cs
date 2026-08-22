@@ -82,14 +82,5 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         FactionsAtReputationLevel,
-        
-        /// <remarks/>
-        StatusEffectsApplied,
-        
-        /// <remarks/>
-        CriticalHitsDealt,
-        
-        /// <remarks/>
-        CombosExecuted,
     }
 }

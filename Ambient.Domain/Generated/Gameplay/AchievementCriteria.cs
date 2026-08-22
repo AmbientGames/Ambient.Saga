@@ -44,8 +44,6 @@ namespace Ambient.Domain {
         
         private string reputationLevelField;
         
-        private string statusEffectTypeField;
-        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public AchievementCriteriaType Type {
@@ -164,17 +162,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.reputationLevelField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string StatusEffectType {
-            get {
-                return this.statusEffectTypeField;
-            }
-            set {
-                this.statusEffectTypeField = value;
             }
         }
     }

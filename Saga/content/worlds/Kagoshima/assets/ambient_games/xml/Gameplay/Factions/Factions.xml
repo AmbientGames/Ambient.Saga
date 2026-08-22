@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Factions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Faction RefName="CityGuard" DisplayName="Satsuma Bushi" Description="The samurai warriors sworn to protect the Shimazu domain. They maintain order in castle towns and patrol the roads against bandits and ronin." StartingReputation="0" Category="Military">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Factions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ../../../../../../../xsd/Gameplay/Gameplay.xsd" xmlns="Ambient.Domain">
+  <Faction RefName="CityGuard" DisplayName="Satsuma Bushi" Description="The samurai warriors sworn to protect the Shimazu domain. They maintain order in castle towns and patrol the roads against bandits and ronin." StartingReputation="0" Category="City">
     <Relationships>
       <Relationship FactionRef="MerchantsGuild" RelationshipType="Allied" SpilloverPercent="0.25" />
       <Relationship FactionRef="TemplarOrder" RelationshipType="Allied" SpilloverPercent="0.15" />
@@ -225,7 +225,7 @@
       </Reward>
     </ReputationRewards>
   </Faction>
-  <Faction RefName="BardsCollege" DisplayName="Biwa Hoshi" Description="Blind musicians and storytellers who travel the land reciting the Tale of the Heike and other epics. Their songs preserve history." StartingReputation="0" Category="Guild">
+  <Faction RefName="BardsCollege" DisplayName="Biwa Hoshi" Description="Blind musicians and storytellers who travel the land reciting the Tale of the Heike and other epics. Their songs preserve history." StartingReputation="0" Category="Other">
     <Relationships>
       <Relationship FactionRef="MerchantsGuild" RelationshipType="Allied" SpilloverPercent="0.15" />
       <Relationship FactionRef="ExplorersLeague" RelationshipType="Allied" SpilloverPercent="0.1" />

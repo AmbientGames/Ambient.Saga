@@ -61,6 +61,24 @@ public class ArcStateMachineTests
                     DisplayName = "Boss",
                     Stats = new CharacterStats { Health = 100, Mana = 50 },
                     Capabilities = new ItemCollection()
+                },
+                [ContainerCharacterRefs.BattleLoot] = new Character
+                {
+                    RefName = ContainerCharacterRefs.BattleLoot,
+                    DisplayName = "Battle Remains",
+                    Interactable = new Interactable()
+                },
+                [ContainerCharacterRefs.RemnantLoot] = new Character
+                {
+                    RefName = ContainerCharacterRefs.RemnantLoot,
+                    DisplayName = "Fallen Remains",
+                    Interactable = new Interactable()
+                },
+                [ContainerCharacterRefs.GeoCache] = new Character
+                {
+                    RefName = ContainerCharacterRefs.GeoCache,
+                    DisplayName = "Supply Cache",
+                    Interactable = new Interactable()
                 }
             }
         };
@@ -908,6 +926,84 @@ public class ArcStateMachineTests
         Assert.Null(character.Traits["BossFight"]);
         Assert.Equal(90, character.Traits["Aggression"]);
         Assert.Equal(10, character.Traits["FleeThreshold"]);
+    }
+
+    [Fact]
+    public void ReplayToNow_CharacterSpawned_UnknownAuthoredRef_DoesNotSpawn()
+    {
+        var instance = new ArcInstance { ArcRef = "TestArc" };
+        var characterId = Guid.NewGuid();
+        instance.AddTransaction(new ArcTransaction
+        {
+            Type = ArcTransactionType.CharacterSpawned,
+            Status = TransactionStatus.Committed,
+            SequenceNumber = 1,
+            Data = new()
+            {
+                ["CharacterInstanceId"] = characterId.ToString(),
+                ["CharacterRef"] = "TypoNpcThatDoesNotExist",
+                ["X"] = "0",
+                ["Z"] = "0",
+                ["SpawnHeight"] = "0"
+            }
+        });
+
+        var state = _stateMachine.ReplayToNow(instance);
+
+        Assert.False(state.Characters.ContainsKey(characterId.ToString()));
+    }
+
+    [Theory]
+    [InlineData(ContainerCharacterRefs.BattleLoot)]
+    [InlineData(ContainerCharacterRefs.RemnantLoot)]
+    [InlineData(ContainerCharacterRefs.GeoCache)]
+    public void ReplayToNow_CharacterSpawned_ContainerArcShell_SpawnsAndFoldsItemTraded(string characterRef)
+    {
+        // GameForm / seeder create container arcs by these CharacterRefs. Catalog
+        // templates (empty Loot; stock is the ItemTraded ledger) must spawn so seed folds.
+        var instance = new ArcInstance { ArcRef = "TestArc" };
+        var characterId = Guid.NewGuid();
+        instance.AddTransaction(new ArcTransaction
+        {
+            Type = ArcTransactionType.CharacterSpawned,
+            Status = TransactionStatus.Committed,
+            SequenceNumber = 1,
+            Data = new()
+            {
+                ["CharacterInstanceId"] = characterId.ToString(),
+                ["CharacterRef"] = characterRef,
+                ["X"] = "0",
+                ["Z"] = "0",
+                ["SpawnHeight"] = "0"
+            }
+        });
+        instance.AddTransaction(new ArcTransaction
+        {
+            Type = ArcTransactionType.ItemTraded,
+            Status = TransactionStatus.Committed,
+            SequenceNumber = 2,
+            Data = new()
+            {
+                ["CharacterInstanceId"] = characterId.ToString(),
+                ["ItemRef"] = "IronSword",
+                ["Quantity"] = "1",
+                ["IsBuying"] = "False",
+                ["PricePerItem"] = "0",
+                ["TotalPrice"] = "0"
+            }
+        });
+
+        var state = _stateMachine.ReplayToNow(instance);
+
+        Assert.True(state.Characters.TryGetValue(characterId.ToString(), out var character));
+        Assert.True(character!.IsAlive);
+        Assert.NotNull(character.CurrentInventory);
+        // Catalog-less test world folds unknown refs as blocks; stock must still attach.
+        var inv = character.CurrentInventory;
+        var hasItem =
+            (inv.Equipment?.Any(e => e.EquipmentRef == "IronSword") ?? false) ||
+            (inv.Blocks?.Any(b => b.BlockRef == "IronSword") ?? false);
+        Assert.True(hasItem, "Seeded ItemTraded must fold onto the container-arc shell");
     }
 
     [Fact]

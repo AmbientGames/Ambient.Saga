@@ -1776,6 +1776,7 @@ public static class WorldValidationService
         ValidateQuestRewards(world, errors);
         ValidateQuestAcceptance(world, errors);
         ValidateAcquirableAffinityReferences(world, errors);
+        ValidateRuntimeContainerCatalog(world, errors);
 
         if (errors.Count > 0)
         {
@@ -1788,6 +1789,30 @@ public static class WorldValidationService
 
             throw new InvalidOperationException(
                 "Quest playability validation failed:\n" + string.Join("\n", errors));
+        }
+    }
+
+    /// <summary>
+    /// Server-created container arcs (Market / RemnantLoot / BattleLoot / GeoCache)
+    /// spawn by CharacterRef. A missing catalog entry makes CharacterSpawned no-op
+    /// and drops seeded ItemTraded stock. Playability, not load: Ise/Kagoshima
+    /// fixtures must keep loading.
+    /// </summary>
+    private static void ValidateRuntimeContainerCatalog(IWorld world, List<string> errors)
+    {
+        if (world.Gameplay.Characters == null)
+            return;
+
+        foreach (var characterRef in ContainerCharacterRefs.RequiredCharacterRefs)
+        {
+            if (!world.CharactersLookup.ContainsKey(characterRef))
+                errors.Add($"Runtime catalog missing character '{characterRef}' (seeded shops/loot spawn by this ref).");
+        }
+
+        foreach (var treeRef in ContainerCharacterRefs.ShopkeeperDialogueTrees)
+        {
+            if (!world.DialogueTreesLookup.ContainsKey(treeRef))
+                errors.Add($"Runtime catalog missing dialogue tree '{treeRef}'.");
         }
     }
 

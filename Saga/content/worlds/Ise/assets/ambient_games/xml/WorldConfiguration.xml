@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WorldConfiguration
-    xmlns="Ambient.Domain"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="Ambient.Domain ../../../../../../../Ambient.Domain/Content/xsd/WorldDefinition.xsd"
+    xsi:schemaLocation="Ambient.Voxel.Domain ../../../../../../xsd/WorldDefinition.xsd"
+    xmlns="Ambient.Voxel.Domain"
     SchemaVersion="2"
     RefName="Ise"
     DisplayName="Ise, Japan"
-    Description="Ise: Japan's Sacred City - High school field trip"
+    Description="A Tokyo high school class trip to Ise Grand Shrine, where the students discover they can manifest affinities - supernatural beings born from their inner selves. Ancient yokai and corrupted spirits threaten the sacred grounds, and only these unlikely heroes can restore the balance between the mortal and spirit worlds."
     ContentPackLibrary="japan"
+    Builders="true"
+    ConstructionCycleMinutes="100"
+    Tending="Everything"
     Namespace="ambient_games"
     SpawnLatitude="34.492"
     SpawnLongitude="136.702"
+    ChunkHeight="256"
+    Seed="0.5739283232"
+    BlockScaleFactor="1.0"
+    Gravity="20.0"
+    ShortNightsAndWinter="true"
+    AllowTeleporting="true"
     DisplayOrder="4">
-	<HeightMapSettings
+    <HeightMapSettings
         FileName="Ise.tif"
-        HorizontalScale="1.0"
-        VerticalScale="1.0"
+        HorizontalScale=".333333"
+        VerticalScale=".333333"
         VerticalShift="0" />
 </WorldConfiguration>

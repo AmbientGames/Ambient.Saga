@@ -1,459 +1,485 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Equipment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Equipment RefName="RustySword" DisplayName="Worn Shinai" Description="A practice bamboo sword borrowed from the kendo club" SlotRef="MainHand" Category="OneHanded" WholesalePrice="15" ModelRef="Shinai" UseType="Offensive">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Equipment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ../../../../../../../xsd/Gameplay/Gameplay.xsd" xmlns="Ambient.Domain">
+  <Equipment RefName="RustySword" DisplayName="Worn Shinai" Description="A practice bamboo sword borrowed from the kendo club" SlotRef="MainHand" Category="OneHanded" Rarity="Common" BaseValue="15" ModelRef="Shinai" UseType="Offensive">
     <Effects Strength="0.05" />
   </Equipment>
-  <Equipment RefName="IronSword" DisplayName="Shinai" Description="A regulation bamboo practice sword" SlotRef="MainHand" Category="OneHanded" WholesalePrice="50" ModelRef="Shinai" UseType="Offensive">
+  <Equipment RefName="IronSword" DisplayName="Shinai" Description="A regulation bamboo practice sword" SlotRef="MainHand" Category="OneHanded" Rarity="Uncommon" BaseValue="50" ModelRef="Shinai" UseType="Offensive">
     <Effects Strength="0.1" />
   </Equipment>
-  <Equipment RefName="SteelSword" DisplayName="Metal Bat" Description="An aluminum baseball bat from the sports shed" SlotRef="MainHand" Category="OneHanded" WholesalePrice="120" ModelRef="MetalBat" UseType="Offensive">
+  <Equipment RefName="SteelSword" DisplayName="Metal Bat" Description="An aluminum baseball bat from the sports shed" SlotRef="MainHand" Category="OneHanded" Rarity="Uncommon" BaseValue="120" ModelRef="MetalBat" UseType="Offensive">
     <Effects Strength="0.14" />
   </Equipment>
-  <Equipment RefName="KnightsSword" DisplayName="Bokken" Description="A hardwood practice sword used in advanced kendo" SlotRef="MainHand" Category="OneHanded" WholesalePrice="250" ModelRef="Bokken" UseType="Offensive">
+  <Equipment RefName="KnightsSword" DisplayName="Bokken" Description="A hardwood practice sword used in advanced kendo" SlotRef="MainHand" Category="OneHanded" Rarity="Rare" BaseValue="250" ModelRef="Bokken" UseType="Offensive">
     <Effects Defense="0.05" Strength="0.18" />
   </Equipment>
-  <Equipment RefName="RuneSword" DisplayName="Blessed Bokken" Description="A wooden sword blessed at the shrine, faintly glowing with spiritual energy" SlotRef="MainHand" Category="OneHanded" WholesalePrice="400" ModelRef="BlessedBokken" AffinityRef="Arcane" UseType="Offensive">
+  <Equipment RefName="RuneSword" DisplayName="Blessed Bokken" Description="A wooden sword blessed at the shrine, faintly glowing with spiritual energy" SlotRef="MainHand" Category="OneHanded" Rarity="Rare" BaseValue="400" ModelRef="BlessedBokken" AffinityRef="Arcane" UseType="Offensive">
     <Effects Strength="0.2" Magic="0.08" />
   </Equipment>
-  <Equipment RefName="Flamebrand" DisplayName="Crimson Blade" Description="A spirit-forged katana that burns with inner fire" SlotRef="MainHand" Category="OneHanded" WholesalePrice="600" ModelRef="SpiritKatana" AffinityRef="Fire" UseType="Offensive">
+  <Equipment RefName="Flamebrand" DisplayName="Crimson Blade" Description="A spirit-forged katana that burns with inner fire" SlotRef="MainHand" Category="OneHanded" Rarity="Epic" BaseValue="600" ModelRef="SpiritKatana" AffinityRef="Fire" UseType="Offensive" StatusEffectRef="Burn" StatusEffectChance="0.4">
     <Effects Strength="0.24" Magic="0.1" />
   </Equipment>
-  <Equipment RefName="HandAxe" DisplayName="Golf Club" Description="A standard iron borrowed from someone's bag" SlotRef="MainHand" Category="OneHanded" WholesalePrice="20" ModelRef="GolfClub" UseType="Offensive">
+  <Equipment RefName="HandAxe" DisplayName="Golf Club" Description="A standard iron borrowed from someone's bag" SlotRef="MainHand" Category="OneHanded" Rarity="Common" BaseValue="20" ModelRef="GolfClub" UseType="Offensive">
     <Effects Strength="0.06" Speed="-0.02" />
   </Equipment>
-  <Equipment RefName="BattleAxe" DisplayName="Heavy Driver" Description="A powerful golf driver that packs serious impact" SlotRef="MainHand" Category="OneHanded" WholesalePrice="80" ModelRef="GolfDriver" UseType="Offensive">
+  <Equipment RefName="BattleAxe" DisplayName="Heavy Driver" Description="A powerful golf driver that packs serious impact" SlotRef="MainHand" Category="OneHanded" Rarity="Uncommon" BaseValue="80" ModelRef="GolfDriver" UseType="Offensive">
     <Effects Strength="0.12" Speed="-0.03" />
   </Equipment>
-  <Equipment RefName="BerserkerAxe" DisplayName="Rage Driver" Description="An old driver infused with furious spiritual energy" SlotRef="MainHand" Category="OneHanded" WholesalePrice="200" ModelRef="RageDriver" AffinityRef="Fire" UseType="Offensive">
+  <Equipment RefName="BerserkerAxe" DisplayName="Rage Driver" Description="An old driver infused with furious spiritual energy" SlotRef="MainHand" Category="OneHanded" Rarity="Rare" BaseValue="200" ModelRef="RageDriver" AffinityRef="Fire" UseType="Offensive" StatusEffectRef="Bleed" StatusEffectChance="0.3">
     <Effects Defense="-0.05" Strength="0.18" Speed="-0.02" />
   </Equipment>
-  <Equipment RefName="WoodenClub" DisplayName="Wooden Stick" Description="A sturdy branch found near the shrine grounds" SlotRef="MainHand" Category="OneHanded" WholesalePrice="10" ModelRef="WoodStick" UseType="Offensive">
+  <Equipment RefName="WoodenClub" DisplayName="Wooden Stick" Description="A sturdy branch found near the shrine grounds" SlotRef="MainHand" Category="OneHanded" Rarity="Common" BaseValue="10" ModelRef="WoodStick" UseType="Offensive">
     <Effects Strength="0.04" />
   </Equipment>
-  <Equipment RefName="IronMace" DisplayName="Pipe Wrench" Description="A heavy maintenance tool repurposed for defense" SlotRef="MainHand" Category="OneHanded" WholesalePrice="60" ModelRef="PipeWrench" UseType="Offensive">
+  <Equipment RefName="IronMace" DisplayName="Pipe Wrench" Description="A heavy maintenance tool repurposed for defense" SlotRef="MainHand" Category="OneHanded" Rarity="Uncommon" BaseValue="60" ModelRef="PipeWrench" UseType="Offensive">
     <Effects Strength="0.11" Speed="-0.02" />
   </Equipment>
-  <Equipment RefName="WarHammer" DisplayName="Steel Pipe" Description="A length of construction pipe found at a work site" SlotRef="MainHand" Category="OneHanded" WholesalePrice="150" ModelRef="SteelPipe" UseType="Offensive">
+  <Equipment RefName="WarHammer" DisplayName="Steel Pipe" Description="A length of construction pipe found at a work site" SlotRef="MainHand" Category="OneHanded" Rarity="Uncommon" BaseValue="150" ModelRef="SteelPipe" UseType="Offensive">
     <Effects Strength="0.15" Speed="-0.04" />
   </Equipment>
-  <Equipment RefName="HolyMace" DisplayName="Purification Rod" Description="A sacred gohei wand channeling divine energy" SlotRef="MainHand" Category="OneHanded" WholesalePrice="280" ModelRef="Gohei" AffinityRef="Holy" UseType="Offensive">
+  <Equipment RefName="HolyMace" DisplayName="Purification Rod" Description="A sacred gohei wand channeling divine energy" SlotRef="MainHand" Category="OneHanded" Rarity="Rare" BaseValue="280" ModelRef="Gohei" AffinityRef="Holy" UseType="Offensive">
     <Effects Strength="0.14" Magic="0.1" />
   </Equipment>
-  <Equipment RefName="Knife" DisplayName="Box Cutter" Description="A simple utility knife from the convenience store" SlotRef="MainHand" Category="OneHanded" WholesalePrice="8" ModelRef="BoxCutter" UseType="Offensive">
+  <Equipment RefName="Knife" DisplayName="Box Cutter" Description="A simple utility knife from the convenience store" SlotRef="MainHand" Category="OneHanded" Rarity="Common" BaseValue="8" ModelRef="BoxCutter" UseType="Offensive" CriticalHitBonus="0.05">
     <Effects Strength="0.03" Speed="0.03" />
   </Equipment>
-  <Equipment RefName="Dagger" DisplayName="Pocket Knife" Description="A folding knife carried for emergencies" SlotRef="MainHand" Category="OneHanded" WholesalePrice="25" ModelRef="PocketKnife" UseType="Offensive">
+  <Equipment RefName="Dagger" DisplayName="Pocket Knife" Description="A folding knife carried for emergencies" SlotRef="MainHand" Category="OneHanded" Rarity="Uncommon" BaseValue="25" ModelRef="PocketKnife" UseType="Offensive" CriticalHitBonus="0.08">
     <Effects Strength="0.05" Speed="0.05" />
   </Equipment>
-  <Equipment RefName="Stiletto" DisplayName="Letter Opener" Description="A sharp decorative blade from the gift shop" SlotRef="MainHand" Category="OneHanded" WholesalePrice="70" ModelRef="LetterOpener" UseType="Offensive">
+  <Equipment RefName="Stiletto" DisplayName="Letter Opener" Description="A sharp decorative blade from the gift shop" SlotRef="MainHand" Category="OneHanded" Rarity="Uncommon" BaseValue="70" ModelRef="LetterOpener" UseType="Offensive" CriticalHitBonus="0.12">
     <Effects Strength="0.07" Speed="0.08" />
   </Equipment>
-  <Equipment RefName="ShadowDagger" DisplayName="Kunai Replica" Description="A replica ninja knife that channels shadow energy" SlotRef="MainHand" Category="OneHanded" WholesalePrice="180" ModelRef="Kunai" AffinityRef="Umbral" UseType="Offensive">
+  <Equipment RefName="ShadowDagger" DisplayName="Kunai Replica" Description="A replica ninja knife that channels shadow energy" SlotRef="MainHand" Category="OneHanded" Rarity="Rare" BaseValue="180" ModelRef="Kunai" AffinityRef="Umbral" UseType="Offensive" StatusEffectRef="Bleed" StatusEffectChance="1" StatusEffectOnCriticalHitOnly="true" CriticalHitBonus="0.1">
     <Effects Strength="0.1" Speed="0.12" />
   </Equipment>
-  <Equipment RefName="VenomFang" DisplayName="Ritual Dagger" Description="An antique tantou coated in mysterious substances" SlotRef="MainHand" Category="OneHanded" WholesalePrice="300" ModelRef="Tantou" AffinityRef="Wild" UseType="Offensive">
+  <Equipment RefName="VenomFang" DisplayName="Ritual Dagger" Description="An antique tantou coated in mysterious substances" SlotRef="MainHand" Category="OneHanded" Rarity="Rare" BaseValue="300" ModelRef="Tantou" AffinityRef="Wild" UseType="Offensive" StatusEffectRef="Poison" StatusEffectChance="0.5" CriticalHitBonus="0.1">
     <Effects Strength="0.12" Speed="0.1" />
   </Equipment>
-  <Equipment RefName="AssassinsBlade" DisplayName="Shadow Tantou" Description="A spirit-touched blade that moves like darkness" SlotRef="MainHand" Category="OneHanded" WholesalePrice="500" ModelRef="ShadowTantou" AffinityRef="Umbral" UseType="Offensive">
+  <Equipment RefName="AssassinsBlade" DisplayName="Shadow Tantou" Description="A spirit-touched blade that moves like darkness" SlotRef="MainHand" Category="OneHanded" Rarity="Epic" BaseValue="500" ModelRef="ShadowTantou" AffinityRef="Umbral" UseType="Offensive" StatusEffectRef="Bleed" StatusEffectChance="1" StatusEffectOnCriticalHitOnly="true" CriticalHitBonus="0.15">
     <Effects Strength="0.15" Speed="0.15" />
   </Equipment>
-  <Equipment RefName="LargeSword" DisplayName="Nodachi Shinai" Description="An oversized practice sword for two-handed techniques" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="80" ModelRef="LargeShinai" UseType="Offensive">
+  <Equipment RefName="LargeSword" DisplayName="Nodachi Shinai" Description="An oversized practice sword for two-handed techniques" SlotRef="BothHands" Category="TwoHanded" Rarity="Uncommon" BaseValue="80" ModelRef="LargeShinai" UseType="Offensive">
     <Effects Strength="0.15" Speed="-0.05" />
   </Equipment>
-  <Equipment RefName="Greatsword" DisplayName="Practice Odachi" Description="A massive wooden training blade" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="200" ModelRef="PracticeOdachi" UseType="Offensive">
+  <Equipment RefName="Greatsword" DisplayName="Practice Odachi" Description="A massive wooden training blade" SlotRef="BothHands" Category="TwoHanded" Rarity="Rare" BaseValue="200" ModelRef="PracticeOdachi" UseType="Offensive">
     <Effects Strength="0.22" Speed="-0.06" />
   </Equipment>
-  <Equipment RefName="Claymore" DisplayName="Spirit Blade" Description="A translucent sword manifested from willpower" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="350" ModelRef="SpiritBlade" UseType="Offensive">
+  <Equipment RefName="Claymore" DisplayName="Spirit Blade" Description="A translucent sword manifested from willpower" SlotRef="BothHands" Category="TwoHanded" Rarity="Rare" BaseValue="350" ModelRef="SpiritBlade" UseType="Offensive">
     <Effects Strength="0.26" Speed="-0.05" />
+    <MinimumStats Strength="0.25" />
   </Equipment>
-  <Equipment RefName="Zweihander" DisplayName="Legendary Katana" Description="A mythical blade said to be blessed by Susanoo" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="550" ModelRef="LegendaryKatana" UseType="Offensive">
+  <Equipment RefName="Zweihander" DisplayName="Legendary Katana" Description="A mythical blade said to be blessed by Susanoo" SlotRef="BothHands" Category="TwoHanded" Rarity="Epic" BaseValue="550" ModelRef="LegendaryKatana" UseType="Offensive">
     <Effects Strength="0.32" Speed="-0.08" />
+    <MinimumStats Strength="0.3" />
   </Equipment>
-  <Equipment RefName="Greataxe" DisplayName="Fire Extinguisher" Description="A heavy emergency tool swung with desperate force" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="180" ModelRef="FireExtinguisher" UseType="Offensive">
+  <Equipment RefName="Greataxe" DisplayName="Fire Extinguisher" Description="A heavy emergency tool swung with desperate force" SlotRef="BothHands" Category="TwoHanded" Rarity="Rare" BaseValue="180" ModelRef="FireExtinguisher" UseType="Offensive">
     <Effects Strength="0.24" Speed="-0.08" />
+    <MinimumStats Strength="0.25" />
   </Equipment>
-  <Equipment RefName="ExecutionerAxe" DisplayName="Demon Slayer Axe" Description="A spirit-forged axe that cleaves through darkness" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="400" ModelRef="DemonAxe" UseType="Offensive">
+  <Equipment RefName="ExecutionerAxe" DisplayName="Demon Slayer Axe" Description="A spirit-forged axe that cleaves through darkness" SlotRef="BothHands" Category="TwoHanded" Rarity="Rare" BaseValue="400" ModelRef="DemonAxe" UseType="Offensive" StatusEffectRef="Bleed" StatusEffectChance="0.3">
     <Effects Strength="0.3" Speed="-0.1" />
+    <MinimumStats Strength="0.28" />
   </Equipment>
-  <Equipment RefName="Spear" DisplayName="Broom Handle" Description="A cleaning supply repurposed as a makeshift spear" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="40" ModelRef="BroomHandle" UseType="Offensive">
+  <Equipment RefName="Spear" DisplayName="Broom Handle" Description="A cleaning supply repurposed as a makeshift spear" SlotRef="BothHands" Category="TwoHanded" Rarity="Common" BaseValue="40" ModelRef="BroomHandle" UseType="Offensive">
     <Effects Strength="0.1" Speed="0.02" />
   </Equipment>
-  <Equipment RefName="Halberd" DisplayName="Naginata" Description="A traditional polearm borrowed from the museum" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="150" ModelRef="Naginata" UseType="Offensive">
+  <Equipment RefName="Halberd" DisplayName="Naginata" Description="A traditional polearm borrowed from the museum" SlotRef="BothHands" Category="TwoHanded" Rarity="Uncommon" BaseValue="150" ModelRef="Naginata" UseType="Offensive">
     <Effects Strength="0.18" Speed="-0.03" />
   </Equipment>
-  <Equipment RefName="Glaive" DisplayName="Blessed Naginata" Description="A shrine naginata radiating protective energy" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="220" ModelRef="BlessedNaginata" UseType="Offensive">
+  <Equipment RefName="Glaive" DisplayName="Blessed Naginata" Description="A shrine naginata radiating protective energy" SlotRef="BothHands" Category="TwoHanded" Rarity="Rare" BaseValue="220" ModelRef="BlessedNaginata" UseType="Offensive">
     <Effects Strength="0.2" />
   </Equipment>
-  <Equipment RefName="Maul" DisplayName="Sledgehammer" Description="A construction tool of devastating weight" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="160" ModelRef="Sledgehammer" UseType="Offensive">
+  <Equipment RefName="Maul" DisplayName="Sledgehammer" Description="A construction tool of devastating weight" SlotRef="BothHands" Category="TwoHanded" Rarity="Uncommon" BaseValue="160" ModelRef="Sledgehammer" UseType="Offensive">
     <Effects Strength="0.2" Speed="-0.08" />
   </Equipment>
-  <Equipment RefName="TitanHammer" DisplayName="Oni Kanabo" Description="A demon's iron club manifested from raw power" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="500" ModelRef="OniKanabo" AffinityRef="Stone" UseType="Offensive">
+  <Equipment RefName="TitanHammer" DisplayName="Oni Kanabo" Description="A demon's iron club manifested from raw power" SlotRef="BothHands" Category="TwoHanded" Rarity="Epic" BaseValue="500" ModelRef="OniKanabo" AffinityRef="Stone" UseType="Offensive">
     <Effects Defense="0.05" Strength="0.35" Speed="-0.12" />
+    <MinimumStats Strength="0.35" />
   </Equipment>
-  <Equipment RefName="ShortBow" DisplayName="Slingshot" Description="A homemade slingshot for launching projectiles" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="30" ModelRef="Slingshot" UseType="Offensive">
+  <Equipment RefName="ShortBow" DisplayName="Slingshot" Description="A homemade slingshot for launching projectiles" SlotRef="BothHands" Category="TwoHanded" Rarity="Common" BaseValue="30" ModelRef="Slingshot" UseType="Offensive">
     <Effects Strength="0.06" Speed="0.04" />
   </Equipment>
-  <Equipment RefName="Longbow" DisplayName="Kyudo Bow" Description="A traditional Japanese longbow from archery club" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="100" ModelRef="KyudoBow" UseType="Offensive">
+  <Equipment RefName="Longbow" DisplayName="Kyudo Bow" Description="A traditional Japanese longbow from archery club" SlotRef="BothHands" Category="TwoHanded" Rarity="Uncommon" BaseValue="100" ModelRef="KyudoBow" UseType="Offensive">
     <Effects Strength="0.12" Speed="0.02" />
   </Equipment>
-  <Equipment RefName="CompositeBow" DisplayName="Competition Bow" Description="A precision kyudo bow for tournaments" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="200" ModelRef="CompetitionBow" UseType="Offensive">
+  <Equipment RefName="CompositeBow" DisplayName="Competition Bow" Description="A precision kyudo bow for tournaments" SlotRef="BothHands" Category="TwoHanded" Rarity="Rare" BaseValue="200" ModelRef="CompetitionBow" UseType="Offensive">
     <Effects Strength="0.16" Speed="0.05" />
   </Equipment>
-  <Equipment RefName="HuntersBow" DisplayName="Hunter's Yumi" Description="A blessed bow attuned to nature spirits" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="300" ModelRef="HuntersYumi" AffinityRef="Wild" UseType="Offensive">
+  <Equipment RefName="HuntersBow" DisplayName="Hunter's Yumi" Description="A blessed bow attuned to nature spirits" SlotRef="BothHands" Category="TwoHanded" Rarity="Rare" BaseValue="300" ModelRef="HuntersYumi" AffinityRef="Wild" UseType="Offensive">
     <Effects Strength="0.18" Speed="0.08" />
   </Equipment>
-  <Equipment RefName="WindBow" DisplayName="Storm Yumi" Description="A bow blessed by Fujin, the wind kami" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="450" ModelRef="StormYumi" AffinityRef="Storm" UseType="Offensive">
+  <Equipment RefName="WindBow" DisplayName="Storm Yumi" Description="A bow blessed by Fujin, the wind kami" SlotRef="BothHands" Category="TwoHanded" Rarity="Epic" BaseValue="450" ModelRef="StormYumi" AffinityRef="Storm" UseType="Offensive">
     <Effects Strength="0.2" Speed="0.08" Magic="0.05" />
   </Equipment>
-  <Equipment RefName="LightCrossbow" DisplayName="Nail Gun" Description="A power tool modified for ranged attacks" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="80" ModelRef="NailGun" UseType="Offensive">
+  <Equipment RefName="LightCrossbow" DisplayName="Nail Gun" Description="A power tool modified for ranged attacks" SlotRef="BothHands" Category="TwoHanded" Rarity="Uncommon" BaseValue="80" ModelRef="NailGun" UseType="Offensive">
     <Effects Strength="0.14" Speed="-0.04" />
   </Equipment>
-  <Equipment RefName="HeavyCrossbow" DisplayName="Industrial Nail Gun" Description="A heavy-duty construction tool with serious power" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="200" ModelRef="HeavyNailGun" UseType="Offensive">
+  <Equipment RefName="HeavyCrossbow" DisplayName="Industrial Nail Gun" Description="A heavy-duty construction tool with serious power" SlotRef="BothHands" Category="TwoHanded" Rarity="Rare" BaseValue="200" ModelRef="HeavyNailGun" UseType="Offensive">
     <Effects Strength="0.22" Speed="-0.08" />
   </Equipment>
-  <Equipment RefName="WalkingStick" DisplayName="Old Umbrella" Description="A battered umbrella that still channels energy" SlotRef="BothHands" Category="Staff" WholesalePrice="5" ModelRef="OldUmbrella" UseType="Offensive">
+  <Equipment RefName="WalkingStick" DisplayName="Old Umbrella" Description="A battered umbrella that still channels energy" SlotRef="BothHands" Category="Staff" Rarity="Common" BaseValue="5" ModelRef="OldUmbrella" UseType="Offensive">
     <Effects Strength="0.02" Magic="0.02" />
   </Equipment>
-  <Equipment RefName="WoodenStaff" DisplayName="Umbrella" Description="A sturdy long umbrella doubling as a focus" SlotRef="BothHands" Category="Staff" WholesalePrice="30" ModelRef="Umbrella" UseType="Offensive">
+  <Equipment RefName="WoodenStaff" DisplayName="Umbrella" Description="A sturdy long umbrella doubling as a focus" SlotRef="BothHands" Category="Staff" Rarity="Uncommon" BaseValue="30" ModelRef="Umbrella" UseType="Offensive">
     <Effects Defense="0.02" Strength="0.03" Magic="0.06" />
   </Equipment>
-  <Equipment RefName="OakStaff" DisplayName="Hiking Staff" Description="A carved walking stick from the gift shop" SlotRef="BothHands" Category="Staff" WholesalePrice="70" ModelRef="HikingStaff" UseType="Offensive">
+  <Equipment RefName="OakStaff" DisplayName="Hiking Staff" Description="A carved walking stick from the gift shop" SlotRef="BothHands" Category="Staff" Rarity="Uncommon" BaseValue="70" ModelRef="HikingStaff" UseType="Offensive">
     <Effects Defense="0.03" Strength="0.04" Magic="0.1" />
   </Equipment>
-  <Equipment RefName="MageStaff" DisplayName="Spirit Staff" Description="A ritual staff channeling onmyodo power" SlotRef="BothHands" Category="Staff" WholesalePrice="150" ModelRef="SpiritStaff" AffinityRef="Arcane" UseType="Offensive">
+  <Equipment RefName="MageStaff" DisplayName="Spirit Staff" Description="A ritual staff channeling onmyodo power" SlotRef="BothHands" Category="Staff" Rarity="Rare" BaseValue="150" ModelRef="SpiritStaff" AffinityRef="Arcane" UseType="Offensive">
     <Effects Magic="0.16" Mana="0.08" />
   </Equipment>
-  <Equipment RefName="FireStaff" DisplayName="Kagutsuchi Staff" Description="A staff burning with the fire kami's blessing" SlotRef="BothHands" Category="Staff" WholesalePrice="250" ModelRef="FireStaff" AffinityRef="Fire" UseType="Offensive">
+  <Equipment RefName="FireStaff" DisplayName="Kagutsuchi Staff" Description="A staff burning with the fire kami's blessing" SlotRef="BothHands" Category="Staff" Rarity="Rare" BaseValue="250" ModelRef="FireStaff" AffinityRef="Fire" UseType="Offensive" StatusEffectRef="Burn" StatusEffectChance="0.35">
     <Effects Strength="0.05" Magic="0.18" />
   </Equipment>
-  <Equipment RefName="FrostStaff" DisplayName="Suijin Staff" Description="A staff flowing with the water kami's chill" SlotRef="BothHands" Category="Staff" WholesalePrice="250" ModelRef="FrostStaff" AffinityRef="Water" UseType="Offensive">
+  <Equipment RefName="FrostStaff" DisplayName="Suijin Staff" Description="A staff flowing with the water kami's chill" SlotRef="BothHands" Category="Staff" Rarity="Rare" BaseValue="250" ModelRef="FrostStaff" AffinityRef="Water" UseType="Offensive" StatusEffectRef="Slow" StatusEffectChance="0.4">
     <Effects Defense="0.05" Magic="0.18" />
   </Equipment>
-  <Equipment RefName="StormStaff" DisplayName="Raijin Staff" Description="A staff crackling with the thunder god's power" SlotRef="BothHands" Category="Staff" WholesalePrice="250" ModelRef="StormStaff" AffinityRef="Storm" UseType="Offensive">
+  <Equipment RefName="StormStaff" DisplayName="Raijin Staff" Description="A staff crackling with the thunder god's power" SlotRef="BothHands" Category="Staff" Rarity="Rare" BaseValue="250" ModelRef="StormStaff" AffinityRef="Storm" UseType="Offensive">
     <Effects Speed="0.05" Magic="0.18" />
   </Equipment>
-  <Equipment RefName="HolyStaff" DisplayName="Amaterasu Staff" Description="A radiant staff blessed by the sun goddess" SlotRef="BothHands" Category="Staff" WholesalePrice="280" ModelRef="HolyStaff" AffinityRef="Holy" UseType="Offensive">
+  <Equipment RefName="HolyStaff" DisplayName="Amaterasu Staff" Description="A radiant staff blessed by the sun goddess" SlotRef="BothHands" Category="Staff" Rarity="Rare" BaseValue="280" ModelRef="HolyStaff" AffinityRef="Holy" UseType="Offensive">
     <Effects Health="0.05" Magic="0.15" Mana="0.08" />
   </Equipment>
-  <Equipment RefName="NecromancerStaff" DisplayName="Tsukuyomi Staff" Description="A shadowed staff touched by the moon god" SlotRef="BothHands" Category="Staff" WholesalePrice="300" ModelRef="MoonStaff" AffinityRef="Umbral" UseType="Offensive">
+  <Equipment RefName="NecromancerStaff" DisplayName="Tsukuyomi Staff" Description="A shadowed staff touched by the moon god" SlotRef="BothHands" Category="Staff" Rarity="Rare" BaseValue="300" ModelRef="MoonStaff" AffinityRef="Umbral" UseType="Offensive">
     <Effects Magic="0.2" Mana="0.1" />
+    <MinimumStats Magic="0.3" />
   </Equipment>
-  <Equipment RefName="ArchmageStaff" DisplayName="Celestial Staff" Description="A legendary staff connecting to all kami" SlotRef="BothHands" Category="Staff" WholesalePrice="600" ModelRef="CelestialStaff" AffinityRef="Arcane" UseType="Offensive">
+  <Equipment RefName="ArchmageStaff" DisplayName="Celestial Staff" Description="A legendary staff connecting to all kami" SlotRef="BothHands" Category="Staff" Rarity="Epic" BaseValue="600" ModelRef="CelestialStaff" AffinityRef="Arcane" UseType="Offensive">
     <Effects Magic="0.28" Mana="0.15" />
+    <MinimumStats Magic="0.35" />
   </Equipment>
-  <Equipment RefName="ApprenticeWand" DisplayName="Mechanical Pencil" Description="A student's pencil that focuses minor energy" SlotRef="MainHand" Category="Wand" WholesalePrice="30" ModelRef="MechPencil" UseType="Offensive">
+  <Equipment RefName="ApprenticeWand" DisplayName="Mechanical Pencil" Description="A student's pencil that focuses minor energy" SlotRef="MainHand" Category="Wand" Rarity="Uncommon" BaseValue="30" ModelRef="MechPencil" UseType="Offensive">
     <Effects Magic="0.08" />
   </Equipment>
-  <Equipment RefName="OakWand" DisplayName="Fountain Pen" Description="An elegant pen channeling refined power" SlotRef="MainHand" Category="Wand" WholesalePrice="60" ModelRef="FountainPen" UseType="Offensive">
+  <Equipment RefName="OakWand" DisplayName="Fountain Pen" Description="An elegant pen channeling refined power" SlotRef="MainHand" Category="Wand" Rarity="Uncommon" BaseValue="60" ModelRef="FountainPen" UseType="Offensive">
     <Effects Magic="0.1" />
   </Equipment>
-  <Equipment RefName="CrystalWand" DisplayName="Crystal Stylus" Description="A gemstone-tipped stylus of focused energy" SlotRef="MainHand" Category="Wand" WholesalePrice="150" ModelRef="CrystalStylus" AffinityRef="Arcane" UseType="Offensive">
+  <Equipment RefName="CrystalWand" DisplayName="Crystal Stylus" Description="A gemstone-tipped stylus of focused energy" SlotRef="MainHand" Category="Wand" Rarity="Rare" BaseValue="150" ModelRef="CrystalStylus" AffinityRef="Arcane" UseType="Offensive">
     <Effects Magic="0.16" Mana="0.06" />
   </Equipment>
-  <Equipment RefName="FireWand" DisplayName="Red Lighter" Description="A lighter flickering with supernatural flame" SlotRef="MainHand" Category="Wand" WholesalePrice="180" ModelRef="RedLighter" AffinityRef="Fire" UseType="Offensive">
+  <Equipment RefName="FireWand" DisplayName="Red Lighter" Description="A lighter flickering with supernatural flame" SlotRef="MainHand" Category="Wand" Rarity="Rare" BaseValue="180" ModelRef="RedLighter" AffinityRef="Fire" UseType="Offensive" StatusEffectRef="Burn" StatusEffectChance="0.4">
     <Effects Magic="0.18" />
   </Equipment>
-  <Equipment RefName="FrostWand" DisplayName="Ice Pack Wand" Description="A frozen compress radiating chill power" SlotRef="MainHand" Category="Wand" WholesalePrice="180" ModelRef="IcePackWand" AffinityRef="Water" UseType="Offensive">
+  <Equipment RefName="FrostWand" DisplayName="Ice Pack Wand" Description="A frozen compress radiating chill power" SlotRef="MainHand" Category="Wand" Rarity="Rare" BaseValue="180" ModelRef="IcePackWand" AffinityRef="Water" UseType="Offensive" StatusEffectRef="Slow" StatusEffectChance="0.4">
     <Effects Defense="0.04" Magic="0.16" />
   </Equipment>
-  <Equipment RefName="VoidWand" DisplayName="Black Stylus" Description="A void-touched implement of nothingness" SlotRef="MainHand" Category="Wand" WholesalePrice="350" ModelRef="BlackStylus" AffinityRef="Void" UseType="Offensive">
+  <Equipment RefName="VoidWand" DisplayName="Black Stylus" Description="A void-touched implement of nothingness" SlotRef="MainHand" Category="Wand" Rarity="Epic" BaseValue="350" ModelRef="BlackStylus" AffinityRef="Void" UseType="Offensive">
     <Effects Magic="0.22" Mana="0.1" />
   </Equipment>
-  <Equipment RefName="PrayerBeads" DisplayName="Juzu Beads" Description="Buddhist prayer beads carried by the shrine maiden" SlotRef="MainHand" Category="Focus" WholesalePrice="40" ModelRef="JuzuBeads" AffinityRef="Holy" UseType="Offensive">
+  <Equipment RefName="PrayerBeads" DisplayName="Juzu Beads" Description="Buddhist prayer beads carried by the shrine maiden" SlotRef="MainHand" Category="Focus" Rarity="Uncommon" BaseValue="40" ModelRef="JuzuBeads" AffinityRef="Holy" UseType="Offensive">
     <Effects Magic="0.08" Mana="0.04" />
   </Equipment>
-  <Equipment RefName="SummonerOrb" DisplayName="Spirit Stone" Description="A magatama bead resonating with spirit energy" SlotRef="MainHand" Category="Focus" WholesalePrice="100" ModelRef="Magatama" AffinityRef="Spirit" UseType="Offensive">
+  <Equipment RefName="SummonerOrb" DisplayName="Spirit Stone" Description="A magatama bead resonating with spirit energy" SlotRef="MainHand" Category="Focus" Rarity="Uncommon" BaseValue="100" ModelRef="Magatama" AffinityRef="Spirit" UseType="Offensive">
     <Effects Magic="0.12" Mana="0.05" />
   </Equipment>
-  <Equipment RefName="HolySymbol" DisplayName="Omamori Charm" Description="A protective amulet from the grand shrine" SlotRef="MainHand" Category="Focus" WholesalePrice="120" ModelRef="Omamori" AffinityRef="Holy" UseType="Offensive">
+  <Equipment RefName="HolySymbol" DisplayName="Omamori Charm" Description="A protective amulet from the grand shrine" SlotRef="MainHand" Category="Focus" Rarity="Uncommon" BaseValue="120" ModelRef="Omamori" AffinityRef="Holy" UseType="Offensive">
     <Effects Health="0.03" Magic="0.12" />
   </Equipment>
-  <Equipment RefName="CrystalBall" DisplayName="Spirit Phone" Description="A smartphone modified to detect supernatural phenomena" SlotRef="MainHand" Category="Focus" WholesalePrice="200" ModelRef="SpiritPhone" AffinityRef="Spirit" UseType="Offensive">
+  <Equipment RefName="CrystalBall" DisplayName="Spirit Phone" Description="A smartphone modified to detect supernatural phenomena" SlotRef="MainHand" Category="Focus" Rarity="Rare" BaseValue="200" ModelRef="SpiritPhone" AffinityRef="Spirit" UseType="Offensive">
     <Effects Magic="0.16" Mana="0.08" />
   </Equipment>
-  <Equipment RefName="SoulLantern" DisplayName="Paper Lantern" Description="A chochin lantern that traps wandering spirits" SlotRef="MainHand" Category="Focus" WholesalePrice="350" ModelRef="Chochin" AffinityRef="Void" UseType="Offensive">
+  <Equipment RefName="SoulLantern" DisplayName="Paper Lantern" Description="A chochin lantern that traps wandering spirits" SlotRef="MainHand" Category="Focus" Rarity="Rare" BaseValue="350" ModelRef="Chochin" AffinityRef="Void" UseType="Offensive">
     <Effects Magic="0.2" Mana="0.1" />
   </Equipment>
-  <Equipment RefName="ReliquaryHeart" DisplayName="Sacred Mirror" Description="A replica of the sacred mirror of Amaterasu" SlotRef="MainHand" Category="Focus" WholesalePrice="500" ModelRef="SacredMirror" AffinityRef="Holy" UseType="Offensive">
+  <Equipment RefName="ReliquaryHeart" DisplayName="Sacred Mirror" Description="A replica of the sacred mirror of Amaterasu" SlotRef="MainHand" Category="Focus" Rarity="Epic" BaseValue="500" ModelRef="SacredMirror" AffinityRef="Holy" UseType="Offensive">
     <Effects Health="0.08" Magic="0.22" Mana="0.08" />
   </Equipment>
-  <Equipment RefName="TinWhistle" DisplayName="Recorder" Description="A school music class recorder" SlotRef="BothHands" Category="Instrument" WholesalePrice="15" ModelRef="Recorder" UseType="Offensive">
+  <Equipment RefName="TinWhistle" DisplayName="Recorder" Description="A school music class recorder" SlotRef="BothHands" Category="Instrument" Rarity="Common" BaseValue="15" ModelRef="Recorder" UseType="Offensive">
     <Effects Speed="0.02" Magic="0.04" />
   </Equipment>
-  <Equipment RefName="WoodenFlute" DisplayName="Shinobue" Description="A traditional bamboo flute" SlotRef="BothHands" Category="Instrument" WholesalePrice="40" ModelRef="Shinobue" UseType="Offensive">
+  <Equipment RefName="WoodenFlute" DisplayName="Shinobue" Description="A traditional bamboo flute" SlotRef="BothHands" Category="Instrument" Rarity="Uncommon" BaseValue="40" ModelRef="Shinobue" UseType="Offensive">
     <Effects Speed="0.03" Magic="0.08" />
   </Equipment>
-  <Equipment RefName="Lute" DisplayName="Acoustic Guitar" Description="A guitar borrowed from the light music club" SlotRef="BothHands" Category="Instrument" WholesalePrice="60" ModelRef="AcousticGuitar" UseType="Offensive">
+  <Equipment RefName="Lute" DisplayName="Acoustic Guitar" Description="A guitar borrowed from the light music club" SlotRef="BothHands" Category="Instrument" Rarity="Uncommon" BaseValue="60" ModelRef="AcousticGuitar" UseType="Offensive">
     <Effects Speed="0.03" Magic="0.1" />
   </Equipment>
-  <Equipment RefName="Harp" DisplayName="Koto" Description="A traditional thirteen-string zither" SlotRef="BothHands" Category="Instrument" WholesalePrice="120" ModelRef="Koto" UseType="Offensive">
+  <Equipment RefName="Harp" DisplayName="Koto" Description="A traditional thirteen-string zither" SlotRef="BothHands" Category="Instrument" Rarity="Uncommon" BaseValue="120" ModelRef="Koto" UseType="Offensive">
     <Effects Speed="0.04" Magic="0.12" />
   </Equipment>
-  <Equipment RefName="MasterworkLute" DisplayName="Electric Guitar" Description="A sleek electric guitar with spirit resonance" SlotRef="BothHands" Category="Instrument" WholesalePrice="200" ModelRef="ElectricGuitar" AffinityRef="Spirit" UseType="Offensive">
+  <Equipment RefName="MasterworkLute" DisplayName="Electric Guitar" Description="A sleek electric guitar with spirit resonance" SlotRef="BothHands" Category="Instrument" Rarity="Rare" BaseValue="200" ModelRef="ElectricGuitar" AffinityRef="Spirit" UseType="Offensive">
     <Effects Speed="0.06" Magic="0.16" Mana="0.05" />
   </Equipment>
-  <Equipment RefName="EnchantedLute" DisplayName="Spirit Guitar" Description="A guitar that plays melodies from another world" SlotRef="BothHands" Category="Instrument" WholesalePrice="300" ModelRef="SpiritGuitar" AffinityRef="Spirit" UseType="Offensive">
+  <Equipment RefName="EnchantedLute" DisplayName="Spirit Guitar" Description="A guitar that plays melodies from another world" SlotRef="BothHands" Category="Instrument" Rarity="Rare" BaseValue="300" ModelRef="SpiritGuitar" AffinityRef="Spirit" UseType="Offensive">
     <Effects Speed="0.06" Magic="0.18" Mana="0.08" />
   </Equipment>
-  <Equipment RefName="SirenHarp" DisplayName="Celestial Koto" Description="A legendary koto whose music moves the heavens" SlotRef="BothHands" Category="Instrument" WholesalePrice="500" ModelRef="CelestialKoto" AffinityRef="Spirit" UseType="Offensive">
+  <Equipment RefName="SirenHarp" DisplayName="Celestial Koto" Description="A legendary koto whose music moves the heavens" SlotRef="BothHands" Category="Instrument" Rarity="Epic" BaseValue="500" ModelRef="CelestialKoto" AffinityRef="Spirit" UseType="Offensive">
     <Effects Speed="0.08" Magic="0.24" Mana="0.1" />
   </Equipment>
-  <Equipment RefName="Buckler" DisplayName="School Bag" Description="A sturdy bag held up for protection" SlotRef="OffHand" Category="Shield" WholesalePrice="20" ModelRef="SchoolBag">
+  <Equipment RefName="Buckler" DisplayName="School Bag" Description="A sturdy bag held up for protection" SlotRef="OffHand" Category="Shield" Rarity="Common" BaseValue="20" ModelRef="SchoolBag">
     <Effects Defense="0.06" Speed="0.01" />
   </Equipment>
-  <Equipment RefName="WoodenShield" DisplayName="Cafeteria Tray" Description="A metal tray from the school cafeteria" SlotRef="OffHand" Category="Shield" WholesalePrice="35" ModelRef="CafeTray">
+  <Equipment RefName="WoodenShield" DisplayName="Cafeteria Tray" Description="A metal tray from the school cafeteria" SlotRef="OffHand" Category="Shield" Rarity="Uncommon" BaseValue="35" ModelRef="CafeTray">
     <Effects Health="0.03" Defense="0.1" Speed="-0.02" />
   </Equipment>
-  <Equipment RefName="IronShield" DisplayName="Trash Can Lid" Description="A metal lid repurposed as a shield" SlotRef="OffHand" Category="Shield" WholesalePrice="80" ModelRef="TrashLid">
+  <Equipment RefName="IronShield" DisplayName="Trash Can Lid" Description="A metal lid repurposed as a shield" SlotRef="OffHand" Category="Shield" Rarity="Uncommon" BaseValue="80" ModelRef="TrashLid">
     <Effects Health="0.05" Defense="0.14" Speed="-0.03" />
   </Equipment>
-  <Equipment RefName="SteelShield" DisplayName="Road Sign" Description="A stop sign pulled from the ground" SlotRef="OffHand" Category="Shield" WholesalePrice="150" ModelRef="RoadSign">
+  <Equipment RefName="SteelShield" DisplayName="Road Sign" Description="A stop sign pulled from the ground" SlotRef="OffHand" Category="Shield" Rarity="Uncommon" BaseValue="150" ModelRef="RoadSign">
     <Effects Health="0.08" Defense="0.18" Speed="-0.03" />
   </Equipment>
-  <Equipment RefName="TowerShield" DisplayName="Riot Shield" Description="Police riot gear found in storage" SlotRef="OffHand" Category="Shield" WholesalePrice="250" ModelRef="RiotShield">
+  <Equipment RefName="TowerShield" DisplayName="Riot Shield" Description="Police riot gear found in storage" SlotRef="OffHand" Category="Shield" Rarity="Rare" BaseValue="250" ModelRef="RiotShield" OnDefendStatusEffectRef="DefenseBoost">
     <Effects Health="0.1" Defense="0.25" Speed="-0.1" />
   </Equipment>
-  <Equipment RefName="KiteShield" DisplayName="Skateboard" Description="A skateboard held defensively" SlotRef="OffHand" Category="Shield" WholesalePrice="200" ModelRef="Skateboard">
+  <Equipment RefName="KiteShield" DisplayName="Skateboard" Description="A skateboard held defensively" SlotRef="OffHand" Category="Shield" Rarity="Rare" BaseValue="200" ModelRef="Skateboard" OnDefendStatusEffectRef="DefenseBoost">
     <Effects Health="0.08" Defense="0.2" Speed="-0.04" />
   </Equipment>
-  <Equipment RefName="SpikedShield" DisplayName="Spiked Board" Description="A board modified with protruding nails" SlotRef="OffHand" Category="Shield" WholesalePrice="180" ModelRef="SpikedBoard">
+  <Equipment RefName="SpikedShield" DisplayName="Spiked Board" Description="A board modified with protruding nails" SlotRef="OffHand" Category="Shield" Rarity="Rare" BaseValue="180" ModelRef="SpikedBoard" OnDefendStatusEffectRef="StrengthBoost" OnDefendStatusEffectChance="0.75">
     <Effects Defense="0.15" Strength="0.05" Speed="-0.03" />
   </Equipment>
-  <Equipment RefName="HolyShield" DisplayName="Sacred Shield" Description="A shimenawa-wrapped barrier of holy power" SlotRef="OffHand" Category="Shield" WholesalePrice="350" ModelRef="SacredShield" AffinityRef="Holy">
+  <Equipment RefName="HolyShield" DisplayName="Sacred Shield" Description="A shimenawa-wrapped barrier of holy power" SlotRef="OffHand" Category="Shield" Rarity="Rare" BaseValue="350" ModelRef="SacredShield" AffinityRef="Holy" OnDefendStatusEffectRef="MagicBoost" OnDefendStatusEffectChance="0.75">
     <Effects Health="0.08" Defense="0.2" Magic="0.05" />
   </Equipment>
-  <Equipment RefName="DragonShield" DisplayName="Dragon Aegis" Description="A spirit shield bearing a dragon's protection" SlotRef="OffHand" Category="Shield" WholesalePrice="500" ModelRef="DragonAegis" AffinityRef="Fire">
+  <Equipment RefName="DragonShield" DisplayName="Dragon Aegis" Description="A spirit shield bearing a dragon's protection" SlotRef="OffHand" Category="Shield" Rarity="Epic" BaseValue="500" ModelRef="DragonAegis" AffinityRef="Fire" OnDefendStatusEffectRef="DefenseBoost">
     <Effects Health="0.12" Defense="0.28" Speed="-0.08" />
   </Equipment>
-  <Equipment RefName="ClothCap" DisplayName="Baseball Cap" Description="A casual cap offering minimal protection" SlotRef="Head" Category="ArmorLight" WholesalePrice="10" ModelRef="BaseballCap">
-    <Effects Defense="0.02" />
+  <Equipment RefName="ClothCap" DisplayName="Baseball Cap" Description="A casual cap offering minimal protection" SlotRef="Head" Category="ArmorLight" Rarity="Common" BaseValue="10" ModelRef="BaseballCap">
+    <Effects Defense="0.02" Temperature="0.02" />
   </Equipment>
-  <Equipment RefName="LeatherCap" DisplayName="Beanie" Description="A warm knit cap" SlotRef="Head" Category="ArmorLight" WholesalePrice="25" ModelRef="Beanie">
-    <Effects Defense="0.04" Speed="0.01" />
+  <Equipment RefName="LeatherCap" DisplayName="Beanie" Description="A warm knit cap" SlotRef="Head" Category="ArmorLight" Rarity="Uncommon" BaseValue="25" ModelRef="Beanie">
+    <Effects Defense="0.04" Speed="0.01" Temperature="0.03" />
   </Equipment>
-  <Equipment RefName="HoodedCowl" DisplayName="Hoodie" Description="A hoodie pulled up for anonymity" SlotRef="Head" Category="ArmorLight" WholesalePrice="40" ModelRef="Hoodie">
-    <Effects Defense="0.03" Speed="0.03" />
+  <Equipment RefName="HoodedCowl" DisplayName="Hoodie" Description="A hoodie pulled up for anonymity" SlotRef="Head" Category="ArmorLight" Rarity="Uncommon" BaseValue="40" ModelRef="Hoodie">
+    <Effects Defense="0.03" Speed="0.03" Temperature="0.04" />
   </Equipment>
-  <Equipment RefName="RangerHood" DisplayName="Camo Bandana" Description="A camouflage bandana from the surplus store" SlotRef="Head" Category="ArmorLight" WholesalePrice="80" ModelRef="CamoBandana" AffinityRef="Wild">
-    <Effects Defense="0.05" Speed="0.04" />
+  <Equipment RefName="RangerHood" DisplayName="Camo Bandana" Description="A camouflage bandana from the surplus store" SlotRef="Head" Category="ArmorLight" Rarity="Uncommon" BaseValue="80" ModelRef="CamoBandana" AffinityRef="Wild">
+    <Effects Defense="0.05" Speed="0.04" Temperature="0.05" />
   </Equipment>
-  <Equipment RefName="ChainCoif" DisplayName="Bike Helmet" Description="A bicycle helmet for head protection" SlotRef="Head" Category="ArmorMedium" WholesalePrice="60" ModelRef="BikeHelmet">
-    <Effects Defense="0.08" Speed="-0.01" />
+  <Equipment RefName="ChainCoif" DisplayName="Bike Helmet" Description="A bicycle helmet for head protection" SlotRef="Head" Category="ArmorMedium" Rarity="Uncommon" BaseValue="60" ModelRef="BikeHelmet">
+    <Effects Defense="0.08" Speed="-0.01" Temperature="0.04" />
   </Equipment>
-  <Equipment RefName="SteelHelm" DisplayName="Hard Hat" Description="A construction worker's safety helmet" SlotRef="Head" Category="ArmorMedium" WholesalePrice="100" ModelRef="HardHat">
-    <Effects Health="0.03" Defense="0.1" Speed="-0.02" />
+  <Equipment RefName="SteelHelm" DisplayName="Hard Hat" Description="A construction worker's safety helmet" SlotRef="Head" Category="ArmorMedium" Rarity="Uncommon" BaseValue="100" ModelRef="HardHat">
+    <Effects Health="0.03" Defense="0.1" Speed="-0.02" Temperature="0.05" />
   </Equipment>
-  <Equipment RefName="GreatHelm" DisplayName="Motorcycle Helmet" Description="A full-face motorcycle helmet" SlotRef="Head" Category="ArmorHeavy" WholesalePrice="180" ModelRef="MotoHelmet">
-    <Effects Health="0.05" Defense="0.15" Speed="-0.04" />
+  <Equipment RefName="GreatHelm" DisplayName="Motorcycle Helmet" Description="A full-face motorcycle helmet" SlotRef="Head" Category="ArmorHeavy" Rarity="Rare" BaseValue="180" ModelRef="MotoHelmet">
+    <Effects Health="0.05" Defense="0.15" Speed="-0.04" Temperature="0.06" />
   </Equipment>
-  <Equipment RefName="KnightsHelm" DisplayName="Kendo Men" Description="A kendo face protector mask" SlotRef="Head" Category="ArmorHeavy" WholesalePrice="280" ModelRef="KendoMen">
-    <Effects Health="0.06" Defense="0.18" Speed="-0.03" />
+  <Equipment RefName="KnightsHelm" DisplayName="Kendo Men" Description="A kendo face protector mask" SlotRef="Head" Category="ArmorHeavy" Rarity="Rare" BaseValue="280" ModelRef="KendoMen">
+    <Effects Health="0.06" Defense="0.18" Speed="-0.03" Temperature="0.07" />
   </Equipment>
-  <Equipment RefName="WizardHat" DisplayName="Witch Hat" Description="A novelty witch hat from the gift shop" SlotRef="Head" Category="ArmorRobes" WholesalePrice="50" ModelRef="WitchHat">
-    <Effects Defense="0.02" Magic="0.06" />
+  <Equipment RefName="WizardHat" DisplayName="Witch Hat" Description="A novelty witch hat from the gift shop" SlotRef="Head" Category="ArmorRobes" Rarity="Uncommon" BaseValue="50" ModelRef="WitchHat">
+    <Effects Defense="0.02" Magic="0.06" Temperature="0.03" />
   </Equipment>
-  <Equipment RefName="MageCrown" DisplayName="Spirit Headband" Description="A hachimaki headband channeling mental focus" SlotRef="Head" Category="ArmorRobes" WholesalePrice="150" ModelRef="Hachimaki" AffinityRef="Arcane">
-    <Effects Defense="0.03" Magic="0.12" Mana="0.05" />
+  <Equipment RefName="MageCrown" DisplayName="Spirit Headband" Description="A hachimaki headband channeling mental focus" SlotRef="Head" Category="ArmorRobes" Rarity="Rare" BaseValue="150" ModelRef="Hachimaki" AffinityRef="Arcane">
+    <Effects Defense="0.03" Magic="0.12" Temperature="0.04" Mana="0.05" />
   </Equipment>
-  <Equipment RefName="HolyMitre" DisplayName="Miko Headdress" Description="A shrine maiden's ceremonial headpiece" SlotRef="Head" Category="ArmorRobes" WholesalePrice="180" ModelRef="MikoHeaddress" AffinityRef="Holy">
-    <Effects Health="0.04" Defense="0.04" Magic="0.1" />
+  <Equipment RefName="HolyMitre" DisplayName="Miko Headdress" Description="A shrine maiden's ceremonial headpiece" SlotRef="Head" Category="ArmorRobes" Rarity="Rare" BaseValue="180" ModelRef="MikoHeaddress" AffinityRef="Holy">
+    <Effects Health="0.04" Defense="0.04" Magic="0.1" Temperature="0.05" />
   </Equipment>
-  <Equipment RefName="ClothTunic" DisplayName="T-Shirt" Description="A plain cotton t-shirt" SlotRef="Chest" Category="ArmorLight" WholesalePrice="15" ModelRef="TShirt">
-    <Effects Defense="0.03" />
+  <Equipment RefName="ClothTunic" DisplayName="T-Shirt" Description="A plain cotton t-shirt" SlotRef="Chest" Category="ArmorLight" Rarity="Common" BaseValue="15" ModelRef="TShirt">
+    <Effects Defense="0.03" Temperature="0.03" />
   </Equipment>
-  <Equipment RefName="LeatherVest" DisplayName="School Vest" Description="A standard school uniform vest" SlotRef="Chest" Category="ArmorLight" WholesalePrice="35" ModelRef="SchoolVest">
-    <Effects Defense="0.06" Speed="0.02" />
+  <Equipment RefName="LeatherVest" DisplayName="School Vest" Description="A standard school uniform vest" SlotRef="Chest" Category="ArmorLight" Rarity="Uncommon" BaseValue="35" ModelRef="SchoolVest">
+    <Effects Defense="0.06" Speed="0.02" Temperature="0.05" />
   </Equipment>
-  <Equipment RefName="LeatherArmor" DisplayName="Track Jacket" Description="A light athletic jacket" SlotRef="Chest" Category="ArmorLight" WholesalePrice="60" ModelRef="TrackJacket">
-    <Effects Health="0.03" Defense="0.1" Speed="0.01" />
+  <Equipment RefName="LeatherArmor" DisplayName="Track Jacket" Description="A light athletic jacket" SlotRef="Chest" Category="ArmorLight" Rarity="Uncommon" BaseValue="60" ModelRef="TrackJacket">
+    <Effects Health="0.03" Defense="0.1" Speed="0.01" Temperature="0.08" />
   </Equipment>
-  <Equipment RefName="StuddedLeather" DisplayName="Denim Jacket" Description="A sturdy denim jacket with metal buttons" SlotRef="Chest" Category="ArmorLight" WholesalePrice="100" ModelRef="DenimJacket">
-    <Effects Health="0.05" Defense="0.12" />
+  <Equipment RefName="StuddedLeather" DisplayName="Denim Jacket" Description="A sturdy denim jacket with metal buttons" SlotRef="Chest" Category="ArmorLight" Rarity="Uncommon" BaseValue="100" ModelRef="DenimJacket">
+    <Effects Health="0.05" Defense="0.12" Temperature="0.08" />
   </Equipment>
-  <Equipment RefName="RangerLeather" DisplayName="Hiking Vest" Description="A multi-pocket outdoor vest" SlotRef="Chest" Category="ArmorLight" WholesalePrice="150" ModelRef="HikingVest" AffinityRef="Wild">
-    <Effects Health="0.05" Defense="0.12" Speed="0.05" />
+  <Equipment RefName="RangerLeather" DisplayName="Hiking Vest" Description="A multi-pocket outdoor vest" SlotRef="Chest" Category="ArmorLight" Rarity="Rare" BaseValue="150" ModelRef="HikingVest" AffinityRef="Wild">
+    <Effects Health="0.05" Defense="0.12" Speed="0.05" Temperature="0.1" />
   </Equipment>
-  <Equipment RefName="ShadowLeather" DisplayName="Black Hoodie" Description="A dark hoodie that seems to absorb light" SlotRef="Chest" Category="ArmorLight" WholesalePrice="250" ModelRef="BlackHoodie" AffinityRef="Umbral">
-    <Effects Defense="0.12" Speed="0.08" />
+  <Equipment RefName="ShadowLeather" DisplayName="Black Hoodie" Description="A dark hoodie that seems to absorb light" SlotRef="Chest" Category="ArmorLight" Rarity="Rare" BaseValue="250" ModelRef="BlackHoodie" AffinityRef="Umbral">
+    <Effects Defense="0.12" Speed="0.08" Temperature="0.06" />
   </Equipment>
-  <Equipment RefName="ChainShirt" DisplayName="Padded Jacket" Description="A winter jacket with quilted padding" SlotRef="Chest" Category="ArmorMedium" WholesalePrice="80" ModelRef="PaddedJacket">
-    <Effects Health="0.06" Defense="0.12" Speed="-0.01" />
+  <Equipment RefName="ChainShirt" DisplayName="Padded Jacket" Description="A winter jacket with quilted padding" SlotRef="Chest" Category="ArmorMedium" Rarity="Uncommon" BaseValue="80" ModelRef="PaddedJacket">
+    <Effects Health="0.06" Defense="0.12" Speed="-0.01" Temperature="0.06" />
   </Equipment>
-  <Equipment RefName="ChainmailArmor" DisplayName="Sports Padding" Description="Athletic padding worn under clothes" SlotRef="Chest" Category="ArmorMedium" WholesalePrice="140" ModelRef="SportsPadding">
-    <Effects Health="0.1" Defense="0.16" Speed="-0.02" />
+  <Equipment RefName="ChainmailArmor" DisplayName="Sports Padding" Description="Athletic padding worn under clothes" SlotRef="Chest" Category="ArmorMedium" Rarity="Uncommon" BaseValue="140" ModelRef="SportsPadding">
+    <Effects Health="0.1" Defense="0.16" Speed="-0.02" Temperature="0.1" />
   </Equipment>
-  <Equipment RefName="ScaleMail" DisplayName="Motorcycle Jacket" Description="A leather biker jacket with armor inserts" SlotRef="Chest" Category="ArmorMedium" WholesalePrice="200" ModelRef="BikerJacket">
-    <Effects Health="0.12" Defense="0.18" Speed="-0.03" />
+  <Equipment RefName="ScaleMail" DisplayName="Motorcycle Jacket" Description="A leather biker jacket with armor inserts" SlotRef="Chest" Category="ArmorMedium" Rarity="Rare" BaseValue="200" ModelRef="BikerJacket">
+    <Effects Health="0.12" Defense="0.18" Speed="-0.03" Temperature="0.12" />
   </Equipment>
-  <Equipment RefName="Brigandine" DisplayName="Security Vest" Description="A protective vest from the security office" SlotRef="Chest" Category="ArmorMedium" WholesalePrice="250" ModelRef="SecurityVest">
-    <Effects Health="0.12" Defense="0.2" Speed="-0.02" />
+  <Equipment RefName="Brigandine" DisplayName="Security Vest" Description="A protective vest from the security office" SlotRef="Chest" Category="ArmorMedium" Rarity="Rare" BaseValue="250" ModelRef="SecurityVest">
+    <Effects Health="0.12" Defense="0.2" Speed="-0.02" Temperature="0.12" />
   </Equipment>
-  <Equipment RefName="BreastPlate" DisplayName="Kendo Do" Description="A kendo chest protector" SlotRef="Chest" Category="ArmorHeavy" WholesalePrice="200" ModelRef="KendoDo">
-    <Effects Health="0.12" Defense="0.2" Speed="-0.04" />
+  <Equipment RefName="BreastPlate" DisplayName="Kendo Do" Description="A kendo chest protector" SlotRef="Chest" Category="ArmorHeavy" Rarity="Rare" BaseValue="200" ModelRef="KendoDo">
+    <Effects Health="0.12" Defense="0.2" Speed="-0.04" Temperature="0.12" />
   </Equipment>
-  <Equipment RefName="HalfPlate" DisplayName="Catcher Gear" Description="Baseball catcher's chest protection" SlotRef="Chest" Category="ArmorHeavy" WholesalePrice="300" ModelRef="CatcherGear">
-    <Effects Health="0.15" Defense="0.24" Speed="-0.05" />
+  <Equipment RefName="HalfPlate" DisplayName="Catcher Gear" Description="Baseball catcher's chest protection" SlotRef="Chest" Category="ArmorHeavy" Rarity="Rare" BaseValue="300" ModelRef="CatcherGear">
+    <Effects Health="0.15" Defense="0.24" Speed="-0.05" Temperature="0.15" />
   </Equipment>
-  <Equipment RefName="PlateArmor" DisplayName="Riot Armor" Description="Police riot gear from storage" SlotRef="Chest" Category="ArmorHeavy" WholesalePrice="450" ModelRef="RiotArmor">
-    <Effects Health="0.18" Defense="0.28" Strength="0.03" Speed="-0.08" />
+  <Equipment RefName="PlateArmor" DisplayName="Riot Armor" Description="Police riot gear from storage" SlotRef="Chest" Category="ArmorHeavy" Rarity="Rare" BaseValue="450" ModelRef="RiotArmor">
+    <Effects Health="0.18" Defense="0.28" Strength="0.03" Speed="-0.08" Temperature="0.18" />
   </Equipment>
-  <Equipment RefName="KnightsArmor" DisplayName="Spirit Armor" Description="Ethereal armor manifested from inner strength" SlotRef="Chest" Category="ArmorHeavy" WholesalePrice="600" ModelRef="SpiritArmor">
-    <Effects Health="0.2" Defense="0.32" Strength="0.05" Speed="-0.05" />
+  <Equipment RefName="KnightsArmor" DisplayName="Spirit Armor" Description="Ethereal armor manifested from inner strength" SlotRef="Chest" Category="ArmorHeavy" Rarity="Epic" BaseValue="600" ModelRef="SpiritArmor" OnDefendStatusEffectRef="DefenseBoost">
+    <Effects Health="0.2" Defense="0.32" Strength="0.05" Speed="-0.05" Temperature="0.2" />
   </Equipment>
-  <Equipment RefName="SimpleRobe" DisplayName="School Uniform" Description="Standard issue school uniform" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="20" ModelRef="SchoolUniform">
-    <Effects Defense="0.02" Magic="0.04" />
+  <Equipment RefName="FurArmor" DisplayName="Heavy Winter Jacket" Description="A thick down winter jacket from the sports store" SlotRef="Chest" Category="ArmorHeavy" Rarity="Uncommon" BaseValue="300" ModelRef="FurArmor">
+    <Effects Defense="0.08" Speed="-0.02" Temperature="0.25" />
   </Equipment>
-  <Equipment RefName="ScholarsRobe" DisplayName="Lab Coat" Description="A white laboratory coat" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="50" ModelRef="LabCoat">
-    <Effects Defense="0.03" Magic="0.08" Mana="0.04" />
+  <Equipment RefName="HeavyParka" DisplayName="School Parka" Description="A school-issue winter parka with a deep fur-lined hood" SlotRef="Chest" Category="ArmorMedium" Rarity="Uncommon" BaseValue="220" ModelRef="HeavyParka">
+    <Effects Defense="0.05" Speed="-0.01" Temperature="0.22" />
   </Equipment>
-  <Equipment RefName="ElderRobes" DisplayName="Priest Robes" Description="Traditional Shinto priest vestments" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="100" ModelRef="PriestRobes" AffinityRef="Spirit">
-    <Effects Defense="0.04" Magic="0.12" Mana="0.06" />
+  <Equipment RefName="SimpleRobe" DisplayName="School Uniform" Description="Standard issue school uniform" SlotRef="Chest" Category="ArmorRobes" Rarity="Common" BaseValue="20" ModelRef="SchoolUniform">
+    <Effects Defense="0.02" Magic="0.04" Temperature="0.04" />
   </Equipment>
-  <Equipment RefName="WizardRobes" DisplayName="Occult Robe" Description="A mysterious robe from the occult club" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="180" ModelRef="OccultRobe" AffinityRef="Arcane">
-    <Effects Defense="0.05" Magic="0.18" Mana="0.1" />
+  <Equipment RefName="ScholarsRobe" DisplayName="Lab Coat" Description="A white laboratory coat" SlotRef="Chest" Category="ArmorRobes" Rarity="Uncommon" BaseValue="50" ModelRef="LabCoat">
+    <Effects Defense="0.03" Magic="0.08" Temperature="0.06" Mana="0.04" />
   </Equipment>
-  <Equipment RefName="ArchmageRobes" DisplayName="Celestial Robe" Description="Robes woven from starlight and spirit" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="400" ModelRef="CelestialRobe" AffinityRef="Arcane">
-    <Effects Defense="0.06" Magic="0.25" Mana="0.15" />
+  <Equipment RefName="ElderRobes" DisplayName="Priest Robes" Description="Traditional Shinto priest vestments" SlotRef="Chest" Category="ArmorRobes" Rarity="Uncommon" BaseValue="100" ModelRef="PriestRobes" AffinityRef="Spirit">
+    <Effects Defense="0.04" Magic="0.12" Temperature="0.08" Mana="0.06" />
   </Equipment>
-  <Equipment RefName="ClericVestments" DisplayName="Miko Outfit" Description="A shrine maiden's traditional attire" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="150" ModelRef="MikoOutfit" AffinityRef="Holy">
-    <Effects Health="0.08" Defense="0.06" Magic="0.12" />
+  <Equipment RefName="WizardRobes" DisplayName="Occult Robe" Description="A mysterious robe from the occult club" SlotRef="Chest" Category="ArmorRobes" Rarity="Rare" BaseValue="180" ModelRef="OccultRobe" AffinityRef="Arcane">
+    <Effects Defense="0.05" Magic="0.18" Temperature="0.1" Mana="0.1" />
   </Equipment>
-  <Equipment RefName="HighPriestRobes" DisplayName="Divine Vestments" Description="Sacred robes blessed by Amaterasu herself" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="350" ModelRef="DivineVestments" AffinityRef="Holy">
-    <Effects Health="0.12" Defense="0.08" Magic="0.18" />
+  <Equipment RefName="ArchmageRobes" DisplayName="Celestial Robe" Description="Robes woven from starlight and spirit" SlotRef="Chest" Category="ArmorRobes" Rarity="Epic" BaseValue="400" ModelRef="CelestialRobe" AffinityRef="Arcane">
+    <Effects Defense="0.06" Magic="0.25" Temperature="0.12" Mana="0.15" />
   </Equipment>
-  <Equipment RefName="ClothPants" DisplayName="School Pants" Description="Standard uniform trousers" SlotRef="Legs" Category="ArmorLight" WholesalePrice="10" ModelRef="SchoolPants">
-    <Effects Defense="0.02" />
+  <Equipment RefName="ClericVestments" DisplayName="Miko Outfit" Description="A shrine maiden's traditional attire" SlotRef="Chest" Category="ArmorRobes" Rarity="Rare" BaseValue="150" ModelRef="MikoOutfit" AffinityRef="Holy">
+    <Effects Health="0.08" Defense="0.06" Magic="0.12" Temperature="0.1" />
   </Equipment>
-  <Equipment RefName="LeatherLeggings" DisplayName="Jeans" Description="Durable denim jeans" SlotRef="Legs" Category="ArmorLight" WholesalePrice="30" ModelRef="Jeans">
-    <Effects Defense="0.05" Speed="0.01" />
+  <Equipment RefName="HighPriestRobes" DisplayName="Divine Vestments" Description="Sacred robes blessed by Amaterasu herself" SlotRef="Chest" Category="ArmorRobes" Rarity="Epic" BaseValue="350" ModelRef="DivineVestments" AffinityRef="Holy">
+    <Effects Health="0.12" Defense="0.08" Magic="0.18" Temperature="0.12" />
   </Equipment>
-  <Equipment RefName="ChainLeggings" DisplayName="Cargo Pants" Description="Heavy-duty pants with many pockets" SlotRef="Legs" Category="ArmorMedium" WholesalePrice="70" ModelRef="CargoPants">
-    <Effects Health="0.03" Defense="0.1" Speed="-0.01" />
+  <Equipment RefName="ClothPants" DisplayName="School Pants" Description="Standard uniform trousers" SlotRef="Legs" Category="ArmorLight" Rarity="Common" BaseValue="10" ModelRef="SchoolPants">
+    <Effects Defense="0.02" Temperature="0.02" />
   </Equipment>
-  <Equipment RefName="PlateLeggings" DisplayName="Kendo Tare" Description="Kendo hip and thigh protector" SlotRef="Legs" Category="ArmorHeavy" WholesalePrice="180" ModelRef="KendoTare">
-    <Effects Health="0.06" Defense="0.16" Speed="-0.04" />
+  <Equipment RefName="LeatherLeggings" DisplayName="Jeans" Description="Durable denim jeans" SlotRef="Legs" Category="ArmorLight" Rarity="Uncommon" BaseValue="30" ModelRef="Jeans">
+    <Effects Defense="0.05" Speed="0.01" Temperature="0.04" />
   </Equipment>
-  <Equipment RefName="MageLeggings" DisplayName="Hakama Pants" Description="Traditional wide-legged trousers" SlotRef="Legs" Category="ArmorRobes" WholesalePrice="80" ModelRef="Hakama">
-    <Effects Defense="0.03" Magic="0.06" />
+  <Equipment RefName="ChainLeggings" DisplayName="Cargo Pants" Description="Heavy-duty pants with many pockets" SlotRef="Legs" Category="ArmorMedium" Rarity="Uncommon" BaseValue="70" ModelRef="CargoPants">
+    <Effects Health="0.03" Defense="0.1" Speed="-0.01" Temperature="0.05" />
   </Equipment>
-  <Equipment RefName="Sandals" DisplayName="School Slippers" Description="Indoor school slippers" SlotRef="Feet" Category="ArmorLight" WholesalePrice="5" ModelRef="SchoolSlippers">
-    <Effects Speed="0.02" />
+  <Equipment RefName="PlateLeggings" DisplayName="Kendo Tare" Description="Kendo hip and thigh protector" SlotRef="Legs" Category="ArmorHeavy" Rarity="Rare" BaseValue="180" ModelRef="KendoTare">
+    <Effects Health="0.06" Defense="0.16" Speed="-0.04" Temperature="0.08" />
   </Equipment>
-  <Equipment RefName="LeatherBoots" DisplayName="Sneakers" Description="Comfortable athletic sneakers" SlotRef="Feet" Category="ArmorLight" WholesalePrice="25" ModelRef="Sneakers">
-    <Effects Defense="0.03" Speed="0.03" />
+  <Equipment RefName="MageLeggings" DisplayName="Hakama Pants" Description="Traditional wide-legged trousers" SlotRef="Legs" Category="ArmorRobes" Rarity="Uncommon" BaseValue="80" ModelRef="Hakama">
+    <Effects Defense="0.03" Magic="0.06" Temperature="0.03" />
   </Equipment>
-  <Equipment RefName="RangerBoots" DisplayName="Hiking Boots" Description="Sturdy boots for rough terrain" SlotRef="Feet" Category="ArmorLight" WholesalePrice="80" ModelRef="HikingBoots" AffinityRef="Wild">
-    <Effects Defense="0.04" Speed="0.06" />
+  <Equipment RefName="Sandals" DisplayName="School Slippers" Description="Indoor school slippers" SlotRef="Feet" Category="ArmorLight" Rarity="Common" BaseValue="5" ModelRef="SchoolSlippers">
+    <Effects Speed="0.02" Temperature="0.01" />
   </Equipment>
-  <Equipment RefName="ChainBoots" DisplayName="Work Boots" Description="Heavy-duty construction boots" SlotRef="Feet" Category="ArmorMedium" WholesalePrice="60" ModelRef="WorkBoots">
-    <Effects Defense="0.08" Speed="-0.01" />
+  <Equipment RefName="LeatherBoots" DisplayName="Sneakers" Description="Comfortable athletic sneakers" SlotRef="Feet" Category="ArmorLight" Rarity="Uncommon" BaseValue="25" ModelRef="Sneakers">
+    <Effects Defense="0.03" Speed="0.03" Temperature="0.04" />
   </Equipment>
-  <Equipment RefName="PlateBoots" DisplayName="Steel Toe Boots" Description="Industrial boots with steel reinforcement" SlotRef="Feet" Category="ArmorHeavy" WholesalePrice="150" ModelRef="SteelToeBoots">
-    <Effects Health="0.03" Defense="0.12" Speed="-0.03" />
+  <Equipment RefName="RangerBoots" DisplayName="Hiking Boots" Description="Sturdy boots for rough terrain" SlotRef="Feet" Category="ArmorLight" Rarity="Uncommon" BaseValue="80" ModelRef="HikingBoots" AffinityRef="Wild">
+    <Effects Defense="0.04" Speed="0.06" Temperature="0.06" />
   </Equipment>
-  <Equipment RefName="ShadowBoots" DisplayName="Ninja Tabi" Description="Traditional split-toe shoes for stealth" SlotRef="Feet" Category="ArmorLight" WholesalePrice="200" ModelRef="NinjaTabi" AffinityRef="Umbral">
-    <Effects Defense="0.04" Speed="0.1" />
+  <Equipment RefName="ChainBoots" DisplayName="Work Boots" Description="Heavy-duty construction boots" SlotRef="Feet" Category="ArmorMedium" Rarity="Uncommon" BaseValue="60" ModelRef="WorkBoots">
+    <Effects Defense="0.08" Speed="-0.01" Temperature="0.04" />
   </Equipment>
-  <Equipment RefName="MageSlippers" DisplayName="Shrine Sandals" Description="Traditional wooden geta sandals" SlotRef="Feet" Category="ArmorRobes" WholesalePrice="70" ModelRef="Geta">
-    <Effects Defense="0.02" Speed="0.02" Magic="0.04" />
+  <Equipment RefName="PlateBoots" DisplayName="Steel Toe Boots" Description="Industrial boots with steel reinforcement" SlotRef="Feet" Category="ArmorHeavy" Rarity="Rare" BaseValue="150" ModelRef="SteelToeBoots">
+    <Effects Health="0.03" Defense="0.12" Speed="-0.03" Temperature="0.06" />
   </Equipment>
-  <Equipment RefName="ClothGloves" DisplayName="Cotton Gloves" Description="Simple white cotton gloves" SlotRef="Hands" Category="ArmorLight" WholesalePrice="8" ModelRef="CottonGloves">
-    <Effects Defense="0.01" />
+  <Equipment RefName="ShadowBoots" DisplayName="Ninja Tabi" Description="Traditional split-toe shoes for stealth" SlotRef="Feet" Category="ArmorLight" Rarity="Rare" BaseValue="200" ModelRef="NinjaTabi" AffinityRef="Umbral">
+    <Effects Defense="0.04" Speed="0.1" Temperature="0.04" />
   </Equipment>
-  <Equipment RefName="LeatherGloves" DisplayName="Batting Gloves" Description="Baseball batting gloves" SlotRef="Hands" Category="ArmorLight" WholesalePrice="20" ModelRef="BattingGloves">
-    <Effects Defense="0.03" Strength="0.02" />
+  <Equipment RefName="MageSlippers" DisplayName="Shrine Sandals" Description="Traditional wooden geta sandals" SlotRef="Feet" Category="ArmorRobes" Rarity="Uncommon" BaseValue="70" ModelRef="Geta">
+    <Effects Defense="0.02" Speed="0.02" Magic="0.04" Temperature="0.02" />
   </Equipment>
-  <Equipment RefName="ThiefGloves" DisplayName="Fingerless Gloves" Description="Tactical gloves with exposed fingertips" SlotRef="Hands" Category="ArmorLight" WholesalePrice="60" ModelRef="FingerlessGloves">
-    <Effects Defense="0.02" Speed="0.05" />
+  <Equipment RefName="ClothGloves" DisplayName="Cotton Gloves" Description="Simple white cotton gloves" SlotRef="Hands" Category="ArmorLight" Rarity="Common" BaseValue="8" ModelRef="CottonGloves">
+    <Effects Defense="0.01" Temperature="0.02" />
   </Equipment>
-  <Equipment RefName="ChainGloves" DisplayName="Work Gloves" Description="Reinforced work gloves" SlotRef="Hands" Category="ArmorMedium" WholesalePrice="50" ModelRef="WorkGloves">
-    <Effects Defense="0.06" Speed="-0.01" />
+  <Equipment RefName="LeatherGloves" DisplayName="Batting Gloves" Description="Baseball batting gloves" SlotRef="Hands" Category="ArmorLight" Rarity="Uncommon" BaseValue="20" ModelRef="BattingGloves">
+    <Effects Defense="0.03" Strength="0.02" Temperature="0.04" />
   </Equipment>
-  <Equipment RefName="PlateGauntlets" DisplayName="Kendo Kote" Description="Kendo wrist and hand protectors" SlotRef="Hands" Category="ArmorHeavy" WholesalePrice="120" ModelRef="KendoKote">
-    <Effects Defense="0.1" Strength="0.04" Speed="-0.02" />
+  <Equipment RefName="ThiefGloves" DisplayName="Fingerless Gloves" Description="Tactical gloves with exposed fingertips" SlotRef="Hands" Category="ArmorLight" Rarity="Uncommon" BaseValue="60" ModelRef="FingerlessGloves">
+    <Effects Defense="0.02" Speed="0.05" Temperature="0.03" />
   </Equipment>
-  <Equipment RefName="MageGloves" DisplayName="Spirit Gloves" Description="White gloves humming with energy" SlotRef="Hands" Category="ArmorRobes" WholesalePrice="60" ModelRef="SpiritGloves">
-    <Effects Defense="0.02" Magic="0.06" />
+  <Equipment RefName="ChainGloves" DisplayName="Work Gloves" Description="Reinforced work gloves" SlotRef="Hands" Category="ArmorMedium" Rarity="Uncommon" BaseValue="50" ModelRef="WorkGloves">
+    <Effects Defense="0.06" Speed="-0.01" Temperature="0.03" />
   </Equipment>
-  <Equipment RefName="TravelCloak" DisplayName="School Blazer" Description="A standard school uniform blazer" SlotRef="Back" Category="Accessory" WholesalePrice="15" ModelRef="SchoolBlazer">
-    <Effects Defense="0.02" />
+  <Equipment RefName="PlateGauntlets" DisplayName="Kendo Kote" Description="Kendo wrist and hand protectors" SlotRef="Hands" Category="ArmorHeavy" Rarity="Rare" BaseValue="120" ModelRef="KendoKote">
+    <Effects Defense="0.1" Strength="0.04" Speed="-0.02" Temperature="0.05" />
   </Equipment>
-  <Equipment RefName="MerchantCloak" DisplayName="Shopping Bag" Description="A large tote bag with hidden pockets" SlotRef="Back" Category="Accessory" WholesalePrice="40" ModelRef="ShoppingBag">
-    <Effects Defense="0.03" Speed="0.02" />
+  <Equipment RefName="MageGloves" DisplayName="Spirit Gloves" Description="White gloves humming with energy" SlotRef="Hands" Category="ArmorRobes" Rarity="Uncommon" BaseValue="60" ModelRef="SpiritGloves">
+    <Effects Defense="0.02" Magic="0.06" Temperature="0.03" />
   </Equipment>
-  <Equipment RefName="RangerCloak" DisplayName="Rain Poncho" Description="A waterproof poncho for inclement weather" SlotRef="Back" Category="Accessory" WholesalePrice="80" ModelRef="RainPoncho" AffinityRef="Wild">
-    <Effects Defense="0.04" Speed="0.05" />
+  <Equipment RefName="TravelCloak" DisplayName="School Blazer" Description="A standard school uniform blazer" SlotRef="Back" Category="Accessory" Rarity="Common" BaseValue="15" ModelRef="SchoolBlazer">
+    <Effects Defense="0.02" Temperature="0.1" />
   </Equipment>
-  <Equipment RefName="ShadowCloak" DisplayName="Black Cape" Description="A mysterious cape that blends with shadows" SlotRef="Back" Category="Accessory" WholesalePrice="200" ModelRef="BlackCape" AffinityRef="Umbral">
-    <Effects Defense="0.05" Speed="0.08" />
+  <Equipment RefName="MerchantCloak" DisplayName="Shopping Bag" Description="A large tote bag with hidden pockets" SlotRef="Back" Category="Accessory" Rarity="Uncommon" BaseValue="40" ModelRef="ShoppingBag">
+    <Effects Defense="0.03" Speed="0.02" Temperature="0.12" />
   </Equipment>
-  <Equipment RefName="MageCloak" DisplayName="Spirit Mantle" Description="An ethereal cape shimmering with power" SlotRef="Back" Category="Accessory" WholesalePrice="120" ModelRef="SpiritMantle" AffinityRef="Arcane">
-    <Effects Defense="0.03" Magic="0.08" />
+  <Equipment RefName="RangerCloak" DisplayName="Rain Poncho" Description="A waterproof poncho for inclement weather" SlotRef="Back" Category="Accessory" Rarity="Uncommon" BaseValue="80" ModelRef="RainPoncho" AffinityRef="Wild">
+    <Effects Defense="0.04" Speed="0.05" Temperature="0.15" />
   </Equipment>
-  <Equipment RefName="CloakOfProtection" DisplayName="Safety Vest" Description="A high-visibility vest with protective charms" SlotRef="Back" Category="Accessory" WholesalePrice="250" ModelRef="SafetyVest">
-    <Effects Health="0.05" Defense="0.1" />
+  <Equipment RefName="ShadowCloak" DisplayName="Black Cape" Description="A mysterious cape that blends with shadows" SlotRef="Back" Category="Accessory" Rarity="Rare" BaseValue="200" ModelRef="BlackCape" AffinityRef="Umbral">
+    <Effects Defense="0.05" Speed="0.08" Temperature="0.18" />
   </Equipment>
-  <Equipment RefName="HerosCape" DisplayName="Hero's Haori" Description="A legendary coat worn by ancient heroes" SlotRef="Back" Category="Accessory" WholesalePrice="400" ModelRef="HerosHaori">
-    <Effects Defense="0.08" Strength="0.05" Speed="0.05" />
+  <Equipment RefName="MageCloak" DisplayName="Spirit Mantle" Description="An ethereal cape shimmering with power" SlotRef="Back" Category="Accessory" Rarity="Uncommon" BaseValue="120" ModelRef="SpiritMantle" AffinityRef="Arcane">
+    <Effects Defense="0.03" Magic="0.08" Temperature="0.12" />
   </Equipment>
-  <Equipment RefName="CopperRing" DisplayName="Cheap Ring" Description="A novelty ring from a capsule machine" SlotRef="Ring" Category="Accessory" WholesalePrice="10" ModelRef="CheapRing">
+  <Equipment RefName="CloakOfProtection" DisplayName="Safety Vest" Description="A high-visibility vest with protective charms" SlotRef="Back" Category="Accessory" Rarity="Rare" BaseValue="250" ModelRef="SafetyVest">
+    <Effects Health="0.05" Defense="0.1" Temperature="0.2" />
+  </Equipment>
+  <Equipment RefName="HerosCape" DisplayName="Hero's Haori" Description="A legendary coat worn by ancient heroes" SlotRef="Back" Category="Accessory" Rarity="Epic" BaseValue="400" ModelRef="HerosHaori">
+    <Effects Defense="0.08" Strength="0.05" Speed="0.05" Temperature="0.15" />
+  </Equipment>
+  <Equipment RefName="WinterCloak" DisplayName="Wool Blanket Wrap" Description="A heavy wool blanket adapted as a winter wrap" SlotRef="Back" Category="Accessory" Rarity="Uncommon" BaseValue="180" ModelRef="WinterCloak">
+    <Effects Defense="0.04" Speed="-0.02" Temperature="0.25" />
+  </Equipment>
+  <Equipment RefName="CopperRing" DisplayName="Cheap Ring" Description="A novelty ring from a capsule machine" SlotRef="Ring" Category="Accessory" Rarity="Common" BaseValue="10" ModelRef="CheapRing">
     <Effects Health="0.02" />
   </Equipment>
-  <Equipment RefName="SilverRing" DisplayName="Silver Band" Description="A simple silver ring" SlotRef="Ring" Category="Accessory" WholesalePrice="30" ModelRef="SilverBand">
+  <Equipment RefName="SilverRing" DisplayName="Silver Band" Description="A simple silver ring" SlotRef="Ring" Category="Accessory" Rarity="Uncommon" BaseValue="30" ModelRef="SilverBand">
     <Effects Health="0.03" Mana="0.03" />
   </Equipment>
-  <Equipment RefName="GoldRing" DisplayName="Class Ring" Description="A school class commemoration ring" SlotRef="Ring" Category="Accessory" WholesalePrice="80" ModelRef="ClassRing">
+  <Equipment RefName="GoldRing" DisplayName="Class Ring" Description="A school class commemoration ring" SlotRef="Ring" Category="Accessory" Rarity="Uncommon" BaseValue="80" ModelRef="ClassRing">
     <Effects Health="0.04" Magic="0.04" />
   </Equipment>
-  <Equipment RefName="RingOfStrength" DisplayName="Power Band" Description="A rubber band said to increase strength" SlotRef="Ring" Category="Accessory" WholesalePrice="150" ModelRef="PowerBand" UseType="Offensive">
+  <Equipment RefName="RingOfStrength" DisplayName="Power Band" Description="A rubber band said to increase strength" SlotRef="Ring" Category="Accessory" Rarity="Rare" BaseValue="150" ModelRef="PowerBand" UseType="Offensive">
     <Effects Strength="0.1" />
   </Equipment>
-  <Equipment RefName="RingOfProtection" DisplayName="Guardian Ring" Description="A ring etched with protective kanji" SlotRef="Ring" Category="Accessory" WholesalePrice="150" ModelRef="GuardianRing">
+  <Equipment RefName="RingOfProtection" DisplayName="Guardian Ring" Description="A ring etched with protective kanji" SlotRef="Ring" Category="Accessory" Rarity="Rare" BaseValue="150" ModelRef="GuardianRing">
     <Effects Defense="0.1" />
   </Equipment>
-  <Equipment RefName="RingOfSwiftness" DisplayName="Speed Ring" Description="A ring that makes the wearer feel lighter" SlotRef="Ring" Category="Accessory" WholesalePrice="150" ModelRef="SpeedRing">
+  <Equipment RefName="RingOfSwiftness" DisplayName="Speed Ring" Description="A ring that makes the wearer feel lighter" SlotRef="Ring" Category="Accessory" Rarity="Rare" BaseValue="150" ModelRef="SpeedRing">
     <Effects Speed="0.1" />
   </Equipment>
-  <Equipment RefName="RingOfSorcery" DisplayName="Spirit Ring" Description="A ring resonating with spiritual energy" SlotRef="Ring" Category="Accessory" WholesalePrice="180" ModelRef="SpiritRing" AffinityRef="Arcane" UseType="Offensive">
+  <Equipment RefName="RingOfSorcery" DisplayName="Spirit Ring" Description="A ring resonating with spiritual energy" SlotRef="Ring" Category="Accessory" Rarity="Rare" BaseValue="180" ModelRef="SpiritRing" AffinityRef="Arcane" UseType="Offensive">
     <Effects Magic="0.12" />
   </Equipment>
-  <Equipment RefName="RingOfRegeneration" DisplayName="Recovery Ring" Description="A ring that promotes natural healing" SlotRef="Ring" Category="Accessory" WholesalePrice="250" ModelRef="RecoveryRing">
+  <Equipment RefName="RingOfRegeneration" DisplayName="Recovery Ring" Description="A ring that promotes natural healing" SlotRef="Ring" Category="Accessory" Rarity="Rare" BaseValue="250" ModelRef="RecoveryRing">
     <Effects Health="0.1" Stamina="0.05" />
   </Equipment>
-  <Equipment RefName="LeatherCord" DisplayName="Phone Strap" Description="A simple phone strap charm" SlotRef="Amulet" Category="Accessory" WholesalePrice="5" ModelRef="PhoneStrap">
+  <Equipment RefName="LeatherCord" DisplayName="Phone Strap" Description="A simple phone strap charm" SlotRef="Amulet" Category="Accessory" Rarity="Common" BaseValue="5" ModelRef="PhoneStrap">
     <Effects Health="0.01" />
   </Equipment>
-  <Equipment RefName="SilverPendant" DisplayName="Lucky Charm" Description="A small good luck charm from the shrine" SlotRef="Amulet" Category="Accessory" WholesalePrice="40" ModelRef="LuckyCharm">
+  <Equipment RefName="SilverPendant" DisplayName="Lucky Charm" Description="A small good luck charm from the shrine" SlotRef="Amulet" Category="Accessory" Rarity="Uncommon" BaseValue="40" ModelRef="LuckyCharm">
     <Effects Health="0.04" Defense="0.02" />
   </Equipment>
-  <Equipment RefName="AmuletOfHealth" DisplayName="Health Omamori" Description="A shrine amulet for good health" SlotRef="Amulet" Category="Accessory" WholesalePrice="120" ModelRef="HealthOmamori">
+  <Equipment RefName="AmuletOfHealth" DisplayName="Health Omamori" Description="A shrine amulet for good health" SlotRef="Amulet" Category="Accessory" Rarity="Rare" BaseValue="120" ModelRef="HealthOmamori">
     <Effects Health="0.12" />
   </Equipment>
-  <Equipment RefName="AmuletOfMana" DisplayName="Wisdom Omamori" Description="A shrine amulet for academic success" SlotRef="Amulet" Category="Accessory" WholesalePrice="140" ModelRef="WisdomOmamori" AffinityRef="Arcane">
+  <Equipment RefName="AmuletOfMana" DisplayName="Wisdom Omamori" Description="A shrine amulet for academic success" SlotRef="Amulet" Category="Accessory" Rarity="Rare" BaseValue="140" ModelRef="WisdomOmamori" AffinityRef="Arcane">
     <Effects Mana="0.15" />
   </Equipment>
-  <Equipment RefName="HolyAmulet" DisplayName="Divine Omamori" Description="A powerful amulet from the inner shrine" SlotRef="Amulet" Category="Accessory" WholesalePrice="180" ModelRef="DivineOmamori" AffinityRef="Holy">
+  <Equipment RefName="HolyAmulet" DisplayName="Divine Omamori" Description="A powerful amulet from the inner shrine" SlotRef="Amulet" Category="Accessory" Rarity="Rare" BaseValue="180" ModelRef="DivineOmamori" AffinityRef="Holy">
     <Effects Health="0.08" Magic="0.08" />
   </Equipment>
-  <Equipment RefName="WardingAmulet" DisplayName="Protection Omamori" Description="An amulet warding against evil spirits" SlotRef="Amulet" Category="Accessory" WholesalePrice="200" ModelRef="ProtectionOmamori">
+  <Equipment RefName="WardingAmulet" DisplayName="Protection Omamori" Description="An amulet warding against evil spirits" SlotRef="Amulet" Category="Accessory" Rarity="Rare" BaseValue="200" ModelRef="ProtectionOmamori">
     <Effects Health="0.06" Defense="0.1" />
   </Equipment>
-  <Equipment RefName="DragonTooth" DisplayName="Dragon Fang" Description="A fang from a defeated dragon spirit" SlotRef="Amulet" Category="Accessory" WholesalePrice="400" ModelRef="DragonFang" AffinityRef="Fire" UseType="Offensive">
+  <Equipment RefName="DragonTooth" DisplayName="Dragon Fang" Description="A fang from a defeated dragon spirit" SlotRef="Amulet" Category="Accessory" Rarity="Epic" BaseValue="400" ModelRef="DragonFang" AffinityRef="Fire" UseType="Offensive">
     <Effects Strength="0.1" Magic="0.1" />
   </Equipment>
-  <Equipment RefName="RopeBelt" DisplayName="String Belt" Description="A simple rope belt" SlotRef="Belt" Category="Accessory" WholesalePrice="5" ModelRef="StringBelt">
+  <Equipment RefName="RopeBelt" DisplayName="String Belt" Description="A simple rope belt" SlotRef="Belt" Category="Accessory" Rarity="Common" BaseValue="5" ModelRef="StringBelt">
     <Effects Stamina="0.02" />
   </Equipment>
-  <Equipment RefName="LeatherBelt" DisplayName="School Belt" Description="A standard uniform belt" SlotRef="Belt" Category="Accessory" WholesalePrice="20" ModelRef="SchoolBelt">
+  <Equipment RefName="LeatherBelt" DisplayName="School Belt" Description="A standard uniform belt" SlotRef="Belt" Category="Accessory" Rarity="Uncommon" BaseValue="20" ModelRef="SchoolBelt">
     <Effects Defense="0.02" Stamina="0.04" />
   </Equipment>
-  <Equipment RefName="WarriorBelt" DisplayName="Martial Arts Belt" Description="A colored belt from martial arts training" SlotRef="Belt" Category="Accessory" WholesalePrice="80" ModelRef="MartialBelt">
+  <Equipment RefName="WarriorBelt" DisplayName="Martial Arts Belt" Description="A colored belt from martial arts training" SlotRef="Belt" Category="Accessory" Rarity="Uncommon" BaseValue="80" ModelRef="MartialBelt">
     <Effects Strength="0.05" Stamina="0.05" />
   </Equipment>
-  <Equipment RefName="MageBelt" DisplayName="Spirit Sash" Description="A ceremonial sash of spiritual power" SlotRef="Belt" Category="Accessory" WholesalePrice="100" ModelRef="SpiritSash">
+  <Equipment RefName="MageBelt" DisplayName="Spirit Sash" Description="A ceremonial sash of spiritual power" SlotRef="Belt" Category="Accessory" Rarity="Uncommon" BaseValue="100" ModelRef="SpiritSash">
     <Effects Magic="0.05" Mana="0.06" />
   </Equipment>
-  <Equipment RefName="BeltOfGiants" DisplayName="Champion Belt" Description="A wrestling championship belt radiating power" SlotRef="Belt" Category="Accessory" WholesalePrice="300" ModelRef="ChampionBelt" AffinityRef="Stone" UseType="Offensive">
+  <Equipment RefName="BeltOfGiants" DisplayName="Champion Belt" Description="A wrestling championship belt radiating power" SlotRef="Belt" Category="Accessory" Rarity="Rare" BaseValue="300" ModelRef="ChampionBelt" AffinityRef="Stone" UseType="Offensive">
     <Effects Health="0.05" Strength="0.15" />
+  </Equipment>
+  <Equipment RefName="GodslayerBlade" DisplayName="Kusanagi Replica" Description="A shrine replica of the blade whispered to have felled a god" SlotRef="MainHand" Category="OneHanded" Rarity="Legendary" BaseValue="1500" ModelRef="Flamebrand" AffinityRef="Fire" UseType="Offensive" StatusEffectRef="Burn" StatusEffectChance="0.5" CriticalHitBonus="0.15">
+    <Effects Strength="0.4" Speed="0.05" Magic="0.15" />
+    <MinimumStats Strength="0.35" />
+  </Equipment>
+  <Equipment RefName="TomeOfEmbers" DisplayName="Fire Club Notes" Description="A club notebook whose pages smoulder with bound fire" SlotRef="MainHand" Category="Tome" Rarity="Rare" BaseValue="260" ModelRef="CrystalBall" AffinityRef="Fire" UseType="Offensive" StatusEffectRef="Burn" StatusEffectChance="0.35">
+    <Effects Magic="0.18" Mana="0.08" />
+  </Equipment>
+  <Equipment RefName="IronKnuckles" DisplayName="Delinquent Knuckles" Description="Weighted fist-irons favoured in after-school alley brawls" SlotRef="MainHand" Category="Unarmed" Rarity="Uncommon" BaseValue="45" ModelRef="Knife" UseType="Offensive" CriticalHitBonus="0.05">
+    <Effects Strength="0.08" Speed="0.04" />
   </Equipment>
 </Equipment>

@@ -1,29 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Achievement RefName="ACH_COMPLETE_KAGOSHIMA" DisplayName="Legend of Kagoshima" Description="Write your name in the annals of Kagoshima's history by completing the main quest.">
-    <Criteria Type="ArcsCompleted" Threshold="3" />
-  </Achievement>
-  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_KAGOSHIMA" DisplayName="Slayer" Description="Bring low every mighty enemy that terrorizes the lands of Kagoshima.">
-    <Criteria Type="CharactersDefeatedByTrait" Trait="BossFight" Threshold="2" />
-  </Achievement>
-  <Achievement RefName="ACH_EXPLORER_KAGOSHIMA" DisplayName="Trailblazer" Description="Be the first to set foot in all the locations of Kagoshima.">
-    <Criteria Type="ArcsDiscovered" Threshold="3" />
-  </Achievement>
-  <Achievement RefName="ACH_SOCIAL_KAGOSHIMA" DisplayName="Charmer" Description="Win the attention of every character in Kagoshima.">
-    <Criteria Type="UniqueCharactersMet" Threshold="102" />
-  </Achievement>
-  <Achievement RefName="ACH_DIALOGUE_MASTER_KAGOSHIMA" DisplayName="Eloquent" Description="Leave no word unspoken in your travels through Kagoshima.">
-    <Criteria Type="DialogueTreesCompleted" Threshold="102" />
-  </Achievement>
-  <Achievement RefName="ACH_COLLECTOR_KAGOSHIMA" DisplayName="Completionist" Description="Collect every quest token available in Kagoshima.">
-    <Criteria Type="QuestTokensEarned" Threshold="21" />
-  </Achievement>
-  <Achievement RefName="ACH_MERCHANT_KAGOSHIMA" DisplayName="Haggler" Description="Strike deals with all the traders throughout Kagoshima.">
-    <Criteria Type="ItemsTraded" Threshold="115" />
-  </Achievement>
-  <Achievement RefName="ACH_DIPLOMAT_KAGOSHIMA" DisplayName="Diplomat" Description="Forge friendships with the people of Kagoshima through kindness.">
-    <Criteria Type="TraitsAssignedByType" Trait="Friendly" Threshold="51" />
-  </Achievement>
+<Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ../../../../../../../xsd/Gameplay/Gameplay.xsd" xmlns="Ambient.Domain">
   <Achievement RefName="BANDIT_SLAYER" DisplayName="Bandit Slayer" Description="Defeat the Bandit Chief and make the roads safe again.">
     <Criteria Type="CharactersDefeatedByRef" Threshold="1" CharacterRef="BanditChief_Boss" />
   </Achievement>
@@ -32,5 +8,56 @@
   </Achievement>
   <Achievement RefName="MASTERSTUDENT" DisplayName="Master's Student" Description="Pass the three trials and learn the Lost Technique from its last master.">
     <Criteria Type="QuestsCompletedByRef" Threshold="1" QuestRef="LostTechnique_Quest" />
+  </Achievement>
+  <Achievement RefName="WanderingMerchant_Patron" DisplayName="Patron of the Road" Description="Earn the wandering merchant's lasting goodwill and keep the trade roads safe.">
+    <Criteria Type="CharactersDefeatedByRef" Threshold="1" CharacterRef="WanderingMerchant_Bandit" />
+  </Achievement>
+  <Achievement RefName="ACH_COMPLETE_KAGOSHIMA" DisplayName="Hero of Kagoshima" Description="Complete the main storyline and become a legend of Kagoshima.">
+    <Criteria Type="QuestsCompletedByRef" QuestRef="MAIN_QUEST_01" Threshold="1" />
+  </Achievement>
+  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_KAGOSHIMA" DisplayName="Vanquisher" Description="Strike down every powerful foe who dares challenge you in Kagoshima.">
+    <Criteria Type="CharactersDefeatedByTrait" Trait="BossFight" Threshold="2" />
+  </Achievement>
+  <Achievement RefName="ACH_EXPLORER_KAGOSHIMA" DisplayName="Wanderer" Description="Let your curiosity guide you to every hidden place in Kagoshima.">
+    <Criteria Type="ArcsDiscovered" Threshold="3" />
+  </Achievement>
+  <Achievement RefName="ACH_SOCIAL_KAGOSHIMA" DisplayName="People Person" Description="Introduce yourself to all the characters you encounter in Kagoshima.">
+    <Criteria Type="UniqueCharactersMet" Threshold="92" />
+  </Achievement>
+  <Achievement RefName="ACH_DIALOGUE_MASTER_KAGOSHIMA" DisplayName="Wordsmith" Description="Master the art of conversation with everyone in Kagoshima.">
+    <Criteria Type="DialogueTreesCompleted" Threshold="92" />
+  </Achievement>
+  <Achievement RefName="ACH_COLLECTOR_KAGOSHIMA" DisplayName="Collector" Description="Gather all the tokens of achievement throughout Kagoshima.">
+    <Criteria Type="QuestTokensEarned" Threshold="21" />
+  </Achievement>
+  <Achievement RefName="ACH_MERCHANT_KAGOSHIMA" DisplayName="Haggler" Description="Strike deals with all the traders throughout Kagoshima.">
+    <Criteria Type="ItemsTraded" Threshold="80" />
+  </Achievement>
+  <Achievement RefName="ACH_DIPLOMAT_KAGOSHIMA" DisplayName="Peacemaker" Description="Spread goodwill wherever you travel in Kagoshima.">
+    <Criteria Type="TraitsAssignedByType" Trait="Friendly" Threshold="8" />
+  </Achievement>
+  <Achievement RefName="ACH_FIRST_BLOOD_KAGOSHIMA" DisplayName="First Blood" Description="Win your first battle in Kagoshima.">
+    <Criteria Type="CharactersDefeated" Threshold="1" />
+  </Achievement>
+  <Achievement RefName="ACH_ATTENTIVE_KAGOSHIMA" DisplayName="Attentive Listener" Description="Hear out the people of Kagoshima.">
+    <Criteria Type="DialogueNodesVisited" Threshold="5" />
+  </Achievement>
+  <Achievement RefName="ACH_QUEST_DONE_KAGOSHIMA" DisplayName="Task Completed" Description="Complete a quest in Kagoshima.">
+    <Criteria Type="QuestsCompleted" Threshold="1" />
+  </Achievement>
+  <Achievement RefName="ACH_TRIGGERS_KAGOSHIMA" DisplayName="Chain Reaction" Description="Set a story event in motion in Kagoshima.">
+    <Criteria Type="ArcTriggersActivated" Threshold="1" />
+  </Achievement>
+  <Achievement RefName="ACH_IMPRESSION_KAGOSHIMA" DisplayName="Lasting Impression" Description="Change how someone in Kagoshima regards you.">
+    <Criteria Type="TraitsAssigned" Threshold="1" />
+  </Achievement>
+  <Achievement RefName="ACH_MERCHANT_FRIEND_KAGOSHIMA" DisplayName="Fast Friends" Description="Win over a merchant in Kagoshima.">
+    <Criteria Type="TraitsAssignedToCharacterType" CharacterType="Merchant" Threshold="1" />
+  </Achievement>
+  <Achievement RefName="ACH_RESPECTED_KAGOSHIMA" DisplayName="Respected" Description="Reach Friendly standing with any faction of Kagoshima.">
+    <Criteria Type="FactionsAtReputationLevel" ReputationLevel="Friendly" Threshold="1" />
+  </Achievement>
+  <Achievement RefName="ACH_ALLIED_KAGOSHIMA" DisplayName="Trusted Ally" Description="Earn Friendly standing with the Satsuma Bushi of Kagoshima.">
+    <Criteria Type="ReputationReached" FactionRef="CityGuard" ReputationLevel="Friendly" Threshold="1" />
   </Achievement>
 </Achievements>
