@@ -11,8 +11,42 @@
 		<repository type="git" url="https://github.com/AmbientGames/Ambient.Saga" />
 		<tags>rpg game narrative dialogue engine cqrs mediatr directx imgui rendering</tags>
 		<dependencies>
-			<group targetFramework="net8.0"/>
+			<!-- Cross-platform libraries (Domain / Application / Infrastructure / Rpg.Engine). -->
+			<group targetFramework="net8.0">
+				<dependency id="MediatR" version="12.4.1" />
+				<dependency id="LiteDB" version="5.0.21" />
+				<dependency id="Newtonsoft.Json" version="13.0.3" />
+				<dependency id="CommunityToolkit.Mvvm" version="8.4.0" />
+				<dependency id="SixLabors.ImageSharp" version="3.1.11" />
+				<dependency id="SkiaSharp" version="2.88.9" />
+			</group>
+			<!-- Windows-only additions for Rpg.Ui + Rpg.Rendering.DirectX, on top of the above. -->
+			<group targetFramework="net8.0-windows7.0">
+				<dependency id="MediatR" version="12.4.1" />
+				<dependency id="LiteDB" version="5.0.21" />
+				<dependency id="Newtonsoft.Json" version="13.0.3" />
+				<dependency id="CommunityToolkit.Mvvm" version="8.4.0" />
+				<dependency id="SixLabors.ImageSharp" version="3.1.11" />
+				<dependency id="SkiaSharp" version="2.88.9" />
+				<dependency id="ImGui.NET" version="1.91.6.1" />
+				<dependency id="BitMiracle.LibTiff.NET" version="2.4.660" />
+				<dependency id="Steamworks.NET" version="2024.8.0" />
+				<dependency id="SharpDX" version="4.2.0" />
+				<dependency id="SharpDX.Direct3D11" version="4.2.0" />
+				<dependency id="SharpDX.DXGI" version="4.2.0" />
+				<dependency id="SharpDX.D3DCompiler" version="4.2.0" />
+				<dependency id="SharpDX.Mathematics" version="4.2.0" />
+			</group>
 		</dependencies>
+		<!--
+			The XSD schemas are loaded from disk at runtime: RpgMainViewModel resolves
+			Path.Combine(baseDirectory, "Content", "xsd"). copyToOutput places them there in a
+			consuming app's output folder. Without them world loading still works, but silently
+			skips schema validation (WorldConfigurationLoader.useValidation).
+		-->
+		<contentFiles>
+			<files include="any/any/Content/xsd/**/*" buildAction="Content" copyToOutput="true" flatten="false" />
+		</contentFiles>
 	</metadata>
 	<files>
 		<!-- Library DLLs (net8.0) -->
@@ -21,11 +55,14 @@
 		<file src="Ambient.Infrastructure\bin\$configuration$\net8.0\Ambient.Infrastructure.dll" target="lib\net8.0" />
 		<file src="Ambient.Rpg.Engine\bin\$configuration$\net8.0\Ambient.Rpg.Engine.dll" target="lib\net8.0" />
 
-		<!-- UI Library (net8.0, OS-agnostic) -->
-		<file src="Ambient.Rpg.Ui\bin\$configuration$\net8.0\Ambient.Rpg.Ui.dll" target="lib\net8.0" />
+		<!-- UI Library (net8.0-windows7.0 — Windows-only, matching the csproj TargetFramework) -->
+		<file src="Ambient.Rpg.Ui\bin\$configuration$\net8.0-windows7.0\Ambient.Rpg.Ui.dll" target="lib\net8.0-windows7.0" />
 
 		<!-- DirectX Rendering Library (net8.0-windows, Windows-only) -->
 		<file src="Ambient.Rpg.Rendering.DirectX\bin\$configuration$\net8.0-windows\Ambient.Rpg.Rendering.DirectX.dll" target="lib\net8.0-windows7.0" />
+
+		<!-- XSD schemas — copied to the consuming app's output as Content\xsd\ (see contentFiles above) -->
+		<file src="Ambient.Domain\Content\xsd\**\*" target="contentFiles\any\any\Content\xsd" />
 
 		<!-- Documentation -->
 		<file src="README.md" target="docs\" />

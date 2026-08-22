@@ -178,7 +178,6 @@ public static class TransactionDataKeys
     public const string StateJson = "StateJson";
     public const string StatusEffectChance = "StatusEffectChance";
     public const string StatusEffectRef = "StatusEffectRef";
-    public const string StatusEffectType = "StatusEffectType";
     public const string Strength = "Strength";
     public const string Target = "Target";
     public const string TargetHealthAfter = "TargetHealthAfter";

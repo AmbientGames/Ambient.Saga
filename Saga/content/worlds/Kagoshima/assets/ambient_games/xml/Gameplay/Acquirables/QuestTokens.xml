@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<QuestTokens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<QuestTokens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ../../../../../../../xsd/Gameplay/Gameplay.xsd" xmlns="Ambient.Domain">
   <QuestToken RefName="BanditChief_HideoutMap" DisplayName="Sanzoku Hideout Map" Description="A crude map scratched on cloth showing the mountain bandit stronghold" />
   <QuestToken RefName="BanditChief_ChiefsBadge" DisplayName="Oyabun's War Fan" Description="The bandit chief's prized iron war fan, proof of their defeat" />
   <QuestToken RefName="BanditChief_StolenGoods" DisplayName="Recovered Merchant Goods" Description="Rice, silk, and other goods stolen from travelers on the mountain road" />
@@ -49,11 +49,9 @@
   <QuestToken RefName="RivalGuild_GuildCharter" DisplayName="Za Membership Token" Description="A wooden plaque proving your membership in the merchant guild" />
   <QuestToken RefName="RivalGuild_IntelGathered" DisplayName="Rival Za Intelligence" Description="Secret information about the competing guild's operations and weaknesses" />
   <QuestToken RefName="RivalGuild_SabotageComplete" DisplayName="Sabotage Successful" Description="The rival guild's warehouse operation has been disrupted" />
-  <QuestToken RefName="RivalGuild_RivalCharter" DisplayName="Seized Rival Charter" Description="The founding document of the defeated rival guild" />
   <QuestToken RefName="RivalGuild_LeaderDefeated" DisplayName="Rival Master Fallen" Description="The opposing guild's leader has been defeated" />
   <QuestToken RefName="RivalGuild_PeaceTreaty" DisplayName="Merchant Peace Accord" Description="A negotiated settlement dividing territory between the guilds" />
   <QuestToken RefName="RivalGuild_Dominance" DisplayName="Za Supremacy" Description="Your guild now controls all major trade routes in the region" />
-  <QuestToken RefName="RivalGuild_DoubleAgent" DisplayName="Playing Both Sides" Description="You serve as an agent for both guilds, profiting from the conflict" />
   <QuestToken RefName="WanderingMerchant_TradeGoods" DisplayName="Precious Cargo" Description="Silk, ceramics, and spices bound for the castle town markets" />
   <QuestToken RefName="WanderingMerchant_FirstDelivery" DisplayName="Castle Town Delivery Complete" Description="The first batch of goods has reached the eager shopkeeper" />
   <QuestToken RefName="WanderingMerchant_SecondDelivery" DisplayName="Noble Commission Fulfilled" Description="The wealthy patron's special order has been delivered" />
@@ -61,25 +59,25 @@
   <QuestToken RefName="WanderingMerchant_TradeSecret" DisplayName="Merchant's Wisdom" Description="Knowledge of hidden shortcuts and profitable market opportunities" />
   <QuestToken RefName="WanderingMerchant_MerchantBond" DisplayName="Peddler's Seal of Trust" Description="A merchant's seal marking you as a trusted trade partner" />
   <QuestToken RefName="WanderingMerchant_RoadToll" DisplayName="Sekisho Transit Permit" Description="Official documentation proving toll payment at the checkpoint" />
-  <QuestToken RefName="TOKEN_Isoteien1_COMPLETE" DisplayName="Mark of Iso-teien" Description="A symbol of the mysteries uncovered at Iso-teien." />
-  <QuestToken RefName="TOKEN_Tsurumarujo1_COMPLETE" DisplayName="Emblem of Tsurumaru-jo" Description="An ancient mark bestowed upon worthy adventurers at Tsurumaru-jo." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyojinsha1_COMPLETE" DisplayName="Seal of Terukuni Daimyojin-sha" Description="A weathered token proving mastery of Terukuni Daimyojin-sha." />
-  <QuestToken RefName="TOKEN_TsurumarujoSpoke1Ring5_COMPLETE" DisplayName="Tsurumaru-jo Spoke 1 Ring 5 Emblem" Description="A token earned at Tsurumaru-jo Spoke 1 Ring 5." />
-  <QuestToken RefName="TOKEN_TsurumarujoSpoke2Ring5_COMPLETE" DisplayName="Tsurumaru-jo Spoke 2 Ring 5 Mark" Description="A token earned at Tsurumaru-jo Spoke 2 Ring 5." />
-  <QuestToken RefName="TOKEN_TsurumarujoSpoke3Ring5_COMPLETE" DisplayName="Tsurumaru-jo Spoke 3 Ring 5 Emblem" Description="This mark represents your accomplishments at Tsurumaru-jo Spoke 3 Ring 5." />
-  <QuestToken RefName="TOKEN_TsurumarujoSpoke4Ring5_COMPLETE" DisplayName="Tsurumaru-jo Spoke 4 Ring 5 Mark" Description="Commemorating your achievements at Tsurumaru-jo Spoke 4 Ring 5." />
-  <QuestToken RefName="TOKEN_TsurumarujoSpoke5Ring5_COMPLETE" DisplayName="Tsurumaru-jo Spoke 5 Ring 5 Emblem" Description="Commemorating your achievements at Tsurumaru-jo Spoke 5 Ring 5." />
-  <QuestToken RefName="TOKEN_TsurumarujoSpoke6Ring5_COMPLETE" DisplayName="Seal of Tsurumaru-jo Spoke 6 Ring 5" Description="A memento from Tsurumaru-jo Spoke 6 Ring 5." />
-  <QuestToken RefName="TOKEN_IsoteienSpoke1Ring5_COMPLETE" DisplayName="Iso-teien Spoke 1 Ring 5 Sigil" Description="Evidence of your success at Iso-teien Spoke 1 Ring 5." />
-  <QuestToken RefName="TOKEN_IsoteienSpoke2Ring5_COMPLETE" DisplayName="Iso-teien Spoke 2 Ring 5 Seal" Description="A symbol of triumph at Iso-teien Spoke 2 Ring 5." />
-  <QuestToken RefName="TOKEN_IsoteienSpoke3Ring5_COMPLETE" DisplayName="Iso-teien Spoke 3 Ring 5 Badge" Description="Commemorating your achievements at Iso-teien Spoke 3 Ring 5." />
-  <QuestToken RefName="TOKEN_IsoteienSpoke4Ring5_COMPLETE" DisplayName="Iso-teien Spoke 4 Ring 5 Sigil" Description="A memento from Iso-teien Spoke 4 Ring 5." />
-  <QuestToken RefName="TOKEN_IsoteienSpoke5Ring5_COMPLETE" DisplayName="Iso-teien Spoke 5 Ring 5 Badge" Description="A token earned at Iso-teien Spoke 5 Ring 5." />
-  <QuestToken RefName="TOKEN_IsoteienSpoke6Ring5_COMPLETE" DisplayName="Iso-teien Spoke 6 Ring 5 Mark" Description="Evidence of your success at Iso-teien Spoke 6 Ring 5." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyojinshaSpoke1Ring5_COMPLETE" DisplayName="Terukuni Daimyojin-sha Spoke 1 Ring 5 Crest" Description="Recognition of your efforts at Terukuni Daimyojin-sha Spoke 1 Ring 5." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyojinshaSpoke2Ring5_COMPLETE" DisplayName="Emblem of Terukuni Daimyojin-sha Spoke 2 Ring 5" Description="A memento from Terukuni Daimyojin-sha Spoke 2 Ring 5." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyojinshaSpoke3Ring5_COMPLETE" DisplayName="Terukuni Daimyojin-sha Spoke 3 Ring 5 Emblem" Description="A token earned at Terukuni Daimyojin-sha Spoke 3 Ring 5." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyojinshaSpoke4Ring5_COMPLETE" DisplayName="Terukuni Daimyojin-sha Spoke 4 Ring 5 Token" Description="A symbol of triumph at Terukuni Daimyojin-sha Spoke 4 Ring 5." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyojinshaSpoke5Ring5_COMPLETE" DisplayName="Terukuni Daimyojin-sha Spoke 5 Ring 5 Token" Description="Evidence of your success at Terukuni Daimyojin-sha Spoke 5 Ring 5." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyojinshaSpoke6Ring5_COMPLETE" DisplayName="Terukuni Daimyojin-sha Spoke 6 Ring 5 Mark" Description="A token earned at Terukuni Daimyojin-sha Spoke 6 Ring 5." />
+  <QuestToken RefName="TOKEN_Isoteien_COMPLETE" DisplayName="Iso-teien Seal" Description="A keepsake proving you visited the renowned Iso-teien." />
+  <QuestToken RefName="TOKEN_Tsurumarujō_COMPLETE" DisplayName="Mark of Tsurumaru-jō" Description="An emblem awarded to those who conquered the challenges of Tsurumaru-jō." />
+  <QuestToken RefName="TOKEN_TerukuniDaimyōjinsha_COMPLETE" DisplayName="Mark of Terukuni Daimyōjin-sha" Description="An emblem awarded to those who conquered the challenges of Terukuni Daimyōjin-sha." />
+  <QuestToken RefName="TOKEN_TrailMarker2_COMPLETE" DisplayName="Trail Marker Crest" Description="This mark represents your accomplishments at Trail Marker." />
+  <QuestToken RefName="TOKEN_Stopover_COMPLETE" DisplayName="Stopover Mark" Description="Commemorating your achievements at Stopover." />
+  <QuestToken RefName="TOKEN_TravelersRest_COMPLETE" DisplayName="Traveler's Rest Crest" Description="Commemorating your achievements at Traveler's Rest." />
+  <QuestToken RefName="TOKEN_Crossroads4_COMPLETE" DisplayName="Seal of Crossroads" Description="This mark represents your accomplishments at Crossroads." />
+  <QuestToken RefName="TOKEN_Stopover2_COMPLETE" DisplayName="Stopover Sigil" Description="Recognition of your efforts at Stopover." />
+  <QuestToken RefName="TOKEN_Passage_COMPLETE" DisplayName="Passage Emblem" Description="A token earned at Passage." />
+  <QuestToken RefName="TOKEN_RestingSpot4_COMPLETE" DisplayName="Resting Spot Badge" Description="A memento from Resting Spot." />
+  <QuestToken RefName="TOKEN_Stopover4_COMPLETE" DisplayName="Stopover Emblem" Description="Evidence of your success at Stopover." />
+  <QuestToken RefName="TOKEN_Waypoint6_COMPLETE" DisplayName="Emblem of Waypoint" Description="A memento from Waypoint." />
+  <QuestToken RefName="TOKEN_Stopover6_COMPLETE" DisplayName="Stopover Token" Description="A memento from Stopover." />
+  <QuestToken RefName="TOKEN_Crossroads9_COMPLETE" DisplayName="Seal of Crossroads" Description="This mark represents your accomplishments at Crossroads." />
+  <QuestToken RefName="TOKEN_MidwayPoint9_COMPLETE" DisplayName="Midway Point Crest" Description="Commemorating your achievements at Midway Point." />
+  <QuestToken RefName="TOKEN_Waypoint11_COMPLETE" DisplayName="Waypoint Crest" Description="Proof of completing Waypoint." />
+  <QuestToken RefName="TOKEN_Stopover7_COMPLETE" DisplayName="Stopover Badge" Description="Evidence of your success at Stopover." />
+  <QuestToken RefName="TOKEN_Stopover8_COMPLETE" DisplayName="Stopover Crest" Description="Commemorating your achievements at Stopover." />
+  <QuestToken RefName="TOKEN_Waypoint18_COMPLETE" DisplayName="Waypoint Emblem" Description="Proof of completing Waypoint." />
+  <QuestToken RefName="TOKEN_Crossroads12_COMPLETE" DisplayName="Crossroads Sigil" Description="Evidence of your success at Crossroads." />
+  <QuestToken RefName="TOKEN_Stopover9_COMPLETE" DisplayName="Stopover Seal" Description="A token earned at Stopover." />
 </QuestTokens>

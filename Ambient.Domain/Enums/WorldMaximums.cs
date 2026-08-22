@@ -5,10 +5,6 @@ namespace Ambient.Domain.Enums;
 /// </summary>
 public class WorldMaximums
 {
-    /// <summary>
-    /// The maximum number of chunks that can be assigned to guest avatars.
-    /// </summary>
-    public const int MaximumGuestChunkCount = 64;
 
     /// <summary>
     /// Bit mask for extracting height values from packed data.
@@ -20,10 +16,6 @@ public class WorldMaximums
     /// </summary>
     public const byte HeightShift = 4;
 
-    /// <summary>
-    /// The maximum number of chunks that can be owned by the world owner.
-    /// </summary>
-    public const int MaximumOwnerChunkCount = 4096;
 
     /// <summary>
     /// The maximum number of achievements.

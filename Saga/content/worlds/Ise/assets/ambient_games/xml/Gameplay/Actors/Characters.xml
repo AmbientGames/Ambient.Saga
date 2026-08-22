@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Characters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Character RefName="BanditChief_QuestGiver" DisplayName="Class Representative" Description="Your class rep who wants everyone to have a good trip">
+<Characters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ../../../../../../../xsd/Gameplay/Gameplay.xsd" xmlns="Ambient.Domain">
+  <Character RefName="BanditChief_QuestGiver" DisplayName="Clipboard Class Rep" Description="The over-organized class rep who tracks every itinerary change with her battered clipboard">
     <Stats Health="0.80" Stamina="0.7" Mana="0.2" Strength="0.12" Defense="0.15" Speed="0.10" Magic="0.05" Credits="80" />
     <Capabilities>
       <Equipment>
@@ -15,24 +15,31 @@
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="BanditChief_Scout" DisplayName="Lookout Student" Description="A rival student keeping watch for teachers">
+  <Character RefName="BanditChief_Scout" DisplayName="Pathway Lookout" Description="A rival student posted on the path to warn others away">
     <Stats Health="0.60" Stamina="0.8" Mana="0.1" Strength="0.08" Defense="0.06" Speed="0.18" Magic="0.02" Credits="25" />
     <Capabilities>
       <Equipment>
         <Entry EquipmentRef="Dagger" Condition="0.7" />
         <Entry EquipmentRef="LeatherVest" Condition="0.6" />
       </Equipment>
+      <Spells>
+        <Entry SpellRef="PoisonBlade" Condition="1.0" />
+      </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
+        <Consumables>
+          <Entry ConsumableRef="MinorHealingPotion" Quantity="1" />
+        </Consumables>
       </Loot>
+      <DialogueTreeRef>BanditChief_ScoutEncounter</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
       <Trait Name="FleeThreshold" Value="25" />
     </Traits>
   </Character>
-  <Character RefName="BanditChief_Enforcer" DisplayName="Intimidating Delinquent" Description="A scary-looking student who backs up the rival school leader">
+  <Character RefName="BanditChief_Enforcer" DisplayName="Heavy-Shouldered Delinquent" Description="A tall student who uses his size to block anyone the Chief dislikes">
     <Stats Health="0.90" Stamina="0.8" Mana="0.1" Strength="0.15" Defense="0.12" Speed="0.10" Magic="0.03" Credits="50" />
     <Capabilities>
       <Equipment>
@@ -43,14 +50,28 @@
       <Consumables>
         <Entry ConsumableRef="MinorHealingPotion" Quantity="1" />
       </Consumables>
+      <Spells>
+        <Entry SpellRef="CrushingBlow" Condition="1.0" />
+      </Spells>
     </Capabilities>
+    <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="LeatherBoots" Condition="0.6" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="MinorHealingPotion" Quantity="1" />
+        </Consumables>
+      </Loot>
+      <DialogueTreeRef>BanditChief_EnforcerEncounter</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
       <Trait Name="FleeThreshold" Value="15" />
       <Trait Name="Aggression" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="BanditChief_Boss" DisplayName="Rival School Leader" Description="The ringleader of a group causing problems at the tourist sites">
+  <Character RefName="BanditChief_Boss" DisplayName="Rival School Leader" Description="The pushy leader of a rival group trying to take over the shrine visit">
     <Stats Health="1.00" Stamina="1.0" Mana="0.4" Strength="0.22" Defense="0.18" Speed="0.12" Magic="0.08" Credits="300" />
     <Capabilities>
       <Equipment>
@@ -64,11 +85,20 @@
       </Consumables>
       <Spells>
         <Entry SpellRef="WarCry" Condition="1.0" />
+        <Entry SpellRef="CrushingBlow" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
+        <Equipment>
+          <Entry EquipmentRef="KnightsSword" Condition="0.9" />
+          <Entry EquipmentRef="SteelHelm" Condition="0.8" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="HealingPotion" Quantity="2" />
+        </Consumables>
       </Loot>
+      <DialogueTreeRef>BanditChief_BossConfrontation</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="BossFight" Value="1" />
@@ -78,28 +108,34 @@
       <Trait Name="TacticalRetreat" Value="25" />
       <Trait Name="LastStand" Value="10" />
     </Traits>
+    <GivesQuestTokenOnDefeat>BanditChief_ChiefsBadge</GivesQuestTokenOnDefeat>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="BanditChief_BossBattle" StartNodeId="battle_opening" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="BanditChief_BossBattle" StartNodeId="battle_impressed" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.5" DialogueTreeRef="BanditChief_BossBattle" StartNodeId="battle_enraged" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.25" DialogueTreeRef="BanditChief_BossBattle" StartNodeId="battle_desperate" OnceOnly="true" />
+      <Trigger Condition="HealthAbove" Value="0.99" DialogueTreeRef="BanditChief_BossBattle" StartNodeId="battle_impressed" OnceOnly="true" />
+      <Trigger Condition="StanceChanged" Value="0" DialogueTreeRef="BanditChief_BossBattle" StartNodeId="battle_impressed" OnceOnly="true" />
+      <Trigger Condition="AffinityChanged" Value="0" DialogueTreeRef="BanditChief_BossBattle" StartNodeId="battle_impressed" OnceOnly="true" />
+      <Trigger Condition="OnVictory" Value="0" DialogueTreeRef="BanditChief_BossBattle" StartNodeId="battle_chief_falls_end" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="BanditChief_BossBattle" StartNodeId="battle_chief_triumphs_end" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="BanditChief_Prisoner" DisplayName="Cornered First-Year" Description="A timid underclassman being hassled by the rival school">
-    <Stats Health="0.50" Stamina="0.4" Mana="0.2" Strength="0.04" Defense="0.03" Speed="0.08" Magic="0.05" Credits="40" />
+  <Character RefName="BanditChief_Prisoner" DisplayName="Cornered First-Year" Description="A shy first-year who got pulled into the rival group's trouble">
+    <Stats Health="0.50" Stamina="0.4" Mana="0.2" Strength="0.04" Defense="0.03" Speed="0.08" Magic="0.05" Credits="60" />
     <Capabilities>
       <Equipment>
         <Entry EquipmentRef="ClothTunic" Condition="0.5" />
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>BanditChief_QuestStart</DialogueTreeRef>
+      <DialogueTreeRef>BanditChief_PrisonerRescue</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="ElementalSage_Sage" DisplayName="Ancient Shrine Keeper" Description="A mysterious elderly keeper who guards an ancient sacred flame">
+  <Character RefName="ElementalSage_Sage" DisplayName="Flame Shrine Keeper" Description="An elderly shrine attendant who tends the sacred fire and tests worthy students">
     <Stats Health="1.00" Stamina="1.0" Mana="1.0" Strength="0.10" Defense="0.20" Speed="0.15" Magic="0.40" Credits="0" />
     <Capabilities>
       <Equipment>
@@ -120,7 +156,7 @@
       <Trait Name="GrantsAffinity" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="ElementalSage_Guardian" DisplayName="Fox Spirit Guide" Description="A magical kitsune that tests visitors to the hidden shrine">
+  <Character RefName="ElementalSage_Guardian" DisplayName="Flame Fox Construct" Description="A living flame shaped like a fox that tests those seeking the affinity">
     <Stats Health="0.80" Stamina="0.8" Mana="0.6" Strength="0.15" Defense="0.10" Speed="0.12" Magic="0.20" Credits="0" />
     <Capabilities>
       <Equipment>
@@ -132,7 +168,11 @@
     </Capabilities>
     <Interactable>
       <Loot>
+        <Equipment>
+          <Entry EquipmentRef="Flamebrand" Condition="0.9" />
+        </Equipment>
       </Loot>
+      <DialogueTreeRef>ElementalSage_GuardianEncounter</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
@@ -140,7 +180,7 @@
     </Traits>
     <GivesQuestTokenOnDefeat>ElementalSage_TrialComplete</GivesQuestTokenOnDefeat>
   </Character>
-  <Character RefName="FalseProphet_Concerned" DisplayName="Worried Chaperone" Description="A teacher concerned about the scary stories spreading">
+  <Character RefName="FalseProphet_Concerned" DisplayName="Worried Chaperone" Description="A teacher who keeps checking on students after hearing unsettling stories">
     <Stats Health="0.50" Stamina="0.4" Mana="0.3" Strength="0.04" Defense="0.05" Speed="0.06" Magic="0.08" Credits="40" />
     <Capabilities>
       <Equipment>
@@ -154,7 +194,7 @@
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="FalseProphet_Prophet" DisplayName="Mysterious Storyteller" Description="A student who claims to have seen supernatural things">
+  <Character RefName="FalseProphet_Prophet" DisplayName="Mysterious Storyteller" Description="A student who gathers others with tales of hidden powers at the shrine">
     <Stats Health="0.70" Stamina="0.6" Mana="0.8" Strength="0.06" Defense="0.08" Speed="0.10" Magic="0.20" Credits="500" />
     <Capabilities>
       <Equipment>
@@ -164,10 +204,11 @@
       <Spells>
         <Entry SpellRef="Charm" Condition="1.0" />
         <Entry SpellRef="Illusion" Condition="1.0" />
+        <Entry SpellRef="Fireball" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>FalseProphet_Start</DialogueTreeRef>
+      <DialogueTreeRef>FalseProphet_FirstMeet</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
@@ -178,7 +219,7 @@
       <Trigger Condition="HealthBelow" Value="0.5" DialogueTreeRef="FalseProphet_Battle" StartNodeId="battle_desperate" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="FalseProphet_Devoted" DisplayName="True Believer" Description="A student completely convinced the ghost stories are real">
+  <Character RefName="FalseProphet_Devoted" DisplayName="True Believer" Description="A student who now repeats the storyteller's words like a personal mantra">
     <Stats Health="0.80" Stamina="0.7" Mana="0.4" Strength="0.12" Defense="0.10" Speed="0.10" Magic="0.10" Credits="30" />
     <Capabilities>
       <Equipment>
@@ -187,13 +228,13 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>FalseProphet_Start</DialogueTreeRef>
+      <DialogueTreeRef>FalseProphet_DevotedTalk</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
     </Traits>
   </Character>
-  <Character RefName="FalseProphet_Former" DisplayName="Former Believer" Description="Someone who used to believe but figured out the truth">
+  <Character RefName="FalseProphet_Former" DisplayName="Doubting Yuki" Description="A classmate who left the false affinity leader's circle after spotting the staged tricks">
     <Stats Health="0.60" Stamina="0.5" Mana="0.3" Strength="0.06" Defense="0.05" Speed="0.08" Magic="0.08" Credits="25" />
     <Capabilities>
       <Equipment>
@@ -201,13 +242,13 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>FalseProphet_Start</DialogueTreeRef>
+      <DialogueTreeRef>FalseProphet_FormerTalk</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="FalseProphet_Guard" DisplayName="Loyal Friend" Description="A classmate who defends the storyteller no matter what">
+  <Character RefName="FalseProphet_Guard" DisplayName="Loyal Clubmate Kenji" Description="A classmate who defends the false affinity leader no matter what">
     <Stats Health="0.90" Stamina="0.8" Mana="0.2" Strength="0.16" Defense="0.14" Speed="0.10" Magic="0.05" Credits="70" />
     <Capabilities>
       <Equipment>
@@ -217,13 +258,13 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>FalseProphet_Start</DialogueTreeRef>
+      <DialogueTreeRef>FalseProphet_GuardTalk</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
     </Traits>
   </Character>
-  <Character RefName="FalseProphet_Investigator" DisplayName="Student Detective" Description="A curious student investigating the truth behind the rumors">
+  <Character RefName="FalseProphet_Investigator" DisplayName="Curious Mika" Description="A student detective investigating the rumors around the false affinity leader">
     <Stats Health="0.60" Stamina="0.5" Mana="0.6" Strength="0.05" Defense="0.06" Speed="0.08" Magic="0.14" Credits="60" />
     <Capabilities>
       <Equipment>
@@ -231,13 +272,13 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>FalseProphet_Start</DialogueTreeRef>
+      <DialogueTreeRef>FalseProphet_ScholarMeet</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="HiddenCache_MapSeller" DisplayName="Antique Shop Owner" Description="An elderly shopkeeper who sells an old temple map">
+  <Character RefName="HiddenCache_MapSeller" DisplayName="Curio Club Senpai" Description="An upperclassman who sells an old shrine grounds map from the club room">
     <Stats Health="0.60" Stamina="0.5" Mana="0.4" Strength="0.04" Defense="0.05" Speed="0.08" Magic="0.12" Credits="150" />
     <Capabilities>
       <Equipment>
@@ -245,6 +286,14 @@
       </Equipment>
     </Capabilities>
     <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="GoldRing" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="HerbBundle" Quantity="3" />
+        </Consumables>
+      </Loot>
       <DialogueTreeRef>HiddenCache_MapStart</DialogueTreeRef>
     </Interactable>
     <Traits>
@@ -253,7 +302,7 @@
       <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="HiddenCache_Scholar" DisplayName="History Club Member" Description="A student passionate about local history and legends">
+  <Character RefName="HiddenCache_Scholar" DisplayName="History Club Aiko" Description="A student passionate about local shrine legends and hidden paths">
     <Stats Health="0.50" Stamina="0.4" Mana="0.6" Strength="0.03" Defense="0.04" Speed="0.06" Magic="0.15" Credits="60" />
     <Capabilities>
       <Equipment>
@@ -261,13 +310,13 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>HiddenCache_MapStart</DialogueTreeRef>
+      <DialogueTreeRef>HiddenCache_ScholarHelp</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="HiddenCache_Hermit" DisplayName="Retired Shrine Priest" Description="An elderly man who knows the old pilgrimage paths">
+  <Character RefName="HiddenCache_Hermit" DisplayName="Retired Groundskeeper" Description="An elderly caretaker who knows the old shrine pilgrimage paths">
     <Stats Health="0.70" Stamina="0.8" Mana="0.3" Strength="0.08" Defense="0.06" Speed="0.10" Magic="0.10" Credits="20" />
     <Capabilities>
       <Equipment>
@@ -279,13 +328,18 @@
       </Consumables>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>HiddenCache_MapStart</DialogueTreeRef>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="GoldRing" />
+        </Equipment>
+      </Loot>
+      <DialogueTreeRef>HiddenCache_HermitMeet</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="0" />
     </Traits>
   </Character>
-  <Character RefName="HiddenCache_Rival" DisplayName="Rival Explorer" Description="A student from another school also searching for the shrine">
+  <Character RefName="HiddenCache_Rival" DisplayName="Rival Explorer Taro" Description="A student from another school also searching for the hidden shrine cache">
     <Stats Health="0.90" Stamina="0.8" Mana="0.3" Strength="0.14" Defense="0.12" Speed="0.14" Magic="0.06" Credits="80" />
     <Capabilities>
       <Equipment>
@@ -296,22 +350,33 @@
       <Consumables>
         <Entry ConsumableRef="MinorHealingPotion" Quantity="2" />
       </Consumables>
+      <Spells>
+        <Entry SpellRef="PoisonBlade" Condition="1.0" />
+      </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>HiddenCache_MapStart</DialogueTreeRef>
+      <DialogueTreeRef>HiddenCache_RivalMeet</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
       <Trait Name="WillingToBargain" Value="40" />
     </Traits>
+    <GivesQuestTokenOnDefeat>HiddenCache_ThirdClue</GivesQuestTokenOnDefeat>
   </Character>
-  <Character RefName="HiddenCache_Guardian" DisplayName="Shrine Caretaker" Description="An elderly keeper who protects the hidden sacred site">
+  <Character RefName="HiddenCache_Guardian" DisplayName="Shrine Caretaker Mechanism" Description="An ancient construct guarding the hidden sacred site">
     <Stats Health="1.00" Stamina="1.0" Mana="0.0" Strength="0.20" Defense="0.25" Speed="0.06" Magic="0.00" Credits="0" />
     <Capabilities>
       <Equipment>
         <Entry EquipmentRef="PlateGauntlets" Condition="1.0" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="PlateGauntlets" Condition="0.9" />
+        </Equipment>
+      </Loot>
+    </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
       <Trait Name="FleeThreshold" Value="0" />
@@ -322,7 +387,7 @@
       <Trigger Condition="HealthBelow" Value="0.5" DialogueTreeRef="HiddenCache_GuardianBattle" StartNodeId="battle_damage_warning" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="LostTechnique_Storyteller" DisplayName="Local History Teacher" Description="A teacher who knows all the local legends and history">
+  <Character RefName="LostTechnique_Storyteller" DisplayName="History Teacher Sato" Description="A teacher who knows all the local shrine legends and affinity lore">
     <Stats Health="0.60" Stamina="0.7" Mana="0.5" Strength="0.06" Defense="0.05" Speed="0.12" Magic="0.12" Credits="40" />
     <Capabilities>
       <Equipment>
@@ -337,7 +402,7 @@
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="LostTechnique_Master" DisplayName="Pearl Diving Elder" Description="An elderly ama diver who knows the old ways">
+  <Character RefName="LostTechnique_Master" DisplayName="Ama Diver Elder" Description="An elderly diver who knows the old affinity techniques from the coast">
     <Stats Health="0.90" Stamina="0.7" Mana="0.8" Strength="0.22" Defense="0.20" Speed="0.18" Magic="0.18" Credits="100" />
     <Capabilities>
       <Equipment>
@@ -346,21 +411,28 @@
       </Equipment>
       <Spells>
         <Entry SpellRef="PerfectStrike" Condition="1.0" />
+        <Entry SpellRef="CrushingBlow" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>LostTechnique_Story</DialogueTreeRef>
+      <Loot>
+        <Spells>
+          <Entry SpellRef="PerfectStrike" Condition="1" />
+        </Spells>
+      </Loot>
+      <DialogueTreeRef>LostTechnique_MasterMeet</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="0" />
     </Traits>
+    <GivesQuestTokenOnDefeat>LostTechnique_TrialOne</GivesQuestTokenOnDefeat>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="LostTechnique_SparBattle" StartNodeId="begin_end" OnceOnly="true" />
       <Trigger Condition="AvatarHealthBelow" Value="0.3" DialogueTreeRef="LostTechnique_SparBattle" StartNodeId="player_low" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.5" DialogueTreeRef="LostTechnique_SparBattle" StartNodeId="impressed_end" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="LostTechnique_Failed" DisplayName="Frustrated Tourist" Description="Someone who tried to learn from the artisan and gave up">
+  <Character RefName="LostTechnique_Failed" DisplayName="Burned-Out Kento" Description="A second-year who quit the affinity training after three failed attempts at the shrine grounds">
     <Stats Health="0.80" Stamina="0.8" Mana="0.3" Strength="0.14" Defense="0.12" Speed="0.14" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
@@ -369,13 +441,13 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>LostTechnique_Story</DialogueTreeRef>
+      <DialogueTreeRef>LostTechnique_FailedMeet</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
     </Traits>
   </Character>
-  <Character RefName="LostTechnique_Rival" DisplayName="Art Student" Description="Another student eager to learn traditional techniques">
+  <Character RefName="LostTechnique_Rival" DisplayName="Eager Rival Mika" Description="A determined classmate chasing the same affinity technique at the shrine">
     <Stats Health="0.90" Stamina="0.9" Mana="0.4" Strength="0.16" Defense="0.14" Speed="0.16" Magic="0.08" Credits="70" />
     <Capabilities>
       <Equipment>
@@ -387,14 +459,14 @@
       </Consumables>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>LostTechnique_Story</DialogueTreeRef>
+      <DialogueTreeRef>LostTechnique_RivalMeet</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
       <Trait Name="Aggression" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="LostTechnique_Elder" DisplayName="Village Grandmother" Description="An elderly woman who remembers the old craftsmen">
+  <Character RefName="LostTechnique_Elder" DisplayName="Shrine Volunteer Grandma" Description="An elderly local who recalls the old affinity masters at Ise">
     <Stats Health="0.50" Stamina="0.4" Mana="0.4" Strength="0.04" Defense="0.05" Speed="0.05" Magic="0.10" Credits="30" />
     <Capabilities>
       <Equipment>
@@ -402,13 +474,13 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>LostTechnique_Story</DialogueTreeRef>
+      <DialogueTreeRef>LostTechnique_ElderMeet</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="MissingHeirloom_Victim" DisplayName="Worried Classmate" Description="A student who lost their precious good-luck charm from home">
+  <Character RefName="MissingHeirloom_Victim" DisplayName="Anxious Classmate Sora" Description="A worried student whose family amulet went missing during the shrine visit">
     <Stats Health="0.60" Stamina="0.5" Mana="0.3" Strength="0.05" Defense="0.05" Speed="0.08" Magic="0.10" Credits="50" />
     <Capabilities>
       <Equipment>
@@ -423,7 +495,7 @@
       <Trait Name="WillTrade" Value="0" />
     </Traits>
   </Character>
-  <Character RefName="MissingHeirloom_Witness" DisplayName="Observant Student" Description="A quiet classmate who noticed something odd at the rest stop">
+  <Character RefName="MissingHeirloom_Witness" DisplayName="Quiet Observer Ren" Description="A reserved classmate who spotted something strange near the rest stop">
     <Stats Health="0.70" Stamina="0.6" Mana="0.2" Strength="0.08" Defense="0.06" Speed="0.10" Magic="0.05" Credits="30" />
     <Capabilities>
       <Equipment>
@@ -431,13 +503,13 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>MissingHeirloom_Victim_Start</DialogueTreeRef>
+      <DialogueTreeRef>MissingHeirloom_Witness_Dialogue</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="MissingHeirloom_Thief" DisplayName="Mischievous Student" Description="A troublemaker who took the charm as a prank">
+  <Character RefName="MissingHeirloom_Thief" DisplayName="Troubled Prankster Yuto" Description="A classmate who took the charm under family pressure">
     <Stats Health="0.80" Stamina="0.8" Mana="0.3" Strength="0.12" Defense="0.10" Speed="0.15" Magic="0.05" Credits="100" />
     <Capabilities>
       <Equipment>
@@ -447,11 +519,12 @@
       <Consumables>
         <Entry ConsumableRef="MinorHealingPotion" Quantity="1" />
       </Consumables>
+      <Spells>
+        <Entry SpellRef="Backstab" Condition="1.0" />
+      </Spells>
     </Capabilities>
     <Interactable>
-      <Loot>
-      </Loot>
-      <DialogueTreeRef>MissingHeirloom_Victim_Start</DialogueTreeRef>
+      <DialogueTreeRef>MissingHeirloom_Thief_Confront</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
@@ -463,7 +536,7 @@
       <Trigger Condition="HealthBelow" Value="0.3" DialogueTreeRef="MissingHeirloom_Thief_Battle" StartNodeId="surrender" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MissingHeirloom_Fence" DisplayName="Local Shop Owner" Description="A souvenir shop keeper who unknowingly bought the charm">
+  <Character RefName="MissingHeirloom_Fence" DisplayName="Souvenir Stall Keeper" Description="A local shop owner at the shrine market who bought the charm">
     <Stats Health="0.70" Stamina="0.6" Mana="0.4" Strength="0.08" Defense="0.08" Speed="0.12" Magic="0.08" Credits="200" />
     <Capabilities>
       <Equipment>
@@ -473,16 +546,23 @@
     </Capabilities>
     <Interactable>
       <Loot>
+        <Equipment>
+          <Entry EquipmentRef="Stiletto" Condition="0.9" />
+          <Entry EquipmentRef="Dagger" Condition="0.8" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="MinorHealingPotion" Quantity="2" />
+        </Consumables>
       </Loot>
-      <DialogueTreeRef>MissingHeirloom_Victim_Start</DialogueTreeRef>
+      <DialogueTreeRef>MissingHeirloom_Fence_Dialogue</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="RefugeeEscort_Leader" DisplayName="Responsible Senpai" Description="An older student trying to keep everyone together">
-    <Stats Health="0.50" Stamina="0.4" Mana="0.5" Strength="0.04" Defense="0.05" Speed="0.06" Magic="0.15" Credits="30" />
+  <Character RefName="RefugeeEscort_Leader" DisplayName="Responsible Senpai Akira" Description="An upperclassman trying to keep the scattered group safe during the yokai outbreak">
+    <Stats Health="0.50" Stamina="0.4" Mana="0.5" Strength="0.04" Defense="0.05" Speed="0.06" Magic="0.15" Credits="120" />
     <Capabilities>
       <Equipment>
         <Entry EquipmentRef="WalkingStick" Condition="0.7" />
@@ -490,13 +570,18 @@
       </Equipment>
     </Capabilities>
     <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="TravelCloak" Condition="0.6" />
+        </Equipment>
+      </Loot>
       <DialogueTreeRef>RefugeeEscort_Start</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="RefugeeEscort_Fighter" DisplayName="Brave Kohai" Description="A younger student who refuses to leave anyone behind">
+  <Character RefName="RefugeeEscort_Fighter" DisplayName="Brave Kohai Haru" Description="A younger student determined to protect the group after losing family">
     <Stats Health="0.80" Stamina="0.9" Mana="0.2" Strength="0.14" Defense="0.10" Speed="0.14" Magic="0.04" Credits="15" />
     <Capabilities>
       <Equipment>
@@ -505,14 +590,14 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>RefugeeEscort_Start</DialogueTreeRef>
+      <DialogueTreeRef>RefugeeEscort_FighterJoin</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
       <Trait Name="FleeThreshold" Value="10" />
     </Traits>
   </Character>
-  <Character RefName="RefugeeEscort_Healer" DisplayName="School Nurse" Description="The trip's nurse who takes care of everyone">
+  <Character RefName="RefugeeEscort_Healer" DisplayName="School Nurse Sato" Description="The trip's nurse keeping the injured students on their feet">
     <Stats Health="0.60" Stamina="0.6" Mana="0.8" Strength="0.04" Defense="0.06" Speed="0.10" Magic="0.18" Credits="20" />
     <Capabilities>
       <Equipment>
@@ -524,16 +609,22 @@
       </Consumables>
       <Spells>
         <Entry SpellRef="MinorHeal" Condition="1.0" />
+        <Entry SpellRef="CurePoison" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>RefugeeEscort_Start</DialogueTreeRef>
+      <Loot>
+        <Consumables>
+          <Entry ConsumableRef="MinorHealingPotion" Quantity="1" />
+        </Consumables>
+      </Loot>
+      <DialogueTreeRef>RefugeeEscort_HealerTalk</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="RefugeeEscort_Stranger" DisplayName="Mysterious Transfer Student" Description="A quiet student no one knows very well">
+  <Character RefName="RefugeeEscort_Stranger" DisplayName="Quiet Transfer Student" Description="A reserved newcomer from another class who joined the Ise trip at the last minute">
     <Stats Health="0.80" Stamina="0.7" Mana="0.3" Strength="0.12" Defense="0.10" Speed="0.14" Magic="0.08" Credits="50" />
     <Capabilities>
       <Equipment>
@@ -543,13 +634,13 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>RefugeeEscort_Start</DialogueTreeRef>
+      <DialogueTreeRef>RefugeeEscort_StrangerReveal</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="RefugeeEscort_Child" DisplayName="Lost Underclassman" Description="A first-year student who wandered off and got lost">
+  <Character RefName="RefugeeEscort_Child" DisplayName="Frightened First-Year" Description="A timid underclassman who wandered off during the shrine visit and got lost">
     <Stats Health="0.30" Stamina="0.4" Mana="0.1" Strength="0.02" Defense="0.02" Speed="0.08" Magic="0.03" Credits="0" />
     <Capabilities>
       <Equipment>
@@ -557,13 +648,13 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>RefugeeEscort_Start</DialogueTreeRef>
+      <DialogueTreeRef>RefugeeEscort_FindChild</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="RefugeeEscort_Pursuer" DisplayName="Searching Teacher" Description="A teacher looking for the missing students">
+  <Character RefName="RefugeeEscort_Pursuer" DisplayName="Stern Chaperone" Description="A strict teacher keeping watch over the class during the Ise excursion">
     <Stats Health="0.80" Stamina="0.8" Mana="0.2" Strength="0.14" Defense="0.12" Speed="0.16" Magic="0.05" Credits="40" />
     <Capabilities>
       <Equipment>
@@ -571,12 +662,19 @@
         <Entry EquipmentRef="LeatherArmor" Condition="0.7" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="ShortBow" Condition="0.6" />
+        </Equipment>
+      </Loot>
+    </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
       <Trait Name="FleeThreshold" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="RefugeeEscort_Captain" DisplayName="Vice Principal" Description="The stern vice principal demanding everyone return immediately">
+  <Character RefName="RefugeeEscort_Captain" DisplayName="Disciplined Vice-Principal" Description="The vice principal overseeing the entire class trip with firm rules">
     <Stats Health="1.00" Stamina="0.9" Mana="0.3" Strength="0.18" Defense="0.16" Speed="0.12" Magic="0.08" Credits="120" />
     <Capabilities>
       <Equipment>
@@ -587,7 +685,20 @@
       <Consumables>
         <Entry ConsumableRef="HealingPotion" Quantity="1" />
       </Consumables>
+      <Spells>
+        <Entry SpellRef="CrushingBlow" Condition="1.0" />
+      </Spells>
     </Capabilities>
+    <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="SteelSword" Condition="0.8" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="HealingPotion" Quantity="1" />
+        </Consumables>
+      </Loot>
+    </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
       <Trait Name="Aggression" Value="75" />
@@ -596,9 +707,10 @@
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="RefugeeEscort_CaptainBattle" StartNodeId="battle_opening" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.3" DialogueTreeRef="RefugeeEscort_CaptainBattle" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.45" DialogueTreeRef="RefugeeEscort_CaptainBattle" StartNodeId="battle_gambit" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="RefugeeEscort_BorderGuard" DisplayName="Bus Driver" Description="The friendly bus driver waiting at the meeting point">
+  <Character RefName="RefugeeEscort_BorderGuard" DisplayName="Helpful Tour Guide" Description="The local shrine guide waiting at the meeting point for the class">
     <Stats Health="0.80" Stamina="0.7" Mana="0.2" Strength="0.12" Defense="0.14" Speed="0.08" Magic="0.04" Credits="50" />
     <Capabilities>
       <Equipment>
@@ -607,13 +719,13 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>RefugeeEscort_Start</DialogueTreeRef>
+      <DialogueTreeRef>RefugeeEscort_Border</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="0" />
     </Traits>
   </Character>
-  <Character RefName="RivalGuild_GuildMaster" DisplayName="Photography Club Captain" Description="The determined leader of your school's photo club">
+  <Character RefName="RivalGuild_GuildMaster" DisplayName="Ambitious Photo Captain" Description="The determined leader of the school's photography club on the Ise trip">
     <Stats Health="0.80" Stamina="0.6" Mana="0.5" Strength="0.10" Defense="0.12" Speed="0.10" Magic="0.15" Credits="300" />
     <Capabilities>
       <Equipment>
@@ -622,13 +734,13 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>RivalGuild_Recruitment</DialogueTreeRef>
+      <DialogueTreeRef>RivalGuild_Report</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="RivalGuild_Enforcer" DisplayName="Club Vice-Captain" Description="The photography club's tough second-in-command">
+  <Character RefName="RivalGuild_Enforcer" DisplayName="Club Vice-Captain" Description="The photography club's tough second-in-command during the class trip">
     <Stats Health="1.00" Stamina="0.9" Mana="0.2" Strength="0.18" Defense="0.16" Speed="0.10" Magic="0.04" Credits="100" />
     <Capabilities>
       <Equipment>
@@ -646,7 +758,7 @@
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="RivalGuild_RivalLeader" DisplayName="Rival Club President" Description="The confident leader of the opposing school's photo club">
+  <Character RefName="RivalGuild_RivalLeader" DisplayName="Rival Club President" Description="The confident leader of the opposing school's photography club on the trip">
     <Stats Health="1.00" Stamina="0.8" Mana="0.6" Strength="0.15" Defense="0.15" Speed="0.12" Magic="0.12" Credits="400" />
     <Capabilities>
       <Equipment>
@@ -663,8 +775,15 @@
     </Capabilities>
     <Interactable>
       <Loot>
+        <Equipment>
+          <Entry EquipmentRef="KnightsSword" Condition="0.9" />
+          <Entry EquipmentRef="SteelShield" Condition="0.8" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="GreaterHealingPotion" Quantity="1" />
+        </Consumables>
       </Loot>
-      <DialogueTreeRef>RivalGuild_Recruitment</DialogueTreeRef>
+      <DialogueTreeRef>RivalGuild_Confrontation</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
@@ -678,19 +797,29 @@
       <Trigger Condition="HealthBelow" Value="0.25" DialogueTreeRef="RivalGuild_RivalBattle" StartNodeId="battle_negotiate" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="RivalGuild_Lieutenant" DisplayName="Rival Vice-Captain" Description="The rival club's skilled photographer and strategist">
+  <Character RefName="RivalGuild_Lieutenant" DisplayName="Rival Vice-Captain" Description="The rival club's skilled strategist and second-in-command on the shrine trip">
     <Stats Health="0.90" Stamina="0.8" Mana="0.3" Strength="0.14" Defense="0.12" Speed="0.14" Magic="0.08" Credits="120" />
     <Capabilities>
       <Equipment>
         <Entry EquipmentRef="SteelSword" Condition="0.8" />
         <Entry EquipmentRef="StuddedLeather" Condition="0.7" />
       </Equipment>
+      <Spells>
+        <Entry SpellRef="PoisonBlade" Condition="1.0" />
+      </Spells>
     </Capabilities>
+    <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="SteelSword" Condition="0.6" />
+        </Equipment>
+      </Loot>
+    </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="RivalGuild_Spy" DisplayName="Photography Enthusiast" Description="A student who trades photography tips with both clubs">
+  <Character RefName="RivalGuild_Spy" DisplayName="Photography Enthusiast" Description="A student who trades photo tips with both clubs during the Ise visit">
     <Stats Health="0.60" Stamina="0.7" Mana="0.4" Strength="0.06" Defense="0.05" Speed="0.16" Magic="0.10" Credits="80" />
     <Capabilities>
       <Equipment>
@@ -699,14 +828,14 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>RivalGuild_Recruitment</DialogueTreeRef>
+      <DialogueTreeRef>RivalGuild_SpyInfo</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="0" />
       <Trait Name="WillingToBargain" Value="80" />
     </Traits>
   </Character>
-  <Character RefName="RivalGuild_Arbiter" DisplayName="Contest Judge" Description="A professional photographer judging the competition">
+  <Character RefName="RivalGuild_Arbiter" DisplayName="Contest Judge Haru" Description="A meticulous teacher judging the class photo contest at the shrine grounds">
     <Stats Health="0.60" Stamina="0.5" Mana="0.6" Strength="0.05" Defense="0.08" Speed="0.06" Magic="0.12" Credits="200" />
     <Capabilities>
       <Equipment>
@@ -714,13 +843,13 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>RivalGuild_Recruitment</DialogueTreeRef>
+      <DialogueTreeRef>RivalGuild_ArbiterTalk</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="RivalGuild_RivalEnforcer" DisplayName="Rival Club Enforcer" Description="An aggressive member of the rival photography club">
+  <Character RefName="RivalGuild_RivalEnforcer" DisplayName="Rival Club Enforcer Kenji" Description="An overzealous member of the competing photography club who blocks paths">
     <Stats Health="0.90" Stamina="0.8" Mana="0.1" Strength="0.16" Defense="0.14" Speed="0.10" Magic="0.02" Credits="60" />
     <Capabilities>
       <Equipment>
@@ -728,11 +857,18 @@
         <Entry EquipmentRef="ChainmailArmor" Condition="0.7" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="WarHammer" Condition="0.5" />
+        </Equipment>
+      </Loot>
+    </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="WanderingMerchant_Merchant" DisplayName="Friendly Tour Guide" Description="A cheerful guide who got separated from their group">
+  <Character RefName="WanderingMerchant_Merchant" DisplayName="Cheerful Lost Student" Description="A bubbly classmate who got separated from the main tour group at the shrine">
     <Stats Health="0.70" Stamina="0.6" Mana="0.3" Strength="0.06" Defense="0.08" Speed="0.10" Magic="0.08" Credits="250" />
     <Capabilities>
       <Equipment>
@@ -744,6 +880,21 @@
       </Consumables>
     </Capabilities>
     <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="Knife" />
+          <Entry EquipmentRef="MerchantCloak" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="MinorHealingPotion" Quantity="5" />
+        </Consumables>
+        <Tools>
+          <Entry ToolRef="Multitool" />
+        </Tools>
+        <BuildingMaterials>
+          <Entry BuildingMaterialRef="Nails" Quantity="5" />
+        </BuildingMaterials>
+      </Loot>
       <DialogueTreeRef>WanderingMerchant_Introduction</DialogueTreeRef>
     </Interactable>
     <Traits>
@@ -753,7 +904,7 @@
       <Trait Name="BargainSkill" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="WanderingMerchant_TollGuard" DisplayName="Shrine Ticket Booth" Description="The attendant checking admission tickets">
+  <Character RefName="WanderingMerchant_TollGuard" DisplayName="Shrine Gate Attendant" Description="The attendant checking admission tickets at the Ise entrance">
     <Stats Health="0.80" Stamina="0.7" Mana="0.1" Strength="0.12" Defense="0.14" Speed="0.08" Magic="0.02" Credits="60" />
     <Capabilities>
       <Equipment>
@@ -762,34 +913,53 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>WanderingMerchant_Introduction</DialogueTreeRef>
+      <DialogueTreeRef>WanderingMerchant_Toll</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillingToBargain" Value="30" />
     </Traits>
   </Character>
-  <Character RefName="WanderingMerchant_Bandit" DisplayName="Pushy Salesperson" Description="An aggressive souvenir hawker blocking the path">
+  <Character RefName="WanderingMerchant_Bandit" DisplayName="Pushy Souvenir Hawker" Description="An aggressive souvenir seller blocking the shrine path">
     <Stats Health="0.70" Stamina="0.8" Mana="0.1" Strength="0.10" Defense="0.08" Speed="0.14" Magic="0.02" Credits="30" />
     <Capabilities>
       <Equipment>
         <Entry EquipmentRef="IronSword" Condition="0.6" />
         <Entry EquipmentRef="LeatherArmor" Condition="0.5" />
       </Equipment>
+      <Spells>
+        <Entry SpellRef="PoisonBlade" Condition="1.0" />
+      </Spells>
     </Capabilities>
+    <Interactable>
+      <Loot>
+        <Consumables>
+          <Entry ConsumableRef="MinorHealingPotion" Quantity="1" />
+        </Consumables>
+      </Loot>
+      <DialogueTreeRef>WanderingMerchant_Ambush</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
       <Trait Name="FleeThreshold" Value="30" />
     </Traits>
   </Character>
-  <Character RefName="WanderingMerchant_BuyerOne" DisplayName="Grateful Tourist" Description="A lost tourist who appreciates the guide's help">
-    <Stats Health="0.60" Stamina="0.5" Mana="0.2" Strength="0.05" Defense="0.05" Speed="0.08" Magic="0.05" Credits="150" />
+  <Character RefName="WanderingMerchant_BuyerOne" DisplayName="Grateful Tourist" Description="A lost tourist who appreciates the guide's help at the market stop">
+    <Stats Health="0.60" Stamina="0.5" Mana="0.2" Strength="0.05" Defense="0.05" Speed="0.08" Magic="0.05" Credits="200" />
     <Capabilities>
       <Equipment>
         <Entry EquipmentRef="ClothTunic" Condition="0.9" />
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>WanderingMerchant_Introduction</DialogueTreeRef>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="ClothTunic" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
+        </Consumables>
+      </Loot>
+      <DialogueTreeRef>WanderingMerchant_DeliveryOne</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
@@ -797,7 +967,7 @@
       <Trait Name="WillingToBargain" Value="40" />
     </Traits>
   </Character>
-  <Character RefName="WanderingMerchant_BuyerTwo" DisplayName="Tour Group Leader" Description="The leader of the guide's original tour group">
+  <Character RefName="WanderingMerchant_BuyerTwo" DisplayName="Tour Group Leader" Description="The leader of the original tour group waiting at the second stop">
     <Stats Health="0.70" Stamina="0.6" Mana="0.4" Strength="0.04" Defense="0.06" Speed="0.10" Magic="0.10" Credits="400" />
     <Capabilities>
       <Equipment>
@@ -805,7 +975,15 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>WanderingMerchant_Introduction</DialogueTreeRef>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="ScholarsRobe" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="MinorHealingPotion" Quantity="2" />
+        </Consumables>
+      </Loot>
+      <DialogueTreeRef>WanderingMerchant_DeliveryTwo</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
@@ -813,7 +991,7 @@
       <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="WanderingMerchant_Innkeeper" DisplayName="Ryokan Owner" Description="The friendly owner of the traditional inn">
+  <Character RefName="WanderingMerchant_Innkeeper" DisplayName="Ryokan Host" Description="The friendly owner of the traditional lodging near the shrine">
     <Stats Health="0.70" Stamina="0.8" Mana="0.2" Strength="0.08" Defense="0.06" Speed="0.08" Magic="0.05" Credits="80" />
     <Capabilities>
       <Equipment>
@@ -821,574 +999,178 @@
       </Equipment>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>WanderingMerchant_Introduction</DialogueTreeRef>
+      <Loot>
+        <Consumables>
+          <Entry ConsumableRef="MinorHealingPotion" Quantity="4" />
+        </Consumables>
+      </Loot>
+      <DialogueTreeRef>WanderingMerchant_Innkeeper</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
       <Trait Name="WillTrade" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="BOSS_Kazahinominomiya" DisplayName="Guardian of Kazahinomi-no-Miya" Description="A powerful foe known as Guardian of Kazahinomi-no-Miya, whose mysterious demeanor intimidates all who approach Kazahinomi-no-Miya." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsArcRefs&quot;:[&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;Aramatsurinomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
-    <Stats Health="0.94" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="50" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="Maul" Condition="1.0" />
-        <Entry EquipmentRef="ClothGloves" Condition="1.0" />
-        <Entry EquipmentRef="LeatherLeggings" Condition="1.0" />
-        <Entry EquipmentRef="Knife" Condition="1.0" />
-        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
-        <Entry EquipmentRef="RingOfSwiftness" Condition="1.0" />
-        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="HastePotion" Quantity="4" />
-        <Entry ConsumableRef="DivineBlessing" Quantity="4" />
-        <Entry ConsumableRef="PoisonVial" Quantity="4" />
-        <Entry ConsumableRef="CurativePotion" Quantity="4" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="ShieldBash" Condition="1.0" />
-        <Entry SpellRef="PowerStrike" Condition="1.0" />
-        <Entry SpellRef="CrushingBlow" Condition="1.0" />
-        <Entry SpellRef="Disarm" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Interactable>
-      <Loot>
-        <Equipment>
-          <Entry EquipmentRef="ArchmageStaff" Condition="1.0" />
-        </Equipment>
-        <Consumables>
-          <Entry ConsumableRef="HastePotion" Quantity="2" />
-        </Consumables>
-        <Spells>
-          <Entry SpellRef="Agility" Condition="1.0" />
-        </Spells>
-      </Loot>
-      <DialogueTreeRef>DIALOGUE_BOSS_Kazahinominomiya</DialogueTreeRef>
-    </Interactable>
-    <Traits>
-      <Trait Name="BossFight" Value="1" />
-      <Trait Name="Hostile" Value="1" />
-      <Trait Name="TacticalRetreat" Value="30" />
-      <Trait Name="LastStand" Value="15" />
-    </Traits>
-    <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_defeated" OnceOnly="true" />
-    </BattleDialogue>
-  </Character>
-  <Character RefName="BOSS_KotaiJinguInnerShrine" DisplayName="Guardian of Kotai Jingu (Inner Shrine)" Description="At Kotai Jingu (Inner Shrine), the enigmatic warrior Guardian of Kotai Jingu (Inner Shrine) awaits those bold enough to face them." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsArcRefs&quot;:[&quot;Kazahinominomiya&quot;,&quot;Aramatsurinomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
-    <Stats Health="0.81" Stamina="1.0" Mana="1.1" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="50" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="WizardHat" Condition="1.0" />
-        <Entry EquipmentRef="ShortBow" Condition="1.0" />
-        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
-        <Entry EquipmentRef="GoldRing" Condition="1.0" />
-        <Entry EquipmentRef="HerosCape" Condition="1.0" />
-        <Entry EquipmentRef="RingOfSwiftness" Condition="1.0" />
-        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
-        <Entry EquipmentRef="ChainCoif" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ScrollOfStrength" Quantity="2" />
-        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="1" />
-        <Entry ConsumableRef="ManaPotion" Quantity="1" />
-        <Entry ConsumableRef="Milk" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="Disintegrate" Condition="1.0" />
-        <Entry SpellRef="Obliterate" Condition="1.0" />
-        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Interactable>
-      <Loot>
-        <Equipment>
-          <Entry EquipmentRef="WoodenClub" Condition="1.0" />
-        </Equipment>
-        <Consumables>
-          <Entry ConsumableRef="DarkEssence" Quantity="2" />
-        </Consumables>
-        <Spells>
-          <Entry SpellRef="MightyStrength" Condition="1.0" />
-        </Spells>
-      </Loot>
-      <DialogueTreeRef>DIALOGUE_BOSS_KotaiJinguInnerShrine</DialogueTreeRef>
-    </Interactable>
-    <Traits>
-      <Trait Name="BossFight" Value="1" />
-      <Trait Name="Hostile" Value="1" />
-      <Trait Name="TacticalRetreat" Value="30" />
-      <Trait Name="LastStand" Value="15" />
-    </Traits>
-    <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_KotaiJinguInnerShrine" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_KotaiJinguInnerShrine" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_KotaiJinguInnerShrine" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_KotaiJinguInnerShrine" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_KotaiJinguInnerShrine" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_KotaiJinguInnerShrine" StartNodeId="battle_defeated" OnceOnly="true" />
-    </BattleDialogue>
-  </Character>
-  <Character RefName="BOSS_Aramatsurinomiya" DisplayName="Guardian of Aramatsuri-no-Miya" Description="The determined Guardian of Aramatsuri-no-Miya rules over Aramatsuri-no-Miya with an iron will." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsArcRefs&quot;:[&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;Kazahinominomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
-    <Stats Health="0.81" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="50" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="DragonShield" Condition="1.0" />
-        <Entry EquipmentRef="ChainCoif" Condition="1.0" />
-        <Entry EquipmentRef="LeatherCap" Condition="1.0" />
-        <Entry EquipmentRef="MageBelt" Condition="1.0" />
-        <Entry EquipmentRef="TowerShield" Condition="1.0" />
-        <Entry EquipmentRef="Longbow" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="Antidote" Quantity="2" />
-        <Entry ConsumableRef="CookedMeat" Quantity="1" />
-        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="4" />
-        <Entry ConsumableRef="RestorationPotion" Quantity="2" />
-        <Entry ConsumableRef="HastePotion" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="PrimalRoar" Condition="1.0" />
-        <Entry SpellRef="RecklessAssault" Condition="1.0" />
-        <Entry SpellRef="BerserkerRage" Condition="1.0" />
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
-        <Entry SpellRef="IgnorePain" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Interactable>
-      <Loot>
-        <Equipment>
-          <Entry EquipmentRef="TravelCloak" Condition="1.0" />
-        </Equipment>
-        <Consumables>
-          <Entry ConsumableRef="Milk" Quantity="1" />
-          <Entry ConsumableRef="SorceryPotion" Quantity="2" />
-        </Consumables>
-      </Loot>
-      <DialogueTreeRef>DIALOGUE_BOSS_Aramatsurinomiya</DialogueTreeRef>
-    </Interactable>
-    <Traits>
-      <Trait Name="BossFight" Value="1" />
-      <Trait Name="Hostile" Value="1" />
-      <Trait Name="TacticalRetreat" Value="30" />
-      <Trait Name="LastStand" Value="15" />
-    </Traits>
-    <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_defeated" OnceOnly="true" />
-    </BattleDialogue>
-  </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_0" DisplayName="Fellow Traveler" Description="A enigmatic local named Fellow Traveler can be found at Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (1)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_1&quot;,&quot;Aramatsurinomiya&quot;,&quot;K\u014DtaiJing\u016BInnerShrine&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-    <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_0</DialogueTreeRef>
-    </Interactable>
-  </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_1" DisplayName="Fellow Traveler" Description="Fellow Traveler, a resolute resident of Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (2)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-    <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_1</DialogueTreeRef>
-    </Interactable>
-  </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_2" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (3), known for their resolute temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_1&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;]}">
-    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-    <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_2</DialogueTreeRef>
-    </Interactable>
-  </Character>
-  <Character RefName="HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (4)." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;]}">
-    <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
-        <Entry EquipmentRef="Dagger" Condition="1.0" />
-        <Entry EquipmentRef="Maul" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="RestorationPotion" Quantity="3" />
-        <Entry ConsumableRef="FeastPlatter" Quantity="4" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="WarStomp" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3</DialogueTreeRef>
-    </Interactable>
-    <Traits>
-      <Trait Name="Hostile" Value="1" />
-    </Traits>
-    <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" StartNodeId="battle_defeated" OnceOnly="true" />
-    </BattleDialogue>
-  </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_4" DisplayName="Fellow Traveler" Description="The mysterious Fellow Traveler calls Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (5) home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;]}">
-    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-    <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_4</DialogueTreeRef>
-    </Interactable>
-  </Character>
-  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_5" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (6), known for being resolute in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;]}">
-    <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="BreastPlate" Condition="1.0" />
-        <Entry EquipmentRef="IronMace" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="IronskinPotion" Quantity="3" />
-        <Entry ConsumableRef="RestorationPotion" Quantity="2" />
-        <Entry ConsumableRef="PhoenixTears" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Interactable>
-      <Loot>
-        <Equipment>
-          <Entry EquipmentRef="SpikedShield" Condition="1.0" />
-          <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
-          <Entry EquipmentRef="TravelCloak" Condition="1.0" />
-          <Entry EquipmentRef="SteelSword" Condition="1.0" />
-        </Equipment>
-        <Consumables>
-          <Entry ConsumableRef="ThunderBomb" Quantity="4" />
-          <Entry ConsumableRef="SorceryPotion" Quantity="6" />
-          <Entry ConsumableRef="Juice" Quantity="7" />
-          <Entry ConsumableRef="Bandage" Quantity="4" />
-        </Consumables>
-        <Spells>
-          <Entry SpellRef="WaterWhip" Condition="1.0" />
-          <Entry SpellRef="CrushingBlow" Condition="1.0" />
-          <Entry SpellRef="DivineLight" Condition="1.0" />
-        </Spells>
-      </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_5</DialogueTreeRef>
-    </Interactable>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
-    </Traits>
-  </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_6" DisplayName="Fellow Traveler" Description="Fellow Traveler, a weathered resident of Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (7)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-    <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_6</DialogueTreeRef>
-    </Interactable>
-  </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_7" DisplayName="Fellow Traveler" Description="At Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (8), Fellow Traveler goes about their day with seasoned demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-    <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_7</DialogueTreeRef>
-    </Interactable>
-  </Character>
-  <Character RefName="BOSS_ToyokeDaijinguOuterShrine" DisplayName="Guardian of Toyoke Daijingu (Outer Shrine)" Description="The determined Guardian of Toyoke Daijingu (Outer Shrine) rules over Toyoke Daijingu (Outer Shrine) with an iron will." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;,&quot;KazamiyaGek\u016B&quot;]}">
-    <Stats Health="1.05" Stamina="1.0" Mana="1.1" Strength="0.09" Defense="0.07" Speed="0.06" Magic="0.07" Credits="50" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
-        <Entry EquipmentRef="AmuletOfMana" Condition="1.0" />
-        <Entry EquipmentRef="SilverPendant" Condition="1.0" />
-        <Entry EquipmentRef="ScholarsRobe" Condition="1.0" />
-        <Entry EquipmentRef="WoodenClub" Condition="1.0" />
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="HerbBundle" Quantity="1" />
-        <Entry ConsumableRef="RejuvenationPotion" Quantity="3" />
-        <Entry ConsumableRef="ScrollOfHaste" Quantity="3" />
-        <Entry ConsumableRef="HastePotion" Quantity="4" />
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="1" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="Obliterate" Condition="1.0" />
-        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
-        <Entry SpellRef="Disintegrate" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Interactable>
-      <Loot>
-        <Equipment>
-          <Entry EquipmentRef="Knife" Condition="1.0" />
-        </Equipment>
-        <Consumables>
-          <Entry ConsumableRef="CurativePotion" Quantity="1" />
-        </Consumables>
-        <Spells>
-          <Entry SpellRef="HuntersMark" Condition="1.0" />
-        </Spells>
-      </Loot>
-      <DialogueTreeRef>DIALOGUE_BOSS_ToyokeDaijinguOuterShrine</DialogueTreeRef>
-    </Interactable>
-    <Traits>
-      <Trait Name="BossFight" Value="1" />
-      <Trait Name="Hostile" Value="1" />
-      <Trait Name="TacticalRetreat" Value="30" />
-      <Trait Name="LastStand" Value="15" />
-    </Traits>
-    <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_ToyokeDaijinguOuterShrine" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_ToyokeDaijinguOuterShrine" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_ToyokeDaijinguOuterShrine" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_ToyokeDaijinguOuterShrine" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_ToyokeDaijinguOuterShrine" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_ToyokeDaijinguOuterShrine" StartNodeId="battle_defeated" OnceOnly="true" />
-    </BattleDialogue>
-  </Character>
-  <Character RefName="MERCHANT_ToyokeDaijinguOuterShrine_to_KazamiyaGeku_0" DisplayName="Traveling Merchant" Description="The resolute merchant Traveling Merchant has set up shop at Waypoint between Toyoke Daijingu (Outer Shrine) and Kazamiya (Geku) (1)." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsArcRefs&quot;:[&quot;KazamiyaGek\u016B&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;Tsuchinomiya&quot;]}">
-    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="IronShield" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ScrollOfFireball" Quantity="4" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="SongOfCourage" Condition="1.0" />
-        <Entry SpellRef="Wisdom" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Interactable>
-      <Loot>
-        <Equipment>
-          <Entry EquipmentRef="WoodenFlute" Condition="1.0" />
-          <Entry EquipmentRef="SteelSword" Condition="1.0" />
-        </Equipment>
-        <Consumables>
-          <Entry ConsumableRef="ThrowingAxe" Quantity="5" />
-          <Entry ConsumableRef="Wine" Quantity="3" />
-          <Entry ConsumableRef="Milk" Quantity="6" />
-          <Entry ConsumableRef="Pie" Quantity="7" />
-        </Consumables>
-        <Spells>
-          <Entry SpellRef="DivineJudgment" Condition="1.0" />
-          <Entry SpellRef="Vanish" Condition="1.0" />
-        </Spells>
-      </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_ToyokeDaijinguOuterShrine_to_KazamiyaGeku_0</DialogueTreeRef>
-    </Interactable>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
-    </Traits>
-  </Character>
-  <Character RefName="BOSS_KazamiyaGeku" DisplayName="Guardian of Kazamiya (Geku)" Description="Guardian of Kazamiya (Geku) stands as the ultimate challenge at Kazamiya (Geku), their seasoned nature apparent to all." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsArcRefs&quot;:[&quot;Tsuchinomiya&quot;,&quot;Takanomiya&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
-    <Stats Health="1.05" Stamina="1.0" Mana="1.1" Strength="0.09" Defense="0.07" Speed="0.06" Magic="0.07" Credits="50" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="Spear" Condition="1.0" />
-        <Entry EquipmentRef="SilverPendant" Condition="1.0" />
-        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
-        <Entry EquipmentRef="MageSlippers" Condition="1.0" />
-        <Entry EquipmentRef="Longbow" Condition="1.0" />
-        <Entry EquipmentRef="GreatHelm" Condition="1.0" />
-        <Entry EquipmentRef="KnightsArmor" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ManaGem" Quantity="1" />
-        <Entry ConsumableRef="SorceryPotion" Quantity="2" />
-        <Entry ConsumableRef="Ale" Quantity="4" />
-        <Entry ConsumableRef="FrostBomb" Quantity="2" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="SummonDemon" Condition="1.0" />
-        <Entry SpellRef="ConjurePortal" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Interactable>
-      <Loot>
-        <Equipment>
-          <Entry EquipmentRef="OakStaff" Condition="1.0" />
-          <Entry EquipmentRef="TravelCloak" Condition="1.0" />
-        </Equipment>
-        <Consumables>
-          <Entry ConsumableRef="ScrollOfLightning" Quantity="2" />
-          <Entry ConsumableRef="FireResistPotion" Quantity="2" />
-        </Consumables>
-      </Loot>
-      <DialogueTreeRef>DIALOGUE_BOSS_KazamiyaGeku</DialogueTreeRef>
-    </Interactable>
-    <Traits>
-      <Trait Name="BossFight" Value="1" />
-      <Trait Name="Hostile" Value="1" />
-      <Trait Name="TacticalRetreat" Value="30" />
-      <Trait Name="LastStand" Value="15" />
-    </Traits>
-    <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGeku" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGeku" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGeku" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGeku" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGeku" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGeku" StartNodeId="battle_defeated" OnceOnly="true" />
-    </BattleDialogue>
-  </Character>
-  <Character RefName="BOSS_Tsuchinomiya" DisplayName="Guardian of Tsuchi-no-Miya" Description="At Tsuchi-no-Miya, the weathered warrior Guardian of Tsuchi-no-Miya awaits those bold enough to face them." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsArcRefs&quot;:[&quot;KazamiyaGek\u016B&quot;,&quot;Takanomiya&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
-    <Stats Health="1.30" Stamina="1.0" Mana="1.1" Strength="0.12" Defense="0.09" Speed="0.08" Magic="0.09" Credits="50" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="WarHammer" Condition="1.0" />
-        <Entry EquipmentRef="LeatherBoots" Condition="1.0" />
-        <Entry EquipmentRef="ChainCoif" Condition="1.0" />
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
-        <Entry EquipmentRef="ShortBow" Condition="1.0" />
-        <Entry EquipmentRef="LargeSword" Condition="1.0" />
-        <Entry EquipmentRef="RingOfSorcery" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="StrengthElixir" Quantity="2" />
-        <Entry ConsumableRef="Milk" Quantity="1" />
-        <Entry ConsumableRef="Mead" Quantity="3" />
-        <Entry ConsumableRef="HealingSalve" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
-        <Entry SpellRef="Obliterate" Condition="1.0" />
-        <Entry SpellRef="Disintegrate" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Interactable>
-      <Loot>
-        <Equipment>
-          <Entry EquipmentRef="LeatherCord" Condition="1.0" />
-          <Entry EquipmentRef="HolyStaff" Condition="1.0" />
-        </Equipment>
-        <Consumables>
-          <Entry ConsumableRef="MinorManaPotion" Quantity="2" />
-          <Entry ConsumableRef="CurativePotion" Quantity="2" />
-        </Consumables>
-        <Spells>
-          <Entry SpellRef="MeteorStrike" Condition="1.0" />
-        </Spells>
-      </Loot>
-      <DialogueTreeRef>DIALOGUE_BOSS_Tsuchinomiya</DialogueTreeRef>
-    </Interactable>
-    <Traits>
-      <Trait Name="BossFight" Value="1" />
-      <Trait Name="Hostile" Value="1" />
-      <Trait Name="TacticalRetreat" Value="30" />
-      <Trait Name="LastStand" Value="15" />
-    </Traits>
-    <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Tsuchinomiya" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Tsuchinomiya" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_Tsuchinomiya" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_Tsuchinomiya" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_Tsuchinomiya" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Tsuchinomiya" StartNodeId="battle_defeated" OnceOnly="true" />
-    </BattleDialogue>
-  </Character>
-  <Character RefName="BOSS_Takanomiya" DisplayName="Guardian of Taka-no-Miya" Description="At Taka-no-Miya, the determined warrior Guardian of Taka-no-Miya awaits those bold enough to face them." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsArcRefs&quot;:[&quot;Tsuchinomiya&quot;,&quot;KazamiyaGek\u016B&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
-    <Stats Health="1.30" Stamina="1.0" Mana="1.1" Strength="0.12" Defense="0.09" Speed="0.08" Magic="0.09" Credits="50" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="LeatherBelt" Condition="1.0" />
-        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
-        <Entry EquipmentRef="RingOfRegeneration" Condition="1.0" />
-        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
-        <Entry EquipmentRef="WizardRobes" Condition="1.0" />
-        <Entry EquipmentRef="OakStaff" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="FrostResistPotion" Quantity="4" />
-        <Entry ConsumableRef="PoisonVial" Quantity="2" />
-        <Entry ConsumableRef="PoisonResistPotion" Quantity="3" />
-        <Entry ConsumableRef="MonkRice" Quantity="1" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="Disintegrate" Condition="1.0" />
-        <Entry SpellRef="Obliterate" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Interactable>
-      <Loot>
-        <Equipment>
-          <Entry EquipmentRef="VoidWand" Condition="1.0" />
-          <Entry EquipmentRef="RingOfSorcery" Condition="1.0" />
-        </Equipment>
-        <Consumables>
-          <Entry ConsumableRef="ScrollOfHaste" Quantity="1" />
-        </Consumables>
-        <Spells>
-          <Entry SpellRef="Distraction" Condition="1.0" />
-        </Spells>
-      </Loot>
-      <DialogueTreeRef>DIALOGUE_BOSS_Takanomiya</DialogueTreeRef>
-    </Interactable>
-    <Traits>
-      <Trait Name="BossFight" Value="1" />
-      <Trait Name="Hostile" Value="1" />
-      <Trait Name="TacticalRetreat" Value="30" />
-      <Trait Name="LastStand" Value="15" />
-    </Traits>
-    <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Takanomiya" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Takanomiya" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_Takanomiya" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_Takanomiya" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_Takanomiya" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Takanomiya" StartNodeId="battle_defeated" OnceOnly="true" />
-    </BattleDialogue>
-  </Character>
-  <Character RefName="GUARD_Kazahinominomiya_0" DisplayName="Guard at Kazahinomi-no-Miya" Description="A aggressive warrior named Guard at Kazahinomi-no-Miya patrols Kazahinomi-no-Miya." Metadata="{&quot;personality&quot;:&quot;Vigilant, loyal, aggressive when threatened&quot;,&quot;narrativeRole&quot;:&quot;defender&quot;,&quot;mentionsArcRefs&quot;:[]}">
+  <Character RefName="GUARD_Kazahinominomiya_0" DisplayName="Guard at Kazahinomi-no-Miya" Description="Guard at Kazahinomi-no-Miya defends Kazahinomi-no-Miya, their aggressive vigilance ever-present." AffinityRef="Iron">
     <Stats Health="0.63" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="20" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
-        <Entry EquipmentRef="PlateLeggings" Condition="1.0" />
-        <Entry EquipmentRef="GoldRing" Condition="1.0" />
-        <Entry EquipmentRef="ChainBoots" Condition="1.0" />
+        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
+        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CurativePotion" Quantity="2" />
-        <Entry ConsumableRef="ScrollOfHealing" Quantity="2" />
-        <Entry ConsumableRef="FlashBomb" Quantity="2" />
+        <Entry ConsumableRef="EnergyDrink" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfLightning" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BattleCry" Condition="1.0" />
-        <Entry SpellRef="PerfectStrike" Condition="1.0" />
         <Entry SpellRef="CrushingBlow" Condition="1.0" />
+        <Entry SpellRef="PowerStrike" Condition="1.0" />
+        <Entry SpellRef="Disarm" Condition="1.0" />
       </Spells>
     </Capabilities>
-    <Interactable>
+    <Interactable ApproachRadius="12.0">
       <DialogueTreeRef>DIALOGUE_GUARD_Kazahinominomiya_0</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
+      <Trait Name="FleeThreshold" Value="12" />
+      <Trait Name="Aggression" Value="47" />
+      <Trait Name="DefenseBonus" Value="4" />
+      <Trait Name="Morale" Value="83" />
     </Traits>
-    <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_GUARD_Kazahinominomiya_0" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_GUARD_Kazahinominomiya_0" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_GUARD_Kazahinominomiya_0" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_GUARD_Kazahinominomiya_0" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_GUARD_Kazahinominomiya_0" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_GUARD_Kazahinominomiya_0" StartNodeId="battle_defeated" OnceOnly="true" />
-    </BattleDialogue>
+  </Character>
+  <Character RefName="REMNANT_LOOT" DisplayName="Fallen Remains" Description="The remains of a fallen traveler, their supplies scattered.">
+    <Stats Health="0" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" Credits="0" />
+    <Capabilities />
+    <Interactable />
+    <Traits>
+      <Trait Name="Friendly" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="BATTLE_LOOT" DisplayName="Battle Remains" Description="Spoils left after a fight — a victor-only drop.">
+    <Stats Health="0" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" Credits="0" />
+    <Capabilities />
+    <Interactable />
+    <Traits>
+      <Trait Name="Friendly" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="GEOCACHE" DisplayName="Supply Cache" Description="A cache left for someone else to find.">
+    <Stats Health="0" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" Credits="0" />
+    <Capabilities />
+    <Interactable />
+    <Traits>
+      <Trait Name="Friendly" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="SHOPKEEPER_Generic_0" DisplayName="Gruff Trader" Description="A gruff but fair trader selling supplies in Japanese High School.">
+    <Stats Health="0.70" Stamina="0.6" Mana="0.1" Strength="0.08" Defense="0.08" Speed="0.08" Magic="0.02" Credits="200" />
+    <Capabilities />
+    <Interactable>
+      <DialogueTreeRef>DIALOGUE_GenericTrader_0</DialogueTreeRef>
+    </Interactable>
+    <Traits>
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillTrade" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="SHOPKEEPER_Generic_1" DisplayName="Cheerful Merchant" Description="A cheerful merchant always ready with a smile and a deal in Japanese High School.">
+    <Stats Health="0.70" Stamina="0.6" Mana="0.1" Strength="0.08" Defense="0.08" Speed="0.08" Magic="0.02" Credits="200" />
+    <Capabilities />
+    <Interactable>
+      <DialogueTreeRef>DIALOGUE_GenericTrader_1</DialogueTreeRef>
+    </Interactable>
+    <Traits>
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillTrade" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="SHOPKEEPER_Generic_2" DisplayName="Quiet Vendor" Description="A quiet, efficient dealer who lets the wares speak for themselves in Japanese High School.">
+    <Stats Health="0.70" Stamina="0.6" Mana="0.1" Strength="0.08" Defense="0.08" Speed="0.08" Magic="0.02" Credits="200" />
+    <Capabilities />
+    <Interactable>
+      <DialogueTreeRef>DIALOGUE_GenericTrader_2</DialogueTreeRef>
+    </Interactable>
+    <Traits>
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillTrade" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="SHOPKEEPER_Generic_3" DisplayName="Old Outfitter" Description="An old trader with tales from every road they have walked in Japanese High School.">
+    <Stats Health="0.70" Stamina="0.6" Mana="0.1" Strength="0.08" Defense="0.08" Speed="0.08" Magic="0.02" Credits="200" />
+    <Capabilities />
+    <Interactable>
+      <DialogueTreeRef>DIALOGUE_GenericTrader_3</DialogueTreeRef>
+    </Interactable>
+    <Traits>
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillTrade" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="SHOPKEEPER_Generic_4" DisplayName="Eager Dealer" Description="A young eager merchant building a reputation in Japanese High School.">
+    <Stats Health="0.70" Stamina="0.6" Mana="0.1" Strength="0.08" Defense="0.08" Speed="0.08" Magic="0.02" Credits="200" />
+    <Capabilities />
+    <Interactable>
+      <DialogueTreeRef>DIALOGUE_GenericTrader_4</DialogueTreeRef>
+    </Interactable>
+    <Traits>
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillTrade" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="SHOPKEEPER_Generic_5" DisplayName="Cautious Supplier" Description="A cautious vendor who watches the road as much as the goods in Japanese High School.">
+    <Stats Health="0.70" Stamina="0.6" Mana="0.1" Strength="0.08" Defense="0.08" Speed="0.08" Magic="0.02" Credits="200" />
+    <Capabilities />
+    <Interactable>
+      <DialogueTreeRef>DIALOGUE_GenericTrader_5</DialogueTreeRef>
+    </Interactable>
+    <Traits>
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillTrade" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="SHOPKEEPER_Generic_6" DisplayName="Boastful Broker" Description="A boastful merchant proud of carrying the finest gear in Japanese High School.">
+    <Stats Health="0.70" Stamina="0.6" Mana="0.1" Strength="0.08" Defense="0.08" Speed="0.08" Magic="0.02" Credits="200" />
+    <Capabilities />
+    <Interactable>
+      <DialogueTreeRef>DIALOGUE_GenericTrader_6</DialogueTreeRef>
+    </Interactable>
+    <Traits>
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillTrade" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="SHOPKEEPER_Generic_7" DisplayName="Weary Peddler" Description="A weary traveler-trader who knows every rest stop on the road in Japanese High School.">
+    <Stats Health="0.70" Stamina="0.6" Mana="0.1" Strength="0.08" Defense="0.08" Speed="0.08" Magic="0.02" Credits="200" />
+    <Capabilities />
+    <Interactable>
+      <DialogueTreeRef>DIALOGUE_GenericTrader_7</DialogueTreeRef>
+    </Interactable>
+    <Traits>
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillTrade" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="SHOPKEEPER_Generic_8" DisplayName="Thoughtful Purveyor" Description="A thoughtful merchant who sees trade as a way to connect people in Japanese High School.">
+    <Stats Health="0.70" Stamina="0.6" Mana="0.1" Strength="0.08" Defense="0.08" Speed="0.08" Magic="0.02" Credits="200" />
+    <Capabilities />
+    <Interactable>
+      <DialogueTreeRef>DIALOGUE_GenericTrader_8</DialogueTreeRef>
+    </Interactable>
+    <Traits>
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillTrade" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="SHOPKEEPER_Generic_9" DisplayName="Shrewd Factor" Description="A shrewd bargainer who enjoys the art of the deal in Japanese High School.">
+    <Stats Health="0.70" Stamina="0.6" Mana="0.1" Strength="0.08" Defense="0.08" Speed="0.08" Magic="0.02" Credits="200" />
+    <Capabilities />
+    <Interactable>
+      <DialogueTreeRef>DIALOGUE_GenericTrader_9</DialogueTreeRef>
+    </Interactable>
+    <Traits>
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillTrade" Value="1" />
+    </Traits>
   </Character>
 </Characters>

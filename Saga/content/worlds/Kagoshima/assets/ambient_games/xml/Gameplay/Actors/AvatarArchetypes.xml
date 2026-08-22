@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<AvatarArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AvatarArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ../../../../../../../xsd/Gameplay/Gameplay.xsd" xmlns="Ambient.Domain">
   <AvatarArchetype RefName="Warrior" DisplayName="Samurai" Description="A disciplined warrior bound by bushido, the way of the warrior. Masters of the katana and defenders of their lord's honor, samurai are the backbone of any army." AffinityRef="Iron" Weight="80">
     <SpawnStats Health="1.05" Stamina="0.95" Mana="0.95" Temperature="37" Strength="0.105" Defense="0.105" Magic="0.095" Speed="0.095" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainLeggings" Condition="1" />
-        <Entry EquipmentRef="WardingAmulet" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -27,15 +25,14 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfResurrection" Quantity="1" />
-        <Entry ConsumableRef="FireResistPotion" Quantity="1" />
-        <Entry ConsumableRef="RejuvenationPotion" Quantity="1" />
+        <Entry ConsumableRef="LightningResistPotion" Quantity="4" />
+        <Entry ConsumableRef="Panacea" Quantity="2" />
+        <Entry ConsumableRef="Antidote" Quantity="4" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
         <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
         <Entry ConsumableRef="StaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="Antidote" Quantity="3" />
         <Entry ConsumableRef="Berries" Quantity="3" />
         <Entry ConsumableRef="Apple" Quantity="3" />
         <Entry ConsumableRef="Bread" Quantity="3" />
@@ -45,6 +42,10 @@
         <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
@@ -54,6 +55,7 @@
       </Consumables>
       <Spells>
         <Entry SpellRef="CrushingBlow" Condition="1" />
+        <Entry SpellRef="Charge" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -82,21 +84,74 @@
         <Entry SpellRef="Dash" Condition="1" />
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
       </Spells>
       <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
+        <Entry BlockRef="StairsSet1#Oak" Quantity="10" />
+        <Entry BlockRef="DoorSet1#Oak" Quantity="2" />
+        <Entry BlockRef="WindowSet1#Oak" Quantity="4" />
+        <Entry BlockRef="WallSet#Cobblestone" Quantity="10" />
+        <Entry BlockRef="SlabSet#Oak" Quantity="10" />
+        <Entry BlockRef="HalfBlock" Quantity="10" />
+        <Entry BlockRef="VeryCommonRock#Granite" Quantity="10" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Kiln" Quantity="1" />
+        <Entry BlockRef="Smelter" Quantity="1" />
+        <Entry BlockRef="Foundry" Quantity="1" />
+        <Entry BlockRef="GemPolisher" Quantity="1" />
+        <Entry BlockRef="Smithy" Quantity="1" />
+        <Entry BlockRef="Jeweler" Quantity="1" />
         <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
+        <Entry BlockRef="Sawmill" Quantity="1" />
+        <Entry BlockRef="Joinery" Quantity="1" />
+        <Entry BlockRef="Glazier" Quantity="1" />
+        <Entry BlockRef="Loom" Quantity="1" />
+        <Entry BlockRef="Masonry" Quantity="1" />
+        <Entry BlockRef="Heater" Quantity="1" />
+        <Entry BlockRef="Lamp" Quantity="2" />
+        <Entry BlockRef="Cache" Quantity="2" />
         <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="20" />
+        <Entry BlockRef="UncommonOres#IronOre" Quantity="10" />
+        <Entry BlockRef="UncommonOres#CopperOre" Quantity="5" />
+        <Entry BlockRef="VeryRareOres#NickelOre" Quantity="2" />
+        <Entry BlockRef="UncommonIngots#IronIngot" Quantity="6" />
+        <Entry BlockRef="RareIngots#GoldIngot" Quantity="7" />
+        <Entry BlockRef="RareGemstone#Ruby" Quantity="6" />
+        <Entry BlockRef="RareGemstone#Sapphire" Quantity="2" />
+        <Entry BlockRef="WoolSet1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#2" Quantity="1" />
+        <Entry BlockRef="WoolSet1#3" Quantity="1" />
+        <Entry BlockRef="WoolSet1#4" Quantity="1" />
+        <Entry BlockRef="WoolSet1#5" Quantity="1" />
+        <Entry BlockRef="WoolSet1#6" Quantity="1" />
+        <Entry BlockRef="WoolSet1#7" Quantity="1" />
+        <Entry BlockRef="WoolSet2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#1" Quantity="1" />
+        <Entry BlockRef="WoolSet2#2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#3" Quantity="1" />
+        <Entry BlockRef="WoolSet2#4" Quantity="1" />
+        <Entry BlockRef="WoolSet2#5" Quantity="1" />
+        <Entry BlockRef="WoolSet2#6" Quantity="1" />
+        <Entry BlockRef="WoolSet2#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#7" Quantity="1" />
       </Blocks>
       <Tools>
         <Entry ToolRef="Multitool" Condition="1" />
@@ -111,7 +166,7 @@
     <RespawnStats Health="1.05" Stamina="0.95" Mana="0.95" Temperature="37" Strength="0.084" Defense="0.084" Magic="0.076" Speed="0.076" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="ClothPants" Condition="1" />
+        <Entry EquipmentRef="CompositeBow" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -124,6 +179,7 @@
         <Entry EquipmentRef="ClothCap" Condition="1" />
         <Entry EquipmentRef="ClothTunic" Condition="1" />
         <Entry EquipmentRef="SimpleRobe" Condition="1" />
+        <Entry EquipmentRef="ClothPants" Condition="1" />
         <Entry EquipmentRef="Sandals" Condition="1" />
         <Entry EquipmentRef="ClothGloves" Condition="1" />
         <Entry EquipmentRef="TravelCloak" Condition="1" />
@@ -132,13 +188,14 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="WeakeningPoison" Quantity="4" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="1" />
+        <Entry ConsumableRef="FirebrandCordial" Quantity="4" />
+        <Entry ConsumableRef="Antidote" Quantity="5" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
         <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
         <Entry ConsumableRef="StaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="Antidote" Quantity="3" />
         <Entry ConsumableRef="Berries" Quantity="3" />
         <Entry ConsumableRef="Apple" Quantity="3" />
         <Entry ConsumableRef="Bread" Quantity="3" />
@@ -148,6 +205,10 @@
         <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
@@ -156,6 +217,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="Charge" Condition="1" />
         <Entry SpellRef="Whirlwind" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
@@ -185,21 +247,13 @@
         <Entry SpellRef="Dash" Condition="1" />
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
       </Spells>
       <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Coal" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="5" />
       </Blocks>
       <Tools>
         <Entry ToolRef="Multitool" Condition="1" />
@@ -216,7 +270,7 @@
     <SpawnStats Health="0.9" Stamina="1" Mana="0.95" Temperature="37" Strength="0.11000001" Defense="0.089999996" Magic="0.095" Speed="0.1" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainmailArmor" Condition="1" />
+        <Entry EquipmentRef="SilverRing" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -238,8 +292,8 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ParalyzingPoison" Quantity="2" />
-        <Entry ConsumableRef="HolyWaterBomb" Quantity="3" />
+        <Entry ConsumableRef="PoisonedDart" Quantity="2" />
+        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="3" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -255,6 +309,173 @@
         <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
+        <Entry ConsumableRef="ThrowingRock" Quantity="3" />
+        <Entry ConsumableRef="WeakPoison" Quantity="3" />
+        <Entry ConsumableRef="Torch" Quantity="3" />
+        <Entry ConsumableRef="Bandage" Quantity="3" />
+        <Entry ConsumableRef="HealingSalve" Quantity="3" />
+        <Entry ConsumableRef="HerbBundle" Quantity="3" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="PrimalRoar" Condition="1" />
+        <Entry SpellRef="PowerStrike" Condition="1" />
+        <Entry SpellRef="ShieldBash" Condition="1" />
+        <Entry SpellRef="Taunt" Condition="1" />
+        <Entry SpellRef="SmokeBomb" Condition="1" />
+        <Entry SpellRef="VenomSpit" Condition="1" />
+        <Entry SpellRef="NaturalRemedy" Condition="1" />
+        <Entry SpellRef="HuntersMark" Condition="1" />
+        <Entry SpellRef="EagleEye" Condition="1" />
+        <Entry SpellRef="TrapSense" Condition="1" />
+        <Entry SpellRef="NaturesCompass" Condition="1" />
+        <Entry SpellRef="Gust" Condition="1" />
+        <Entry SpellRef="WaterWhip" Condition="1" />
+        <Entry SpellRef="ArcaneBlast" Condition="1" />
+        <Entry SpellRef="ArcaneMissile" Condition="1" />
+        <Entry SpellRef="Agility" Condition="1" />
+        <Entry SpellRef="Swiftness" Condition="1" />
+        <Entry SpellRef="Slow" Condition="1" />
+        <Entry SpellRef="MinorHeal" Condition="1" />
+        <Entry SpellRef="CurePoison" Condition="1" />
+        <Entry SpellRef="Shield" Condition="1" />
+        <Entry SpellRef="DiscordantNote" Condition="1" />
+        <Entry SpellRef="Disguise" Condition="1" />
+        <Entry SpellRef="ConjureShield" Condition="1" />
+        <Entry SpellRef="ConjureFood" Condition="1" />
+        <Entry SpellRef="Stun" Condition="1" />
+        <Entry SpellRef="Dash" Condition="1" />
+        <Entry SpellRef="WaterWalk" Condition="1" />
+        <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
+      </Spells>
+      <Blocks>
+        <Entry BlockRef="StairsSet1#Oak" Quantity="10" />
+        <Entry BlockRef="DoorSet1#Oak" Quantity="2" />
+        <Entry BlockRef="WindowSet1#Oak" Quantity="4" />
+        <Entry BlockRef="WallSet#Cobblestone" Quantity="10" />
+        <Entry BlockRef="SlabSet#Oak" Quantity="10" />
+        <Entry BlockRef="HalfBlock" Quantity="10" />
+        <Entry BlockRef="VeryCommonRock#Granite" Quantity="10" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Kiln" Quantity="1" />
+        <Entry BlockRef="Smelter" Quantity="1" />
+        <Entry BlockRef="Foundry" Quantity="1" />
+        <Entry BlockRef="GemPolisher" Quantity="1" />
+        <Entry BlockRef="Smithy" Quantity="1" />
+        <Entry BlockRef="Jeweler" Quantity="1" />
+        <Entry BlockRef="BlastFurnace" Quantity="1" />
+        <Entry BlockRef="Sawmill" Quantity="1" />
+        <Entry BlockRef="Joinery" Quantity="1" />
+        <Entry BlockRef="Glazier" Quantity="1" />
+        <Entry BlockRef="Loom" Quantity="1" />
+        <Entry BlockRef="Masonry" Quantity="1" />
+        <Entry BlockRef="Heater" Quantity="1" />
+        <Entry BlockRef="Lamp" Quantity="2" />
+        <Entry BlockRef="Cache" Quantity="2" />
+        <Entry BlockRef="Coal" Quantity="20" />
+        <Entry BlockRef="LogSet#Oak" Quantity="20" />
+        <Entry BlockRef="UncommonOres#IronOre" Quantity="10" />
+        <Entry BlockRef="UncommonOres#CopperOre" Quantity="5" />
+        <Entry BlockRef="VeryRareOres#NickelOre" Quantity="2" />
+        <Entry BlockRef="UncommonIngots#IronIngot" Quantity="6" />
+        <Entry BlockRef="RareIngots#GoldIngot" Quantity="7" />
+        <Entry BlockRef="RareGemstone#Ruby" Quantity="6" />
+        <Entry BlockRef="RareGemstone#Sapphire" Quantity="2" />
+        <Entry BlockRef="WoolSet1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#2" Quantity="1" />
+        <Entry BlockRef="WoolSet1#3" Quantity="1" />
+        <Entry BlockRef="WoolSet1#4" Quantity="1" />
+        <Entry BlockRef="WoolSet1#5" Quantity="1" />
+        <Entry BlockRef="WoolSet1#6" Quantity="1" />
+        <Entry BlockRef="WoolSet1#7" Quantity="1" />
+        <Entry BlockRef="WoolSet2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#1" Quantity="1" />
+        <Entry BlockRef="WoolSet2#2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#3" Quantity="1" />
+        <Entry BlockRef="WoolSet2#4" Quantity="1" />
+        <Entry BlockRef="WoolSet2#5" Quantity="1" />
+        <Entry BlockRef="WoolSet2#6" Quantity="1" />
+        <Entry BlockRef="WoolSet2#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#7" Quantity="1" />
+      </Blocks>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
+    </SpawnCapabilities>
+    <RespawnStats Health="0.9" Stamina="1" Mana="0.95" Temperature="37" Strength="0.08800001" Defense="0.072" Magic="0.076" Speed="0.080000006" Endurance="0" Credits="800" Experience="0" />
+    <RespawnCapabilities>
+      <Equipment>
+        <Entry EquipmentRef="Greatsword" Condition="1" />
+        <Entry EquipmentRef="BerserkerAxe" Condition="1" />
+        <Entry EquipmentRef="RustySword" Condition="1" />
+        <Entry EquipmentRef="HandAxe" Condition="1" />
+        <Entry EquipmentRef="WoodenClub" Condition="1" />
+        <Entry EquipmentRef="Knife" Condition="1" />
+        <Entry EquipmentRef="Spear" Condition="1" />
+        <Entry EquipmentRef="ShortBow" Condition="1" />
+        <Entry EquipmentRef="WalkingStick" Condition="1" />
+        <Entry EquipmentRef="TinWhistle" Condition="1" />
+        <Entry EquipmentRef="Buckler" Condition="1" />
+        <Entry EquipmentRef="ClothCap" Condition="1" />
+        <Entry EquipmentRef="ClothTunic" Condition="1" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1" />
+        <Entry EquipmentRef="ClothPants" Condition="1" />
+        <Entry EquipmentRef="Sandals" Condition="1" />
+        <Entry EquipmentRef="ClothGloves" Condition="1" />
+        <Entry EquipmentRef="TravelCloak" Condition="1" />
+        <Entry EquipmentRef="CopperRing" Condition="1" />
+        <Entry EquipmentRef="LeatherCord" Condition="1" />
+        <Entry EquipmentRef="RopeBelt" Condition="1" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="Stew" Quantity="1" />
+        <Entry ConsumableRef="RejuvenationPotion" Quantity="1" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="StaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="Antidote" Quantity="3" />
+        <Entry ConsumableRef="Berries" Quantity="3" />
+        <Entry ConsumableRef="Apple" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
+        <Entry ConsumableRef="DriedMeat" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="Milk" Quantity="3" />
+        <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
@@ -292,128 +513,13 @@
         <Entry SpellRef="Dash" Condition="1" />
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
       </Spells>
       <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
-    </SpawnCapabilities>
-    <RespawnStats Health="0.9" Stamina="1" Mana="0.95" Temperature="37" Strength="0.08800001" Defense="0.072" Magic="0.076" Speed="0.080000006" Endurance="0" Credits="800" Experience="0" />
-    <RespawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="Harp" Condition="1" />
-        <Entry EquipmentRef="RustySword" Condition="1" />
-        <Entry EquipmentRef="HandAxe" Condition="1" />
-        <Entry EquipmentRef="WoodenClub" Condition="1" />
-        <Entry EquipmentRef="Knife" Condition="1" />
-        <Entry EquipmentRef="Spear" Condition="1" />
-        <Entry EquipmentRef="ShortBow" Condition="1" />
-        <Entry EquipmentRef="WalkingStick" Condition="1" />
-        <Entry EquipmentRef="TinWhistle" Condition="1" />
-        <Entry EquipmentRef="Buckler" Condition="1" />
-        <Entry EquipmentRef="ClothCap" Condition="1" />
-        <Entry EquipmentRef="ClothTunic" Condition="1" />
-        <Entry EquipmentRef="SimpleRobe" Condition="1" />
-        <Entry EquipmentRef="ClothPants" Condition="1" />
-        <Entry EquipmentRef="Sandals" Condition="1" />
-        <Entry EquipmentRef="ClothGloves" Condition="1" />
-        <Entry EquipmentRef="TravelCloak" Condition="1" />
-        <Entry EquipmentRef="CopperRing" Condition="1" />
-        <Entry EquipmentRef="LeatherCord" Condition="1" />
-        <Entry EquipmentRef="RopeBelt" Condition="1" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="DivineBlessing" Quantity="4" />
-        <Entry ConsumableRef="DefenseElixir" Quantity="1" />
-        <Entry ConsumableRef="WeakeningPoison" Quantity="3" />
-        <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
-        <Entry ConsumableRef="HealingPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="StaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="Antidote" Quantity="3" />
-        <Entry ConsumableRef="Berries" Quantity="3" />
-        <Entry ConsumableRef="Apple" Quantity="3" />
-        <Entry ConsumableRef="Bread" Quantity="3" />
-        <Entry ConsumableRef="Cheese" Quantity="3" />
-        <Entry ConsumableRef="DriedMeat" Quantity="3" />
-        <Entry ConsumableRef="CookedMeat" Quantity="3" />
-        <Entry ConsumableRef="Water" Quantity="3" />
-        <Entry ConsumableRef="Milk" Quantity="3" />
-        <Entry ConsumableRef="Juice" Quantity="3" />
-        <Entry ConsumableRef="ThrowingRock" Quantity="3" />
-        <Entry ConsumableRef="WeakPoison" Quantity="3" />
-        <Entry ConsumableRef="Torch" Quantity="3" />
-        <Entry ConsumableRef="Bandage" Quantity="3" />
-        <Entry ConsumableRef="HealingSalve" Quantity="3" />
-        <Entry ConsumableRef="HerbBundle" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="RecklessAssault" Condition="1" />
-        <Entry SpellRef="BerserkerRage" Condition="1" />
-        <Entry SpellRef="PowerStrike" Condition="1" />
-        <Entry SpellRef="ShieldBash" Condition="1" />
-        <Entry SpellRef="Taunt" Condition="1" />
-        <Entry SpellRef="SmokeBomb" Condition="1" />
-        <Entry SpellRef="VenomSpit" Condition="1" />
-        <Entry SpellRef="NaturalRemedy" Condition="1" />
-        <Entry SpellRef="HuntersMark" Condition="1" />
-        <Entry SpellRef="EagleEye" Condition="1" />
-        <Entry SpellRef="TrapSense" Condition="1" />
-        <Entry SpellRef="NaturesCompass" Condition="1" />
-        <Entry SpellRef="Gust" Condition="1" />
-        <Entry SpellRef="WaterWhip" Condition="1" />
-        <Entry SpellRef="ArcaneBlast" Condition="1" />
-        <Entry SpellRef="ArcaneMissile" Condition="1" />
-        <Entry SpellRef="Agility" Condition="1" />
-        <Entry SpellRef="Swiftness" Condition="1" />
-        <Entry SpellRef="Slow" Condition="1" />
-        <Entry SpellRef="MinorHeal" Condition="1" />
-        <Entry SpellRef="CurePoison" Condition="1" />
-        <Entry SpellRef="Shield" Condition="1" />
-        <Entry SpellRef="DiscordantNote" Condition="1" />
-        <Entry SpellRef="Disguise" Condition="1" />
-        <Entry SpellRef="ConjureShield" Condition="1" />
-        <Entry SpellRef="ConjureFood" Condition="1" />
-        <Entry SpellRef="Stun" Condition="1" />
-        <Entry SpellRef="Dash" Condition="1" />
-        <Entry SpellRef="WaterWalk" Condition="1" />
-        <Entry SpellRef="FeatherFall" Condition="1" />
-      </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Coal" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="5" />
       </Blocks>
       <Tools>
         <Entry ToolRef="Multitool" Condition="1" />
@@ -430,7 +536,7 @@
     <SpawnStats Health="0.9" Stamina="1.1" Mana="1" Temperature="37" Strength="0.095" Defense="0.089999996" Magic="0.1" Speed="0.11000001" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="NecromancerStaff" Condition="1" />
+        <Entry EquipmentRef="IronKnuckles" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -452,11 +558,12 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ThunderBomb" Quantity="3" />
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="5" />
+        <Entry ConsumableRef="ManaPotion" Quantity="4" />
+        <Entry ConsumableRef="SmellingSalts" Quantity="2" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
         <Entry ConsumableRef="StaminaPotion" Quantity="3" />
         <Entry ConsumableRef="Antidote" Quantity="3" />
         <Entry ConsumableRef="Berries" Quantity="3" />
@@ -468,6 +575,10 @@
         <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
@@ -476,10 +587,11 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SmokeBomb" Condition="1" />
+        <Entry SpellRef="Ambush" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
+        <Entry SpellRef="SmokeBomb" Condition="1" />
         <Entry SpellRef="VenomSpit" Condition="1" />
         <Entry SpellRef="NaturalRemedy" Condition="1" />
         <Entry SpellRef="HuntersMark" Condition="1" />
@@ -504,21 +616,74 @@
         <Entry SpellRef="Dash" Condition="1" />
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
       </Spells>
       <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
+        <Entry BlockRef="StairsSet1#Oak" Quantity="10" />
+        <Entry BlockRef="DoorSet1#Oak" Quantity="2" />
+        <Entry BlockRef="WindowSet1#Oak" Quantity="4" />
+        <Entry BlockRef="WallSet#Cobblestone" Quantity="10" />
+        <Entry BlockRef="SlabSet#Oak" Quantity="10" />
+        <Entry BlockRef="HalfBlock" Quantity="10" />
+        <Entry BlockRef="VeryCommonRock#Granite" Quantity="10" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Kiln" Quantity="1" />
+        <Entry BlockRef="Smelter" Quantity="1" />
+        <Entry BlockRef="Foundry" Quantity="1" />
+        <Entry BlockRef="GemPolisher" Quantity="1" />
+        <Entry BlockRef="Smithy" Quantity="1" />
+        <Entry BlockRef="Jeweler" Quantity="1" />
         <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
+        <Entry BlockRef="Sawmill" Quantity="1" />
+        <Entry BlockRef="Joinery" Quantity="1" />
+        <Entry BlockRef="Glazier" Quantity="1" />
+        <Entry BlockRef="Loom" Quantity="1" />
+        <Entry BlockRef="Masonry" Quantity="1" />
+        <Entry BlockRef="Heater" Quantity="1" />
+        <Entry BlockRef="Lamp" Quantity="2" />
+        <Entry BlockRef="Cache" Quantity="2" />
         <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="20" />
+        <Entry BlockRef="UncommonOres#IronOre" Quantity="10" />
+        <Entry BlockRef="UncommonOres#CopperOre" Quantity="5" />
+        <Entry BlockRef="VeryRareOres#NickelOre" Quantity="2" />
+        <Entry BlockRef="UncommonIngots#IronIngot" Quantity="6" />
+        <Entry BlockRef="RareIngots#GoldIngot" Quantity="7" />
+        <Entry BlockRef="RareGemstone#Ruby" Quantity="6" />
+        <Entry BlockRef="RareGemstone#Sapphire" Quantity="2" />
+        <Entry BlockRef="WoolSet1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#2" Quantity="1" />
+        <Entry BlockRef="WoolSet1#3" Quantity="1" />
+        <Entry BlockRef="WoolSet1#4" Quantity="1" />
+        <Entry BlockRef="WoolSet1#5" Quantity="1" />
+        <Entry BlockRef="WoolSet1#6" Quantity="1" />
+        <Entry BlockRef="WoolSet1#7" Quantity="1" />
+        <Entry BlockRef="WoolSet2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#1" Quantity="1" />
+        <Entry BlockRef="WoolSet2#2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#3" Quantity="1" />
+        <Entry BlockRef="WoolSet2#4" Quantity="1" />
+        <Entry BlockRef="WoolSet2#5" Quantity="1" />
+        <Entry BlockRef="WoolSet2#6" Quantity="1" />
+        <Entry BlockRef="WoolSet2#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#7" Quantity="1" />
       </Blocks>
       <Tools>
         <Entry ToolRef="Multitool" Condition="1" />
@@ -533,8 +698,7 @@
     <RespawnStats Health="0.9" Stamina="1.1" Mana="1" Temperature="37" Strength="0.076" Defense="0.072" Magic="0.080000006" Speed="0.08800001" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="Maul" Condition="1" />
-        <Entry EquipmentRef="ChainGloves" Condition="1" />
+        <Entry EquipmentRef="FurArmor" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -556,21 +720,27 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CookedMeat" Quantity="4" />
-        <Entry ConsumableRef="StaminaPotion" Quantity="5" />
+        <Entry ConsumableRef="SmellingSalts" Quantity="3" />
+        <Entry ConsumableRef="SuperiorHealingPotion" Quantity="2" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
         <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="StaminaPotion" Quantity="3" />
         <Entry ConsumableRef="Antidote" Quantity="3" />
         <Entry ConsumableRef="Berries" Quantity="3" />
         <Entry ConsumableRef="Apple" Quantity="3" />
         <Entry ConsumableRef="Bread" Quantity="3" />
         <Entry ConsumableRef="Cheese" Quantity="3" />
         <Entry ConsumableRef="DriedMeat" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
         <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
@@ -579,7 +749,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowStep" Condition="1" />
+        <Entry SpellRef="ShadowStrike" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -608,21 +778,13 @@
         <Entry SpellRef="Dash" Condition="1" />
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
       </Spells>
       <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Coal" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="5" />
       </Blocks>
       <Tools>
         <Entry ToolRef="Multitool" Condition="1" />
@@ -639,9 +801,9 @@
     <SpawnStats Health="0.95" Stamina="1.05" Mana="1" Temperature="37" Strength="0.1" Defense="0.095" Magic="0.1" Speed="0.105" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="HandAxe" Condition="1" />
-        <Entry EquipmentRef="AmuletOfHealth" Condition="1" />
+        <Entry EquipmentRef="SteelShield" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
+        <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
         <Entry EquipmentRef="Knife" Condition="1" />
         <Entry EquipmentRef="Spear" Condition="1" />
@@ -661,9 +823,7 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfTeleport" Quantity="2" />
-        <Entry ConsumableRef="Panacea" Quantity="2" />
-        <Entry ConsumableRef="FeastPlatter" Quantity="1" />
+        <Entry ConsumableRef="IronskinPotion" Quantity="2" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -679,117 +839,16 @@
         <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
         <Entry ConsumableRef="Bandage" Quantity="3" />
         <Entry ConsumableRef="HealingSalve" Quantity="3" />
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="EntanglingRoots" Condition="1" />
-        <Entry SpellRef="ThornBarrier" Condition="1" />
-        <Entry SpellRef="PowerStrike" Condition="1" />
-        <Entry SpellRef="ShieldBash" Condition="1" />
-        <Entry SpellRef="Taunt" Condition="1" />
-        <Entry SpellRef="SmokeBomb" Condition="1" />
-        <Entry SpellRef="VenomSpit" Condition="1" />
-        <Entry SpellRef="NaturalRemedy" Condition="1" />
-        <Entry SpellRef="HuntersMark" Condition="1" />
-        <Entry SpellRef="EagleEye" Condition="1" />
-        <Entry SpellRef="TrapSense" Condition="1" />
-        <Entry SpellRef="NaturesCompass" Condition="1" />
-        <Entry SpellRef="Gust" Condition="1" />
-        <Entry SpellRef="WaterWhip" Condition="1" />
-        <Entry SpellRef="ArcaneBlast" Condition="1" />
-        <Entry SpellRef="ArcaneMissile" Condition="1" />
-        <Entry SpellRef="Agility" Condition="1" />
-        <Entry SpellRef="Swiftness" Condition="1" />
-        <Entry SpellRef="Slow" Condition="1" />
-        <Entry SpellRef="MinorHeal" Condition="1" />
-        <Entry SpellRef="CurePoison" Condition="1" />
-        <Entry SpellRef="Shield" Condition="1" />
-        <Entry SpellRef="DiscordantNote" Condition="1" />
-        <Entry SpellRef="Disguise" Condition="1" />
-        <Entry SpellRef="ConjureShield" Condition="1" />
-        <Entry SpellRef="ConjureFood" Condition="1" />
-        <Entry SpellRef="Stun" Condition="1" />
-        <Entry SpellRef="Dash" Condition="1" />
-        <Entry SpellRef="WaterWalk" Condition="1" />
-        <Entry SpellRef="FeatherFall" Condition="1" />
-      </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
-    </SpawnCapabilities>
-    <RespawnStats Health="0.95" Stamina="1.05" Mana="1" Temperature="37" Strength="0.080000006" Defense="0.076" Magic="0.080000006" Speed="0.084" Endurance="0" Credits="800" Experience="0" />
-    <RespawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="Harp" Condition="1" />
-        <Entry EquipmentRef="RustySword" Condition="1" />
-        <Entry EquipmentRef="HandAxe" Condition="1" />
-        <Entry EquipmentRef="WoodenClub" Condition="1" />
-        <Entry EquipmentRef="Knife" Condition="1" />
-        <Entry EquipmentRef="Spear" Condition="1" />
-        <Entry EquipmentRef="ShortBow" Condition="1" />
-        <Entry EquipmentRef="WalkingStick" Condition="1" />
-        <Entry EquipmentRef="TinWhistle" Condition="1" />
-        <Entry EquipmentRef="Buckler" Condition="1" />
-        <Entry EquipmentRef="ClothCap" Condition="1" />
-        <Entry EquipmentRef="ClothTunic" Condition="1" />
-        <Entry EquipmentRef="SimpleRobe" Condition="1" />
-        <Entry EquipmentRef="ClothPants" Condition="1" />
-        <Entry EquipmentRef="Sandals" Condition="1" />
-        <Entry EquipmentRef="ClothGloves" Condition="1" />
-        <Entry EquipmentRef="TravelCloak" Condition="1" />
-        <Entry EquipmentRef="CopperRing" Condition="1" />
-        <Entry EquipmentRef="LeatherCord" Condition="1" />
-        <Entry EquipmentRef="RopeBelt" Condition="1" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="FireResistPotion" Quantity="4" />
-        <Entry ConsumableRef="HerbBundle" Quantity="7" />
-        <Entry ConsumableRef="WeakPoison" Quantity="4" />
-        <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
-        <Entry ConsumableRef="HealingPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="StaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="Antidote" Quantity="3" />
-        <Entry ConsumableRef="Berries" Quantity="3" />
-        <Entry ConsumableRef="Apple" Quantity="3" />
-        <Entry ConsumableRef="Bread" Quantity="3" />
-        <Entry ConsumableRef="Cheese" Quantity="3" />
-        <Entry ConsumableRef="DriedMeat" Quantity="3" />
-        <Entry ConsumableRef="CookedMeat" Quantity="3" />
-        <Entry ConsumableRef="Water" Quantity="3" />
-        <Entry ConsumableRef="Milk" Quantity="3" />
-        <Entry ConsumableRef="Juice" Quantity="3" />
-        <Entry ConsumableRef="ThrowingRock" Quantity="3" />
-        <Entry ConsumableRef="Torch" Quantity="3" />
-        <Entry ConsumableRef="Bandage" Quantity="3" />
-        <Entry ConsumableRef="HealingSalve" Quantity="3" />
       </Consumables>
       <Spells>
         <Entry SpellRef="EagleEye" Condition="1" />
@@ -821,127 +880,74 @@
         <Entry SpellRef="Dash" Condition="1" />
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
       </Spells>
       <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
+        <Entry BlockRef="StairsSet1#Oak" Quantity="10" />
+        <Entry BlockRef="DoorSet1#Oak" Quantity="2" />
+        <Entry BlockRef="WindowSet1#Oak" Quantity="4" />
+        <Entry BlockRef="WallSet#Cobblestone" Quantity="10" />
+        <Entry BlockRef="SlabSet#Oak" Quantity="10" />
+        <Entry BlockRef="HalfBlock" Quantity="10" />
+        <Entry BlockRef="VeryCommonRock#Granite" Quantity="10" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Kiln" Quantity="1" />
+        <Entry BlockRef="Smelter" Quantity="1" />
+        <Entry BlockRef="Foundry" Quantity="1" />
+        <Entry BlockRef="GemPolisher" Quantity="1" />
+        <Entry BlockRef="Smithy" Quantity="1" />
+        <Entry BlockRef="Jeweler" Quantity="1" />
         <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
+        <Entry BlockRef="Sawmill" Quantity="1" />
+        <Entry BlockRef="Joinery" Quantity="1" />
+        <Entry BlockRef="Glazier" Quantity="1" />
+        <Entry BlockRef="Loom" Quantity="1" />
+        <Entry BlockRef="Masonry" Quantity="1" />
+        <Entry BlockRef="Heater" Quantity="1" />
+        <Entry BlockRef="Lamp" Quantity="2" />
+        <Entry BlockRef="Cache" Quantity="2" />
         <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
-    </RespawnCapabilities>
-  </AvatarArchetype>
-  <AvatarArchetype RefName="Mage" DisplayName="Onmyoji" Description="Practitioners of onmyodo, the way of yin and yang. These court magicians divine the future, ward against evil, and command the five elements through ancient rituals." AffinityRef="Arcane" Weight="60">
-    <SpawnStats Health="0.9" Stamina="1" Mana="1.1" Temperature="37" Strength="0.089999996" Defense="0.089999996" Magic="0.11000001" Speed="0.1" Endurance="0" Credits="1000" Experience="0" />
-    <SpawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="Stiletto" Condition="1" />
-        <Entry EquipmentRef="RustySword" Condition="1" />
-        <Entry EquipmentRef="HandAxe" Condition="1" />
-        <Entry EquipmentRef="WoodenClub" Condition="1" />
-        <Entry EquipmentRef="Knife" Condition="1" />
-        <Entry EquipmentRef="Spear" Condition="1" />
-        <Entry EquipmentRef="ShortBow" Condition="1" />
-        <Entry EquipmentRef="WalkingStick" Condition="1" />
-        <Entry EquipmentRef="TinWhistle" Condition="1" />
-        <Entry EquipmentRef="Buckler" Condition="1" />
-        <Entry EquipmentRef="ClothCap" Condition="1" />
-        <Entry EquipmentRef="ClothTunic" Condition="1" />
-        <Entry EquipmentRef="SimpleRobe" Condition="1" />
-        <Entry EquipmentRef="ClothPants" Condition="1" />
-        <Entry EquipmentRef="Sandals" Condition="1" />
-        <Entry EquipmentRef="ClothGloves" Condition="1" />
-        <Entry EquipmentRef="TravelCloak" Condition="1" />
-        <Entry EquipmentRef="CopperRing" Condition="1" />
-        <Entry EquipmentRef="LeatherCord" Condition="1" />
-        <Entry EquipmentRef="RopeBelt" Condition="1" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="Apple" Quantity="4" />
-        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
-        <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
-        <Entry ConsumableRef="HealingPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="StaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="Antidote" Quantity="3" />
-        <Entry ConsumableRef="Berries" Quantity="3" />
-        <Entry ConsumableRef="Bread" Quantity="3" />
-        <Entry ConsumableRef="Cheese" Quantity="3" />
-        <Entry ConsumableRef="DriedMeat" Quantity="3" />
-        <Entry ConsumableRef="CookedMeat" Quantity="3" />
-        <Entry ConsumableRef="Water" Quantity="3" />
-        <Entry ConsumableRef="Milk" Quantity="3" />
-        <Entry ConsumableRef="Juice" Quantity="3" />
-        <Entry ConsumableRef="ThrowingRock" Quantity="3" />
-        <Entry ConsumableRef="WeakPoison" Quantity="3" />
-        <Entry ConsumableRef="Torch" Quantity="3" />
-        <Entry ConsumableRef="Bandage" Quantity="3" />
-        <Entry ConsumableRef="HealingSalve" Quantity="3" />
-        <Entry ConsumableRef="HerbBundle" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="Disintegrate" Condition="1" />
-        <Entry SpellRef="PowerStrike" Condition="1" />
-        <Entry SpellRef="ShieldBash" Condition="1" />
-        <Entry SpellRef="Taunt" Condition="1" />
-        <Entry SpellRef="SmokeBomb" Condition="1" />
-        <Entry SpellRef="VenomSpit" Condition="1" />
-        <Entry SpellRef="NaturalRemedy" Condition="1" />
-        <Entry SpellRef="HuntersMark" Condition="1" />
-        <Entry SpellRef="EagleEye" Condition="1" />
-        <Entry SpellRef="TrapSense" Condition="1" />
-        <Entry SpellRef="NaturesCompass" Condition="1" />
-        <Entry SpellRef="Gust" Condition="1" />
-        <Entry SpellRef="WaterWhip" Condition="1" />
-        <Entry SpellRef="ArcaneBlast" Condition="1" />
-        <Entry SpellRef="ArcaneMissile" Condition="1" />
-        <Entry SpellRef="Agility" Condition="1" />
-        <Entry SpellRef="Swiftness" Condition="1" />
-        <Entry SpellRef="Slow" Condition="1" />
-        <Entry SpellRef="MinorHeal" Condition="1" />
-        <Entry SpellRef="CurePoison" Condition="1" />
-        <Entry SpellRef="Shield" Condition="1" />
-        <Entry SpellRef="DiscordantNote" Condition="1" />
-        <Entry SpellRef="Disguise" Condition="1" />
-        <Entry SpellRef="ConjureShield" Condition="1" />
-        <Entry SpellRef="ConjureFood" Condition="1" />
-        <Entry SpellRef="Stun" Condition="1" />
-        <Entry SpellRef="Dash" Condition="1" />
-        <Entry SpellRef="WaterWalk" Condition="1" />
-        <Entry SpellRef="FeatherFall" Condition="1" />
-      </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="20" />
+        <Entry BlockRef="UncommonOres#IronOre" Quantity="10" />
+        <Entry BlockRef="UncommonOres#CopperOre" Quantity="5" />
+        <Entry BlockRef="VeryRareOres#NickelOre" Quantity="2" />
+        <Entry BlockRef="UncommonIngots#IronIngot" Quantity="6" />
+        <Entry BlockRef="RareIngots#GoldIngot" Quantity="7" />
+        <Entry BlockRef="RareGemstone#Ruby" Quantity="6" />
+        <Entry BlockRef="RareGemstone#Sapphire" Quantity="2" />
+        <Entry BlockRef="WoolSet1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#2" Quantity="1" />
+        <Entry BlockRef="WoolSet1#3" Quantity="1" />
+        <Entry BlockRef="WoolSet1#4" Quantity="1" />
+        <Entry BlockRef="WoolSet1#5" Quantity="1" />
+        <Entry BlockRef="WoolSet1#6" Quantity="1" />
+        <Entry BlockRef="WoolSet1#7" Quantity="1" />
+        <Entry BlockRef="WoolSet2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#1" Quantity="1" />
+        <Entry BlockRef="WoolSet2#2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#3" Quantity="1" />
+        <Entry BlockRef="WoolSet2#4" Quantity="1" />
+        <Entry BlockRef="WoolSet2#5" Quantity="1" />
+        <Entry BlockRef="WoolSet2#6" Quantity="1" />
+        <Entry BlockRef="WoolSet2#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#7" Quantity="1" />
       </Blocks>
       <Tools>
         <Entry ToolRef="Multitool" Condition="1" />
@@ -953,222 +959,10 @@
         <Entry BuildingMaterialRef="Mortar" Quantity="10" />
       </BuildingMaterials>
     </SpawnCapabilities>
-    <RespawnStats Health="0.9" Stamina="1" Mana="1.1" Temperature="37" Strength="0.072" Defense="0.072" Magic="0.08800001" Speed="0.080000006" Endurance="0" Credits="800" Experience="0" />
+    <RespawnStats Health="0.95" Stamina="1.05" Mana="1" Temperature="37" Strength="0.080000006" Defense="0.076" Magic="0.080000006" Speed="0.084" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenClub" Condition="1" />
-        <Entry EquipmentRef="CompositeBow" Condition="1" />
-        <Entry EquipmentRef="RustySword" Condition="1" />
-        <Entry EquipmentRef="HandAxe" Condition="1" />
-        <Entry EquipmentRef="Knife" Condition="1" />
-        <Entry EquipmentRef="Spear" Condition="1" />
-        <Entry EquipmentRef="ShortBow" Condition="1" />
-        <Entry EquipmentRef="WalkingStick" Condition="1" />
-        <Entry EquipmentRef="TinWhistle" Condition="1" />
-        <Entry EquipmentRef="Buckler" Condition="1" />
-        <Entry EquipmentRef="ClothCap" Condition="1" />
-        <Entry EquipmentRef="ClothTunic" Condition="1" />
-        <Entry EquipmentRef="SimpleRobe" Condition="1" />
-        <Entry EquipmentRef="ClothPants" Condition="1" />
-        <Entry EquipmentRef="Sandals" Condition="1" />
-        <Entry EquipmentRef="ClothGloves" Condition="1" />
-        <Entry EquipmentRef="TravelCloak" Condition="1" />
-        <Entry EquipmentRef="CopperRing" Condition="1" />
-        <Entry EquipmentRef="LeatherCord" Condition="1" />
-        <Entry EquipmentRef="RopeBelt" Condition="1" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ScrollOfFireball" Quantity="2" />
-        <Entry ConsumableRef="PhoenixTears" Quantity="3" />
-        <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
-        <Entry ConsumableRef="HealingPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="StaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="Antidote" Quantity="3" />
-        <Entry ConsumableRef="Berries" Quantity="3" />
-        <Entry ConsumableRef="Apple" Quantity="3" />
-        <Entry ConsumableRef="Bread" Quantity="3" />
-        <Entry ConsumableRef="Cheese" Quantity="3" />
-        <Entry ConsumableRef="DriedMeat" Quantity="3" />
-        <Entry ConsumableRef="CookedMeat" Quantity="3" />
-        <Entry ConsumableRef="Water" Quantity="3" />
-        <Entry ConsumableRef="Milk" Quantity="3" />
-        <Entry ConsumableRef="Juice" Quantity="3" />
-        <Entry ConsumableRef="ThrowingRock" Quantity="3" />
-        <Entry ConsumableRef="WeakPoison" Quantity="3" />
-        <Entry ConsumableRef="Torch" Quantity="3" />
-        <Entry ConsumableRef="Bandage" Quantity="3" />
-        <Entry ConsumableRef="HealingSalve" Quantity="3" />
-        <Entry ConsumableRef="HerbBundle" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="ArcaneBlast" Condition="1" />
-        <Entry SpellRef="Disintegrate" Condition="1" />
-        <Entry SpellRef="PowerStrike" Condition="1" />
-        <Entry SpellRef="ShieldBash" Condition="1" />
-        <Entry SpellRef="Taunt" Condition="1" />
-        <Entry SpellRef="SmokeBomb" Condition="1" />
-        <Entry SpellRef="VenomSpit" Condition="1" />
-        <Entry SpellRef="NaturalRemedy" Condition="1" />
-        <Entry SpellRef="HuntersMark" Condition="1" />
-        <Entry SpellRef="EagleEye" Condition="1" />
-        <Entry SpellRef="TrapSense" Condition="1" />
-        <Entry SpellRef="NaturesCompass" Condition="1" />
-        <Entry SpellRef="Gust" Condition="1" />
-        <Entry SpellRef="WaterWhip" Condition="1" />
-        <Entry SpellRef="ArcaneMissile" Condition="1" />
-        <Entry SpellRef="Agility" Condition="1" />
-        <Entry SpellRef="Swiftness" Condition="1" />
-        <Entry SpellRef="Slow" Condition="1" />
-        <Entry SpellRef="MinorHeal" Condition="1" />
-        <Entry SpellRef="CurePoison" Condition="1" />
-        <Entry SpellRef="Shield" Condition="1" />
-        <Entry SpellRef="DiscordantNote" Condition="1" />
-        <Entry SpellRef="Disguise" Condition="1" />
-        <Entry SpellRef="ConjureShield" Condition="1" />
-        <Entry SpellRef="ConjureFood" Condition="1" />
-        <Entry SpellRef="Stun" Condition="1" />
-        <Entry SpellRef="Dash" Condition="1" />
-        <Entry SpellRef="WaterWalk" Condition="1" />
-        <Entry SpellRef="FeatherFall" Condition="1" />
-      </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
-    </RespawnCapabilities>
-  </AvatarArchetype>
-  <AvatarArchetype RefName="Wizard" DisplayName="Yamabushi" Description="Ascetic mountain hermits who have unlocked forbidden knowledge through extreme training. Their mastery of esoteric Buddhism grants power over reality itself." AffinityRef="Arcane" Weight="55">
-    <SpawnStats Health="0.95" Stamina="0.95" Mana="1.1" Temperature="37" Strength="0.089999996" Defense="0.095" Magic="0.11000001" Speed="0.095" Endurance="0" Credits="1000" Experience="0" />
-    <SpawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="IronMace" Condition="1" />
-        <Entry EquipmentRef="RustySword" Condition="1" />
-        <Entry EquipmentRef="HandAxe" Condition="1" />
-        <Entry EquipmentRef="WoodenClub" Condition="1" />
-        <Entry EquipmentRef="Knife" Condition="1" />
-        <Entry EquipmentRef="Spear" Condition="1" />
-        <Entry EquipmentRef="ShortBow" Condition="1" />
-        <Entry EquipmentRef="WalkingStick" Condition="1" />
-        <Entry EquipmentRef="TinWhistle" Condition="1" />
-        <Entry EquipmentRef="Buckler" Condition="1" />
-        <Entry EquipmentRef="ClothCap" Condition="1" />
-        <Entry EquipmentRef="ClothTunic" Condition="1" />
-        <Entry EquipmentRef="SimpleRobe" Condition="1" />
-        <Entry EquipmentRef="ClothPants" Condition="1" />
-        <Entry EquipmentRef="Sandals" Condition="1" />
-        <Entry EquipmentRef="ClothGloves" Condition="1" />
-        <Entry EquipmentRef="TravelCloak" Condition="1" />
-        <Entry EquipmentRef="CopperRing" Condition="1" />
-        <Entry EquipmentRef="LeatherCord" Condition="1" />
-        <Entry EquipmentRef="RopeBelt" Condition="1" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="GreaterHealingPotion" Quantity="3" />
-        <Entry ConsumableRef="Torch" Quantity="4" />
-        <Entry ConsumableRef="Panacea" Quantity="3" />
-        <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
-        <Entry ConsumableRef="HealingPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="StaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="Antidote" Quantity="3" />
-        <Entry ConsumableRef="Berries" Quantity="3" />
-        <Entry ConsumableRef="Apple" Quantity="3" />
-        <Entry ConsumableRef="Bread" Quantity="3" />
-        <Entry ConsumableRef="Cheese" Quantity="3" />
-        <Entry ConsumableRef="DriedMeat" Quantity="3" />
-        <Entry ConsumableRef="CookedMeat" Quantity="3" />
-        <Entry ConsumableRef="Water" Quantity="3" />
-        <Entry ConsumableRef="Milk" Quantity="3" />
-        <Entry ConsumableRef="Juice" Quantity="3" />
-        <Entry ConsumableRef="ThrowingRock" Quantity="3" />
-        <Entry ConsumableRef="WeakPoison" Quantity="3" />
-        <Entry ConsumableRef="Bandage" Quantity="3" />
-        <Entry ConsumableRef="HealingSalve" Quantity="3" />
-        <Entry ConsumableRef="HerbBundle" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="SpellSteal" Condition="1" />
-        <Entry SpellRef="PowerStrike" Condition="1" />
-        <Entry SpellRef="ShieldBash" Condition="1" />
-        <Entry SpellRef="Taunt" Condition="1" />
-        <Entry SpellRef="SmokeBomb" Condition="1" />
-        <Entry SpellRef="VenomSpit" Condition="1" />
-        <Entry SpellRef="NaturalRemedy" Condition="1" />
-        <Entry SpellRef="HuntersMark" Condition="1" />
-        <Entry SpellRef="EagleEye" Condition="1" />
-        <Entry SpellRef="TrapSense" Condition="1" />
-        <Entry SpellRef="NaturesCompass" Condition="1" />
-        <Entry SpellRef="Gust" Condition="1" />
-        <Entry SpellRef="WaterWhip" Condition="1" />
-        <Entry SpellRef="ArcaneBlast" Condition="1" />
-        <Entry SpellRef="ArcaneMissile" Condition="1" />
-        <Entry SpellRef="Agility" Condition="1" />
-        <Entry SpellRef="Swiftness" Condition="1" />
-        <Entry SpellRef="Slow" Condition="1" />
-        <Entry SpellRef="MinorHeal" Condition="1" />
-        <Entry SpellRef="CurePoison" Condition="1" />
-        <Entry SpellRef="Shield" Condition="1" />
-        <Entry SpellRef="DiscordantNote" Condition="1" />
-        <Entry SpellRef="Disguise" Condition="1" />
-        <Entry SpellRef="ConjureShield" Condition="1" />
-        <Entry SpellRef="ConjureFood" Condition="1" />
-        <Entry SpellRef="Stun" Condition="1" />
-        <Entry SpellRef="Dash" Condition="1" />
-        <Entry SpellRef="WaterWalk" Condition="1" />
-        <Entry SpellRef="FeatherFall" Condition="1" />
-      </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
-    </SpawnCapabilities>
-    <RespawnStats Health="0.95" Stamina="0.95" Mana="1.1" Temperature="37" Strength="0.072" Defense="0.076" Magic="0.08800001" Speed="0.076" Endurance="0" Credits="800" Experience="0" />
-    <RespawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="ArchmageStaff" Condition="1" />
+        <Entry EquipmentRef="LeatherLeggings" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -1191,8 +985,6 @@
       </Equipment>
       <Consumables>
         <Entry ConsumableRef="SmokeBomb" Quantity="1" />
-        <Entry ConsumableRef="FrostBomb" Quantity="1" />
-        <Entry ConsumableRef="CookedMeat" Quantity="4" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -1204,9 +996,14 @@
         <Entry ConsumableRef="Bread" Quantity="3" />
         <Entry ConsumableRef="Cheese" Quantity="3" />
         <Entry ConsumableRef="DriedMeat" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
         <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
@@ -1215,8 +1012,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ManaShield" Condition="1" />
-        <Entry SpellRef="TimeWarp" Condition="1" />
+        <Entry SpellRef="TrapSense" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -1225,7 +1021,6 @@
         <Entry SpellRef="NaturalRemedy" Condition="1" />
         <Entry SpellRef="HuntersMark" Condition="1" />
         <Entry SpellRef="EagleEye" Condition="1" />
-        <Entry SpellRef="TrapSense" Condition="1" />
         <Entry SpellRef="NaturesCompass" Condition="1" />
         <Entry SpellRef="Gust" Condition="1" />
         <Entry SpellRef="WaterWhip" Condition="1" />
@@ -1245,21 +1040,13 @@
         <Entry SpellRef="Dash" Condition="1" />
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
       </Spells>
       <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Coal" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="5" />
       </Blocks>
       <Tools>
         <Entry ToolRef="Multitool" Condition="1" />
@@ -1272,11 +1059,12 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Cleric" DisplayName="Kannushi" Description="Shinto priests who serve the kami and maintain the sacred shrines. Through prayer and purification rituals, they channel divine blessings and banish evil spirits." AffinityRef="Holy" Weight="70">
-    <SpawnStats Health="1.05" Stamina="0.95" Mana="1.05" Temperature="37" Strength="0.095" Defense="0.105" Magic="0.105" Speed="0.095" Endurance="0" Credits="1000" Experience="0" />
+  <AvatarArchetype RefName="Mage" DisplayName="Onmyoji" Description="Practitioners of onmyodo, the way of yin and yang. These court magicians divine the future, ward against evil, and command the five elements through ancient rituals." AffinityRef="Arcane" Weight="60">
+    <SpawnStats Health="0.9" Stamina="1" Mana="1.1" Temperature="37" Strength="0.089999996" Defense="0.089999996" Magic="0.11000001" Speed="0.1" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="HolyStaff" Condition="1" />
+        <Entry EquipmentRef="WoodenFlute" Condition="1" />
+        <Entry EquipmentRef="ChainGloves" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -1298,14 +1086,13 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ParalyzingPoison" Quantity="1" />
-        <Entry ConsumableRef="MagesBiscuit" Quantity="3" />
+        <Entry ConsumableRef="Antidote" Quantity="5" />
+        <Entry ConsumableRef="FireBomb" Quantity="1" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
         <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
         <Entry ConsumableRef="StaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="Antidote" Quantity="3" />
         <Entry ConsumableRef="Berries" Quantity="3" />
         <Entry ConsumableRef="Apple" Quantity="3" />
         <Entry ConsumableRef="Bread" Quantity="3" />
@@ -1315,6 +1102,10 @@
         <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
@@ -1323,8 +1114,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Resurrection" Condition="1" />
-        <Entry SpellRef="Blessing" Condition="1" />
+        <Entry SpellRef="ArcaneBlast" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -1337,7 +1127,6 @@
         <Entry SpellRef="NaturesCompass" Condition="1" />
         <Entry SpellRef="Gust" Condition="1" />
         <Entry SpellRef="WaterWhip" Condition="1" />
-        <Entry SpellRef="ArcaneBlast" Condition="1" />
         <Entry SpellRef="ArcaneMissile" Condition="1" />
         <Entry SpellRef="Agility" Condition="1" />
         <Entry SpellRef="Swiftness" Condition="1" />
@@ -1353,21 +1142,74 @@
         <Entry SpellRef="Dash" Condition="1" />
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
       </Spells>
       <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
+        <Entry BlockRef="StairsSet1#Oak" Quantity="10" />
+        <Entry BlockRef="DoorSet1#Oak" Quantity="2" />
+        <Entry BlockRef="WindowSet1#Oak" Quantity="4" />
+        <Entry BlockRef="WallSet#Cobblestone" Quantity="10" />
+        <Entry BlockRef="SlabSet#Oak" Quantity="10" />
+        <Entry BlockRef="HalfBlock" Quantity="10" />
+        <Entry BlockRef="VeryCommonRock#Granite" Quantity="10" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Kiln" Quantity="1" />
+        <Entry BlockRef="Smelter" Quantity="1" />
+        <Entry BlockRef="Foundry" Quantity="1" />
+        <Entry BlockRef="GemPolisher" Quantity="1" />
+        <Entry BlockRef="Smithy" Quantity="1" />
+        <Entry BlockRef="Jeweler" Quantity="1" />
         <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
+        <Entry BlockRef="Sawmill" Quantity="1" />
+        <Entry BlockRef="Joinery" Quantity="1" />
+        <Entry BlockRef="Glazier" Quantity="1" />
+        <Entry BlockRef="Loom" Quantity="1" />
+        <Entry BlockRef="Masonry" Quantity="1" />
+        <Entry BlockRef="Heater" Quantity="1" />
+        <Entry BlockRef="Lamp" Quantity="2" />
+        <Entry BlockRef="Cache" Quantity="2" />
         <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="20" />
+        <Entry BlockRef="UncommonOres#IronOre" Quantity="10" />
+        <Entry BlockRef="UncommonOres#CopperOre" Quantity="5" />
+        <Entry BlockRef="VeryRareOres#NickelOre" Quantity="2" />
+        <Entry BlockRef="UncommonIngots#IronIngot" Quantity="6" />
+        <Entry BlockRef="RareIngots#GoldIngot" Quantity="7" />
+        <Entry BlockRef="RareGemstone#Ruby" Quantity="6" />
+        <Entry BlockRef="RareGemstone#Sapphire" Quantity="2" />
+        <Entry BlockRef="WoolSet1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#2" Quantity="1" />
+        <Entry BlockRef="WoolSet1#3" Quantity="1" />
+        <Entry BlockRef="WoolSet1#4" Quantity="1" />
+        <Entry BlockRef="WoolSet1#5" Quantity="1" />
+        <Entry BlockRef="WoolSet1#6" Quantity="1" />
+        <Entry BlockRef="WoolSet1#7" Quantity="1" />
+        <Entry BlockRef="WoolSet2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#1" Quantity="1" />
+        <Entry BlockRef="WoolSet2#2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#3" Quantity="1" />
+        <Entry BlockRef="WoolSet2#4" Quantity="1" />
+        <Entry BlockRef="WoolSet2#5" Quantity="1" />
+        <Entry BlockRef="WoolSet2#6" Quantity="1" />
+        <Entry BlockRef="WoolSet2#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#7" Quantity="1" />
       </Blocks>
       <Tools>
         <Entry ToolRef="Multitool" Condition="1" />
@@ -1379,7 +1221,7 @@
         <Entry BuildingMaterialRef="Mortar" Quantity="10" />
       </BuildingMaterials>
     </SpawnCapabilities>
-    <RespawnStats Health="1.05" Stamina="0.95" Mana="1.05" Temperature="37" Strength="0.076" Defense="0.084" Magic="0.084" Speed="0.076" Endurance="0" Credits="800" Experience="0" />
+    <RespawnStats Health="0.9" Stamina="1" Mana="1.1" Temperature="37" Strength="0.072" Defense="0.072" Magic="0.08800001" Speed="0.080000006" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
       <Equipment>
         <Entry EquipmentRef="Harp" Condition="1" />
@@ -1404,7 +1246,8 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="FeastPlatter" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="7" />
+        <Entry ConsumableRef="ManaPotion" Quantity="1" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -1420,6 +1263,9 @@
         <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
@@ -1428,8 +1274,6 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Revitalize" Condition="1" />
-        <Entry SpellRef="Sanctuary" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -1458,21 +1302,13 @@
         <Entry SpellRef="Dash" Condition="1" />
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
       </Spells>
       <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Coal" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="5" />
       </Blocks>
       <Tools>
         <Entry ToolRef="Multitool" Condition="1" />
@@ -1485,11 +1321,11 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Bard" DisplayName="Biwa Hoshi" Description="Blind traveling musicians who carry the tales of fallen warriors. Their haunting melodies can inspire allies, curse enemies, and commune with the spirits of the dead." AffinityRef="Spirit" Weight="65">
-    <SpawnStats Health="0.95" Stamina="1.05" Mana="1.05" Temperature="37" Strength="0.095" Defense="0.095" Magic="0.105" Speed="0.105" Endurance="0" Credits="1000" Experience="0" />
+  <AvatarArchetype RefName="Wizard" DisplayName="Yamabushi" Description="Ascetic mountain hermits who have unlocked forbidden knowledge through extreme training. Their mastery of esoteric Buddhism grants power over reality itself." AffinityRef="Arcane" Weight="55">
+    <SpawnStats Health="0.95" Stamina="0.95" Mana="1.1" Temperature="37" Strength="0.089999996" Defense="0.095" Magic="0.11000001" Speed="0.095" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="ScholarsRobe" Condition="1" />
+        <Entry EquipmentRef="ScaleMail" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -1511,7 +1347,8 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HerbalTea" Quantity="4" />
+        <Entry ConsumableRef="FrostResistPotion" Quantity="1" />
+        <Entry ConsumableRef="FrostBomb" Quantity="3" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -1527,6 +1364,10 @@
         <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
@@ -1535,7 +1376,534 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SongOfCourage" Condition="1" />
+        <Entry SpellRef="ArcaneMissile" Condition="1" />
+        <Entry SpellRef="PowerStrike" Condition="1" />
+        <Entry SpellRef="ShieldBash" Condition="1" />
+        <Entry SpellRef="Taunt" Condition="1" />
+        <Entry SpellRef="SmokeBomb" Condition="1" />
+        <Entry SpellRef="VenomSpit" Condition="1" />
+        <Entry SpellRef="NaturalRemedy" Condition="1" />
+        <Entry SpellRef="HuntersMark" Condition="1" />
+        <Entry SpellRef="EagleEye" Condition="1" />
+        <Entry SpellRef="TrapSense" Condition="1" />
+        <Entry SpellRef="NaturesCompass" Condition="1" />
+        <Entry SpellRef="Gust" Condition="1" />
+        <Entry SpellRef="WaterWhip" Condition="1" />
+        <Entry SpellRef="ArcaneBlast" Condition="1" />
+        <Entry SpellRef="Agility" Condition="1" />
+        <Entry SpellRef="Swiftness" Condition="1" />
+        <Entry SpellRef="Slow" Condition="1" />
+        <Entry SpellRef="MinorHeal" Condition="1" />
+        <Entry SpellRef="CurePoison" Condition="1" />
+        <Entry SpellRef="Shield" Condition="1" />
+        <Entry SpellRef="DiscordantNote" Condition="1" />
+        <Entry SpellRef="Disguise" Condition="1" />
+        <Entry SpellRef="ConjureShield" Condition="1" />
+        <Entry SpellRef="ConjureFood" Condition="1" />
+        <Entry SpellRef="Stun" Condition="1" />
+        <Entry SpellRef="Dash" Condition="1" />
+        <Entry SpellRef="WaterWalk" Condition="1" />
+        <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
+      </Spells>
+      <Blocks>
+        <Entry BlockRef="StairsSet1#Oak" Quantity="10" />
+        <Entry BlockRef="DoorSet1#Oak" Quantity="2" />
+        <Entry BlockRef="WindowSet1#Oak" Quantity="4" />
+        <Entry BlockRef="WallSet#Cobblestone" Quantity="10" />
+        <Entry BlockRef="SlabSet#Oak" Quantity="10" />
+        <Entry BlockRef="HalfBlock" Quantity="10" />
+        <Entry BlockRef="VeryCommonRock#Granite" Quantity="10" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Kiln" Quantity="1" />
+        <Entry BlockRef="Smelter" Quantity="1" />
+        <Entry BlockRef="Foundry" Quantity="1" />
+        <Entry BlockRef="GemPolisher" Quantity="1" />
+        <Entry BlockRef="Smithy" Quantity="1" />
+        <Entry BlockRef="Jeweler" Quantity="1" />
+        <Entry BlockRef="BlastFurnace" Quantity="1" />
+        <Entry BlockRef="Sawmill" Quantity="1" />
+        <Entry BlockRef="Joinery" Quantity="1" />
+        <Entry BlockRef="Glazier" Quantity="1" />
+        <Entry BlockRef="Loom" Quantity="1" />
+        <Entry BlockRef="Masonry" Quantity="1" />
+        <Entry BlockRef="Heater" Quantity="1" />
+        <Entry BlockRef="Lamp" Quantity="2" />
+        <Entry BlockRef="Cache" Quantity="2" />
+        <Entry BlockRef="Coal" Quantity="20" />
+        <Entry BlockRef="LogSet#Oak" Quantity="20" />
+        <Entry BlockRef="UncommonOres#IronOre" Quantity="10" />
+        <Entry BlockRef="UncommonOres#CopperOre" Quantity="5" />
+        <Entry BlockRef="VeryRareOres#NickelOre" Quantity="2" />
+        <Entry BlockRef="UncommonIngots#IronIngot" Quantity="6" />
+        <Entry BlockRef="RareIngots#GoldIngot" Quantity="7" />
+        <Entry BlockRef="RareGemstone#Ruby" Quantity="6" />
+        <Entry BlockRef="RareGemstone#Sapphire" Quantity="2" />
+        <Entry BlockRef="WoolSet1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#2" Quantity="1" />
+        <Entry BlockRef="WoolSet1#3" Quantity="1" />
+        <Entry BlockRef="WoolSet1#4" Quantity="1" />
+        <Entry BlockRef="WoolSet1#5" Quantity="1" />
+        <Entry BlockRef="WoolSet1#6" Quantity="1" />
+        <Entry BlockRef="WoolSet1#7" Quantity="1" />
+        <Entry BlockRef="WoolSet2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#1" Quantity="1" />
+        <Entry BlockRef="WoolSet2#2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#3" Quantity="1" />
+        <Entry BlockRef="WoolSet2#4" Quantity="1" />
+        <Entry BlockRef="WoolSet2#5" Quantity="1" />
+        <Entry BlockRef="WoolSet2#6" Quantity="1" />
+        <Entry BlockRef="WoolSet2#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#7" Quantity="1" />
+      </Blocks>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
+    </SpawnCapabilities>
+    <RespawnStats Health="0.95" Stamina="0.95" Mana="1.1" Temperature="37" Strength="0.072" Defense="0.076" Magic="0.08800001" Speed="0.076" Endurance="0" Credits="800" Experience="0" />
+    <RespawnCapabilities>
+      <Equipment>
+        <Entry EquipmentRef="IronShield" Condition="1" />
+        <Entry EquipmentRef="RustySword" Condition="1" />
+        <Entry EquipmentRef="HandAxe" Condition="1" />
+        <Entry EquipmentRef="WoodenClub" Condition="1" />
+        <Entry EquipmentRef="Knife" Condition="1" />
+        <Entry EquipmentRef="Spear" Condition="1" />
+        <Entry EquipmentRef="ShortBow" Condition="1" />
+        <Entry EquipmentRef="WalkingStick" Condition="1" />
+        <Entry EquipmentRef="TinWhistle" Condition="1" />
+        <Entry EquipmentRef="Buckler" Condition="1" />
+        <Entry EquipmentRef="ClothCap" Condition="1" />
+        <Entry EquipmentRef="ClothTunic" Condition="1" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1" />
+        <Entry EquipmentRef="ClothPants" Condition="1" />
+        <Entry EquipmentRef="Sandals" Condition="1" />
+        <Entry EquipmentRef="ClothGloves" Condition="1" />
+        <Entry EquipmentRef="TravelCloak" Condition="1" />
+        <Entry EquipmentRef="CopperRing" Condition="1" />
+        <Entry EquipmentRef="LeatherCord" Condition="1" />
+        <Entry EquipmentRef="RopeBelt" Condition="1" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="SorceryPotion" Quantity="2" />
+        <Entry ConsumableRef="HastePotion" Quantity="4" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="StaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="Antidote" Quantity="3" />
+        <Entry ConsumableRef="Berries" Quantity="3" />
+        <Entry ConsumableRef="Apple" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
+        <Entry ConsumableRef="DriedMeat" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="Milk" Quantity="3" />
+        <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
+        <Entry ConsumableRef="ThrowingRock" Quantity="3" />
+        <Entry ConsumableRef="WeakPoison" Quantity="3" />
+        <Entry ConsumableRef="Torch" Quantity="3" />
+        <Entry ConsumableRef="Bandage" Quantity="3" />
+        <Entry ConsumableRef="HealingSalve" Quantity="3" />
+        <Entry ConsumableRef="HerbBundle" Quantity="3" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="Blink" Condition="1" />
+        <Entry SpellRef="MagicArmor" Condition="1" />
+        <Entry SpellRef="PowerStrike" Condition="1" />
+        <Entry SpellRef="ShieldBash" Condition="1" />
+        <Entry SpellRef="Taunt" Condition="1" />
+        <Entry SpellRef="SmokeBomb" Condition="1" />
+        <Entry SpellRef="VenomSpit" Condition="1" />
+        <Entry SpellRef="NaturalRemedy" Condition="1" />
+        <Entry SpellRef="HuntersMark" Condition="1" />
+        <Entry SpellRef="EagleEye" Condition="1" />
+        <Entry SpellRef="TrapSense" Condition="1" />
+        <Entry SpellRef="NaturesCompass" Condition="1" />
+        <Entry SpellRef="Gust" Condition="1" />
+        <Entry SpellRef="WaterWhip" Condition="1" />
+        <Entry SpellRef="ArcaneBlast" Condition="1" />
+        <Entry SpellRef="ArcaneMissile" Condition="1" />
+        <Entry SpellRef="Agility" Condition="1" />
+        <Entry SpellRef="Swiftness" Condition="1" />
+        <Entry SpellRef="Slow" Condition="1" />
+        <Entry SpellRef="MinorHeal" Condition="1" />
+        <Entry SpellRef="CurePoison" Condition="1" />
+        <Entry SpellRef="Shield" Condition="1" />
+        <Entry SpellRef="DiscordantNote" Condition="1" />
+        <Entry SpellRef="Disguise" Condition="1" />
+        <Entry SpellRef="ConjureShield" Condition="1" />
+        <Entry SpellRef="ConjureFood" Condition="1" />
+        <Entry SpellRef="Stun" Condition="1" />
+        <Entry SpellRef="Dash" Condition="1" />
+        <Entry SpellRef="WaterWalk" Condition="1" />
+        <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
+      </Spells>
+      <Blocks>
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Coal" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="5" />
+      </Blocks>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
+    </RespawnCapabilities>
+  </AvatarArchetype>
+  <AvatarArchetype RefName="Cleric" DisplayName="Kannushi" Description="Shinto priests who serve the kami and maintain the sacred shrines. Through prayer and purification rituals, they channel divine blessings and banish evil spirits." AffinityRef="Holy">
+    <SpawnStats Health="1.05" Stamina="0.95" Mana="1.05" Temperature="37" Strength="0.095" Defense="0.105" Magic="0.105" Speed="0.095" Endurance="0" Credits="1000" Experience="0" />
+    <SpawnCapabilities>
+      <Equipment>
+        <Entry EquipmentRef="WizardHat" Condition="1" />
+        <Entry EquipmentRef="RustySword" Condition="1" />
+        <Entry EquipmentRef="HandAxe" Condition="1" />
+        <Entry EquipmentRef="WoodenClub" Condition="1" />
+        <Entry EquipmentRef="Knife" Condition="1" />
+        <Entry EquipmentRef="Spear" Condition="1" />
+        <Entry EquipmentRef="ShortBow" Condition="1" />
+        <Entry EquipmentRef="WalkingStick" Condition="1" />
+        <Entry EquipmentRef="TinWhistle" Condition="1" />
+        <Entry EquipmentRef="Buckler" Condition="1" />
+        <Entry EquipmentRef="ClothCap" Condition="1" />
+        <Entry EquipmentRef="ClothTunic" Condition="1" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1" />
+        <Entry EquipmentRef="ClothPants" Condition="1" />
+        <Entry EquipmentRef="Sandals" Condition="1" />
+        <Entry EquipmentRef="ClothGloves" Condition="1" />
+        <Entry EquipmentRef="TravelCloak" Condition="1" />
+        <Entry EquipmentRef="CopperRing" Condition="1" />
+        <Entry EquipmentRef="LeatherCord" Condition="1" />
+        <Entry EquipmentRef="RopeBelt" Condition="1" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="CurativePotion" Quantity="1" />
+        <Entry ConsumableRef="PoisonResistPotion" Quantity="2" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="StaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="Antidote" Quantity="3" />
+        <Entry ConsumableRef="Berries" Quantity="3" />
+        <Entry ConsumableRef="Apple" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
+        <Entry ConsumableRef="DriedMeat" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="Milk" Quantity="3" />
+        <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
+        <Entry ConsumableRef="ThrowingRock" Quantity="3" />
+        <Entry ConsumableRef="WeakPoison" Quantity="3" />
+        <Entry ConsumableRef="Torch" Quantity="3" />
+        <Entry ConsumableRef="Bandage" Quantity="3" />
+        <Entry ConsumableRef="HealingSalve" Quantity="3" />
+        <Entry ConsumableRef="HerbBundle" Quantity="3" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="CurePoison" Condition="1" />
+        <Entry SpellRef="PowerStrike" Condition="1" />
+        <Entry SpellRef="ShieldBash" Condition="1" />
+        <Entry SpellRef="Taunt" Condition="1" />
+        <Entry SpellRef="SmokeBomb" Condition="1" />
+        <Entry SpellRef="VenomSpit" Condition="1" />
+        <Entry SpellRef="NaturalRemedy" Condition="1" />
+        <Entry SpellRef="HuntersMark" Condition="1" />
+        <Entry SpellRef="EagleEye" Condition="1" />
+        <Entry SpellRef="TrapSense" Condition="1" />
+        <Entry SpellRef="NaturesCompass" Condition="1" />
+        <Entry SpellRef="Gust" Condition="1" />
+        <Entry SpellRef="WaterWhip" Condition="1" />
+        <Entry SpellRef="ArcaneBlast" Condition="1" />
+        <Entry SpellRef="ArcaneMissile" Condition="1" />
+        <Entry SpellRef="Agility" Condition="1" />
+        <Entry SpellRef="Swiftness" Condition="1" />
+        <Entry SpellRef="Slow" Condition="1" />
+        <Entry SpellRef="MinorHeal" Condition="1" />
+        <Entry SpellRef="Shield" Condition="1" />
+        <Entry SpellRef="DiscordantNote" Condition="1" />
+        <Entry SpellRef="Disguise" Condition="1" />
+        <Entry SpellRef="ConjureShield" Condition="1" />
+        <Entry SpellRef="ConjureFood" Condition="1" />
+        <Entry SpellRef="Stun" Condition="1" />
+        <Entry SpellRef="Dash" Condition="1" />
+        <Entry SpellRef="WaterWalk" Condition="1" />
+        <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
+      </Spells>
+      <Blocks>
+        <Entry BlockRef="StairsSet1#Oak" Quantity="10" />
+        <Entry BlockRef="DoorSet1#Oak" Quantity="2" />
+        <Entry BlockRef="WindowSet1#Oak" Quantity="4" />
+        <Entry BlockRef="WallSet#Cobblestone" Quantity="10" />
+        <Entry BlockRef="SlabSet#Oak" Quantity="10" />
+        <Entry BlockRef="HalfBlock" Quantity="10" />
+        <Entry BlockRef="VeryCommonRock#Granite" Quantity="10" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Kiln" Quantity="1" />
+        <Entry BlockRef="Smelter" Quantity="1" />
+        <Entry BlockRef="Foundry" Quantity="1" />
+        <Entry BlockRef="GemPolisher" Quantity="1" />
+        <Entry BlockRef="Smithy" Quantity="1" />
+        <Entry BlockRef="Jeweler" Quantity="1" />
+        <Entry BlockRef="BlastFurnace" Quantity="1" />
+        <Entry BlockRef="Sawmill" Quantity="1" />
+        <Entry BlockRef="Joinery" Quantity="1" />
+        <Entry BlockRef="Glazier" Quantity="1" />
+        <Entry BlockRef="Loom" Quantity="1" />
+        <Entry BlockRef="Masonry" Quantity="1" />
+        <Entry BlockRef="Heater" Quantity="1" />
+        <Entry BlockRef="Lamp" Quantity="2" />
+        <Entry BlockRef="Cache" Quantity="2" />
+        <Entry BlockRef="Coal" Quantity="20" />
+        <Entry BlockRef="LogSet#Oak" Quantity="20" />
+        <Entry BlockRef="UncommonOres#IronOre" Quantity="10" />
+        <Entry BlockRef="UncommonOres#CopperOre" Quantity="5" />
+        <Entry BlockRef="VeryRareOres#NickelOre" Quantity="2" />
+        <Entry BlockRef="UncommonIngots#IronIngot" Quantity="6" />
+        <Entry BlockRef="RareIngots#GoldIngot" Quantity="7" />
+        <Entry BlockRef="RareGemstone#Ruby" Quantity="6" />
+        <Entry BlockRef="RareGemstone#Sapphire" Quantity="2" />
+        <Entry BlockRef="WoolSet1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#2" Quantity="1" />
+        <Entry BlockRef="WoolSet1#3" Quantity="1" />
+        <Entry BlockRef="WoolSet1#4" Quantity="1" />
+        <Entry BlockRef="WoolSet1#5" Quantity="1" />
+        <Entry BlockRef="WoolSet1#6" Quantity="1" />
+        <Entry BlockRef="WoolSet1#7" Quantity="1" />
+        <Entry BlockRef="WoolSet2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#1" Quantity="1" />
+        <Entry BlockRef="WoolSet2#2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#3" Quantity="1" />
+        <Entry BlockRef="WoolSet2#4" Quantity="1" />
+        <Entry BlockRef="WoolSet2#5" Quantity="1" />
+        <Entry BlockRef="WoolSet2#6" Quantity="1" />
+        <Entry BlockRef="WoolSet2#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#7" Quantity="1" />
+      </Blocks>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
+    </SpawnCapabilities>
+    <RespawnStats Health="1.05" Stamina="0.95" Mana="1.05" Temperature="37" Strength="0.076" Defense="0.084" Magic="0.084" Speed="0.076" Endurance="0" Credits="800" Experience="0" />
+    <RespawnCapabilities>
+      <Equipment>
+        <Entry EquipmentRef="AmuletOfHealth" Condition="1" />
+        <Entry EquipmentRef="HalfPlate" Condition="1" />
+        <Entry EquipmentRef="RustySword" Condition="1" />
+        <Entry EquipmentRef="HandAxe" Condition="1" />
+        <Entry EquipmentRef="WoodenClub" Condition="1" />
+        <Entry EquipmentRef="Knife" Condition="1" />
+        <Entry EquipmentRef="Spear" Condition="1" />
+        <Entry EquipmentRef="ShortBow" Condition="1" />
+        <Entry EquipmentRef="WalkingStick" Condition="1" />
+        <Entry EquipmentRef="TinWhistle" Condition="1" />
+        <Entry EquipmentRef="Buckler" Condition="1" />
+        <Entry EquipmentRef="ClothCap" Condition="1" />
+        <Entry EquipmentRef="ClothTunic" Condition="1" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1" />
+        <Entry EquipmentRef="ClothPants" Condition="1" />
+        <Entry EquipmentRef="Sandals" Condition="1" />
+        <Entry EquipmentRef="ClothGloves" Condition="1" />
+        <Entry EquipmentRef="TravelCloak" Condition="1" />
+        <Entry EquipmentRef="CopperRing" Condition="1" />
+        <Entry EquipmentRef="LeatherCord" Condition="1" />
+        <Entry EquipmentRef="RopeBelt" Condition="1" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ThrowingRock" Quantity="4" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="StaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="Antidote" Quantity="3" />
+        <Entry ConsumableRef="Berries" Quantity="3" />
+        <Entry ConsumableRef="Apple" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
+        <Entry ConsumableRef="DriedMeat" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="Milk" Quantity="3" />
+        <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
+        <Entry ConsumableRef="WeakPoison" Quantity="3" />
+        <Entry ConsumableRef="Torch" Quantity="3" />
+        <Entry ConsumableRef="Bandage" Quantity="3" />
+        <Entry ConsumableRef="HealingSalve" Quantity="3" />
+        <Entry ConsumableRef="HerbBundle" Quantity="3" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="CurePoison" Condition="1" />
+        <Entry SpellRef="PowerStrike" Condition="1" />
+        <Entry SpellRef="ShieldBash" Condition="1" />
+        <Entry SpellRef="Taunt" Condition="1" />
+        <Entry SpellRef="SmokeBomb" Condition="1" />
+        <Entry SpellRef="VenomSpit" Condition="1" />
+        <Entry SpellRef="NaturalRemedy" Condition="1" />
+        <Entry SpellRef="HuntersMark" Condition="1" />
+        <Entry SpellRef="EagleEye" Condition="1" />
+        <Entry SpellRef="TrapSense" Condition="1" />
+        <Entry SpellRef="NaturesCompass" Condition="1" />
+        <Entry SpellRef="Gust" Condition="1" />
+        <Entry SpellRef="WaterWhip" Condition="1" />
+        <Entry SpellRef="ArcaneBlast" Condition="1" />
+        <Entry SpellRef="ArcaneMissile" Condition="1" />
+        <Entry SpellRef="Agility" Condition="1" />
+        <Entry SpellRef="Swiftness" Condition="1" />
+        <Entry SpellRef="Slow" Condition="1" />
+        <Entry SpellRef="MinorHeal" Condition="1" />
+        <Entry SpellRef="Shield" Condition="1" />
+        <Entry SpellRef="DiscordantNote" Condition="1" />
+        <Entry SpellRef="Disguise" Condition="1" />
+        <Entry SpellRef="ConjureShield" Condition="1" />
+        <Entry SpellRef="ConjureFood" Condition="1" />
+        <Entry SpellRef="Stun" Condition="1" />
+        <Entry SpellRef="Dash" Condition="1" />
+        <Entry SpellRef="WaterWalk" Condition="1" />
+        <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
+      </Spells>
+      <Blocks>
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Coal" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="5" />
+      </Blocks>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
+    </RespawnCapabilities>
+  </AvatarArchetype>
+  <AvatarArchetype RefName="Bard" DisplayName="Biwa Hoshi" Description="Blind traveling musicians who carry the tales of fallen warriors. Their haunting melodies can inspire allies, curse enemies, and commune with the spirits of the dead." AffinityRef="Spirit" Weight="65">
+    <SpawnStats Health="0.95" Stamina="1.05" Mana="1.05" Temperature="37" Strength="0.095" Defense="0.095" Magic="0.105" Speed="0.105" Endurance="0" Credits="1000" Experience="0" />
+    <SpawnCapabilities>
+      <Equipment>
+        <Entry EquipmentRef="OakWand" Condition="1" />
+        <Entry EquipmentRef="SilverPendant" Condition="1" />
+        <Entry EquipmentRef="TinWhistle" Condition="1" />
+        <Entry EquipmentRef="RustySword" Condition="1" />
+        <Entry EquipmentRef="HandAxe" Condition="1" />
+        <Entry EquipmentRef="WoodenClub" Condition="1" />
+        <Entry EquipmentRef="Knife" Condition="1" />
+        <Entry EquipmentRef="Spear" Condition="1" />
+        <Entry EquipmentRef="ShortBow" Condition="1" />
+        <Entry EquipmentRef="WalkingStick" Condition="1" />
+        <Entry EquipmentRef="Buckler" Condition="1" />
+        <Entry EquipmentRef="ClothCap" Condition="1" />
+        <Entry EquipmentRef="ClothTunic" Condition="1" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1" />
+        <Entry EquipmentRef="ClothPants" Condition="1" />
+        <Entry EquipmentRef="Sandals" Condition="1" />
+        <Entry EquipmentRef="ClothGloves" Condition="1" />
+        <Entry EquipmentRef="TravelCloak" Condition="1" />
+        <Entry EquipmentRef="CopperRing" Condition="1" />
+        <Entry EquipmentRef="LeatherCord" Condition="1" />
+        <Entry EquipmentRef="RopeBelt" Condition="1" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="SpicedCider" Quantity="6" />
+        <Entry ConsumableRef="DeadlyPoison" Quantity="2" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="StaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="Antidote" Quantity="3" />
+        <Entry ConsumableRef="Berries" Quantity="3" />
+        <Entry ConsumableRef="Apple" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
+        <Entry ConsumableRef="DriedMeat" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="Milk" Quantity="3" />
+        <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
+        <Entry ConsumableRef="ThrowingRock" Quantity="3" />
+        <Entry ConsumableRef="WeakPoison" Quantity="3" />
+        <Entry ConsumableRef="Torch" Quantity="3" />
+        <Entry ConsumableRef="Bandage" Quantity="3" />
+        <Entry ConsumableRef="HealingSalve" Quantity="3" />
+        <Entry ConsumableRef="HerbBundle" Quantity="3" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="SymphonyOfPower" Condition="1" />
         <Entry SpellRef="Fortitude" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
@@ -1565,21 +1933,74 @@
         <Entry SpellRef="Dash" Condition="1" />
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
       </Spells>
       <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
+        <Entry BlockRef="StairsSet1#Oak" Quantity="10" />
+        <Entry BlockRef="DoorSet1#Oak" Quantity="2" />
+        <Entry BlockRef="WindowSet1#Oak" Quantity="4" />
+        <Entry BlockRef="WallSet#Cobblestone" Quantity="10" />
+        <Entry BlockRef="SlabSet#Oak" Quantity="10" />
+        <Entry BlockRef="HalfBlock" Quantity="10" />
+        <Entry BlockRef="VeryCommonRock#Granite" Quantity="10" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Kiln" Quantity="1" />
+        <Entry BlockRef="Smelter" Quantity="1" />
+        <Entry BlockRef="Foundry" Quantity="1" />
+        <Entry BlockRef="GemPolisher" Quantity="1" />
+        <Entry BlockRef="Smithy" Quantity="1" />
+        <Entry BlockRef="Jeweler" Quantity="1" />
         <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
+        <Entry BlockRef="Sawmill" Quantity="1" />
+        <Entry BlockRef="Joinery" Quantity="1" />
+        <Entry BlockRef="Glazier" Quantity="1" />
+        <Entry BlockRef="Loom" Quantity="1" />
+        <Entry BlockRef="Masonry" Quantity="1" />
+        <Entry BlockRef="Heater" Quantity="1" />
+        <Entry BlockRef="Lamp" Quantity="2" />
+        <Entry BlockRef="Cache" Quantity="2" />
         <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="20" />
+        <Entry BlockRef="UncommonOres#IronOre" Quantity="10" />
+        <Entry BlockRef="UncommonOres#CopperOre" Quantity="5" />
+        <Entry BlockRef="VeryRareOres#NickelOre" Quantity="2" />
+        <Entry BlockRef="UncommonIngots#IronIngot" Quantity="6" />
+        <Entry BlockRef="RareIngots#GoldIngot" Quantity="7" />
+        <Entry BlockRef="RareGemstone#Ruby" Quantity="6" />
+        <Entry BlockRef="RareGemstone#Sapphire" Quantity="2" />
+        <Entry BlockRef="WoolSet1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#2" Quantity="1" />
+        <Entry BlockRef="WoolSet1#3" Quantity="1" />
+        <Entry BlockRef="WoolSet1#4" Quantity="1" />
+        <Entry BlockRef="WoolSet1#5" Quantity="1" />
+        <Entry BlockRef="WoolSet1#6" Quantity="1" />
+        <Entry BlockRef="WoolSet1#7" Quantity="1" />
+        <Entry BlockRef="WoolSet2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#1" Quantity="1" />
+        <Entry BlockRef="WoolSet2#2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#3" Quantity="1" />
+        <Entry BlockRef="WoolSet2#4" Quantity="1" />
+        <Entry BlockRef="WoolSet2#5" Quantity="1" />
+        <Entry BlockRef="WoolSet2#6" Quantity="1" />
+        <Entry BlockRef="WoolSet2#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#7" Quantity="1" />
       </Blocks>
       <Tools>
         <Entry ToolRef="Multitool" Condition="1" />
@@ -1594,7 +2015,7 @@
     <RespawnStats Health="0.95" Stamina="1.05" Mana="1.05" Temperature="37" Strength="0.076" Defense="0.076" Magic="0.084" Speed="0.084" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="KiteShield" Condition="1" />
+        <Entry EquipmentRef="WarHammer" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -1616,9 +2037,7 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Water" Quantity="5" />
-        <Entry ConsumableRef="ElementalEssence" Quantity="2" />
-        <Entry ConsumableRef="Ale" Quantity="2" />
+        <Entry ConsumableRef="ThrowingAxe" Quantity="4" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -1631,8 +2050,13 @@
         <Entry ConsumableRef="Cheese" Quantity="3" />
         <Entry ConsumableRef="DriedMeat" Quantity="3" />
         <Entry ConsumableRef="CookedMeat" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
@@ -1641,8 +2065,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="DiscordantNote" Condition="1" />
-        <Entry SpellRef="Agility" Condition="1" />
+        <Entry SpellRef="Heroism" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -1657,11 +2080,13 @@
         <Entry SpellRef="WaterWhip" Condition="1" />
         <Entry SpellRef="ArcaneBlast" Condition="1" />
         <Entry SpellRef="ArcaneMissile" Condition="1" />
+        <Entry SpellRef="Agility" Condition="1" />
         <Entry SpellRef="Swiftness" Condition="1" />
         <Entry SpellRef="Slow" Condition="1" />
         <Entry SpellRef="MinorHeal" Condition="1" />
         <Entry SpellRef="CurePoison" Condition="1" />
         <Entry SpellRef="Shield" Condition="1" />
+        <Entry SpellRef="DiscordantNote" Condition="1" />
         <Entry SpellRef="Disguise" Condition="1" />
         <Entry SpellRef="ConjureShield" Condition="1" />
         <Entry SpellRef="ConjureFood" Condition="1" />
@@ -1669,21 +2094,13 @@
         <Entry SpellRef="Dash" Condition="1" />
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
       </Spells>
       <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Coal" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="5" />
       </Blocks>
       <Tools>
         <Entry ToolRef="Multitool" Condition="1" />
@@ -1700,7 +2117,9 @@
     <SpawnStats Health="0.9" Stamina="1" Mana="1.1" Temperature="37" Strength="0.089999996" Defense="0.089999996" Magic="0.11000001" Speed="0.1" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="ThiefGloves" Condition="1" />
+        <Entry EquipmentRef="Greatsword" Condition="1" />
+        <Entry EquipmentRef="LightCrossbow" Condition="1" />
+        <Entry EquipmentRef="PrayerBeads" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -1722,9 +2141,9 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="EnergyDrink" Quantity="4" />
-        <Entry ConsumableRef="ScrollOfFireball" Quantity="1" />
-        <Entry ConsumableRef="RangerTrailMix" Quantity="3" />
+        <Entry ConsumableRef="WeakeningPoison" Quantity="1" />
+        <Entry ConsumableRef="SpicedCider" Quantity="7" />
+        <Entry ConsumableRef="Stew" Quantity="2" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -1740,6 +2159,9 @@
         <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
@@ -1748,7 +2170,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SummonDemon" Condition="1" />
+        <Entry SpellRef="ConjurePortal" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -1777,21 +2199,74 @@
         <Entry SpellRef="Dash" Condition="1" />
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
       </Spells>
       <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
+        <Entry BlockRef="StairsSet1#Oak" Quantity="10" />
+        <Entry BlockRef="DoorSet1#Oak" Quantity="2" />
+        <Entry BlockRef="WindowSet1#Oak" Quantity="4" />
+        <Entry BlockRef="WallSet#Cobblestone" Quantity="10" />
+        <Entry BlockRef="SlabSet#Oak" Quantity="10" />
+        <Entry BlockRef="HalfBlock" Quantity="10" />
+        <Entry BlockRef="VeryCommonRock#Granite" Quantity="10" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Kiln" Quantity="1" />
+        <Entry BlockRef="Smelter" Quantity="1" />
+        <Entry BlockRef="Foundry" Quantity="1" />
+        <Entry BlockRef="GemPolisher" Quantity="1" />
+        <Entry BlockRef="Smithy" Quantity="1" />
+        <Entry BlockRef="Jeweler" Quantity="1" />
         <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
+        <Entry BlockRef="Sawmill" Quantity="1" />
+        <Entry BlockRef="Joinery" Quantity="1" />
+        <Entry BlockRef="Glazier" Quantity="1" />
+        <Entry BlockRef="Loom" Quantity="1" />
+        <Entry BlockRef="Masonry" Quantity="1" />
+        <Entry BlockRef="Heater" Quantity="1" />
+        <Entry BlockRef="Lamp" Quantity="2" />
+        <Entry BlockRef="Cache" Quantity="2" />
         <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="20" />
+        <Entry BlockRef="UncommonOres#IronOre" Quantity="10" />
+        <Entry BlockRef="UncommonOres#CopperOre" Quantity="5" />
+        <Entry BlockRef="VeryRareOres#NickelOre" Quantity="2" />
+        <Entry BlockRef="UncommonIngots#IronIngot" Quantity="6" />
+        <Entry BlockRef="RareIngots#GoldIngot" Quantity="7" />
+        <Entry BlockRef="RareGemstone#Ruby" Quantity="6" />
+        <Entry BlockRef="RareGemstone#Sapphire" Quantity="2" />
+        <Entry BlockRef="WoolSet1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#1" Quantity="1" />
+        <Entry BlockRef="WoolSet1#2" Quantity="1" />
+        <Entry BlockRef="WoolSet1#3" Quantity="1" />
+        <Entry BlockRef="WoolSet1#4" Quantity="1" />
+        <Entry BlockRef="WoolSet1#5" Quantity="1" />
+        <Entry BlockRef="WoolSet1#6" Quantity="1" />
+        <Entry BlockRef="WoolSet1#7" Quantity="1" />
+        <Entry BlockRef="WoolSet2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#1" Quantity="1" />
+        <Entry BlockRef="WoolSet2#2" Quantity="1" />
+        <Entry BlockRef="WoolSet2#3" Quantity="1" />
+        <Entry BlockRef="WoolSet2#4" Quantity="1" />
+        <Entry BlockRef="WoolSet2#5" Quantity="1" />
+        <Entry BlockRef="WoolSet2#6" Quantity="1" />
+        <Entry BlockRef="WoolSet2#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet1#7" Quantity="1" />
+        <Entry BlockRef="CarpetSet2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#1" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#2" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#3" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#4" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#5" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#6" Quantity="1" />
+        <Entry BlockRef="CarpetSet2#7" Quantity="1" />
       </Blocks>
       <Tools>
         <Entry ToolRef="Multitool" Condition="1" />
@@ -1806,7 +2281,8 @@
     <RespawnStats Health="0.9" Stamina="1" Mana="1.1" Temperature="37" Strength="0.072" Defense="0.072" Magic="0.08800001" Speed="0.080000006" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="Maul" Condition="1" />
+        <Entry EquipmentRef="BattleAxe" Condition="1" />
+        <Entry EquipmentRef="PrayerBeads" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -1828,8 +2304,8 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Water" Quantity="5" />
-        <Entry ConsumableRef="AcidBomb" Quantity="2" />
+        <Entry ConsumableRef="HolyWaterBomb" Quantity="4" />
+        <Entry ConsumableRef="Bandage" Quantity="6" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -1842,17 +2318,21 @@
         <Entry ConsumableRef="Cheese" Quantity="3" />
         <Entry ConsumableRef="DriedMeat" Quantity="3" />
         <Entry ConsumableRef="CookedMeat" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
+        <Entry ConsumableRef="HotBroth" Quantity="3" />
+        <Entry ConsumableRef="SpicedCider" Quantity="3" />
+        <Entry ConsumableRef="IceWater" Quantity="3" />
+        <Entry ConsumableRef="ChilledFruit" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
-        <Entry ConsumableRef="Bandage" Quantity="3" />
         <Entry ConsumableRef="HealingSalve" Quantity="3" />
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SummonDemon" Condition="1" />
+        <Entry SpellRef="ConjurePortal" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -1881,21 +2361,13 @@
         <Entry SpellRef="Dash" Condition="1" />
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
+        <Entry SpellRef="ForceBolt" Condition="1" />
+        <Entry SpellRef="Mend" Condition="1" />
       </Spells>
       <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
+        <Entry BlockRef="Campfire" Quantity="1" />
+        <Entry BlockRef="Coal" Quantity="5" />
+        <Entry BlockRef="LogSet#Oak" Quantity="5" />
       </Blocks>
       <Tools>
         <Entry ToolRef="Multitool" Condition="1" />

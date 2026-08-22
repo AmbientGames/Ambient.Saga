@@ -718,8 +718,6 @@ public class JournalPanel
             ArcTransactionType.CurrencyChanged => "Currency changed",
             ArcTransactionType.PartyMemberJoined => $"{characterRef ?? "Companion"} joined party",
             ArcTransactionType.PartyMemberLeft => $"{characterRef ?? "Companion"} left party",
-            ArcTransactionType.StatusEffectApplied => "Status effect applied",
-            ArcTransactionType.StatusEffectRemoved => "Status effect removed",
             ArcTransactionType.ReputationChanged => "Reputation changed",
             _ => transaction.Type.ToString()
         };
@@ -1021,8 +1019,6 @@ public class JournalPanel
             AchievementCriteriaType.CharactersDefeated => $"Defeat {threshold:F0} characters",
             AchievementCriteriaType.CharactersDefeatedByTrait => $"Defeat {threshold:F0} with trait",
             AchievementCriteriaType.CharactersDefeatedByRef => $"Defeat specific character",
-            AchievementCriteriaType.CriticalHitsDealt => $"Deal {threshold:F0} critical hits",
-            AchievementCriteriaType.CombosExecuted => $"Execute {threshold:F0} combos",
 
             // Exploration
             AchievementCriteriaType.ArcsDiscovered => $"Discover {threshold:F0} arc arcs",
@@ -1051,9 +1047,6 @@ public class JournalPanel
             // Reputation
             AchievementCriteriaType.ReputationReached => $"Reach reputation {threshold:F0}",
             AchievementCriteriaType.FactionsAtReputationLevel => $"Rep with {threshold:F0} factions",
-
-            // Status Effects
-            AchievementCriteriaType.StatusEffectsApplied => $"Apply {threshold:F0} effects",
 
             _ => $"Reach {threshold:F0}"
         };

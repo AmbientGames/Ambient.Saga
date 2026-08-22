@@ -42,9 +42,6 @@
             <xs:enumeration value="QuestsCompletedByRef" />
             <xs:enumeration value="ReputationReached" />
             <xs:enumeration value="FactionsAtReputationLevel" />
-            <xs:enumeration value="StatusEffectsApplied" />
-            <xs:enumeration value="CriticalHitsDealt" />
-            <xs:enumeration value="CombosExecuted" />
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="AchievementCriteria">
@@ -58,7 +55,6 @@
         <xs:attribute name="QuestRef" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="FactionRef" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="ReputationLevel" type="xs:string" use="optional"></xs:attribute>
-        <xs:attribute name="StatusEffectType" type="xs:string" use="optional"></xs:attribute>
     </xs:complexType>
     <xs:complexType name="Achievement">
         <xs:complexContent>

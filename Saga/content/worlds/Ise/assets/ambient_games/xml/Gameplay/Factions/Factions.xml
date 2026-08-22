@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Factions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Faction RefName="CityGuard" DisplayName="School Security" Description="The school's security team and volunteer chaperones keeping students safe during the field trip. They patrol the grounds and respond to incidents." StartingReputation="0" Category="Military">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Factions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ../../../../../../../xsd/Gameplay/Gameplay.xsd" xmlns="Ambient.Domain">
+  <Faction RefName="CityGuard" DisplayName="School Security" Description="The school's security team and volunteer chaperones keeping students safe during the field trip. They patrol the grounds and respond to incidents." StartingReputation="0" Category="City">
     <Relationships>
       <Relationship FactionRef="MerchantsGuild" RelationshipType="Allied" SpilloverPercent="0.25" />
       <Relationship FactionRef="TemplarOrder" RelationshipType="Allied" SpilloverPercent="0.15" />
@@ -225,7 +225,7 @@
       </Reward>
     </ReputationRewards>
   </Faction>
-  <Faction RefName="BardsCollege" DisplayName="Light Music Club" Description="Students from the light music club who brought instruments on the trip. They entertain others and boost morale with their performances." StartingReputation="0" Category="Guild">
+  <Faction RefName="BardsCollege" DisplayName="Light Music Club" Description="Students from the light music club who brought instruments on the trip. They entertain others and boost morale with their performances." StartingReputation="0" Category="Other">
     <Relationships>
       <Relationship FactionRef="MerchantsGuild" RelationshipType="Allied" SpilloverPercent="0.15" />
       <Relationship FactionRef="ExplorersLeague" RelationshipType="Allied" SpilloverPercent="0.1" />

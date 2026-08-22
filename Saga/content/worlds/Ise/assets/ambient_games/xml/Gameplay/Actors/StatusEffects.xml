@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<StatusEffects xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<StatusEffects xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ../../../../../../../xsd/Gameplay/Gameplay.xsd" xmlns="Ambient.Domain">
   <StatusEffect RefName="Poison" DisplayName="Poison" Description="Toxins slowly drain your life force" Type="DamageOverTime" Category="Debuff" DamagePerTurn="5" />
   <StatusEffect RefName="Bleed" DisplayName="Bleed" Description="Open wounds cause continuous damage" Type="DamageOverTime" Category="Debuff" DurationTurns="2" DamagePerTurn="8" MaxStacks="3" />
   <StatusEffect RefName="Burn" DisplayName="Burn" Description="Flames sear your flesh each moment" Type="DamageOverTime" Category="Debuff" DamagePerTurn="10" DefenseModifier="-0.1" />
@@ -15,4 +15,6 @@
   <StatusEffect RefName="SpeedBoost" DisplayName="Sukukaja" Description="Agility is enhanced" Type="StatBoost" Category="Buff" SpeedModifier="0.3" />
   <StatusEffect RefName="MagicBoost" DisplayName="Makakaja" Description="Magic power is enhanced" Type="StatBoost" Category="Buff" MagicModifier="0.35" />
   <StatusEffect RefName="AccuracyBoost" DisplayName="Focus" Description="Concentration heightens accuracy" Type="StatBoost" Category="Buff" AccuracyModifier="0.25" />
+  <StatusEffect RefName="Corrosion" DisplayName="Chemical Burn" Description="Lab acid eats away at the victim, dealing damage at the end of each turn." Type="DamageOverTime" Category="Debuff" DamagePerTurn="6" ApplicationMethod="EndOfTurn" DefenseModifier="-0.1" />
+  <StatusEffect RefName="Hex" DisplayName="Cursed" Description="A lingering curse that saps strength and cannot be cleansed." Type="Weaken" Category="Debuff" DurationTurns="4" Cleansable="false" StrengthModifier="-0.2" />
 </StatusEffects>

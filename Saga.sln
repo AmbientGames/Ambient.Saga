@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.7.11925.98 stable
+VisualStudioVersion = 18.7.11925.98
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambient.Application", "Ambient.Application\Ambient.Application.csproj", "{46C48748-8D38-45D1-A1AC-4B2784D28425}"
 EndProject
@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ambient.Infrastructure", "A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2BA74E7B-A001-404D-8C73-DE1CCABBCA93}"
 	ProjectSection(SolutionItems) = preProject
-		Ambient.Saga.nuspec = Ambient.Saga.nuspec
+		Saga.nuspec = Saga.nuspec
 		ARCHITECTURE.md = ARCHITECTURE.md
 		CLAUDE.md = CLAUDE.md
 		Directory.Build.props = Directory.Build.props
@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambient.Infrastructure.Test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ambient", "Ambient", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ambient.Saga", "Ambient.Saga", "{52BD2CAE-B5A1-492F-AC20-17B48CAA889F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ambient.Rpg", "Ambient.Rpg", "{52BD2CAE-B5A1-492F-AC20-17B48CAA889F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambient.Rpg.Engine.Tests", "Ambient.Rpg.Engine.Tests\Ambient.Rpg.Engine.Tests.csproj", "{1DA116EB-020A-61AF-7792-94C8CFD03100}"
 EndProject

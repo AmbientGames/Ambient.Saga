@@ -36,7 +36,7 @@
                 <xs:attribute name="StatusEffectChance" type="xs:float" use="optional" default="0.0">
                     <xs:annotation><xs:documentation>Probability (0.0-1.0) of applying the status effect on hit.</xs:documentation></xs:annotation>
                 </xs:attribute>
-                <xs:attribute name="StatusEffectOnCritOnly" type="xs:boolean" use="optional" default="false">
+                <xs:attribute name="StatusEffectOnCriticalHitOnly" type="xs:boolean" use="optional" default="false">
                     <xs:annotation><xs:documentation>When true, the status effect only triggers on critical hits.</xs:documentation></xs:annotation>
                 </xs:attribute>
                 <xs:attribute name="OnDefendStatusEffectRef" type="xs:string" use="optional">

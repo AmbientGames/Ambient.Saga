@@ -104,12 +104,56 @@ public class ContentPathResolver : IContentPathResolver
     }
 
     /// <summary>
-    /// Gets the model reference (filename without extension) for a Category/Kind.
+    /// Every model matching a Category/Kind, by name, sorted. Same directory search as
+    /// the single-pick version — Kind, then Category, then Default — but it returns the
+    /// whole set rather than choosing from it, so generation can record what a world may
+    /// build and runtime never has to look.
+    /// </summary>
+    public IReadOnlyList<string> EnumerateModelRefsByCategoryKind(string library, string ns, string category, string? kind)
+    {
+        string[] extensions = ["*.litematic", "*.schematic", "*.xml"];
+
+        // "Default" is a real Kind directory — models/Waypoint/Default holds models, while
+        // models/Waypoint holds only the Kind folders. Treating the name as "no kind" and
+        // skipping it looks one level too high and finds nothing.
+        var directory =
+            (!string.IsNullOrEmpty(kind) ? ResolveModelDirectoryPath(library, ns, category, kind) : null)
+            ?? ResolveModelDirectoryPath(library, ns, category)
+            ?? ResolveModelDirectoryPath(library, ns, "Default");
+
+        if (directory == null || !Directory.Exists(directory))
+        {
+            return Array.Empty<string>();
+        }
+
+        return extensions
+            .SelectMany(p => Directory.GetFiles(directory, p))
+            .Select(Path.GetFileNameWithoutExtension)
+            .Where(n => !string.IsNullOrEmpty(n))
+            .Select(n => n!)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(n => n, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+    }
+
+    /// <summary>
+    /// One model name for a Category/Kind, chosen from the SAME enumeration generation
+    /// records, so the pick and the recorded set can never disagree.
+    ///
+    /// Deliberately not routed through <see cref="ResolveModelPathByCategoryKind"/>: that
+    /// caches its answer per library|ns|category|kind, which would hand every caller of a
+    /// Category the first caller's model no matter what <paramref name="random"/> said —
+    /// making a seeded, per-arc pick silently uniform.
     /// </summary>
     public string? ResolveModelRefByCategoryKind(string library, string ns, string category, string? kind, Random? random = null)
     {
-        var modelPath = ResolveModelPathByCategoryKind(library, ns, category, kind, random);
-        return modelPath != null ? Path.GetFileNameWithoutExtension(modelPath) : null;
+        var models = EnumerateModelRefsByCategoryKind(library, ns, category, kind);
+        if (models.Count == 0)
+        {
+            return null;
+        }
+
+        return models[(random ?? new Random()).Next(models.Count)];
     }
 
     private string? ResolveModelDirectoryPath(string library, string ns, params string[] categoryPath)

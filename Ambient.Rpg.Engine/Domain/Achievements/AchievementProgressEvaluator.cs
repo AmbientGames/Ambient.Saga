@@ -90,11 +90,6 @@ public static class AchievementProgressEvaluator
             AchievementCriteriaType.ReputationReached => CheckReputationReached(allTransactions, criteria.FactionRef, criteria.ReputationLevel),
             AchievementCriteriaType.FactionsAtReputationLevel => CountFactionsAtReputationLevel(allTransactions, criteria.ReputationLevel),
 
-            // Battle achievements
-            AchievementCriteriaType.StatusEffectsApplied => CountStatusEffectsApplied(allTransactions, criteria.StatusEffectType),
-            AchievementCriteriaType.CriticalHitsDealt => CountCriticalHitsDealt(allTransactions),
-            AchievementCriteriaType.CombosExecuted => CountCombosExecuted(allTransactions),
-
             // Traditional voxel metrics — NOT event-sourced. The Arc transaction
             // log carries no block placement/destruction transactions (those
             // counters live on AvatarBase.BlocksPlaced/BlocksDestroyed, maintained
@@ -361,37 +356,11 @@ public static class AchievementProgressEvaluator
 
     #endregion
 
-    #region Battle Metrics
-
-    private static float CountStatusEffectsApplied(List<ArcTransaction> transactions, string? statusEffectType)
-    {
-        var query = transactions.Where(t => t.Type == ArcTransactionType.StatusEffectApplied);
-
-        if (!string.IsNullOrEmpty(statusEffectType))
-        {
-            query = query.Where(t =>
-                t.GetData<string>(TransactionDataKeys.StatusEffectRef)?.Contains(statusEffectType, StringComparison.OrdinalIgnoreCase) == true ||
-                t.GetData<string>(TransactionDataKeys.StatusEffectType) == statusEffectType);
-        }
-
-        return query.Count();
-    }
-
-    private static float CountCriticalHitsDealt(List<ArcTransaction> transactions)
-    {
-        return transactions
-            .Where(t => t.Type == ArcTransactionType.CriticalHitDealt)
-            .Count();
-    }
-
-    private static float CountCombosExecuted(List<ArcTransaction> transactions)
-    {
-        return transactions
-            .Where(t => t.Type == ArcTransactionType.ComboExecuted)
-            .Count();
-    }
-
-    #endregion
+    // (Battle Metrics region removed 2026-08-21 — CountStatusEffectsApplied /
+    // CountCriticalHitsDealt / CountCombosExecuted counted transaction types no producer
+    // ever wrote, so the StatusEffectsApplied / CriticalHitsDealt / CombosExecuted criteria
+    // always returned zero and any achievement using one was unwinnable. Criteria and
+    // transaction types deleted together.)
 
     /// <summary>
     /// Evaluates all achievements for an avatar and returns updated instances with progress.

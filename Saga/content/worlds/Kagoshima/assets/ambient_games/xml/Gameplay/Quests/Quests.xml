@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ../../../../../../../xsd/Gameplay/Gameplay.xsd" xmlns="Ambient.Domain">
   <Quest RefName="BanditChief_Quest" DisplayName="The Mountain Bandits" Description="Hunt down the bandit leader terrorizing the mountain roads.">
     <Stages StartStage="clear_scouts">
       <Stage RefName="clear_scouts" DisplayName="Clear the Roads" NextStage="assault">
@@ -35,7 +35,7 @@
       </Stage>
       <Stage RefName="report" DisplayName="Claim Your Reward">
         <Objectives>
-          <Objective RefName="turn_in" Type="DialogueCompleted" Threshold="1" DisplayName="Report your victory" DialogueRef="BanditChief_TurnIn" />
+          <Objective RefName="turn_in" Type="DialogueNodeVisited" Threshold="1" DisplayName="Report your victory" DialogueRef="BanditChief_QuestStart" NodeRef="reward_complete" />
         </Objectives>
       </Stage>
     </Stages>
@@ -91,12 +91,27 @@
           <Objective RefName="find_dark_secret" Type="QuestTokenCollected" Threshold="1" DisplayName="Uncover the dark secret" QuestTokenRef="FalseProphet_DarkSecret" Optional="true" Hidden="true" />
         </Objectives>
       </Stage>
-      <Stage RefName="confront" DisplayName="Reveal the Truth" />
+      <Stage RefName="confront" DisplayName="Reveal the Truth">
+        <Branches>
+          <Branch RefName="expose" DisplayName="Public Exposure">
+            <Objective RefName="expose_publicly" Type="QuestTokenCollected" Threshold="1" DisplayName="Expose the prophet to their followers" QuestTokenRef="FalseProphet_Exposed" />
+          </Branch>
+          <Branch RefName="redeem" DisplayName="Redemption Path">
+            <Objective RefName="offer_redemption" Type="QuestTokenCollected" Threshold="1" DisplayName="Give the prophet a chance to reform" QuestTokenRef="FalseProphet_Redeemed" />
+          </Branch>
+          <Branch RefName="combat" DisplayName="Violent Resolution">
+            <Objective RefName="defeat_prophet" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the prophet in combat" CharacterRef="FalseProphet_Prophet" />
+          </Branch>
+        </Branches>
+      </Stage>
     </Stages>
     <Rewards>
       <Reward Condition="OnSuccess">
         <Currency Amount="100" />
         <Experience Amount="100" />
+      </Reward>
+      <Reward Condition="OnBranch" BranchRef="redeem">
+        <Experience Amount="50" />
       </Reward>
     </Rewards>
   </Quest>
@@ -114,7 +129,19 @@
           <Objective RefName="third_clue" Type="QuestTokenCollected" Threshold="1" DisplayName="Discover the final marker" QuestTokenRef="HiddenCache_ThirdClue" />
         </Objectives>
       </Stage>
-      <Stage RefName="navigate" DisplayName="Reach the Cache" NextStage="overcome" />
+      <Stage RefName="navigate" DisplayName="Reach the Cache" NextStage="overcome">
+        <Branches>
+          <Branch RefName="with_partner" DisplayName="Cooperative Approach" NextStage="overcome">
+            <Objective RefName="partner_path" Type="DialogueNodeVisited" Threshold="1" DisplayName="Partner with the rival hunter" DialogueRef="HiddenCache_RivalMeet" NodeRef="partnership_end" />
+          </Branch>
+          <Branch RefName="solo" DisplayName="Solo Approach" NextStage="overcome">
+            <Objective RefName="race_path" Type="DialogueNodeVisited" Threshold="1" DisplayName="Race to the cache entrance" DialogueRef="HiddenCache_RivalMeet" NodeRef="race_end" />
+          </Branch>
+          <Branch RefName="eliminate" DisplayName="Eliminate Competition" NextStage="overcome">
+            <Objective RefName="defeat_rival" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the rival hunter" CharacterRef="HiddenCache_Rival" />
+          </Branch>
+        </Branches>
+      </Stage>
       <Stage RefName="overcome" DisplayName="Breach the Defenses" NextStage="claim">
         <Objectives>
           <Objective RefName="defeat_guardian" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the ancient guardian" CharacterRef="HiddenCache_Guardian" />
@@ -200,7 +227,7 @@
   <Quest RefName="MissingHeirloom_Quest" DisplayName="The Stolen Heirloom" Description="Help recover a family's stolen ancestral treasure and restore their honor.">
     <Stages StartStage="investigate">
       <Stage RefName="investigate" DisplayName="Investigate the Theft" NextStage="find_thief">
-        <Objectives>
+        <Objectives LogicalOperator="OR">
           <Objective RefName="gather_witness" Type="QuestTokenCollected" Threshold="1" DisplayName="Get a witness statement" QuestTokenRef="MissingHeirloom_Evidence_WitnessAccount" />
           <Objective RefName="gather_footprints" Type="QuestTokenCollected" Threshold="1" DisplayName="Find physical evidence" QuestTokenRef="MissingHeirloom_Evidence_Footprints" />
           <Objective RefName="gather_cloth" Type="QuestTokenCollected" Threshold="1" DisplayName="Find physical evidence" QuestTokenRef="MissingHeirloom_Evidence_TornCloth" />
@@ -212,10 +239,32 @@
           <Objective RefName="locate_thief" Type="QuestTokenCollected" Threshold="1" DisplayName="Locate the thief's hideout" QuestTokenRef="MissingHeirloom_ThiefLocation" />
         </Objectives>
       </Stage>
-      <Stage RefName="resolve" DisplayName="Recover the Heirloom" NextStage="return" />
+      <Stage RefName="resolve" DisplayName="Recover the Heirloom" NextStage="return">
+        <Branches>
+          <Branch RefName="peaceful" DisplayName="Peaceful Resolution" NextStage="return">
+            <Objective RefName="peaceful_recovery" Type="DialogueNodeVisited" Threshold="1" DisplayName="Convince the thief to return the heirloom" DialogueRef="MissingHeirloom_Thief_Confront" NodeRef="peaceful_resolution_end" />
+          </Branch>
+          <Branch RefName="purchase" DisplayName="Buy It Back" NextStage="appraise">
+            <Objective RefName="purchase_recovery" Type="DialogueNodeVisited" Threshold="1" DisplayName="Purchase the heirloom from the fence" DialogueRef="MissingHeirloom_Fence_Dialogue" NodeRef="purchase_end" />
+          </Branch>
+          <Branch RefName="combat" DisplayName="Take It By Force" NextStage="return">
+            <Objective RefName="defeat_thief" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the thief" CharacterRef="MissingHeirloom_Thief" />
+          </Branch>
+        </Branches>
+        <Rewards>
+          <Reward Condition="OnBranch" BranchRef="purchase">
+            <Consumable ConsumableRef="MinorHealingPotion" Quantity="2" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="appraise" DisplayName="Verify the Heirloom" NextStage="return">
+        <Objectives>
+          <Objective RefName="verify_heirloom" Type="DialogueNodeVisited" Threshold="1" DisplayName="Have the piece verified as genuine" DialogueRef="MissingHeirloom_Fence_Dialogue" NodeRef="appraise_end" />
+        </Objectives>
+      </Stage>
       <Stage RefName="return" DisplayName="Return the Heirloom">
         <Objectives>
-          <Objective RefName="return_heirloom" Type="DialogueCompleted" Threshold="1" DisplayName="Return the heirloom to its owner" DialogueRef="MissingHeirloom_Return" />
+          <Objective RefName="return_heirloom" Type="DialogueNodeVisited" Threshold="1" DisplayName="Return the heirloom to its owner" DialogueRef="MissingHeirloom_Victim_Start" NodeRef="receive_hub" />
         </Objectives>
       </Stage>
     </Stages>
@@ -223,6 +272,9 @@
       <Reward Condition="OnSuccess">
         <Currency Amount="100" />
         <Experience Amount="50" />
+      </Reward>
+      <Reward Condition="OnBranch" BranchRef="peaceful">
+        <Experience Amount="25" />
       </Reward>
     </Rewards>
   </Quest>
@@ -239,7 +291,16 @@
           <Objective RefName="reach_waypoint" Type="QuestTokenCollected" Threshold="1" DisplayName="Reach the first waypoint" QuestTokenRef="RefugeeEscort_FirstWaypoint" />
         </Objectives>
       </Stage>
-      <Stage RefName="crisis" DisplayName="Handle the Crisis" NextStage="pursue" />
+      <Stage RefName="crisis" DisplayName="Handle the Crisis" NextStage="pursue">
+        <Branches>
+          <Branch RefName="child_path" DisplayName="Find the Lost Child" NextStage="pursue">
+            <Objective RefName="rescue_child" Type="QuestTokenCollected" Threshold="1" DisplayName="Find the missing child" QuestTokenRef="RefugeeEscort_ChildRescued" />
+          </Branch>
+          <Branch RefName="traitor_path" DisplayName="Expose the Traitor" NextStage="pursue">
+            <Objective RefName="expose_traitor" Type="QuestTokenCollected" Threshold="1" DisplayName="Deal with the stranger" QuestTokenRef="RefugeeEscort_BetrayerExposed" />
+          </Branch>
+        </Branches>
+      </Stage>
       <Stage RefName="pursue" DisplayName="Fight Off Pursuers" NextStage="border">
         <Objectives>
           <Objective RefName="defeat_pursuers" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the pursuing scout" CharacterRef="RefugeeEscort_Pursuer" />
@@ -288,7 +349,16 @@
           </Reward>
         </Rewards>
       </Stage>
-      <Stage RefName="confront" DisplayName="Resolve the Conflict" NextStage="report" />
+      <Stage RefName="confront" DisplayName="Resolve the Conflict" NextStage="report">
+        <Branches>
+          <Branch RefName="combat_victory" DisplayName="Eliminate the Leadership" NextStage="report">
+            <Objective RefName="defeat_leader" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the rival guild master" CharacterRef="RivalGuild_RivalLeader" />
+          </Branch>
+          <Branch RefName="peace_path" DisplayName="Negotiate Peace" NextStage="report">
+            <Objective RefName="get_treaty" Type="QuestTokenCollected" Threshold="1" DisplayName="Negotiate a peace treaty" QuestTokenRef="RivalGuild_PeaceTreaty" />
+          </Branch>
+        </Branches>
+      </Stage>
       <Stage RefName="report" DisplayName="Report to the Guild Master">
         <Objectives>
           <Objective RefName="complete_report" Type="DialogueCompleted" Threshold="1" DisplayName="Report your success to the guild master" DialogueRef="RivalGuild_Report" />
@@ -299,6 +369,12 @@
       <Reward Condition="OnSuccess">
         <Currency Amount="200" />
         <Experience Amount="100" />
+      </Reward>
+      <Reward Condition="OnBranch" BranchRef="combat_victory">
+        <Currency Amount="100" />
+      </Reward>
+      <Reward Condition="OnBranch" BranchRef="peace_path">
+        <Reputation FactionRef="RivalGuild_PlayerGuild" Amount="10" />
       </Reward>
     </Rewards>
   </Quest>
@@ -342,24 +418,24 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="OFFICIAL_MAIN_CHAIN" DisplayName="The Grand Journey" Description="An epic quest connecting 3 legendary locations across the realm.">
+  <Quest RefName="OFFICIAL_MAIN_CHAIN" DisplayName="Path of Three Sanctuaries" Description="Unite three legendary sites scattered across the realm in a journey of honor.">
     <Stages StartStage="OFFICIAL_MAIN_CHAIN_STAGE_01">
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_01" DisplayName="Visit Tsurumaru-jo" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_02">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_01" DisplayName="Visit Tsurumaru-jō" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_02">
         <Objectives>
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Tsurumaru-jo" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Tsurumaru-jo" CharacterRef="BOSS_Tsurumarujo" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Tsurumaru-jō" ArcRef="Tsurumarujō" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Chief Kuroda" CharacterRef="BanditChief_Boss" />
         </Objectives>
       </Stage>
       <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_02" DisplayName="Visit Iso-teien" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_03">
         <Objectives>
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Iso-teien" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_TALK" Type="DialogueCompleted" Threshold="1" DisplayName="Speak with Trader at Iso-teien" CharacterRef="MERCHANT_Isoteien" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Iso-teien" ArcRef="Isoteien" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_TALK" Type="DialogueCompleted" Threshold="1" DisplayName="Speak with Road Watcher Sato" CharacterRef="BanditChief_Scout" />
         </Objectives>
       </Stage>
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_03" DisplayName="Visit Terukuni Daimyojin-sha">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_03" DisplayName="Visit Terukuni Daimyōjin-sha">
         <Objectives>
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Terukuni Daimyojin-sha" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Terukuni Daimyojin-sha" CharacterRef="BOSS_TerukuniDaimyojinsha" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Terukuni Daimyōjin-sha" ArcRef="TerukuniDaimyōjinsha" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_TALK" Type="DialogueCompleted" Threshold="1" DisplayName="Speak with Ashen Warden Kenji" CharacterRef="BanditChief_QuestGiver" />
         </Objectives>
       </Stage>
     </Stages>
@@ -370,16 +446,16 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="REGIONAL_Tsurumarujo1" DisplayName="Explore the Tsurumaru-jo Region" Description="Discover 2 locations in the Tsurumaru-jo area.">
-    <Stages StartStage="REGIONAL_Tsurumarujo1_STAGE_01">
-      <Stage RefName="REGIONAL_Tsurumarujo1_STAGE_01" DisplayName="Explore Tsurumaru-jo" NextStage="REGIONAL_Tsurumarujo1_STAGE_02">
+  <Quest RefName="REGIONAL_Tsurumarujō" DisplayName="Survey Tsurumaru-jō Lands" Description="Discover 2 locations in the Tsurumaru-jō area amid the volcano's gaze.">
+    <Stages StartStage="REGIONAL_Tsurumarujō_STAGE_01">
+      <Stage RefName="REGIONAL_Tsurumarujō_STAGE_01" DisplayName="Explore Tsurumaru-jō" NextStage="REGIONAL_Tsurumarujō_STAGE_02">
         <Objectives>
-          <Objective RefName="REGIONAL_Tsurumarujo1_STAGE_01_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="REGIONAL_Tsurumarujō_STAGE_01_OBJ" Type="LocationReached" Threshold="1" DisplayName="Explore Tsurumaru-jō" ArcRef="Tsurumarujō" />
         </Objectives>
       </Stage>
-      <Stage RefName="REGIONAL_Tsurumarujo1_STAGE_02" DisplayName="Explore Terukuni Daimyojin-sha">
+      <Stage RefName="REGIONAL_Tsurumarujō_STAGE_02" DisplayName="Explore Terukuni Daimyōjin-sha">
         <Objectives>
-          <Objective RefName="REGIONAL_Tsurumarujo1_STAGE_02_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="REGIONAL_Tsurumarujō_STAGE_02_OBJ" Type="LocationReached" Threshold="1" DisplayName="Explore Terukuni Daimyōjin-sha" ArcRef="TerukuniDaimyōjinsha" />
         </Objectives>
       </Stage>
     </Stages>
@@ -389,35 +465,16 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1" DisplayName="Journey to Terukuni Daimyojin-sha" Description="Travel 1km from Tsurumaru-jo to Terukuni Daimyojin-sha.">
-    <Stages StartStage="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1_START">
-      <Stage RefName="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1_START" DisplayName="Depart from Tsurumaru-jo" NextStage="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1_END">
+  <Quest RefName="CONNECT_Tsurumarujō_TO_TerukuniDaimyōjinsha" DisplayName="Road to the Shrine" Description="Travel 1km from Tsurumaru-jō to Terukuni Daimyōjin-sha through misty paths.">
+    <Stages StartStage="CONNECT_Tsurumarujō_TO_TerukuniDaimyōjinsha_START">
+      <Stage RefName="CONNECT_Tsurumarujō_TO_TerukuniDaimyōjinsha_START" DisplayName="Depart from Tsurumaru-jō" NextStage="CONNECT_Tsurumarujō_TO_TerukuniDaimyōjinsha_END">
         <Objectives>
-          <Objective RefName="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="CONNECT_Tsurumarujō_TO_TerukuniDaimyōjinsha_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="Depart from Tsurumaru-jō" ArcRef="Tsurumarujō" />
         </Objectives>
       </Stage>
-      <Stage RefName="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1_END" DisplayName="Arrive at Terukuni Daimyojin-sha">
+      <Stage RefName="CONNECT_Tsurumarujō_TO_TerukuniDaimyōjinsha_END" DisplayName="Arrive at Terukuni Daimyōjin-sha">
         <Objectives>
-          <Objective RefName="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
-        </Objectives>
-      </Stage>
-    </Stages>
-    <Rewards>
-      <Reward Condition="OnSuccess">
-        <Currency Amount="200" />
-      </Reward>
-    </Rewards>
-  </Quest>
-  <Quest RefName="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1" DisplayName="Journey to Tsurumaru-jo" Description="Travel 1km from Terukuni Daimyojin-sha to Tsurumaru-jo.">
-    <Stages StartStage="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1_START">
-      <Stage RefName="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1_START" DisplayName="Depart from Terukuni Daimyojin-sha" NextStage="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1_END">
-        <Objectives>
-          <Objective RefName="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
-        </Objectives>
-      </Stage>
-      <Stage RefName="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1_END" DisplayName="Arrive at Tsurumaru-jo">
-        <Objectives>
-          <Objective RefName="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="CONNECT_Tsurumarujō_TO_TerukuniDaimyōjinsha_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="Arrive at Terukuni Daimyōjin-sha" ArcRef="TerukuniDaimyōjinsha" />
         </Objectives>
       </Stage>
     </Stages>
@@ -427,76 +484,112 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="MAIN_QUEST_01" DisplayName="Gathering Quest: Beginning 1" Description="Gather resources and aid the people of Iso-teien, Tsurumaru-jo, Terukuni Daimyojin-sha.">
+  <Quest RefName="CONNECT_TerukuniDaimyōjinsha_TO_Tsurumarujō" DisplayName="Return to the Castle" Description="Travel 1km from Terukuni Daimyōjin-sha to Tsurumaru-jō under watchful skies.">
+    <Stages StartStage="CONNECT_TerukuniDaimyōjinsha_TO_Tsurumarujō_START">
+      <Stage RefName="CONNECT_TerukuniDaimyōjinsha_TO_Tsurumarujō_START" DisplayName="Depart from Terukuni Daimyōjin-sha" NextStage="CONNECT_TerukuniDaimyōjinsha_TO_Tsurumarujō_END">
+        <Objectives>
+          <Objective RefName="CONNECT_TerukuniDaimyōjinsha_TO_Tsurumarujō_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="Depart from Terukuni Daimyōjin-sha" ArcRef="TerukuniDaimyōjinsha" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="CONNECT_TerukuniDaimyōjinsha_TO_Tsurumarujō_END" DisplayName="Arrive at Tsurumaru-jō">
+        <Objectives>
+          <Objective RefName="CONNECT_TerukuniDaimyōjinsha_TO_Tsurumarujō_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="Arrive at Tsurumaru-jō" ArcRef="Tsurumarujō" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="200" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="MAIN_QUEST_01" DisplayName="Aid the Coastal Folk" Description="Gather resources and aid the people of Iso-teien, Tsurumaru-jō, Terukuni Daimyōjin-sha.">
     <Stages StartStage="COLLECT_ITEMS">
       <Stage RefName="COLLECT_ITEMS" DisplayName="Gather Resources" NextStage="DELIVER">
         <Objectives>
-          <Objective RefName="COLLECT_PRIMARY_RESOURCE" Type="ItemCollected" Threshold="10" DisplayName="Collect primary resource" ItemRef="ScholarsRobe" />
-          <Objective RefName="COLLECT_SECONDARY_RESOURCE" Type="ItemCollected" Threshold="10" DisplayName="Collect secondary resource" ItemRef="Claymore" />
+          <Objective RefName="COLLECT_PRIMARY_RESOURCE" Type="ItemCollected" Threshold="3" DisplayName="Collect MinorHealingPotion" ItemRef="MinorHealingPotion" />
+          <Objective RefName="COLLECT_SECONDARY_RESOURCE" Type="ItemCollected" Threshold="3" DisplayName="Collect HealingPotion" ItemRef="HealingPotion" />
         </Objectives>
       </Stage>
       <Stage RefName="DELIVER" DisplayName="Deliver Resources">
         <Objectives>
-          <Objective RefName="REACH_DROPOFF" Type="LocationReached" Threshold="1" DisplayName="Deliver to collection point" ArcRef="TerukuniDaimyojinsha1" />
+          <Objective RefName="DELIVER_RESOURCES" Type="ItemDelivered" Threshold="3" DisplayName="Deliver the gathered MinorHealingPotion" ItemRef="MinorHealingPotion" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
             <Currency Amount="300" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Consumable ConsumableRef="GreaterManaPotion" Quantity="3" />
+            <Consumable ConsumableRef="SpicedCider" Quantity="3" />
           </Reward>
         </Rewards>
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="BOUNTY_Tsurumarujo" DisplayName="Bounty: Guardian of Tsurumaru-jo" Description="Defeat Guardian of Tsurumaru-jo and claim the bounty.">
+  <Quest RefName="BOUNTY_Tsurumarujō" DisplayName="Bounty at the Fortress" Description="Defeat Chief Kuroda and claim the bounty in the name of order.">
     <Stages StartStage="DEFEAT">
       <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
         <Objectives>
-          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Tsurumaru-jo" CharacterRef="BOSS_Tsurumarujo" />
+          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Chief Kuroda" CharacterRef="BanditChief_Boss" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="WoodenClub" Quantity="1" />
+            <Equipment EquipmentRef="SteelSword" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="BOUNTY_TerukuniDaimyojinsha" DisplayName="Bounty: Guardian of Terukuni Daimyojin-sha" Description="Defeat Guardian of Terukuni Daimyojin-sha and claim the bounty.">
+  <Quest RefName="BOUNTY_Crossroads1" DisplayName="Bounty at the Crossing" Description="Defeat Story Character at Crossroads and claim the bounty for the realm's peace.">
     <Stages StartStage="DEFEAT">
       <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
         <Objectives>
-          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Terukuni Daimyojin-sha" CharacterRef="BOSS_TerukuniDaimyojinsha" />
+          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Story Character at Crossroads" CharacterRef="RivalGuild_RivalLeader" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="KnightsSword" Quantity="1" />
+            <Equipment EquipmentRef="SteelSword" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="HIDDEN_FORGOTTEN_SHRINE" DisplayName="Secret: The Forgotten Shrine" Description="An ancient shrine marked on a mysterious map. What secrets does it hold?">
+  <Quest RefName="REGIONAL_SURVEY" DisplayName="Map the Volcanic Arc" Description="Chart the region: map the arc, light its beacon, and fund the effort near Sakurajima.">
+    <Stages StartStage="SURVEY">
+      <Stage RefName="SURVEY" DisplayName="Survey the Region">
+        <Objectives>
+          <Objective RefName="SURVEY_CHART_ARC" Type="ArcDiscovered" Threshold="1" DisplayName="Chart Tsurumaru-jō" ArcRef="Tsurumarujō" />
+          <Objective RefName="SURVEY_LIGHT_BEACON" Type="TriggerActivated" Threshold="1" DisplayName="Light the survey beacon" />
+          <Objective RefName="SURVEY_FUND" Type="CurrencyCollected" Threshold="200" DisplayName="Raise coin to fund the survey" />
+          <Objective RefName="SURVEY_BARTER" Type="ItemTraded" Threshold="1" DisplayName="Barter with a local trader" />
+          <Objective RefName="SURVEY_CLEAR_KEEP" Type="CharactersDefeatedAtTrigger" Threshold="1" DisplayName="Clear the heart of Tsurumaru-jō" TriggerRef="TRIGGER_Tsurumarujō_BOSS" />
+          <Objective RefName="SURVEY_GATHER_SUPPLIES" Type="ItemCollected" Threshold="1" DisplayName="Gather MinorHealingPotion for the survey team" ItemRef="MinorHealingPotion" />
+          <Objective RefName="SURVEY_DELIVER_SUPPLIES" Type="ItemDelivered" Threshold="1" DisplayName="Deliver MinorHealingPotion to the survey team" ItemRef="MinorHealingPotion" />
+          <Objective RefName="SURVEY_PARLEY" Type="DialogueChoiceSelected" Threshold="1" DisplayName="Choose the peaceful path with Fellow Traveler" CharacterRef="NPC_MidwayPoint" DialogueRef="DIALOGUE_NPC_MidwayPoint" ChoiceRef="choice_peaceful" />
+        </Objectives>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="HIDDEN_FORGOTTEN_SHRINE" DisplayName="Veiled Shrine of Ages" Description="An ancient shrine marked on a mysterious map holds forgotten secrets of the spirit world.">
     <Prerequisites>
-      <Prerequisite MinimumLevel="20" RequiredItemRef="PlateLeggings" />
+      <Prerequisite MinimumLevel="20" />
     </Prerequisites>
     <Stages StartStage="FIND_SHRINE">
       <Stage RefName="FIND_SHRINE" DisplayName="Locate the Hidden Shrine" NextStage="UNLOCK_SHRINE">
         <Objectives>
-          <Objective RefName="DISCOVER_LOCATION" Type="LocationReached" Threshold="1" DisplayName="Find the shrine at Iso-teien" ArcRef="Isoteien1" Hidden="true" />
+          <Objective RefName="DISCOVER_LOCATION" Type="LocationReached" Threshold="1" DisplayName="Find the shrine at Tsurumaru-jō" ArcRef="Tsurumarujō" Hidden="true" />
         </Objectives>
       </Stage>
       <Stage RefName="UNLOCK_SHRINE" DisplayName="Unlock the Shrine's Secrets">
         <Objectives>
-          <Objective RefName="COLLECT_KEYS" Type="QuestTokenCollected" Threshold="3" DisplayName="Collect 3 shrine keys" ItemRef="TOKEN_SHRINE_KEY" />
+          <Objective RefName="COLLECT_KEY_1" Type="QuestTokenCollected" Threshold="1" DisplayName="Recover the shrine key held at Iso-teien" QuestTokenRef="TOKEN_Isoteien_COMPLETE" />
+          <Objective RefName="COLLECT_KEY_2" Type="QuestTokenCollected" Threshold="1" DisplayName="Recover the shrine key held at Terukuni Daimyōjin-sha" QuestTokenRef="TOKEN_TerukuniDaimyōjinsha_COMPLETE" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -506,25 +599,26 @@
             <Experience Amount="5000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="HoodedCowl" Quantity="1" />
+            <Equipment EquipmentRef="Halberd" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="HIDDEN_MASTER_CRAFTSMAN" DisplayName="Secret: Master Craftsman's Legacy" Description="Only true masters of crafting can unlock this legendary workshop.">
+  <Quest RefName="HIDDEN_MASTER_CRAFTSMAN" DisplayName="Forge of the Masters" Description="Only true masters of crafting can unlock this legendary workshop hidden in the hills.">
     <Prerequisites>
       <Prerequisite MinimumLevel="30" />
     </Prerequisites>
     <Stages StartStage="DISCOVER_WORKSHOP">
       <Stage RefName="DISCOVER_WORKSHOP" DisplayName="Discover the Hidden Workshop" NextStage="CRAFT_MASTERPIECE">
         <Objectives>
-          <Objective RefName="FIND_WORKSHOP" Type="LocationReached" Threshold="1" DisplayName="Find the legendary workshop at Tsurumaru-jo" ArcRef="Tsurumarujo1" Hidden="true" />
+          <Objective RefName="FIND_WORKSHOP" Type="LocationReached" Threshold="1" DisplayName="Find the legendary workshop at Tsurumaru-jō" ArcRef="Tsurumarujō" Hidden="true" />
         </Objectives>
       </Stage>
-      <Stage RefName="CRAFT_MASTERPIECE" DisplayName="Craft the Ultimate Masterpiece">
+      <Stage RefName="CRAFT_MASTERPIECE" DisplayName="Complete the Ultimate Masterpiece">
         <Objectives>
-          <Objective RefName="GATHER_RARE_MATERIALS" Type="ItemCollected" Threshold="5" DisplayName="Gather 5 legendary materials" ItemRef="ChainBoots" />
+          <Objective RefName="GATHER_RARE_MATERIALS" Type="ItemCollected" Threshold="3" DisplayName="Gather 3 rare materials" ItemRef="MinorHealingPotion" />
+          <Objective RefName="ACQUIRE_LEGENDARY_ITEM" Type="ItemCollected" Threshold="1" DisplayName="Acquire the legendary masterpiece" ItemRef="RustySword" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -534,20 +628,20 @@
             <Experience Amount="8000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="OakStaff" Quantity="2" />
+            <Equipment EquipmentRef="Sandals" Quantity="2" />
           </Reward>
         </Rewards>
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="HIDDEN_COLLECTOR_PARADISE" DisplayName="Secret: The Collector's Vault" Description="A legendary collector's vault, accessible only to those who possess all the ancient seals.">
+  <Quest RefName="HIDDEN_COLLECTOR_PARADISE" DisplayName="Vault of the Seals" Description="A legendary collector's vault, accessible only to those who possess all the ancient seals.">
     <Prerequisites>
-      <Prerequisite MinimumLevel="35" RequiredItemRef="OakWand" />
+      <Prerequisite MinimumLevel="35" />
     </Prerequisites>
     <Stages StartStage="UNLOCK_VAULT">
       <Stage RefName="UNLOCK_VAULT" DisplayName="Unlock the Collector's Vault" NextStage="CLAIM_TREASURES">
         <Objectives>
-          <Objective RefName="REACH_VAULT" Type="LocationReached" Threshold="1" DisplayName="Reach the vault at Iso-teien" ArcRef="Isoteien1" Hidden="true" />
+          <Objective RefName="REACH_VAULT" Type="LocationReached" Threshold="1" DisplayName="Reach the vault at Iso-teien" ArcRef="Isoteien" Hidden="true" />
         </Objectives>
       </Stage>
       <Stage RefName="CLAIM_TREASURES" DisplayName="Claim the Legendary Treasures">
@@ -562,26 +656,26 @@
             <Experience Amount="15000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="SoulLantern" Quantity="5" />
+            <Equipment EquipmentRef="Glaive" Quantity="5" />
           </Reward>
         </Rewards>
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="HIDDEN_TIME_TRIAL" DisplayName="Secret: Speedrunner's Challenge" Description="Complete a series of challenges against the clock. Only the fastest will prevail.">
+  <Quest RefName="HIDDEN_TIME_TRIAL" DisplayName="Trial of Swift Blades" Description="Complete a series of challenges against the clock where only the fastest will prevail.">
     <Prerequisites>
       <Prerequisite MinimumLevel="25" />
     </Prerequisites>
     <Stages StartStage="START_CHALLENGE">
       <Stage RefName="START_CHALLENGE" DisplayName="Begin the Time Trial" NextStage="COMPLETE_TRIAL">
         <Objectives>
-          <Objective RefName="REACH_START" Type="LocationReached" Threshold="1" DisplayName="Reach the challenge arena at Terukuni Daimyojin-sha" ArcRef="TerukuniDaimyojinsha1" />
+          <Objective RefName="REACH_START" Type="LocationReached" Threshold="1" DisplayName="Reach the challenge arena at Terukuni Daimyōjin-sha" ArcRef="TerukuniDaimyōjinsha" />
         </Objectives>
       </Stage>
       <Stage RefName="COMPLETE_TRIAL" DisplayName="Complete All Challenges">
         <Objectives>
           <Objective RefName="DEFEAT_WAVE_1" Type="CharactersDefeatedByTrait" Threshold="10" DisplayName="Defeat 10 enemies (Wave 1)" Trait="Hostile" />
-          <Objective RefName="COLLECT_SPEED_TOKENS" Type="QuestTokenCollected" Threshold="5" DisplayName="Collect 5 speed tokens" ItemRef="TOKEN_SPEED_CHALLENGE" />
+          <Objective RefName="COLLECT_SPEED_TOKENS" Type="QuestTokenCollected" Threshold="1" DisplayName="Claim the arena's token at Terukuni Daimyōjin-sha" QuestTokenRef="TOKEN_TerukuniDaimyōjinsha_COMPLETE" />
           <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTrait" Threshold="1" DisplayName="Defeat the time keeper" Trait="BossFight" />
         </Objectives>
         <Rewards>
@@ -592,7 +686,7 @@
             <Experience Amount="7000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="OakStaff" Quantity="1" />
+            <Equipment EquipmentRef="ShadowBoots" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
